@@ -1,14 +1,22 @@
-using Microsoft.AspNetCore.Authorization;
+using Mediator;
 using Microsoft.AspNetCore.Mvc;
+using PageTree.App.Pages;
 using PageTree.App.Pages.Queries;
 
 namespace PageTree.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class PagesController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public PagesController(IMediator mediator) 
+        {
+            _mediator = mediator;
+        }
+
         //[HttpGet]
         //public ActionResult<PageVM[]> GetAll()
         //{
@@ -16,11 +24,11 @@ namespace PageTree.Api.Controllers
         //}
 
         [HttpGet]
-        [Authorize(Policy = "AllowedForPageEdit")]
-        public ActionResult<GetPageOfIDQueryDTO> Get(string id)
+        //[Authorize(Policy = "AllowedForPageEdit")]
+        public async Task<ActionResult<GetPageOfIDQueryDTO>> Get(string id)
         {
-            var claims = User.Claims.ToArray();
-            return Ok(new GetPageOfIDQueryDTO(new PageVM()));
+            var result = await _mediator.Send(new GetPageOfIDQuery(id));
+            return Ok(result.Get());
         }
 
         //[HttpPost]

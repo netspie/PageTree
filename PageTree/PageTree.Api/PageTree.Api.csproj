@@ -8,15 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mediator.Abstractions" Version="1.0.5" />
     <PackageReference Include="Mediator.SourceGenerator" Version="1.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\PageTree.Api.Infrastructure\PageTree.Api.Infrastructure.csproj" />
     <ProjectReference Include="..\PageTree.App\PageTree.App.csproj" />
     <ProjectReference Include="..\PageTree.Presentation\PageTree.Presentation.csproj" />
   </ItemGroup>

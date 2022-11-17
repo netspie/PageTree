@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="Mediator.Abstractions" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common.Basic.Tests\Common.Basic.Tests\Common.Basic\Common.Basic.csproj" />
-    <ProjectReference Include="..\PageTree.Domain\PageTree.Domain.csproj" />
+    <ProjectReference Include="..\PageTree\PageTree.App\PageTree.App.csproj" />
+    <ProjectReference Include="..\PageTree\PageTree.Domain\PageTree.Domain.csproj" />
   </ItemGroup>
 
 </Project>

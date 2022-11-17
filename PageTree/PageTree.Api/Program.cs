@@ -6,7 +6,6 @@ using PageTree.Api.Data;
 using PageTree.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 var connectionString = GetDatabaseConnectionString(builder, "DefaultConnection", "ProductionConnection");
 
@@ -29,9 +28,10 @@ builder.Services.AddAuthorization(opts =>
     });
 });
 
+builder.Services.AddSingleton<IAuthorizationHandler, AllowedForPageEditHandler>();
 builder.Services.AddMediator();
 
-builder.Services.AddSingleton<IAuthorizationHandler, AllowedForPageEditHandler>();
+PageTree.Api.Infrastructure.Startup.Run(builder.Services);
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
