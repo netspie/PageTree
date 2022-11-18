@@ -16,10 +16,10 @@ namespace PageTree.Api.Infrastructure
 
         private static void InitRepositories(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IRepository<Page>>(new WWWRootHttpClientRepository<Page>());
-            serviceCollection.AddSingleton<IRepository<Signature>>(new WWWRootHttpClientRepository<Signature>());
-            serviceCollection.AddSingleton<IRepository<PracticeCategory>>(new WWWRootHttpClientRepository<PracticeCategory>());
-            serviceCollection.AddSingleton<IRepository<PracticeTactic>>(new WWWRootHttpClientRepository<PracticeTactic>());
+            //serviceCollection.AddSingleton<IRepository<Page>>(new WWWRootHttpClientRepository<Page>());
+            //serviceCollection.AddSingleton<IRepository<Signature>>(new WWWRootHttpClientRepository<Signature>());
+            //serviceCollection.AddSingleton<IRepository<PracticeCategory>>(new WWWRootHttpClientRepository<PracticeCategory>());
+            //serviceCollection.AddSingleton<IRepository<PracticeTactic>>(new WWWRootHttpClientRepository<PracticeTactic>());
         }
     }
 }
