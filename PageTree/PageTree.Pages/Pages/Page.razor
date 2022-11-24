@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@inherits ComponentBase
+@page "/"
 @using Common.Basic.Collections
 @using Common.Basic.Maths;
 @using PageTree.App
@@ -6,6 +7,7 @@
 @using PageTree.App.Practice.Queries
 @using PageTree.Domain
 @using System.Numerics;
+@using PageTree.Pages.Services;
 @inject HttpClient Http
 
 <PageTitle>PageTree</PageTitle>
@@ -115,3 +117,59 @@
         </div>
     }
 </div>
+
+@code {
+    [Inject] private IPagesService PagesService { get; set; }
+
+    private PageVM _vm = new PageVM();
+    private PracticeCardDTO[] _practiceCards = Array.Empty<PracticeCardDTO>();
+    private int _currentCardIndex;
+    private bool _answerVisible;
+
+    protected override Task OnInitializedAsync() =>
+        //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
+        RefreshPage();
+
+    private async Task RefreshPage() =>
+        _vm = await PagesService.GetPage(string.Empty);
+
+    private async Task LoadPage(string pageID)
+    {
+        _vm = await PagesService.GetPage(string.Empty);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadPracticeCard(string tacticID)
+    {
+        _practiceCards = await PagesService.GetPracticeCards(_vm.Identity.ID, tacticID);
+        _currentCardIndex = 0;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void CloseCard()
+    {
+        _practiceCards = Array.Empty<PracticeCardDTO>();
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void NextCard(int step)
+    {
+        if (step == 0)
+            return;
+
+        _answerVisible = false;
+        _currentCardIndex.IncreaseBy(step, 0, _practiceCards.Length - 1, loop: false);
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void SwitchAnswerVisibility()
+    {
+        _answerVisible = !_answerVisible;
+
+        InvokeAsync(StateHasChanged);
+    }
+}
+}

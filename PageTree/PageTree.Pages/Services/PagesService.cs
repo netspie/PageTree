@@ -1,9 +1,8 @@
 ﻿using PageTree.App.Pages.Queries;
 using PageTree.App.Practice.Queries;
 using System.Net.Http.Json;
-using System.Text.Json;
 
-namespace PageTree.WebClient.Services
+namespace PageTree.Pages.Services
 {
     public class PagesService : IPagesService
     {

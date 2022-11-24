@@ -1,7 +1,7 @@
 ﻿using PageTree.App.Pages.Queries;
 using PageTree.App.Practice.Queries;
 
-namespace PageTree.WebClient.Services
+namespace PageTree.Pages.Services
 {
     public interface IPagesService
     {

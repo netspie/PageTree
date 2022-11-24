@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PageTree.App\PageTree.App.csproj" />
+    <ProjectReference Include="..\PageTree.Pages\PageTree.Pages.csproj" />
   </ItemGroup>
 
 </Project>
