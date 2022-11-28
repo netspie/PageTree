@@ -1,4 +1,4 @@
-﻿namespace BlazorMauiMSAL.MsalClient
+﻿namespace PageTree.Client.Native.MsalClient
 {
     internal class PlatformConfig
     {

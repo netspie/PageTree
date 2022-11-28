@@ -1,10 +1,10 @@
-﻿using BlazorMauiMSAL.Data;
-using BlazorMauiMSAL.MsalClient;
+﻿using PageTree.Client.Native.Data;
+using PageTree.Client.Native.MsalClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 
-namespace BlazorMauiMSAL;
+namespace PageTree.Client.Native;
 
 public static class MauiProgram
 {
@@ -26,7 +26,7 @@ public static class MauiProgram
 #endif
 
         var executingAssembly = Assembly.GetExecutingAssembly();
-        using var stream = executingAssembly.GetManifestResourceStream("BlazorMauiMSAL.appsettings.json");
+        using var stream = executingAssembly.GetManifestResourceStream("PageTree.Client.Native.appsettings.json");
         var configuration = new ConfigurationBuilder().AddJsonStream(stream).Build();
 
         builder.Services.AddTransient<MainPage>();

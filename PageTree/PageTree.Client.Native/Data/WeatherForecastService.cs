@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
-namespace BlazorMauiMSAL.Data;
+namespace PageTree.Client.Native.Data;
 
 public class WeatherForecastService
 {

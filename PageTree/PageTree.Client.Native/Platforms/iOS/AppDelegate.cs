@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace BlazorMauiMSAL
+namespace PageTree.Client.Native
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

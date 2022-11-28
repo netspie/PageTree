@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace BlazorMauiMSAL
+namespace PageTree.Client.Native
 {
     [Application]
     public class MainApplication : MauiApplication

@@ -1,4 +1,4 @@
-namespace BlazorMauiMSAL.Data
+namespace PageTree.Client.Native.Data
 {
     public class WeatherForecast
     {

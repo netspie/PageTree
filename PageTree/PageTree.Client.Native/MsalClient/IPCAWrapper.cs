@@ -1,6 +1,6 @@
 ﻿using Microsoft.Identity.Client;
 
-namespace BlazorMauiMSAL.MsalClient
+namespace PageTree.Client.Native.MsalClient
 {
 	internal interface IPCAWrapper
 	{

@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace BlazorMauiMSAL
+namespace PageTree.Client.Native
 {
     public class Program
     {

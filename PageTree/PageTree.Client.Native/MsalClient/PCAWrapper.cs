@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 
-namespace BlazorMauiMSAL.MsalClient
+namespace PageTree.Client.Native.MsalClient
 {
     /// <summary>
     /// This is a wrapper for PCA. It is singleton and can be utilized by both application and the MAM callback

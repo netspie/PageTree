@@ -2,7 +2,7 @@
 using Android.Content;
 using Microsoft.Identity.Client;
 
-namespace BlazorMauiMSAL.Platforms.Android;
+namespace PageTree.Client.Native.Platforms.Android;
 
 [Activity(Exported = true)]
 [IntentFilter(new[] { Intent.ActionView },

@@ -1,4 +1,4 @@
-﻿namespace BlazorMauiMSAL
+﻿namespace PageTree.Client.Native
 {
     internal class Settings
     {
