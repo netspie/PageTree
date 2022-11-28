@@ -30,7 +30,6 @@ public class WeatherForecastService
 
         // Add the Authorization Bearer header.
         message.Headers.Add("Authorization", $"Bearer {Globals.AccessToken}");
-
         // Send the request.
         var response = await client.SendAsync(message).ConfigureAwait(false);
 
