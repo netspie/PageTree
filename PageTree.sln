@@ -13,15 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{6F8742
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C698E0C1-B0D7-4921-8371-B55111BDBCA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.Server", "PageTree\PageTree.Server\PageTree.Server.csproj", "{32484F7A-E540-4A7D-BF91-EEC7D93329B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.ServerBad", "PageTree\PageTree.Server\PageTree.ServerBad.csproj", "{32484F7A-E540-4A7D-BF91-EEC7D93329B5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.Server.Infrastructure", "PageTree\PageTree.Server.Infrastructure\PageTree.Server.Infrastructure.csproj", "{C3DC020E-0194-4883-B71E-98E27805356B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{EBC21797-3FA5-4D3D-A11C-CCA4A4A0359A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.WebClient", "PageTree\PageTree.WebClient\PageTree.WebClient.csproj", "{2B8070C7-EE02-407A-9A9A-BB75363305B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.WebClientBad", "PageTree\PageTree.WebClient\PageTree.WebClientBad.csproj", "{2B8070C7-EE02-407A-9A9A-BB75363305B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.Pages", "PageTree\PageTree.Pages\PageTree.Pages.csproj", "{85FDB0D3-14D5-4558-B695-6CBE92E050EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.PagesBad", "PageTree\PageTree.Pages\PageTree.PagesBad.csproj", "{85FDB0D3-14D5-4558-B695-6CBE92E050EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

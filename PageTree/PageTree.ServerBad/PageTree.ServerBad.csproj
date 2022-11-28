@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PageTree.App\PageTree.App.csproj" />
     <ProjectReference Include="..\PageTree.Server.Infrastructure\PageTree.Server.Infrastructure.csproj" />
-    <ProjectReference Include="..\PageTree.WebClient\PageTree.WebClient.csproj" />
+    <ProjectReference Include="..\PageTree.WebClient\PageTree.WebClientBad.csproj" />
   </ItemGroup>
 
   <ItemGroup>
