@@ -11,12 +11,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddInMemoryTokenCaches()
                     .AddDownstreamWebApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
                     .AddInMemoryTokenCaches();
-builder.Services.AddAuthorization();
 
+builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+builder.Services.AddMediator();
+PageTree.Server.Infrastructure.Startup.Run(builder.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
