@@ -1,7 +1,6 @@
-﻿@using Microsoft.Extensions.Configuration
-@using PageTree.Client.Native.MsalClient
-@inject IPCAWrapper _pcaWrapper;
-@inject IConfiguration _configuration;
+﻿@using Common.Infrastructure.MauiMsalAuth;
+@using Microsoft.Extensions.Configuration
+@inject ISignInManager _signInManager;
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -15,7 +14,7 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="top-row px-4">
-            @if (IsLoggedIn)
+            @if (_signInManager.IsSignedIn)
             {
                 <button class="btn btn-link" @onclick="OnLogoutClicked">Logout</button>
             }
@@ -53,59 +52,15 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    bool _isLoggedIn = false;
-    public bool IsLoggedIn {
-        get => _isLoggedIn;
-        set {
-            if (_isLoggedIn == value) return;
-            _isLoggedIn = value;
-            InvokeAsync(StateHasChanged);
-        }
-    }
-
     private async void OnLoginClicked()
     {
-        IsLoggedIn = false;
-
-        try
-        {
-            // Attempt silent login, and obtain access token.
-            var result = await _pcaWrapper.AcquireTokenSilentAsync(_pcaWrapper.Scopes).ConfigureAwait(false);
-
-            // Set access token.
-            Globals.AccessToken = result?.AccessToken;
-            if (Globals.AccessToken != null)
-                IsLoggedIn = true;
-
-        }
-        // A MsalUiRequiredException will be thrown, if this is the first attempt to login, or after logging out.
-        catch (MsalUiRequiredException)
-        {
-            try
-            {
-                // Perform interactive login, and obtain access token.
-                var result = await _pcaWrapper.AcquireTokenInteractiveAsync(_pcaWrapper?.Scopes).ConfigureAwait(false);
-
-                // Set access token.
-                Globals.AccessToken = result?.AccessToken;
-                if (Globals.AccessToken != null)
-                    IsLoggedIn = true;
-            }
-            catch (Exception ex)
-            {
-                // Ignore.
-            }
-        }
-        catch
-        {
-            IsLoggedIn = false;
-        }
+        await _signInManager.SignIn();
+        await InvokeAsync(StateHasChanged);
     }
 
     private async void OnLogoutClicked()
     {
-        await _pcaWrapper.SignOutAsync().ConfigureAwait(false);
-        IsLoggedIn = false;
-        Globals.AccessToken = null;
+        await _signInManager.SignOut();
+        await InvokeAsync(StateHasChanged);
     }
 }

@@ -63,9 +63,15 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="Microsoft.Identity.Client" Version="4.48.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Common.Basic.Tests\Common.Basic.Tests\Common.Basic\Common.Basic.csproj" />
+      <ProjectReference Include="..\..\..\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth.csproj" />
     </ItemGroup>
 
 </Project>

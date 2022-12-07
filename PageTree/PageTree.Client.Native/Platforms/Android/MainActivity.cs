@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using PageTree.Client.Native.MsalClient;
+using Common.Infrastructure.MauiMsalAuth;
 using Microsoft.Identity.Client;
 
 namespace PageTree.Client.Native;

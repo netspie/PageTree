@@ -1,8 +1,6 @@
-﻿using PageTree.Client.Native.Data;
-using PageTree.Client.Native.MsalClient;
-using Microsoft.Extensions.Configuration;
+﻿using Common.Infrastructure.MauiMsalAuth;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
+using PageTree.Client.Native.Data;
 
 namespace PageTree.Client.Native;
 
@@ -25,15 +23,13 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-        var executingAssembly = Assembly.GetExecutingAssembly();
-        using var stream = executingAssembly.GetManifestResourceStream("PageTree.Client.Native.appsettings.json");
-        var configuration = new ConfigurationBuilder().AddJsonStream(stream).Build();
+        builder.Services.AddMsalAuthentication(builder.Configuration);
 
         builder.Services.AddTransient<MainPage>();
-        builder.Services.AddSingleton<IPCAWrapper, PCAWrapper>();
-        builder.Configuration.AddConfiguration(configuration);
 
-        builder.Services.AddSingleton<WeatherForecastService>();
+        //httpClientBuilder.
+        //builder.Services.AddSingleton<WeatherForecastService>();
+        //builder.Services.AddHttpClient<WeatherForecastService>().AddHttpMessageHandler<AuthorizationMessageHandler>();
 
         return builder.Build();
     }

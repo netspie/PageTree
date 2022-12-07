@@ -16,10 +16,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-var app = builder.Build();
-
 builder.Services.AddMediator();
 PageTree.Server.Infrastructure.Startup.Run(builder.Services);
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
