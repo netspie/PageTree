@@ -18,17 +18,17 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 
+        var baseAddress = "https://japanesearcana.com/";
+
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+        baseAddress = "https://192.168.178.44:7037/";
+        builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-        //builder.Services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
         builder.Services.AddMsalAuthentication(builder.Configuration);
         builder.Services.AddTransient<MainPage>();
 
-        builder.Services.AddTransient<AuthorizationMessageHandler>();
-        builder.Services.AddHttpClient<IWeatherForecastService, WeatherForecastService>(client => client.BaseAddress = new Uri("https://localhost:7037/"))
-            .AddHttpMessageHandler<AuthorizationMessageHandler>();
+        builder.Services.AddAuthorizedHttpService<IWeatherForecastService, WeatherForecastService>(baseAddress);
 
         return builder.Build();
     }

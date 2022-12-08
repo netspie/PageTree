@@ -27,14 +27,6 @@ public class WeatherForecastService : IWeatherForecastService
         if (responseString == string.Empty)
             return result;
 
-        // Serialize the response.
-        var options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
-        result = JsonSerializer.Deserialize<List<WeatherForecast>>(responseString, options);
-
         return result!;
     }
 }
