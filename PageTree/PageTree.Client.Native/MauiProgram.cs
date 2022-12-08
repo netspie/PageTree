@@ -21,7 +21,7 @@ public static class MauiProgram
         var baseAddress = "https://japanesearcana.com/";
 
 #if DEBUG
-        baseAddress = "https://192.168.178.44:7037/";
+        baseAddress = "http://192.168.178.44:5092/";
         builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif

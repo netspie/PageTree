@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace PageTree.Client.Native.Data;
@@ -23,9 +24,16 @@ public class WeatherForecastService : IWeatherForecastService
         var result = new List<WeatherForecast>();
 
         // Get the response.
-        var responseString = await _httpClient.GetStringAsync($"/pages?id=123");
-        if (responseString == string.Empty)
-            return result;
+        try
+        {
+            var responseString = await _httpClient.GetStringAsync($"/pages?id=123");
+            if (responseString == string.Empty)
+                return result;
+        }
+        catch (Exception ex) 
+        {
+            Debug.WriteLine(ex);
+        }
 
         return result!;
     }
