@@ -3,15 +3,18 @@ using System.Text.Json;
 
 namespace PageTree.Client.Native.Data;
 
-public class WeatherForecastService
+public interface IWeatherForecastService
 {
-    private readonly HttpClient _httpClient;
-    private readonly NavigationManager _navigation;
+    Task<List<WeatherForecast>> CallSecureWebApi();
+}
 
-    public WeatherForecastService(HttpClient httpClient, NavigationManager navigation)
+public class WeatherForecastService : IWeatherForecastService
+{
+    private  HttpClient _httpClient;
+
+    public WeatherForecastService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        _navigation = navigation;
     }
 
     // Call the Secure Web API.
@@ -20,7 +23,7 @@ public class WeatherForecastService
         var result = new List<WeatherForecast>();
 
         // Get the response.
-        var responseString = await _httpClient.GetStringAsync($"{_navigation?.BaseUri}/weatherforecast");
+        var responseString = await _httpClient.GetStringAsync($"/pages?id=123");
         if (responseString == string.Empty)
             return result;
 

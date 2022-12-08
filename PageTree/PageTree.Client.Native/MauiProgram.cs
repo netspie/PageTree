@@ -22,14 +22,13 @@ public static class MauiProgram
 		builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-
+        //builder.Services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
         builder.Services.AddMsalAuthentication(builder.Configuration);
-
         builder.Services.AddTransient<MainPage>();
 
-        //httpClientBuilder.
-        //builder.Services.AddSingleton<WeatherForecastService>();
-        //builder.Services.AddHttpClient<WeatherForecastService>().AddHttpMessageHandler<AuthorizationMessageHandler>();
+        builder.Services.AddTransient<AuthorizationMessageHandler>();
+        builder.Services.AddHttpClient<IWeatherForecastService, WeatherForecastService>(client => client.BaseAddress = new Uri("https://localhost:7037/"))
+            .AddHttpMessageHandler<AuthorizationMessageHandler>();
 
         return builder.Build();
     }

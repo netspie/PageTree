@@ -1,7 +1,7 @@
 ﻿@page "/fetchdata"
 
 @using PageTree.Client.Native.Data
-@inject WeatherForecastService ForecastService
+@inject IWeatherForecastService ForecastService
 
 <h1>Weather forecast</h1>
 
@@ -37,7 +37,7 @@ else
 }
 
 @code {
-    private List<WeatherForecast> forecasts;
+    private List<WeatherForecast> forecasts = new();
 
     protected override async Task OnInitializedAsync()
     {
