@@ -1,13 +1,10 @@
-﻿using Common.Basic.Collections;
-using Common.Basic.CQRS.Command;
+﻿using Common.Basic.CQRS.Command;
 using Common.Basic.CQRS.Query;
 using Mediator;
 using PageTree.App.Pages.Queries;
 using PageTree.App.Practice.Queries;
-using System.Threading;
-using static System.Net.WebRequestMethods;
 
-namespace PageTree.Client.SharedPages.Services
+namespace PageTree.Client.Shared.Services
 {
     public interface IPagesService
     {

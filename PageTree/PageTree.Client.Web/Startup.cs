@@ -1,6 +1,6 @@
 ﻿using Mediator;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using PageTree.Client.SharedPages.CQRS;
+using PageTree.Client.Shared.CQRS;
 
 namespace PageTree.Client.Web;
 

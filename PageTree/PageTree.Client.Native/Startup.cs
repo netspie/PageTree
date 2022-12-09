@@ -1,5 +1,5 @@
 ﻿using Mediator;
-using PageTree.Client.SharedPages.CQRS;
+using PageTree.Client.Shared.CQRS;
 
 namespace PageTree.Client.Native;
 

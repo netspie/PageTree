@@ -1,7 +1,7 @@
 ﻿using Common.Basic.Blocks;
 using Mediator;
 
-namespace PageTree.Client.SharedPages.CQRS
+namespace PageTree.Client.Shared.CQRS
 {
     public sealed class MediatorQueryExecutor : IMQueryExecutor
     {

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using PageTree.Client.Shared.Services;
 using PageTree.Client.Web;
+using PageTree.Client.Web.Auth;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -17,6 +19,8 @@ builder.Services.AddScoped(
 
 builder.Services.AddMediator();
 builder.Services.AddCQRS();
+
+builder.Services.AddTransient<IAuthUser, WebAuthUser>();
 
 builder.Services.AddMsalAuthentication(options =>
 {

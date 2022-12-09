@@ -1,0 +1,25 @@
+﻿@inject IAuthUser _authUser
+
+<div class="top-row px-4">
+    @if (_authUser.IsSignedIn)
+    {
+        @*Hello, @_authUser.Name*@
+        <button class="nav-link btn btn-link" @onclick="_authUser.SignOut">Log out</button>
+    }
+    else
+    {
+        <button class="nav-link btn btn-link" @onclick="_authUser.SignIn">Log in</button>
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        _authUser.OnAuthenticatedStateChanged += OnAuthenticatedStateChanged;
+    }
+
+    private void OnAuthenticatedStateChanged(bool isSignedIn)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+}
