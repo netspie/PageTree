@@ -15,6 +15,9 @@ builder.Services.AddHttpClient("BlazorWASMHostedMSAL.ServerAPI",
 builder.Services.AddScoped(
     sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BlazorWASMHostedMSAL.ServerAPI"));
 
+builder.Services.AddMediator();
+builder.Services.AddCQRS();
+
 builder.Services.AddMsalAuthentication(options =>
 {
     builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);

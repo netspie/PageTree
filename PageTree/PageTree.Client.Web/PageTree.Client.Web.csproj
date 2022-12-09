@@ -8,10 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mediator.SourceGenerator" Version="2.0.29">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.10" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PageTree.App\PageTree.App.csproj" />
+    <ProjectReference Include="..\PageTree.Client.SharedPages\PageTree.Client.SharedPages.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using PageTree.Server.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddMediator();
-PageTree.Server.Infrastructure.Startup.Run(builder.Services);
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 

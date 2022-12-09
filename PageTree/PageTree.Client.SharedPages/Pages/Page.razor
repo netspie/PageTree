@@ -5,9 +5,11 @@
 @using PageTree.App
 @using PageTree.App.Pages.Queries
 @using PageTree.App.Practice.Queries
+@using PageTree.Client.SharedPages.CQRS;
 @using PageTree.Domain
 @using System.Numerics;
 @inject HttpClient Http
+@inject IMQueryExecutor QueryExecutor
 
 <PageTitle>PageTree</PageTitle>
 
@@ -125,9 +127,13 @@
     private int _currentCardIndex;
     private bool _answerVisible;
 
-    protected override Task OnInitializedAsync() =>
-        //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
+    protected override async Task OnInitializedAsync()
+    {
+        var dto = await QueryExecutor.ExecuteForDTO<GetPageOfIDQueryDTO>(new GetPageOfIDQuery("asd"));
         RefreshPage();
+        //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
+
+    }
 
     private async Task RefreshPage() =>
         _vm = await PagesService.GetPage(string.Empty);

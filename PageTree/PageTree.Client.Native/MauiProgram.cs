@@ -1,6 +1,8 @@
 ﻿using Common.Infrastructure.MauiMsalAuth;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using PageTree.Client.Native.Data;
+using PageTree.Client.SharedPages.CQRS;
 
 namespace PageTree.Client.Native;
 
@@ -25,6 +27,10 @@ public static class MauiProgram
         builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
+
+        builder.Services.AddMediator();
+        builder.Services.AddCQRS();
+
         builder.Services.AddMsalAuthentication(builder.Configuration);
         builder.Services.AddTransient<MainPage>();
 
