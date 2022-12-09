@@ -76,7 +76,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Common.Basic.Tests\Common.Basic.Tests\Common.Basic\Common.Basic.csproj" />
       <ProjectReference Include="..\..\..\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth.csproj" />
-      <ProjectReference Include="..\PageTree.Client.SharedPages\PageTree.Client.SharedPages.csproj" />
+      <ProjectReference Include="..\PageTree.Client.Shared\PageTree.Client.Shared.csproj" />
     </ItemGroup>
 
 </Project>

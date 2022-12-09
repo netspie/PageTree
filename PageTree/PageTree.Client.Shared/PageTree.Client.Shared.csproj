@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -13,11 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mediator.Abstractions" Version="2.0.29" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.10" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PageTree.App\PageTree.App.csproj" />
+    <ProjectReference Include="..\..\..\Common.Basic.Tests\Common.Basic.Tests\Common.Basic\Common.Basic.csproj" />
+    <ProjectReference Include="..\PageTree.App.UseCases\PageTree.App.UseCases.csproj" />
   </ItemGroup>
 
 </Project>

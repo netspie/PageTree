@@ -19,8 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PageTree.App\PageTree.App.csproj" />
-    <ProjectReference Include="..\PageTree.Client.SharedPages\PageTree.Client.SharedPages.csproj" />
+    <ProjectReference Include="..\PageTree.Client.Shared\PageTree.Client.Shared.csproj" />
   </ItemGroup>
 
 </Project>
