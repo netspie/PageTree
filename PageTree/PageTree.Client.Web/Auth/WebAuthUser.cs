@@ -14,7 +14,8 @@ namespace PageTree.Client.Web.Auth
         private bool? _isSignedIn = false;
         public bool IsSignedIn => _isSignedIn.Value;
 
-        public string Name => throw new NotImplementedException();
+        private string _name = string.Empty;
+        public string Name => _name;
 
         public event Action<bool> OnAuthenticatedStateChanged;
 
@@ -34,6 +35,9 @@ namespace PageTree.Client.Web.Auth
         {
             var state = await task;
             _isSignedIn = state.User.Identity?.IsAuthenticated;
+            
+            if (_isSignedIn.Value)
+                _name = state.User.Identity?.Name ?? string.Empty;
 
             OnAuthenticatedStateChanged?.Invoke(IsSignedIn);
         }
