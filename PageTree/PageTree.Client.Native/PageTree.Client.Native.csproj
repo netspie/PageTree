@@ -13,10 +13,10 @@
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
 
         <!-- Display name -->
-        <ApplicationTitle>PageTree.Client.Native</ApplicationTitle>
+        <ApplicationTitle>PageTree</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.PageTreeClientNative</ApplicationId>
+        <ApplicationId>com.companyname.PageTree</ApplicationId>
         <ApplicationIdGuid>96D1C00E-DA19-4329-AF0B-33B3FE2C8C6B</ApplicationIdGuid>
 
         <!-- Versions -->

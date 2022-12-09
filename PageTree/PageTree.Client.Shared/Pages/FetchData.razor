@@ -1,11 +1,12 @@
 ﻿@page "/fetchdata"
+@using System.Diagnostics;
+@inject HttpClient Http
 
-@using PageTree.Client.Native.Data
-@inject IWeatherForecastService ForecastService
+<PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates fetching data from the server.</p>
 
 @if (forecasts == null)
 {
@@ -37,10 +38,28 @@ else
 }
 
 @code {
-    private List<WeatherForecast> forecasts = new();
+    private WeatherForecast[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.CallSecureWebApi();
+        //try
+        //{
+        //    forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        //}
+        //catch (AccessTokenNotAvailableException exception)
+        //{
+        //    exception.Redirect();
+        //}
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 }
