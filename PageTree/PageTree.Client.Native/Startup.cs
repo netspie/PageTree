@@ -12,6 +12,6 @@ public static class Startup
             new MediatorQueryExecutor(sp.GetRequiredService<IMediator>()));
 
         services.AddTransient<IDataService>(sp =>
-            new HttpDataService(sp.GetRequiredService<HttpClient>()));
+            new HttpDataService(sp.GetRequiredService<IHttpClientFactory>()));
     }
 }

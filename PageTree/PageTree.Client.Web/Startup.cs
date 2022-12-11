@@ -24,7 +24,8 @@ public static class Startup
                 {
                     client.BaseAddress = new Uri(baseAdress);
                     return new DataServiceTryCatchDecorator<AccessTokenNotAvailableException>(
-                        new HttpDataService(client), onCatch: ex => { });
+                        new HttpDataService(sp.GetRequiredService<IHttpClientFactory>()), 
+                        onCatch: ex => ex.Redirect());
                 })
             .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
     }
