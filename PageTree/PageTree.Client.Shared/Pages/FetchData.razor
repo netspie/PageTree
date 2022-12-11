@@ -1,6 +1,8 @@
 ﻿@page "/fetchdata"
 @using System.Diagnostics;
 @inject HttpClient Http
+@inject IMQueryExecutor _queryExecutor;
+@inject IDataService _dataService;
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -42,14 +44,17 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //try
-        //{
-        //    forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-        //}
-        //catch (AccessTokenNotAvailableException exception)
-        //{
-        //    exception.Redirect();
-        //}
+        forecasts = await _dataService.Get<WeatherForecast[]>();
+    }
+
+    private static readonly string[] Summaries = new[]
+    {
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
+
+    public class WeatherForecastInfo
+    {
+        public int Count { get; set; }
     }
 
     public class WeatherForecast

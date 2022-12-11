@@ -18,7 +18,7 @@ builder.Services.AddScoped(
     sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BlazorWASMHostedMSAL.ServerAPI"));
 
 builder.Services.AddMediator();
-builder.Services.AddCQRS();
+builder.Services.AddCQRS(builder.HostEnvironment.BaseAddress);
 
 builder.Services.AddTransient<IAuthUser, WebAuthUser>();
 

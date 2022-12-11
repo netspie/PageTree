@@ -21,7 +21,7 @@ namespace PageTree.Client.Shared.CQRS
             {
                 return await _decorated.Execute(query, cancellationToken);
             }
-            catch (TException exception) // AccessTokenNotAvailableException
+            catch (TException exception)
             {
                 _onCatch.Invoke(exception);
                 return Result<TResponse>.Failure(exception.Message);
@@ -34,7 +34,7 @@ namespace PageTree.Client.Shared.CQRS
             {
                 return await _decorated.ExecuteForDTO(query, cancellationToken);
             }
-            catch (TException exception) // AccessTokenNotAvailableException
+            catch (TException exception)
             {
                 _onCatch.Invoke(exception);
                 return default;
