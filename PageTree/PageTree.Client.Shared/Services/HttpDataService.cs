@@ -2,29 +2,47 @@
 
 namespace PageTree.Client.Shared.Services
 {
-    public class HttpDataService : IDataService
+    public class HttpDataService<TAccessTokenNotAvailableException> : IDataService
+        where TAccessTokenNotAvailableException : Exception
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly ISignInRedirector _signInRedirector;
 
-        public HttpDataService(IHttpClientFactory clientFactory) 
+        public HttpDataService(IHttpClientFactory clientFactory, ISignInRedirector signInRedirector)
         {
             _clientFactory = clientFactory;
+            _signInRedirector = signInRedirector;
         }
 
         public async Task<TResponse> Get<TResponse>(CancellationToken cancellationToken = default)
         {
             var type = typeof(TResponse);
-            var name = type.IsArray ? type.Name.Remove(type.Name.Length - 2, 2) : type.Name;
+            var resourceName = type.IsArray ? type.Name.Remove(type.Name.Length - 2, 2) : type.Name;
 
             try
             {
-                var client = _clientFactory.CreateClient("authorized");
-                return await client.GetFromJsonAsync<TResponse>($"{name}", cancellationToken);
+                return await GetFromJsonAsync(AuthUserTypes.Authorized, resourceName);
             }
-            catch (Exception ex)
+            catch (TAccessTokenNotAvailableException accessTokenNotAvailableException)
             {
-                var client = _clientFactory.CreateClient("anonymous");
-                return await client.GetFromJsonAsync<TResponse>($"{name}", cancellationToken);
+                try
+                {
+                    return await GetFromJsonAsync(AuthUserTypes.Anonymous, resourceName);
+                }
+
+                catch (HttpRequestException ex)
+                {
+                    if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        _signInRedirector.Redirect(accessTokenNotAvailableException);
+
+                    return default;
+                }
+            }
+
+            Task<TResponse> GetFromJsonAsync(string clientName, string resourceName)
+            {
+                var client = _clientFactory.CreateClient(clientName);
+                return client.GetFromJsonAsync<TResponse>($"{resourceName}", cancellationToken);
             }
         }
     }
