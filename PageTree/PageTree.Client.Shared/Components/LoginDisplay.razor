@@ -1,6 +1,7 @@
 ﻿@inject IAuthUser _authUser
+@inject NavigationManager _navigation;
 
-@if (_authUser.IsSignedIn)
+@if (_isSignedIn)
 {
     @*<p>Hello, </p>@_authUser.Name*@
     <button class="nav-link btn btn-link" @onclick="_authUser.SignOut">Log out</button>
@@ -11,13 +12,22 @@ else
 }
 
 @code {
-    protected override void OnInitialized()
+    private bool _isSignedIn = false;
+
+    protected override async Task OnInitializedAsync()
     {
+        _isSignedIn = await _authUser.IsSignedIn();
         _authUser.OnAuthenticatedStateChanged += OnAuthenticatedStateChanged;
     }
 
-    private void OnAuthenticatedStateChanged(bool isSignedIn)
+    private async void OnAuthenticatedStateChanged(bool isSignedIn)
     {
-        InvokeAsync(StateHasChanged);
+        if (isSignedIn)
+            _navigation.NavigateTo(_navigation.Uri, forceLoad: true);
+        else
+            _navigation.NavigateTo("/");
+
+        _isSignedIn = await _authUser.IsSignedIn();
+        await InvokeAsync(StateHasChanged);
     }
 }

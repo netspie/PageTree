@@ -7,7 +7,7 @@ namespace PageTree.Client.Native.Auth
     {
         private readonly ISignInManager _signInManager;
 
-        public bool IsSignedIn => _signInManager.IsSignedIn;
+        public Task<bool> IsSignedIn() => _signInManager.IsSignedIn();
 
         public string Name => string.Empty;
 

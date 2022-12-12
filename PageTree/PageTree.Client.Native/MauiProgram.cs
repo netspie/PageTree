@@ -1,5 +1,4 @@
-﻿using Common.Basic.Common.Basic.Net;
-using Common.Infrastructure.MauiMsalAuth;
+﻿using Common.Infrastructure.MauiMsalAuth;
 using Microsoft.Extensions.Logging;
 using PageTree.Client.Native.Auth;
 using PageTree.Client.Shared;
@@ -20,7 +19,7 @@ public static class MauiProgram
             });
 
         builder.Services.AddMauiBlazorWebView();
-        SecureStorage.Default.RemoveAll();
+        //SecureStorage.Default.RemoveAll();
         var baseAddress = "https://japanesearcana.com/";
 #if DEBUG
         baseAddress = $"http://localhost:5092";

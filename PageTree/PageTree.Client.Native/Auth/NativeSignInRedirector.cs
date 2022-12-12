@@ -20,7 +20,7 @@ namespace PageTree.Client.Native.Auth
             if (exception is NoAccessTokenAvailableException)
             {
                 await _signInManager.SignIn();
-                _navigation.NavigateTo("/", forceLoad: true);
+                _navigation.NavigateTo(_navigation.Uri, forceLoad: true);
             }
         }
     }

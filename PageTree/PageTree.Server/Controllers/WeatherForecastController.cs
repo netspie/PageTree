@@ -9,7 +9,7 @@ namespace PageTree.Server.Controllers
     public class WeatherForecastController : ControllerBase
     {
         [HttpGet]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public Task<ActionResult<WeatherForecast[]>> Get()
         {
             if (!User.Identity.IsAuthenticated)

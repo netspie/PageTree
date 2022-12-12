@@ -12,7 +12,7 @@ namespace PageTree.Client.Web.Auth
         private readonly AuthenticationStateProvider _authenticationStateProvider;
 
         private bool? _isSignedIn = false;
-        public bool IsSignedIn => _isSignedIn.Value;
+        public Task<bool> IsSignedIn() => Task.FromResult(_isSignedIn.Value);
 
         private string _name = string.Empty;
         public string Name => _name;
@@ -39,7 +39,7 @@ namespace PageTree.Client.Web.Auth
             if (_isSignedIn.Value)
                 _name = state.User.Identity?.Name ?? string.Empty;
 
-            OnAuthenticatedStateChanged?.Invoke(IsSignedIn);
+            OnAuthenticatedStateChanged?.Invoke(_isSignedIn.Value);
         }
 
         public Task SignIn()

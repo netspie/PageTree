@@ -5,7 +5,7 @@
         Task SignIn();
         Task SignOut();
 
-        bool IsSignedIn { get; }
+        Task<bool> IsSignedIn();
         string Name { get; }
 
         event Action<bool> OnAuthenticatedStateChanged;
