@@ -8,21 +8,8 @@ namespace PageTree.Server.Controllers
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {
-        //[HttpGet]
-        //[Authorize]
-        //public Task<ActionResult<WeatherForecast[]>> GetAuthorized()
-        //{
-        //    return Task.FromResult<ActionResult<WeatherForecast[]>>(
-        //        Ok(Enumerable.Range(1, 50).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = Random.Shared.Next(-20, 55),
-        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //    }).ToArray()));
-        //}
-
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public Task<ActionResult<WeatherForecast[]>> Get()
         {
             if (!User.Identity.IsAuthenticated)

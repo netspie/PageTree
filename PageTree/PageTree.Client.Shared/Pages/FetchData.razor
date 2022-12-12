@@ -3,6 +3,7 @@
 @inject HttpClient Http
 @inject IMQueryExecutor _queryExecutor;
 @inject IDataService _dataService;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -44,6 +45,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        var uri = NavigationManager.Uri;
         forecasts = await _dataService.Get<WeatherForecast[]>();
     }
 

@@ -1,10 +1,7 @@
 ﻿using Common.Basic.Common.Basic.Net;
 using Common.Infrastructure.MauiMsalAuth;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PageTree.Client.Native.Auth;
-using PageTree.Client.Native.Data;
 using PageTree.Client.Shared;
 using PageTree.Client.Shared.Services;
 
@@ -23,16 +20,16 @@ public static class MauiProgram
             });
 
         builder.Services.AddMauiBlazorWebView();
-
+        SecureStorage.Default.RemoveAll();
         var baseAddress = "https://japanesearcana.com/";
 #if DEBUG
-        baseAddress = $"{NetSocketExtensions.GetLocalIPAddress()}:9229";
+        baseAddress = $"http://localhost:5092";
 
         builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-        builder.Services.AddHttpClient("authorized", baseAddress).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-        builder.Services.AddHttpClient("anonymous", baseAddress);
+        builder.Services.AddHttpClient(AuthUserTypes.Authorized, baseAddress).AddHttpMessageHandler<AuthorizationMessageHandler>();
+        builder.Services.AddHttpClient(AuthUserTypes.Anonymous, baseAddress);
 
         builder.Services.AddMediator();
         builder.Services.AddCQRS(baseAddress);
@@ -40,9 +37,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAuthUser, NativeAuthUser>();
         builder.Services.AddMsalAuthentication(builder.Configuration);
         builder.Services.AddTransient<MainPage>();
-
-
-        builder.Services.AddAuthorizedHttpService<IWeatherForecastService, WeatherForecastService>(baseAddress);
 
         return builder.Build();
     }

@@ -33,9 +33,12 @@ namespace PageTree.Client.Shared.Services
                 catch (HttpRequestException ex)
                 {
                     if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
                         _signInRedirector.Redirect(accessTokenNotAvailableException);
+                        return default;
+                    }
 
-                    return default;
+                    throw ex;
                 }
             }
 
