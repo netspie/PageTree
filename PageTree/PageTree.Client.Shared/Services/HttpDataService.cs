@@ -29,7 +29,6 @@ namespace PageTree.Client.Shared.Services
                 {
                     return await GetFromJsonAsync(AuthUserTypes.Anonymous, resourceName);
                 }
-
                 catch (HttpRequestException ex)
                 {
                     if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -39,6 +38,11 @@ namespace PageTree.Client.Shared.Services
                     }
 
                     throw ex;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    return default;
                 }
             }
 

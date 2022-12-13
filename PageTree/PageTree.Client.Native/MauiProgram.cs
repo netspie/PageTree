@@ -1,4 +1,5 @@
-﻿using Common.Infrastructure.MauiMsalAuth;
+﻿using Common.Basic.Common.Basic.Net;
+using Common.Infrastructure.MauiMsalAuth;
 using Microsoft.Extensions.Logging;
 using PageTree.Client.Native.Auth;
 using PageTree.Client.Shared;
@@ -22,19 +23,20 @@ public static class MauiProgram
         //SecureStorage.Default.RemoveAll();
         var baseAddress = "https://japanesearcana.com/";
 #if DEBUG
-        baseAddress = $"http://localhost:5092";
+        //baseAddress = $"http://192.168.178.44:5259";
 
         builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-        builder.Services.AddHttpClient(AuthUserTypes.Authorized, baseAddress).AddHttpMessageHandler<AuthorizationMessageHandler>();
-        builder.Services.AddHttpClient(AuthUserTypes.Anonymous, baseAddress);
 
         builder.Services.AddMediator();
-        builder.Services.AddCQRS(baseAddress);
+        builder.Services.AddCQRS();
 
-        builder.Services.AddSingleton<IAuthUser, NativeAuthUser>();
         builder.Services.AddMsalAuthentication(builder.Configuration);
+        builder.Services.AddAuthorizationAndSignInRedirection<
+            NativeAuthUser, NativeSignInRedirector, NoAccessTokenAvailableException, AuthorizationMessageHandler>(
+            baseAddress);
+
         builder.Services.AddTransient<MainPage>();
 
         return builder.Build();

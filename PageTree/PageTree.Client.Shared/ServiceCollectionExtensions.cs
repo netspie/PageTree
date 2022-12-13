@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PageTree.Client.Shared.Services;
 
 namespace PageTree.Client.Shared
 {
@@ -9,5 +10,27 @@ namespace PageTree.Client.Shared
 
         public static T Get<T>(this IServiceProvider sp)
             => sp.GetRequiredService<T>();
+
+        public static void AddAuthorizationAndSignInRedirection<TAuthUser, TSignInRedirector, TAccessTokenNotAvailableException, TAuthorizationMessageHandler>(
+            this IServiceCollection services, string baseAddress)
+            where TAuthUser : class, IAuthUser
+            where TSignInRedirector : class, ISignInRedirector
+            where TAccessTokenNotAvailableException : Exception
+            where TAuthorizationMessageHandler : DelegatingHandler
+        {
+            services.AddHttpClient(AuthUserTypes.Authorized, baseAddress).AddHttpMessageHandler<TAuthorizationMessageHandler>();
+            services.AddHttpClient(AuthUserTypes.Anonymous, baseAddress);
+
+            services.AddTransient<IAuthUser, TAuthUser>();
+            services.AddTransient<ISignInRedirector, TSignInRedirector>();
+            services
+                .AddHttpClient<IDataService, HttpDataService<TAccessTokenNotAvailableException>>(
+                (client, sp) =>
+                {
+                    client.BaseAddress = new Uri(baseAddress);
+                    return new HttpDataService<TAccessTokenNotAvailableException>(sp.GetRequiredService<IHttpClientFactory>(), sp.GetRequiredService<ISignInRedirector>());
+                })
+                .AddHttpMessageHandler<TAuthorizationMessageHandler>();
+        }
     }
 }
