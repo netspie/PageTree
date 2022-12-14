@@ -1,9 +1,9 @@
 ﻿using Common.Basic.Blocks;
 using Mediator;
 
-namespace PageTree.Client.Shared.CQRS
+namespace PageTree.Client.Shared.Services.CQRS
 {
-    public interface IMCommandExecutor
+    public interface ICommandExecutor
     {
         Task<Result<TResponse>> Execute<TResponse>(ICommand<Result<TResponse>> command, CancellationToken cancellationToken = default);
 

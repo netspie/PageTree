@@ -1,4 +1,4 @@
-﻿namespace PageTree.Client.Shared.Services
+﻿namespace PageTree.Client.Shared.Auth
 {
     public interface ISignInRedirector
     {

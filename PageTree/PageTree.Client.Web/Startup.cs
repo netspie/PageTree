@@ -1,8 +1,6 @@
 ﻿using Mediator;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using PageTree.Client.Shared;
-using PageTree.Client.Shared.CQRS;
-using PageTree.Client.Web.Auth;
+using PageTree.Client.Shared.Services.CQRS;
 
 namespace PageTree.Client.Web;
 
@@ -15,7 +13,7 @@ public static class Startup
 
     public static void AddCQRS(this IServiceCollection services)
     {
-        services.AddSingleton<IMQueryExecutor>(sp =>
+        services.AddSingleton<IQueryExecutor>(sp =>
             new QueryExecutorTryCatchDecorator<AccessTokenNotAvailableException>(
                 new MediatorQueryExecutor(sp.GetRequiredService<IMediator>()), onCatch: ex => ex.Redirect()));
 

@@ -1,4 +1,4 @@
-﻿namespace PageTree.Client.Shared.Services
+﻿namespace PageTree.Client.Shared.Services.Data
 {
     public interface IDataService
     {

@@ -1,7 +1,8 @@
 ﻿@page "/fetchdata"
 @using System.Diagnostics;
+@using PageTree.Client.Shared.Services.Data;
 @inject HttpClient Http
-@inject IMQueryExecutor _queryExecutor;
+@inject IQueryExecutor _queryExecutor;
 @inject IDataService _dataService;
 @inject NavigationManager NavigationManager;
 

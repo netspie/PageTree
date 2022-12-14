@@ -1,6 +1,6 @@
 ﻿using Common.Infrastructure.MauiMsalAuth;
 using Common.Infrastructure.MauiMsalAuth.Client;
-using PageTree.Client.Shared.Services;
+using PageTree.Client.Shared.Auth;
 
 namespace PageTree.Client.Native.Auth
 {

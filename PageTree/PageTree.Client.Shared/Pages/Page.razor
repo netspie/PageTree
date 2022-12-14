@@ -1,15 +1,14 @@
-﻿    @inherits ComponentBase
+﻿@inherits ComponentBase
 @page "/page"
 @using Common.Basic.Collections
 @using Common.Basic.Maths;
 @using PageTree.App
 @using PageTree.App.Pages.Queries
 @using PageTree.App.Practice.Queries
-@using PageTree.Client.Shared.CQRS;
 @using PageTree.Domain
 @using System.Numerics;
 @inject HttpClient Http
-@inject IMQueryExecutor QueryExecutor
+@inject IQueryExecutor QueryExecutor
 
 <PageTitle>PageTree</PageTitle>
 

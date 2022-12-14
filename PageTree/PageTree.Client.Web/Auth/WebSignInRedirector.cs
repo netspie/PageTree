@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using PageTree.Client.Shared.Services;
+using PageTree.Client.Shared.Auth;
 
 namespace PageTree.Client.Web.Auth
 {

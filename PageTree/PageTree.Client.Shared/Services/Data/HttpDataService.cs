@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
+using PageTree.Client.Shared.Auth;
 
-namespace PageTree.Client.Shared.Services
+namespace PageTree.Client.Shared.Services.Data
 {
     public class HttpDataService<TAccessTokenNotAvailableException> : IDataService
         where TAccessTokenNotAvailableException : Exception

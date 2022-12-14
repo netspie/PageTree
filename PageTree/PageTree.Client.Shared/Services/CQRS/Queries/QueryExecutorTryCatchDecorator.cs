@@ -1,15 +1,15 @@
 ﻿using Common.Basic.Blocks;
 using Mediator;
 
-namespace PageTree.Client.Shared.CQRS
+namespace PageTree.Client.Shared.Services.CQRS
 {
-    public sealed class QueryExecutorTryCatchDecorator<TException> : IMQueryExecutor
+    public sealed class QueryExecutorTryCatchDecorator<TException> : IQueryExecutor
         where TException : Exception
     {
-        private readonly IMQueryExecutor _decorated;
+        private readonly IQueryExecutor _decorated;
         private readonly Action<TException> _onCatch;
 
-        public QueryExecutorTryCatchDecorator(IMQueryExecutor decorated, Action<TException> onCatch)
+        public QueryExecutorTryCatchDecorator(IQueryExecutor decorated, Action<TException> onCatch)
         {
             _decorated = decorated;
             _onCatch = onCatch;

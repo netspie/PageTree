@@ -1,9 +1,9 @@
 ﻿using Common.Basic.Blocks;
 using Mediator;
 
-namespace PageTree.Client.Shared.CQRS
+namespace PageTree.Client.Shared.Services.CQRS
 {
-    public sealed class HttpQueryExecutor : IMQueryExecutor
+    public sealed class HttpQueryExecutor : IQueryExecutor
     {
         private IMediator _mediator;
 
