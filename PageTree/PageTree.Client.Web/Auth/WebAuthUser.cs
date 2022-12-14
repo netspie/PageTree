@@ -7,12 +7,21 @@ namespace PageTree.Client.Web.Auth
 {
     public class WebAuthUser : IAuthUser
     {
+        private readonly IAccessTokenProvider _provider;
         private readonly NavigationManager _navigation;
         private readonly SignOutSessionStateManager _signOutManager;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
 
         private bool? _isSignedIn = false;
-        public Task<bool> IsSignedIn() => Task.FromResult(_isSignedIn.Value);
+        public async Task<bool> IsSignedIn()
+        {
+            var tokenResult = await _provider.RequestAccessToken();
+            if (!tokenResult.TryGetToken(out var token))
+                return false;
+
+            _isSignedIn = true;
+            return true;
+        }
 
         private string _name = string.Empty;
         public string Name => _name;
@@ -20,10 +29,12 @@ namespace PageTree.Client.Web.Auth
         public event Action<bool> OnAuthenticatedStateChanged;
 
         public WebAuthUser(
+            IAccessTokenProvider provider,
             NavigationManager navigation,
             SignOutSessionStateManager signOutManager,
             AuthenticationStateProvider authenticationStateProvider)
         {
+            _provider = provider;
             _navigation = navigation;
             _signOutManager = signOutManager;
             _authenticationStateProvider = authenticationStateProvider;
