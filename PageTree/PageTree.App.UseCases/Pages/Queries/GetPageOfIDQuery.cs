@@ -120,9 +120,15 @@ public class GetPageOfIDQueryHandler : IQueryHandler<GetPageOfIDQuery, Result<Ge
         return result.ToArray();
     }
 }
+public sealed record CreatePageCommand() : ICommand<Result>;
+public sealed record DeletePageCommand(string PageID) : ICommand<Result>;
+public sealed record ChangeNameOfPageCommand(string PageID, string NewName) : ICommand<Result>;
+public sealed record ChangeSignatureOfPageCommand(string PageID, string NewSignatureName) : ICommand<Result>;
+
+public sealed record GetPagesQuery() : IQuery<Result<GetPagesQueryDTO>>;
+public sealed record GetPagesQueryDTO();
 
 public sealed record GetPageOfIDQuery(string ID) : IQuery<Result<GetPageOfIDQueryDTO>>;
-
 public sealed record GetPageOfIDQueryDTO(PageVM PageVM);
 
 public class PageVM

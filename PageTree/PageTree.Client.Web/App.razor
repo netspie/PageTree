@@ -1,5 +1,6 @@
 ﻿<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new [] { typeof(PageTree.Client.Shared.Components.MainLayout).Assembly }">
+    <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new [] 
+        { typeof(PageTree.Client.Shared.Components.MainLayout).Assembly, typeof(Corelibs.BlazorWebAssembly.Components.RedirectToLogin).Assembly }">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(PageTree.Client.Shared.Components.MainLayout)">
                 <NotAuthorized>

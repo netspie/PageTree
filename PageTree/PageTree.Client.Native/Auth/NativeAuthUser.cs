@@ -1,6 +1,6 @@
 ﻿using Common.Infrastructure.MauiMsalAuth;
 using Common.Infrastructure.MauiMsalAuth.Client;
-using PageTree.Client.Shared.Auth;
+using Corelibs.BlazorShared;
 
 namespace PageTree.Client.Native.Auth
 {

@@ -1,9 +1,7 @@
-﻿using Common.Basic.Common.Basic.Net;
-using Common.Infrastructure.MauiMsalAuth;
+﻿using Common.Infrastructure.MauiMsalAuth;
+using Corelibs.BlazorShared;
 using Microsoft.Extensions.Logging;
 using PageTree.Client.Native.Auth;
-using PageTree.Client.Shared;
-using PageTree.Client.Shared.Services;
 
 namespace PageTree.Client.Native;
 
@@ -29,9 +27,7 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddMediator();
         builder.Services.AddCQRS();
-
         builder.Services.AddMsalAuthentication(builder.Configuration);
         builder.Services.AddAuthorizationAndSignInRedirection<
             NativeAuthUser, NativeSignInRedirector, NoAccessTokenAvailableException, AuthorizationMessageHandler>(

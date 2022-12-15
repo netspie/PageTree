@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Corelibs.BlazorWebAssembly\Corelibs.BlazorWebAssembly\Corelibs.BlazorWebAssembly\Corelibs.BlazorWebAssembly.csproj" />
     <ProjectReference Include="..\PageTree.Client.Shared\PageTree.Client.Shared.csproj" />
   </ItemGroup>
 

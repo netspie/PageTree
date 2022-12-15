@@ -1,4 +1,5 @@
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
+using Corelibs.AspNetApi.Controllers.Extensions;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,106 +9,36 @@ namespace PageTree.Server.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class PagesController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public PagesController(IMediator mediator)
-        {
+        public PagesController(IMediator mediator) =>
             _mediator = mediator;
-        }
-
-        //[HttpGet]
-        //public ActionResult<PageVM[]> GetAll()
-        //{
-        //    return new[] { new PageVM() };
-        //}
 
         [HttpGet]
-        //[Authorize(Policy = "AllowedForPageEdit")]
-        public Task<ActionResult<GetPageOfIDQueryDTO>> Get(string id)
-        {
-            //var result = await _mediator.Send(new GetPageOfIDQuery(id));
-            //return Ok(result.Get());
+        public Task<IActionResult> Get() => 
+            _mediator.SendAndGetResponse(new GetPagesQuery());
 
-            var res = new GetPageOfIDQueryDTO(new PageVM());
-            var res2 = Ok(res);
-            return Task.FromResult<ActionResult<GetPageOfIDQueryDTO>>(res2);
-        }
+        [HttpGet, Route("{id}"), AllowAnonymous]
+        public Task<IActionResult> Get(string id) => 
+            _mediator.SendAndGetResponse(new GetPageOfIDQuery(id));
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Action("jump")]
-        public Task<IActionResult> Jump()
-        {
-            return Task.FromResult<IActionResult>(Ok(""));
-        }
+        [HttpPost, Action("create")]
+        public Task<IActionResult> Create() =>
+            _mediator.SendAndGetPostResponse<CreatePageCommand>();
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Action("attack")]
-        public Task<IActionResult> Attack()
-        {
-            return Task.FromResult<IActionResult>(Ok(""));
-        }
+        [HttpPatch, Route("{id}"), Action("delete")]
+        public Task<IActionResult> Delete(string id) =>
+            _mediator.SendAndGetDeleteResponse(new DeletePageCommand(id));
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[Route("{action}")]
-        //public Task<IActionResult> Heal(string action)
-        //{
-        //    Console.WriteLine(action);
-        //    return Task.FromResult<IActionResult>(Ok(""));
-        //}
+        [HttpPatch, Route("{id}"), Action("change-name")]
+        public Task<IActionResult> ChangeName(string id, string name) =>
+            _mediator.SendAndGetDeleteResponse(new ChangeNameOfPageCommand(id, name));
 
-        //[HttpPost]
-        //[Route("{id}/subpages")]
-        //public IActionResult CreateSubpage(string pageID, [FromBody] CreateSubPageCommand command)
-        //{
-        //    return Ok();
-        //}
-
-        //[HttpPost]
-        //[Route("{id}/links")]
-        //public IActionResult CreateLink(string pageID, [FromBody] CreateLinkCommand command)
-        //{
-        //    return Ok();
-        //}
-
-        //[HttpDelete]
-        //[Route("{id}/{childID}")]
-        //public IActionResult RemoveProperty(string pageID, string childID)
-        //{
-        //    return Ok();
-        //}
-
-        //[HttpDelete]
-        //public IActionResult Delete()
-        //{
-        //    return Ok();
-        //}
-
-        public class CreateSubPageCommand
-        {
-            public string Name { get; }
-            public PropertyPositionType PositionType { get; }
-            public int PositionIndex { get; }
-        }
-
-        public class CreateLinkCommand
-        {
-            public string LinkID { get; }
-            public PropertyPositionType PositionType { get; }
-            public int PositionIndex { get; }
-        }
-
-        public enum PropertyPositionType
-        {
-            Custom,
-            Top,
-            Bottom,
-            Middle,
-        }
+        [HttpPatch, Route("{id}"), Action("change-signature")]
+        public Task<IActionResult> ChangeSignature(string id, string name) =>
+            _mediator.SendAndGetDeleteResponse(new ChangeSignatureOfPageCommand(id, name));
     }
 }

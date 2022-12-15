@@ -75,6 +75,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared.csproj" />
       <ProjectReference Include="..\..\..\Corelibs.MauiMsalAuth\Corelibs.MauiMsalAuth\Corelibs.MauiMsalAuth\Corelibs.MauiMsalAuth.csproj" />
       <ProjectReference Include="..\PageTree.Client.Shared\PageTree.Client.Shared.csproj" />
     </ItemGroup>
