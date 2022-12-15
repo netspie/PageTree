@@ -1,3 +1,4 @@
+using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace PageTree.Server.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public PagesController(IMediator mediator) 
+        public PagesController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -34,6 +35,31 @@ namespace PageTree.Server.Api.Controllers
             var res2 = Ok(res);
             return Task.FromResult<ActionResult<GetPageOfIDQueryDTO>>(res2);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Action("jump")]
+        public Task<IActionResult> Jump()
+        {
+            return Task.FromResult<IActionResult>(Ok(""));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Action("attack")]
+        public Task<IActionResult> Attack()
+        {
+            return Task.FromResult<IActionResult>(Ok(""));
+        }
+
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[Route("{action}")]
+        //public Task<IActionResult> Heal(string action)
+        //{
+        //    Console.WriteLine(action);
+        //    return Task.FromResult<IActionResult>(Ok(""));
+        //}
 
         //[HttpPost]
         //[Route("{id}/subpages")]

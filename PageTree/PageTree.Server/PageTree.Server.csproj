@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Corelibs.AspNetApi\Corelibs.AspNetApi\Corelibs.AspNetApi\Corelibs.AspNetApi.csproj" />
     <ProjectReference Include="..\PageTree.App.UseCases\PageTree.App.UseCases.csproj" />
     <ProjectReference Include="..\PageTree.Client.Web\PageTree.Client.Web.csproj" />
   </ItemGroup>

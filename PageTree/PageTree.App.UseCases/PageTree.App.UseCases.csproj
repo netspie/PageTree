@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common.Basic.Tests\Common.Basic.Tests\Common.Basic\Common.Basic.csproj" />
     <ProjectReference Include="..\PageTree.App.Entities\PageTree.App.Entities.csproj" />
   </ItemGroup>
 

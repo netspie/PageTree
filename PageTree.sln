@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Basic", "..\Common.Basic.Tests\Common.Basic.Tests\Common.Basic\Common.Basic.csproj", "{1431467C-DADE-4A07-B1E5-8C1C5C290F98}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.Client.Web", "PageTree\PageTree.Client.Web\PageTree.Client.Web.csproj", "{0CEB4EB1-662A-407F-B744-09F5AACB78EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.Client.Native", "PageTree\PageTree.Client.Native\PageTree.Client.Native.csproj", "{E4D6F148-49EC-49D2-ADCD-F527598B2930}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Infrastructure.MauiMsalAuth", "..\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth\Common.Infrastructure.MauiMsalAuth.csproj", "{351380E2-8C8A-4330-ABBD-273B09C8CD0D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.Server", "PageTree\PageTree.Server\PageTree.Server.csproj", "{A1E69D65-BF9F-4B19-B571-31C5BF35DAED}"
 EndProject
@@ -19,6 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.App.Entities", "Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.App.UseCases", "PageTree\PageTree.App.UseCases\PageTree.App.UseCases.csproj", "{9F2D7D71-6DBF-4849-B0F3-029990E8448C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.AspNetApi", "..\Corelibs.AspNetApi\Corelibs.AspNetApi\Corelibs.AspNetApi\Corelibs.AspNetApi.csproj", "{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.Basic", "..\Corelibs.Basic\Corelibs.Basic\Corelibs.Basic\Corelibs.Basic.csproj", "{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.MauiMsalAuth", "..\Corelibs.MauiMsalAuth\Corelibs.MauiMsalAuth\Corelibs.MauiMsalAuth\Corelibs.MauiMsalAuth.csproj", "{FC8952CC-8211-4C07-8AD5-5F780183D6F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,14 +29,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Debug|x64.ActiveCfg = Debug|x64
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Debug|x64.Build.0 = Debug|x64
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Release|x64.ActiveCfg = Release|x64
-		{1431467C-DADE-4A07-B1E5-8C1C5C290F98}.Release|x64.Build.0 = Release|x64
 		{0CEB4EB1-662A-407F-B744-09F5AACB78EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CEB4EB1-662A-407F-B744-09F5AACB78EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CEB4EB1-662A-407F-B744-09F5AACB78EF}.Debug|x64.ActiveCfg = Debug|x64
@@ -55,14 +49,6 @@ Global
 		{E4D6F148-49EC-49D2-ADCD-F527598B2930}.Release|x64.ActiveCfg = Release|x64
 		{E4D6F148-49EC-49D2-ADCD-F527598B2930}.Release|x64.Build.0 = Release|x64
 		{E4D6F148-49EC-49D2-ADCD-F527598B2930}.Release|x64.Deploy.0 = Release|x64
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Debug|x64.Build.0 = Debug|Any CPU
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Release|x64.ActiveCfg = Release|Any CPU
-		{351380E2-8C8A-4330-ABBD-273B09C8CD0D}.Release|x64.Build.0 = Release|Any CPU
 		{A1E69D65-BF9F-4B19-B571-31C5BF35DAED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1E69D65-BF9F-4B19-B571-31C5BF35DAED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1E69D65-BF9F-4B19-B571-31C5BF35DAED}.Debug|x64.ActiveCfg = Debug|x64
@@ -95,6 +81,30 @@ Global
 		{9F2D7D71-6DBF-4849-B0F3-029990E8448C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F2D7D71-6DBF-4849-B0F3-029990E8448C}.Release|x64.ActiveCfg = Release|x64
 		{9F2D7D71-6DBF-4849-B0F3-029990E8448C}.Release|x64.Build.0 = Release|x64
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Debug|x64.Build.0 = Debug|Any CPU
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7D34DA8-AA6A-4D6A-8238-21BFA3F14C69}.Release|x64.Build.0 = Release|Any CPU
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Debug|x64.ActiveCfg = Debug|x64
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Debug|x64.Build.0 = Debug|x64
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Release|x64.ActiveCfg = Release|x64
+		{F46A8ABE-42B1-40F3-ABAE-163B6A12B70B}.Release|x64.Build.0 = Release|x64
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Debug|x64.Build.0 = Debug|Any CPU
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Release|x64.ActiveCfg = Release|Any CPU
+		{FC8952CC-8211-4C07-8AD5-5F780183D6F3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
