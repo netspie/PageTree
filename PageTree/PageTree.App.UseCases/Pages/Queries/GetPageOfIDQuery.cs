@@ -121,6 +121,7 @@ public class GetPageOfIDQueryHandler : IQueryHandler<GetPageOfIDQuery, Result<Ge
     }
 }
 public sealed record CreatePageCommand() : ICommand<Result>;
+public sealed record ReplacePageCommand(string PageID) : ICommand<Result>;
 public sealed record DeletePageCommand(string PageID) : ICommand<Result>;
 public sealed record ChangeNameOfPageCommand(string PageID, string NewName) : ICommand<Result>;
 public sealed record ChangeSignatureOfPageCommand(string PageID, string NewSignatureName) : ICommand<Result>;

@@ -4,26 +4,26 @@ namespace PageTree.Domain
 {
     public class Page : Entity
     {
-        public string AuthorUserID { get; init; } = string.Empty;
+        public string AuthorID { get; init; } = new("");
         public string Name { get; init; } = string.Empty;
 
-        public string SignatureID { get; init; } = string.Empty;
+        public string SignatureID { get; init; } = new("");
 
-        public string ParentID { get; init; } = string.Empty;
+        public string ParentID { get; init; } = new("");
         public List<string> ChildrenIDs { get; init; } = new();
 
         /// <summary>
         /// Should be independent of styling? I don't think so... at least partially
         /// Maybe flag.. style-defined < user-modified
         /// </summary>
-        public string ExpandInfoID { get; init; } = string.Empty;
+        public string ExpandInfoID { get; init; } = new("");
 
         /// <summary>
         /// Styles can be independent, although styles marked for unique elements not taken into consideration if reused - or checkmark - (apply only for any page?)
         /// Consider css - how much can you reuse idea? Maybe generate css dynamically? Or use from created earlier dynamically..
         /// Has to be global and unique version, so user does not change for others accidentally.
         /// </summary>
-        public string StyleID { get; init; } = string.Empty;
+        public string StyleID { get; init; } = new("");
 
         /// <summary>
         /// Localized, sorting & filtering, styling, hidden items, hidden item types (links.. pseudo-properties), alternative content version,
@@ -48,7 +48,7 @@ namespace PageTree.Domain
         /// Id of this page, but already processed by styling - sorting, filtering and child content.. anything
         /// For optimization purposes, so query handler does not have to work much later, just fetch
         /// </summary>
-        public string BakedPageID { get; init; } = string.Empty;
+        public string BakedPageID { get; init; } = new("");
 
         public bool IsSubPage(string id) => true;
             //SubPages.FirstOrDefault(p => p.ID == id) != null;

@@ -128,7 +128,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var dto = await QueryExecutor.ExecuteForDTO<GetPageOfIDQueryDTO>(new GetPageOfIDQuery("asd"));
+        var dto = await QueryExecutor.Execute<GetPageOfIDQueryDTO>(new GetPageOfIDQuery("asd"));
         //RefreshPage();
         //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
 
