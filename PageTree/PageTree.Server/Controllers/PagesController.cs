@@ -50,9 +50,6 @@ namespace PageTree.Server.Api.Controllers
         public StandardRoutesController(IMediator mediator) =>
             _mediator = mediator;
 
-        public StandardRoutesController() =>
-            _mediator = mediator;
-
         [HttpGet]
         public Task<IActionResult> Get() =>
             _mediator.SendAndGetResponse(new GetPagesQuery());
@@ -86,18 +83,18 @@ namespace PageTree.Server.Api.Controllers
 
     public abstract class DeleteApiCommand : IApiCommand
     {
-        public string ID { get; set }
+        public string ID { get; set; }
     }
 
     public abstract class ReplaceApiCommand : IApiCommand
     {
-        public string ID { get; set }
+        public string ID { get; set; }
     }
 
     public abstract class ChangeNameApiCommand : IApiCommand
     {
-        public string ID { get; set }
-        public string Name { get; set }
+        public string ID { get; set; }
+        public string Name { get; set; }
 
     }
 }
