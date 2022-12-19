@@ -1,15 +1,17 @@
 ﻿@inject IAuthUser _authUser
 @inject NavigationManager _navigation;
 
-@if (_isSignedIn)
-{
-    @*<p>Hello, </p>@_authUser.Name*@
-    <button class="nav-link btn btn-link" @onclick="_authUser.SignOut">Log out</button>
-}
-else
-{
-    <button class="nav-link btn btn-link" @onclick="_authUser.SignIn">Log in</button>
-}
+<div class="login-display">
+    @if (_isSignedIn)
+    {
+        @*<p>Hello, </p>@_authUser.Name*@
+        <button class="nav-link btn btn-link" @onclick="_authUser.SignOut">Log out</button>
+    }
+    else
+    {
+        <button class="nav-link btn btn-link" @onclick="_authUser.SignIn">Log in</button>
+    }
+</div>
 
 @code {
     private bool _isSignedIn = false;

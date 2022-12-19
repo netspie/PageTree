@@ -3,17 +3,34 @@
 @inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
     <main>
         <div class="top-row">
-            <LoginDisplay/>
+            <LoginDisplay />
         </div>
 
-        <article class="content px-4">
+        <article class="main-content @_mainContentPaddingCssClass">
             @Body
         </article>
     </main>
+
+    <MainNavMenu CollapseNavMenuChanged="OnCollapseNavMenuChanged"></MainNavMenu>
+
 </div>
+
+@code {
+    private string _mainContentPaddingCssClass;
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private void OnCollapseNavMenuChanged(bool isCollapsed)
+    {
+        if (!isCollapsed)
+            _mainContentPaddingCssClass = "main-content-pad-exp";
+        else
+            _mainContentPaddingCssClass = "main-content-pad-col";
+    }
+}

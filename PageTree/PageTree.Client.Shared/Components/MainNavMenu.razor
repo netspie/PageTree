@@ -1,0 +1,76 @@
+﻿@using Microsoft.JSInterop;
+@using Microsoft.AspNetCore.Components;
+@inject IJSRuntime JSRuntime
+
+<div class="menu-topmost">
+    <aside class="@NavMenuCssClass menu left-menu" @onclick="HandleMenuCollapse">
+        <div class="brand c-has-bg-dark pl-2">
+            <div class="brand-text">Page<b>Tree</b></div>
+        </div>
+        <p class="menu-label pl-2">General</p>
+        <ul class="menu-list pl-2 pr-2">
+            <div class="nav-item">
+                <NavLink href="" Match="NavLinkMatch.All">
+                    <div class="nav-item-text">Home</div>
+                </NavLink>
+            </div>
+            <div class="nav-item">
+                <NavLink href="counter">
+                    <div class="nav-item-text">Counter</div>
+                </NavLink>
+            </div>
+            <div class="nav-item">
+                <NavLink href="fetchdata">
+                    <div class="nav-item-text">Fetch data quickly</div>
+                </NavLink>
+            </div>
+            <li><a></a></li>
+        </ul>
+    </aside>
+
+    <a title="Expand" class="menu-icon-link" @onclick="ToggleNavMenu">
+        <span class="menu-icon-span"> <i class="mdi mdi-menu mdi-24px menu-icon"></i></span>
+    </a>
+
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<bool> CollapseNavMenuChanged { get; set; }
+
+    private static bool _isCollapsed = true;
+
+    private string NavMenuCssClass => _isCollapsed ? "collapse" : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await HandleMenuCollapse();
+    }
+
+    private async Task ToggleNavMenu()
+    {
+        _isCollapsed = !_isCollapsed;
+        await CollapseNavMenuChanged.InvokeAsync(_isCollapsed);
+    }
+
+    private async Task HandleMenuCollapse()
+    {
+        var dimension = await JSRuntime.InvokeAsync<WindowDimension>("getWindowDimensions");
+        if (dimension.Width <= 641)
+        {
+            _isCollapsed = true;
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            _isCollapsed = false;
+        }
+        await CollapseNavMenuChanged.InvokeAsync(_isCollapsed);
+    }
+
+    public class WindowDimension
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+    }
+}
