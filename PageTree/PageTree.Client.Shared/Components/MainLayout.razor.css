@@ -13,27 +13,16 @@
 }
 
 .main-content {
-    padding-top: 6rem;
+    padding-right: 1rem;
+    padding-top: 4rem;
 }
 
 .main-content-pad-col {
-    padding-left: 2rem;
+    padding-left: 1rem;
 }
 
 .main-content-pad-exp {
-    padding-left: 13rem;
-}
-
-.main-content::-webkit-scrollbar {
-    width: 0.25rem;
-}
-
-.main-content::-webkit-scrollbar-track {
-    background: #1e1e24;
-}
-
-.main-content::-webkit-scrollbar-thumb {
-    background: #6649b8;
+    padding-left: 12rem;
 }
 
 .page {
@@ -57,7 +46,7 @@ main {
     background-color: #2e323a   ;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
-    height: 4.25rem;
+    height: 3rem;
     display: flex;
     align-items: center;
     position: fixed;

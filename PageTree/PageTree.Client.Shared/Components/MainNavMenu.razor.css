@@ -1,5 +1,5 @@
 ﻿.menu-topmost {
-    --top-bar-h: 4.25rem;
+    --top-bar-h: 3rem;
     position: fixed;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .nav-item ::deep a.active {
-    background: hsl(217, 71%, 45%);
+    background: rgba(255, 255, 255, 0.1)
 }
 
 .brand {
