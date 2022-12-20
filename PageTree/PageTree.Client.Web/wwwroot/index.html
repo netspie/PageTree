@@ -7,23 +7,31 @@
     <base href="/" />
     <link href="_content/PageTree.Client.Shared/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="PageTree.Client.Web.styles.css" rel="stylesheet" />
+    <link href="_content/PageTree.Client.Shared/css/spinkit.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="_content/PageTree.Client.Shared/css/app.css" rel="stylesheet" />
 </head>
 
-    <body>
-
-        <div id="app">Loading...</div>
-        <div id="blazor-error-ui">
-            An unhandled error has occurred.
-            <a href="" class="reload">Reload</a>
-            <a class="dismiss">🗙</a>
+<body>
+    <div id="app">
+        <div class="sk-fold sk-center pos-abs">
+            <div class="sk-fold-cube"></div>
+            <div class="sk-fold-cube"></div>
+            <div class="sk-fold-cube"></div>
+            <div class="sk-fold-cube"></div>
         </div>
+    </div>
+    
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
 
-        <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
-        <script src="_framework/blazor.webassembly.js"></script>
-        <script src="_content/PageTree.Client.Shared/js/functions.js"></script>
-    </body>
+    <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/PageTree.Client.Shared/js/functions.js"></script>
+</body>
 
 </html>

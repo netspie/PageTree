@@ -1,5 +1,13 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.pos-abs {
+    position: relative;
+    margin-left: auto;
+    margin-top: 50vh;
+
+    transform: translateY(-100%);
+}
+
 body::-webkit-scrollbar {
     width: 0.5rem;
 }
