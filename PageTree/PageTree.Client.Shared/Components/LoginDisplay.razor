@@ -5,11 +5,11 @@
     @if (_isSignedIn)
     {
         @*<p>Hello, </p>@_authUser.Name*@
-        <button class="nav-link btn btn-link" @onclick="_authUser.SignOut">Log out</button>
+        <button class="button" @onclick="_authUser.SignOut">Log out</button>
     }
     else
     {
-        <button class="nav-link btn btn-link" @onclick="_authUser.SignIn">Log in</button>
+        <button class="button" @onclick="_authUser.SignIn">Log in</button>
     }
 </div>
 

@@ -1,3 +1,6 @@
 ﻿button {
     color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
 }
