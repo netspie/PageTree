@@ -5,7 +5,7 @@
     margin-left: auto;
     margin-top: 50vh;
 
-    transform: translateY(-100%);
+    transform: translate(0, -100%);
 }
 
 body::-webkit-scrollbar {
