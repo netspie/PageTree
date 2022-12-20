@@ -3,12 +3,12 @@
 @inject IJSRuntime JSRuntime
 
 <div class="menu-topmost">
-    <aside class="@NavMenuCssClass menu left-menu" @onclick="HandleMenuCollapse">
+    <aside class="menu left-menu @NavMenuCssClass" @onclick="HandleMenuCollapse">
         <div class="brand c-has-bg-dark pl-2">
             <div class="brand-text">Page<b>Tree</b></div>
         </div>
         <p class="menu-label pl-2">General</p>
-        <ul class="menu-list pl-2 pr-2">
+        <ul class="menu-list menu-list-here pl-2 pr-2">
             <div class="nav-item">
                 <NavLink href="" Match="NavLinkMatch.All">
                     <div class="nav-item-text">Home</div>
@@ -25,6 +25,9 @@
                 </NavLink>
             </div>
         </ul>
+        <div class="nav-item is-menu-bottom has-background-link-dark">
+            <LoginDisplay />
+        </div>
     </aside>
 
     <a title="Expand" class="menu-icon-link" @onclick="ToggleNavMenu">

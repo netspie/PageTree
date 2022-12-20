@@ -10,16 +10,29 @@
 .left-menu {
     background: #2e323a;
     height: 100vh;
-}
-
-.left-menu-container {
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+.left-menu-container {
+    min-height: 100vh;
+}
+
+.collapse {
+    display: none;
+}
+
 .is-menu-bottom {
     margin-top: auto;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+.menu-list-here {
+    display: flex;
+    flex-direction: column;
+    height: 90%;
 }
 
 .c-has-bg-grey-light {
