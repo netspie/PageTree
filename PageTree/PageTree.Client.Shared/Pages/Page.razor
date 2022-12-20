@@ -7,7 +7,6 @@
 @using PageTree.App.Practice.Queries
 @using PageTree.Domain
 @using System.Numerics;
-@inject HttpClient Http
 @inject IQueryExecutor QueryExecutor
 
 <PageTitle>PageTree</PageTitle>
@@ -128,7 +127,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var dto = await QueryExecutor.Execute<GetPageOfIDQueryDTO>(new GetPageOfIDQuery("asd"));
+        //var dto = await QueryExecutor.Execute<GetPageOfIDQueryDTO>(new GetPageOfIDQuery("asd"));
         //RefreshPage();
         //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
 
