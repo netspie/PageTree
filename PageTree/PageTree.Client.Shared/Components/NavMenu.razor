@@ -3,7 +3,7 @@
 @inject IJSRuntime JSRuntime
 
 <div class="menu-topmost">
-    <aside class="menu left-menu @NavMenuCssClass" @onclick="HandleMenuCollapse">
+    <aside class="menu left-menu @_menuCollapseCssClass">
         <div class="brand c-has-bg-dark pl-2">
             <div class="brand-text">Page<b>Tree</b></div>
         </div>
@@ -30,33 +30,29 @@
             <LoginDisplay />
         </div>
     </aside>
-
     <a title="Expand" class="menu-icon-link" @onclick="ToggleNavMenu">
-        <span class="menu-icon-span"> <i class="mdi mdi-menu mdi-24px menu-icon"></i></span>
+        <span class="menu-icon-span"> <i class="mdi @_menuIconCssClass mdi-24px menu-icon"></i></span>
     </a>
-
 </div>
 
 @code {
-    [Parameter]
-    public EventCallback<bool> CollapseNavMenuChanged { get; set; }
-
     private static bool _isCollapsed = true;
 
-    private string NavMenuCssClass => _isCollapsed ? "collapse" : null;
+    private string _menuCollapseCssClass => _isCollapsed ? "collapse" : null;
+    private string _menuIconCssClass;
 
     protected override async Task OnInitializedAsync()
     {
-        await HandleMenuCollapse();
+        await HandleInitialMenuCollapse();
     }
 
-    private async Task ToggleNavMenu()
+    private void ToggleNavMenu()
     {
         _isCollapsed = !_isCollapsed;
-        await CollapseNavMenuChanged.InvokeAsync(_isCollapsed);
+        SetMenuIcon();
     }
 
-    private async Task HandleMenuCollapse()
+    private async Task HandleInitialMenuCollapse()
     {
         var dimension = await JSRuntime.InvokeAsync<WindowDimension>("getWindowDimensions");
         if (dimension.Width <= 641)
@@ -68,7 +64,15 @@
         {
             _isCollapsed = false;
         }
-        await CollapseNavMenuChanged.InvokeAsync(_isCollapsed);
+        SetMenuIcon();
+    }
+
+    private void SetMenuIcon()
+    {
+        if (_isCollapsed)
+            _menuIconCssClass = "mdi-forwardburger";
+        else
+            _menuIconCssClass = "mdi-backburger";
     }
 
     public class WindowDimension

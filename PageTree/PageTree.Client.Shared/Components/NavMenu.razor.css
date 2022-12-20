@@ -1,7 +1,7 @@
 ﻿.menu-topmost {
     --top-bar-h: 3rem;
-    position: fixed;
     height: 100%;
+    position: relative;
 }
 
 .navbar-toggler {
@@ -9,6 +9,7 @@
 }
 
 .left-menu {
+    position: relative;
     background: #2e323a;
     display: flex;
     height: 100vh;
@@ -88,9 +89,10 @@
 
 .menu-icon-link {
     position: absolute;
-    top: calc(var(--top-bar-h) / 2);
     right: 0px;
-    transform: translate(150%, -50%);
+    top: 0px;
+    z-index: 10000;
+    transform: translate(145%, 10%);
 }
 
 .menu-icon {

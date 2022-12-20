@@ -4,32 +4,13 @@
 
 <div class="page">
 
+    <NavMenu/>
     <main>
         <div class="top-row">
         </div>
 
-        <article class="main-content @_mainContentPaddingCssClass">
+        <article class="main-content pl-5">
             @Body
         </article>
     </main>
-
-    <MainNavMenu CollapseNavMenuChanged="OnCollapseNavMenuChanged"/>
-
 </div>
-
-@code {
-    private string _mainContentPaddingCssClass;
-
-    protected override void OnInitialized()
-    {
-
-    }
-
-    private void OnCollapseNavMenuChanged(bool isCollapsed)
-    {
-        if (!isCollapsed)
-            _mainContentPaddingCssClass = "main-content-pad-exp";
-        else
-            _mainContentPaddingCssClass = "main-content-pad-col";
-    }
-}
