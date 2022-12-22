@@ -7,7 +7,7 @@ using Practicer.Domain.Practice;
 
 namespace PageTree.App.Pages.Queries;
 
-public class GetPageOfIDQueryHandler : IQueryHandler<GetPageOfIDQuery, Result<GetPageOfIDQueryDTO>>
+public class GetPageOfIDQueryHandler : IQueryHandler<GetPageOfIDQuery, Result<GetPageOfIDQueryOut>>
 {
     private IRepository<Page> _pageRepository;
     private IRepository<Signature> _signatureRepository;
@@ -26,9 +26,9 @@ public class GetPageOfIDQueryHandler : IQueryHandler<GetPageOfIDQuery, Result<Ge
         _practiceTacticRepository = practiceTacticRepository;
     }
 
-    public async ValueTask<Result<GetPageOfIDQueryDTO>> Handle(GetPageOfIDQuery query, CancellationToken cancellationToken)
+    public async ValueTask<Result<GetPageOfIDQueryOut>> Handle(GetPageOfIDQuery query, CancellationToken cancellationToken)
     {
-        var res = Result<GetPageOfIDQueryDTO>.Success();
+        var res = Result<GetPageOfIDQueryOut>.Success();
 
         var practiceCategoryRoot = await _practiceCategoryRepository.Get("PracticeCategoryRootID", res);
         var practiceTacticRoot = await _practiceTacticRepository.Get("PracticeTacticRootID", res);
@@ -52,7 +52,7 @@ public class GetPageOfIDQueryHandler : IQueryHandler<GetPageOfIDQuery, Result<Ge
         var pages = new List<Page>();
         await GetParentPage(page, pages);
         pages.Reverse();
-        return res.With(new GetPageOfIDQueryDTO(
+        return res.With(new GetPageOfIDQueryOut(
             new PageVM()
             {
                 Path = pages
@@ -120,17 +120,18 @@ public class GetPageOfIDQueryHandler : IQueryHandler<GetPageOfIDQuery, Result<Ge
         return result.ToArray();
     }
 }
+
 public sealed record CreatePageCommand() : ICommand<Result>;
 public sealed record ReplacePageCommand(string PageID) : ICommand<Result>;
 public sealed record DeletePageCommand(string PageID) : ICommand<Result>;
 public sealed record ChangeNameOfPageCommand(string PageID, string NewName) : ICommand<Result>;
 public sealed record ChangeSignatureOfPageCommand(string PageID, string NewSignatureName) : ICommand<Result>;
 
-public sealed record GetPagesQuery() : IQuery<Result<GetPagesQueryDTO>>;
-public sealed record GetPagesQueryDTO();
+public sealed record GetPagesQuery() : IQuery<Result<GetPagesQueryOut>>;
+public sealed record GetPagesQueryOut();
 
-public sealed record GetPageOfIDQuery(string ID) : IQuery<Result<GetPageOfIDQueryDTO>>;
-public sealed record GetPageOfIDQueryDTO(PageVM PageVM);
+public sealed record GetPageOfIDQuery(string ID) : IQuery<Result<GetPageOfIDQueryOut>>;
+public sealed record GetPageOfIDQueryOut(PageVM PageVM);
 
 public class PageVM
 {

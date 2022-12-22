@@ -64,7 +64,7 @@
         </div>
     </div>
     <div class="practice-choose-panel-parent">
-        <button id="practice-button">PRACTICE</button>
+        <button class="button has-background-info has-text-white"id="practice-button">Practice</button>
         <div class="practice-choose-panel">
             @foreach (var practiceTactic in _vm.PracticeTactics)
             {
@@ -127,7 +127,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //var dto = await QueryExecutor.Execute<GetPageOfIDQueryDTO>(new GetPageOfIDQuery("asd"));
+        var dto = await QueryExecutor.Execute<GetPageOfIDQueryOut>(new GetPageOfIDQuery("asd"));
         //RefreshPage();
         //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
 

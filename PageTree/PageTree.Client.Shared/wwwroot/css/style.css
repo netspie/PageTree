@@ -1,0 +1,402 @@
+
+.header {
+    padding: 1rem;
+    background: rgb(206, 180, 225);
+}
+
+.main {
+    margin: 1rem;
+}
+
+.main-menu {
+    position: fixed;
+    background: rgb(56, 175, 106);
+    width: 7rem;
+    height: 100vh;
+}
+
+.main-menu-list {
+    margin: 0;
+    padding: 0;
+    padding-top: 1rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item {
+    position: relative;
+    display: block;
+}
+
+.item-menu {
+    bottom: 100%;
+    right: 0;
+    display: none;
+    position: absolute;
+    background: rgb(233, 233, 233);
+    height: 170%;
+}
+
+.item-menu-side {
+    bottom: 0%;
+    -webkit-transform: translate(-100%);
+    display: none;
+    position: absolute;
+    background: rgb(233, 233, 233);
+    height: 100%;
+}
+
+.item-menu-element {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    align-content: center;
+    position: relative;
+}
+
+.item-menu-element-tooltip {
+    display: none;
+    position: absolute;
+    transition-delay: 3s;
+    transition-property: background-color, font-size, transform, color;
+    transition-timing-function: ease-in-out;
+    transition-duration: 3s;
+}
+
+.item-menu-element:hover .item-menu-element-tooltip {
+    display: inline-block;
+}
+
+.item-menu-element-icon {
+    max-width: 70%;
+    max-height: 70%;
+    object-fit: contain;
+    align-self: center;
+}
+
+.item:hover {
+    background: #eee;
+}
+
+.item:hover .item-menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-left: 0.25rem;
+    margin: 0;
+}
+
+.item:hover .item-menu-side {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-left: 0.25rem;
+    margin: 0;
+}
+
+.page-property-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.page-path {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.page-path-contents {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.page-path-button {
+    all: unset;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.page-property-button {
+    all: unset;
+    width: 100%;
+    display: block;
+}
+
+.page-property-button:active {
+    background: #ccc;
+}
+
+.page-property-button:active .item{
+    background: none;
+}
+
+#practice-button-parent {
+    position: relative;
+}
+
+#practice-button {
+    position: fixed;
+    background: #785589;
+    padding: 20px;
+    bottom: 1rem;
+    right: 1rem;
+    border-width: 0;
+    color: white;
+}
+
+#practice-button:hover {
+    background: #977390;
+}
+
+#practice-button:active {
+    background: #AC7B7D;
+}
+
+.practice-choose-panel-parent:hover .practice-choose-panel {
+    display: flex;
+}
+
+.practice-choose-panel-parent {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: #AC7B7D;
+    width: fit-content;
+    height: fit-content;
+}
+
+.practice-choose-panel {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    bottom: 100%;
+    right: 0;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgb(233, 233, 233);
+}
+
+.practice-choose-panel-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.practice-choose-panel-item {
+    border-width: 0;
+    background: none;
+    color: none;
+    white-space: nowrap;
+    align-self: flex-start;
+}
+
+.top-bar {
+    background: #2F1847;
+    height: 3.5rem;
+    width: 100%;
+    padding: 1rem;
+}
+
+.main-menu {
+    background: #2F1847 !important;
+    width: 5rem !important;
+}
+
+.navbar-brand-custom {
+    color: white;
+    font-weight: bold;
+    font-style: normal;
+    text-decoration: none;
+    padding-left: 1rem;
+}
+
+.custom-page {
+    height: 100vh;
+    overflow: scroll;
+}
+
+.custom-page::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+custom-page::-webkit-scrollbar-track {
+    background: #1e1e24;
+}
+
+.custom-page::-webkit-scrollbar-thumb {
+    background: #6649b8;
+}
+
+.signature-text {
+    color: darkgreen;
+}
+
+.practice-panel {
+    background: rgb(206, 180, 225);
+    position: absolute;
+    height: 50vh;
+    width: 75vh;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 2;
+}
+
+.practice-panel-card {
+    position: absolute;
+    /*background: #AC7B7D;*/
+
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    height: 90%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.practice-questions {
+    /*background: #eee;*/
+}
+
+.practice-question {
+}
+
+.practice-answers {
+    /*background: #aaa;*/
+}
+
+.practice-answer {
+}
+
+.practice-counter {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+}
+
+.practice-menu {
+    position: absolute;
+    height: 2rem;
+    width: 100%;
+    bottom: 0rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+    /*background: #aaa;*/
+}
+
+.practice-menu-button {
+    all: unset;
+}
+
+.practice-quit-button {
+    all: unset;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.outside-button-panel {
+    position: fixed;
+    background: none;
+    padding: 0;
+    z-index: 1;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+}
+
+.loader-panel {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, 50%);
+    transform: translate(-50%, -50%);
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .page-path {
+        flex-direction: row;
+        overflow-x: hidden;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .page-path {
+        overflow-x: auto;
+        height: 3rem;
+        width: 100%;
+    }
+
+    .page-path::-webkit-scrollbar {
+        height: 0.25rem;
+    }
+
+    .page-path::-webkit-scrollbar-track {
+        background: #1e1e24;
+    }
+
+    .page-path::-webkit-scrollbar-thumb {
+        background: #6649b8;
+    }
+}

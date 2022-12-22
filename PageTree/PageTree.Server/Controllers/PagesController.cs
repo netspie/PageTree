@@ -1,32 +1,40 @@
+using AutoMapper;
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Pages.Queries;
+using PageTree.Server.ApiContracts.Pages;
+
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace PageTree.Server.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     //[Authorize]
     public class PagesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public PagesController(IMediator mediator) =>
+        public PagesController(IMediator mediator, IMapper mapper)
+        {
             _mediator = mediator;
-
-        [HttpGet]
-        public Task<IActionResult> Get() => 
-            _mediator.SendAndGetResponse(new GetPagesQuery());
+            _mapper = mapper;
+        }
 
         [HttpGet, Route("{id}"), AllowAnonymous]
-        public Task<IActionResult> Get(string id) => 
-            _mediator.SendAndGetResponse(new GetPageOfIDQuery(id));
+        public Task<IActionResult> Get([FromQuery] GetPageApiQuery query) =>
+            _mediator.MapSendAndGetResponse<GetPageOfIDQuery, GetPageOfIDQueryOut>(query, _mapper);
+
+        [HttpGet]
+        public Task<IActionResult> GetAll(GetPagesApiQuery query) =>
+            _mediator.MapSendAndGetResponse<GetPagesQuery, GetPagesQueryOut>(query, _mapper);
 
         [HttpPost, Action("create")]
-        public Task<IActionResult> Create() =>
+        public Task<IActionResult> Create([FromBody] CreatePageApiCommand command = null) =>
             _mediator.SendAndGetPostResponse<CreatePageCommand>();
 
         [HttpDelete, Route("{id}"), Action("delete")]
@@ -40,61 +48,5 @@ namespace PageTree.Server.Api.Controllers
         [HttpPatch, Route("{id}"), Action("change-signature")]
         public Task<IActionResult> ChangeSignature(string id, string name) =>
             _mediator.SendAndGetPatchResponse(new ChangeSignatureOfPageCommand(id, name));
-    }
-
-    [ApiController]
-    public abstract class StandardRoutesController : ControllerBase
-    {
-        private readonly IMediator _mediator;
-
-        public StandardRoutesController(IMediator mediator) =>
-            _mediator = mediator;
-
-        [HttpGet]
-        public Task<IActionResult> Get() =>
-            _mediator.SendAndGetResponse(new GetPagesQuery());
-
-        [HttpGet, Route("{id}"), AllowAnonymous]
-        public Task<IActionResult> Get(string id) =>
-            _mediator.SendAndGetResponse(new GetPageOfIDQuery(id));
-
-        [HttpPost, Action("create")]
-        public Task<IActionResult> Create() =>
-            _mediator.SendAndGetPostResponse<CreatePageCommand>();
-
-        [HttpDelete, Route("{id}"), Action("delete")]
-        public Task<IActionResult> Delete(string id) =>
-            _mediator.SendAndGetPatchResponse(new DeletePageCommand(id));
-
-        [HttpPut, Route("{id}"), Action("replace")]
-        public Task<IActionResult> Replace(string id) =>
-           _mediator.SendAndGetPutResponse(new ReplacePageCommand(id));
-    }
-
-    public interface IApiCommand
-    {
-
-    }
-
-    public abstract class CreateApiCommand : IApiCommand
-    {
-
-    }
-
-    public abstract class DeleteApiCommand : IApiCommand
-    {
-        public string ID { get; set; }
-    }
-
-    public abstract class ReplaceApiCommand : IApiCommand
-    {
-        public string ID { get; set; }
-    }
-
-    public abstract class ChangeNameApiCommand : IApiCommand
-    {
-        public string ID { get; set; }
-        public string Name { get; set; }
-
     }
 }

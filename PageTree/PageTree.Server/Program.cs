@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using PageTree.Server.Api;
+using PageTree.Server.ApiContracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +15,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddInMemoryTokenCaches();
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(opts => opts.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddRazorPages();
 
 builder.Services.AddMediator();
 builder.Services.AddRepositories();
+builder.Services.AddAutoMapper();
 
 var app = builder.Build();
 
