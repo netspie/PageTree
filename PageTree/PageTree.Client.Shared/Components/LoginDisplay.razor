@@ -10,7 +10,7 @@
     }
     else
     {
-        <button class="button" @onclick="OnSignIn">Log in</button>
+        <button class="button" @onclick="@(async () => await OnSignIn())">Log in</button>
     }
 </div>
 
@@ -21,12 +21,20 @@
     {
         _isSignedIn = await _authUser.IsSignedIn();
         _authUser.OnAuthenticatedStateChanged += OnAuthenticatedStateChanged;
+
+        if (_isSignedIn)
+        {
+            await _usersService.CreateUser();
+        }
     }
 
     private async void OnAuthenticatedStateChanged(bool isSignedIn)
     {
         if (isSignedIn)
+        {
+            await _usersService.CreateUser();
             _navigation.NavigateTo(_navigation.Uri, forceLoad: true);
+        }
         else
             _navigation.NavigateTo("/");
 
@@ -37,6 +45,5 @@
     private async Task OnSignIn()
     {
         await _authUser.SignIn();
-        await _usersService.CreateUser();
     }
 }

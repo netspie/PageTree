@@ -3,9 +3,11 @@ using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.UseCases.Users.Commands;
-using PageTree.Server.ApiContracts.Pages;
+using PageTree.Server.ApiContracts.Users.Commands;
+using System.Security.Claims;
 
 namespace PageTree.Server.Controllers
 {
@@ -23,15 +25,17 @@ namespace PageTree.Server.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost, Route("{id}"), Action("create")]
+        [HttpPost,  Action("create")]
         public async Task<IActionResult> Create()
         {
             if (!User.Identity.IsAuthenticated)
                 return BadRequest();
 
-            var claims = User.Claims.ToList();
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (idClaim == null)
+                return BadRequest();
 
-            var appCommand = new CreateUserCommand("");
+            var appCommand = new CreateUserCommand(idClaim.Value);
             return await _mediator.SendAndGetPostResponse(appCommand);
         }
     }
