@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
+using Corelibs.AspNetApi.Controllers.Extensions;
+using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PageTree.App.UseCases.Users.Commands;
+using PageTree.Server.ApiContracts.Pages;
 
 namespace PageTree.Server.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -20,12 +23,16 @@ namespace PageTree.Server.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost, Action("create")]
-        public Task<IActionResult> Create()
+        [HttpPost, Route("{id}"), Action("create")]
+        public async Task<IActionResult> Create()
         {
+            if (!User.Identity.IsAuthenticated)
+                return BadRequest();
+
             var claims = User.Claims.ToList();
 
-            return Task.FromResult<IActionResult>(NoContent());
+            var appCommand = new CreateUserCommand("");
+            return await _mediator.SendAndGetPostResponse(appCommand);
         }
     }
 }

@@ -19,5 +19,6 @@ builder.Services.AddMsalAuthentication(options =>
 
 builder.Services.AddAuthorizationAndSignInRedirection(builder.HostEnvironment.BaseAddress);
 builder.Services.AddCQRS();
+builder.Services.AddServices();
 
 await builder.Build().RunAsync();

@@ -6,6 +6,6 @@ namespace PageTree.Client.Native.Auth
 {
     internal class NativeAuthUser : MsalNativeAuthUser, IAuthUser
     {
-        public NativeAuthUser(ISignInManager signInManager) : base(signInManager) {}
+        public NativeAuthUser(ISignInManager signInManager) : base(signInManager) { }
     }
 }

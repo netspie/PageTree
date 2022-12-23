@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using PageTree.Server.ApiContracts.Attributes;
 
 namespace PageTree.Server.ApiContracts.Pages
 {

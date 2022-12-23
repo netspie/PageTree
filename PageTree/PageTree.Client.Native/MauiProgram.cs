@@ -24,13 +24,13 @@ public static class MauiProgram
         //baseAddress = $"http://192.168.178.44:5259";
 
         builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
         builder.Services.AddCQRS();
         builder.Services.AddMsalAuthentication(builder.Configuration);
         builder.Services.AddAuthorizationAndSignInRedirection<
-            NativeAuthUser, NativeSignInRedirector, NoAccessTokenAvailableException, AuthorizationMessageHandler>(
+            NativeAuthUser, NativeSignInRedirector, AuthorizationMessageHandler>(
             baseAddress);
 
         builder.Services.AddTransient<MainPage>();

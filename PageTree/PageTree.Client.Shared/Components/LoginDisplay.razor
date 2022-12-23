@@ -1,5 +1,6 @@
 ﻿@inject IAuthUser _authUser
-@inject NavigationManager _navigation;
+@inject NavigationManager _navigation
+@inject UsersService _usersService
 
 <div class="login-display">
     @if (_isSignedIn)
@@ -9,7 +10,7 @@
     }
     else
     {
-        <button class="button" @onclick="_authUser.SignIn">Log in</button>
+        <button class="button" @onclick="OnSignIn">Log in</button>
     }
 </div>
 
@@ -31,5 +32,11 @@
 
         _isSignedIn = await _authUser.IsSignedIn();
         await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnSignIn()
+    {
+        await _authUser.SignIn();
+        await _usersService.CreateUser();
     }
 }

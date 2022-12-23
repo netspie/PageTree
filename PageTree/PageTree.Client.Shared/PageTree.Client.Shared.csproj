@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared.csproj" />
     <ProjectReference Include="..\PageTree.App.UseCases\PageTree.App.UseCases.csproj" />
+    <ProjectReference Include="..\PageTree.Server.ApiContracts\PageTree.Server.ApiContracts.csproj" />
   </ItemGroup>
 
 </Project>

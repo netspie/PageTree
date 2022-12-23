@@ -7,6 +7,6 @@ namespace PageTree.Client.Native.Auth
 {
     internal class NativeSignInRedirector : MsalNativeSignInRedirector, ISignInRedirector
     {
-        public NativeSignInRedirector(ISignInManager signInManager, NavigationManager navigation) : base(signInManager, navigation) {}
+        public NativeSignInRedirector(ISignInManager signInManager, NavigationManager navigation) : base(signInManager, navigation) { }
     }
 }

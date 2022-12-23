@@ -1,13 +1,12 @@
 ﻿using Common.Basic.Blocks;
+using Corelibs.Basic.Collections;
 using Corelibs.BlazorShared;
 using Mediator;
 using PageTree.App.Pages.Queries;
-using System.Web;
 
 namespace PageTree.Client.Shared.Services
 {
-    internal class PageTreeApiQueryExecutor<TAccessTokenNotAvailableException> : IQueryExecutor
-        where TAccessTokenNotAvailableException : Exception
+    internal class PageTreeApiQueryExecutor : IQueryExecutor
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly ISignInRedirector _signInRedirector;
@@ -35,19 +34,7 @@ namespace PageTree.Client.Shared.Services
             var queryString = query.GetQueryString();
             var resourcePathWithQuery = $"{resourcePath}?{queryString}";
 
-            return _clientFactory.GetResource<TResponse, TAccessTokenNotAvailableException>(_signInRedirector, resourcePathWithQuery, ct);
-        }
-    }
-
-    public static class GetQueryStringExtensions
-    {
-        public static string GetQueryString(this object obj)
-        {
-            var properties = from p in obj.GetType().GetProperties()
-                                where p.GetValue(obj, null) != null
-                                select p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(obj, null).ToString());
-
-            return String.Join("&", properties.ToArray());
+            return _clientFactory.GetResource<TResponse>(_signInRedirector, resourcePathWithQuery, ct);
         }
     }
 }

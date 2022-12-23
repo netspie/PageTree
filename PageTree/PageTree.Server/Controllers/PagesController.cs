@@ -30,23 +30,23 @@ namespace PageTree.Server.Api.Controllers
             _mediator.MapSendAndGetResponse<GetPageOfIDQuery, GetPageOfIDQueryOut>(query, _mapper);
 
         [HttpGet]
-        public Task<IActionResult> GetAll(GetPagesApiQuery query) =>
+        public Task<IActionResult> GetAll([FromQuery] GetPagesApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetPagesQuery, GetPagesQueryOut>(query, _mapper);
 
         [HttpPost, Action("create")]
         public Task<IActionResult> Create([FromBody] CreatePageApiCommand command = null) =>
-            _mediator.SendAndGetPostResponse<CreatePageCommand>();
+            _mediator.MapSendAndGetPostResponse<CreatePageCommand>(command, _mapper);
 
         [HttpDelete, Route("{id}"), Action("delete")]
-        public Task<IActionResult> Delete(string id) =>
-            _mediator.SendAndGetDeleteResponse(new DeletePageCommand(id));
+        public Task<IActionResult> Delete([FromQuery] DeletePageApiCommand command) =>
+            _mediator.MapSendAndGetDeleteResponse<CreatePageCommand>(command, _mapper);
 
         [HttpPatch, Route("{id}"), Action("change-name")]
-        public Task<IActionResult> ChangeName(string id, string name) =>
-            _mediator.SendAndGetPatchResponse(new ChangeNameOfPageCommand(id, name));
+        public Task<IActionResult> ChangeName([FromBody] ChangePageNameApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageCommand>(command, _mapper);
 
         [HttpPatch, Route("{id}"), Action("change-signature")]
-        public Task<IActionResult> ChangeSignature(string id, string name) =>
-            _mediator.SendAndGetPatchResponse(new ChangeSignatureOfPageCommand(id, name));
+        public Task<IActionResult> ChangeSignature([FromBody] ChangePageSignatureApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeSignatureOfPageCommand>(command, _mapper);
     }
 }

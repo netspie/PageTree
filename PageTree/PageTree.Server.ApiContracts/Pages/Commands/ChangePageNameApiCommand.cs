@@ -1,8 +1,8 @@
 ﻿namespace PageTree.Server.ApiContracts.Pages
 {
-    public class CreatePageApiCommand
+    public class ChangePageNameApiCommand
     {
+        public string ID { get; set; }
         public string Name { get; set; }
-        public int Index { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using BuildingBlocks.Repository;
 using Common.Basic.Repository;
+using PageTree.Client.Shared.Services;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
+using PageTree.Domain.Users;
 using Practicer.Domain.Practice;
 
 namespace PageTree.Server.Api
@@ -10,6 +12,9 @@ namespace PageTree.Server.Api
     {
         public static void AddRepositories(this IServiceCollection services)
         {
+            services.AddSingleton<IRepository<User>>(sp =>
+               new WWWRootHttpClientRepository<User>(sp.GetRequiredService<HttpClient>(), "", ""));
+
             services.AddSingleton<IRepository<Page>>(sp =>
                new WWWRootHttpClientRepository<Page>(sp.GetRequiredService<HttpClient>(), "", ""));
 
