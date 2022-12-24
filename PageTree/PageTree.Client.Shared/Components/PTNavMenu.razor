@@ -1,0 +1,78 @@
+﻿@using Microsoft.JSInterop;
+@using Microsoft.AspNetCore.Components;
+@inject IJSRuntime JSRuntime
+
+<div class="menu-topmost">
+    <aside class="menu left-menu @_menuCollapseCssClass">
+        <div class="brand c-has-bg-dark pl-2">
+            <div class="brand-text">Page<b>Tree</b></div>
+        </div>
+        <ul class="menu-list menu-list-here pt-3 pl-2 pr-2">
+            <p class="menu-label pl-2">General</p>
+            <div class="nav-item">
+                <NavLink href="" Match="NavLinkMatch.All">
+                    <div class="nav-item-text">Home</div>
+                </NavLink>
+            </div>
+            <div class="nav-item">
+                <NavLink href="page">
+                    <div class="nav-item-text">Pages</div>
+                </NavLink>
+            </div>
+        </ul>
+
+        <div class="nav-item is-menu-bottom has-background-link-dark">
+            <LoginDisplay />
+        </div>
+    </aside>
+    <a title="Expand" class="menu-icon-link" @onclick="ToggleNavMenu">
+        <span class="menu-icon-span"> <i class="mdi @_menuIconCssClass mdi-24px menu-icon"></i></span>
+    </a>
+</div>
+
+@code {
+    private static bool _isCollapsed = true;
+
+    private string _menuCollapseCssClass => _isCollapsed ? "collapse" : null;
+    private string _menuIconCssClass;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await HandleInitialMenuCollapse();
+    }
+
+    private void ToggleNavMenu()
+    {
+        _isCollapsed = !_isCollapsed;
+        SetMenuIcon();
+    }
+
+    private async Task HandleInitialMenuCollapse()
+    {
+        var dimension = await JSRuntime.InvokeAsync<WindowDimension>("getWindowDimensions");
+        if (dimension.Width <= 641)
+        {
+            _isCollapsed = true;
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            _isCollapsed = false;
+        }
+        SetMenuIcon();
+    }
+
+    private void SetMenuIcon()
+    {
+        if (_isCollapsed)
+            _menuIconCssClass = "mdi-forwardburger";
+        else
+            _menuIconCssClass = "mdi-backburger";
+    }
+
+    public class WindowDimension
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+    }
+}

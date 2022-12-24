@@ -1,0 +1,101 @@
+﻿.menu-topmost {
+    --top-bar-h: 3rem;
+    height: 100%;
+    position: relative;
+}
+
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.left-menu {
+    position: relative;
+    background: #2e323a;
+    display: flex;
+    height: 100vh;
+    max-height: -webkit-fill-available;
+    flex-direction: column;
+}
+
+.collapse {
+    display: none;
+}
+
+.is-menu-bottom {
+    margin-top: auto;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+.menu-list-here {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    width: 8rem;
+}
+
+.menu-list-here::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.menu-list-here::-webkit-scrollbar-track {
+    background: #2e323a;
+}
+
+.menu-list-here::-webkit-scrollbar-thumb {
+    background: #666;
+}
+
+.c-has-bg-grey-light {
+    background-color: #F5F5F5;
+}
+
+.c-has-bg-grey {
+    background-color: grey;
+}
+
+.nav-item {
+    color: white;
+}
+
+.nav-item ::deep .nav-item-text {
+    color: #9da3b1;
+}
+
+.nav-item ::deep a:hover {
+    background: grey;
+}
+
+.nav-item ::deep a.active {
+    background: rgba(255, 255, 255, 0.1)
+}
+
+.brand {
+    min-height: var(--top-bar-h);
+    background-color: #17191e;
+    display: flex;
+}
+
+.brand-text {
+    align-self: center;
+    transform: translateX(15%);
+    color: #ddd;
+}
+
+.navlink:hover{
+    background-color: green;
+}
+
+.menu-icon-link {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 10000;
+    transform: translate(145%, 10%);
+}
+
+.menu-icon {
+    color: #ccc;
+}

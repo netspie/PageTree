@@ -1,14 +1,74 @@
 ﻿@using Common.Basic.Collections;
 @using PageTree.Client.Shared.Pages
 @inherits LayoutComponentBase
+@inject NavigationManager Navigation
 
 <div class="page">
-
-    <NavMenu/>
-    <main>
-        <div class="top-row"></div>
-        <article class="main-content pl-5">
-            @Body
-        </article>
-    </main>
+    @if (IsJapaneseArcanaHome())
+    {
+        <main>
+            <div class="top-row"><JAHomeNavBar /></div>
+            <article class="main-content pl-5">
+                @Body
+            </article>
+        </main>
+    }
+    else
+    @if (IsJapaneseArcanaLearn())
+    {
+        <JALearnNavMenu />
+        <main>
+            <div class="top-row"><JALearnNavBar /></div>
+            <article class="main-content pl-5">
+                @Body
+            </article>
+        </main>
+    }
+    else
+    @if (IsPageTreeLearn())
+    {
+        <PTNavMenu />
+        <main>
+            <div class="top-row"><PTLearnNavBar /></div>
+            <article class="main-content pl-5">
+                @Body
+            </article>
+        </main>
+    }
+    else
+    @if (IsPageTreeHome())
+    {
+        <main>
+            <div class="top-row"><PTHomeNavBar /></div>
+            <article class="main-content pl-5">
+                @Body
+            </article>
+        </main>
+    }
 </div>
+
+@code {
+    private readonly static string LearnRoute = "learn";
+    private readonly static string PageTreeRoute = "pagetree";
+
+    private string _baseUri;
+    private string _currentUri;
+
+    protected override void OnInitialized()
+    {
+        _baseUri = Navigation.BaseUri;
+        _currentUri = Navigation.Uri;
+    }
+
+    private bool IsJapaneseArcanaHome() =>
+        _currentUri == _baseUri;
+
+    private bool IsJapaneseArcanaLearn() =>
+        _currentUri.StartsWith($"{_baseUri}{LearnRoute}");
+
+    private bool IsPageTreeHome() =>
+        _currentUri.StartsWith($"{_baseUri}{PageTreeRoute}");
+
+    private bool IsPageTreeLearn() =>
+        _currentUri.StartsWith($"{_baseUri}{PageTreeRoute}/{LearnRoute}");
+}
