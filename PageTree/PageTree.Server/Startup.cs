@@ -1,10 +1,16 @@
 ﻿using BuildingBlocks.Repository;
 using Common.Basic.Repository;
-using PageTree.Client.Shared.Services;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 using PageTree.Domain.Users;
 using Practicer.Domain.Practice;
+using Corelibs.Basic.Repository;
+using PageTree.Server.Data;
+using Corelibs.BlazorShared;
+using Common.Basic.DDD;
+using System.Linq.Expressions;
+using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace PageTree.Server.Api
 {
@@ -12,8 +18,7 @@ namespace PageTree.Server.Api
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddSingleton<IRepository<User>>(sp =>
-               new WWWRootHttpClientRepository<User>(sp.GetRequiredService<HttpClient>(), "", ""));
+            services.AddJsonDbRepository<Domain.Users.User, PageTree.Server.Data.User>(nameof(AppDbContext.Users));
 
             services.AddSingleton<IRepository<Page>>(sp =>
                new WWWRootHttpClientRepository<Page>(sp.GetRequiredService<HttpClient>(), "", ""));
@@ -26,6 +31,18 @@ namespace PageTree.Server.Api
 
             services.AddSingleton<IRepository<PracticeTactic>>(sp =>
                new WWWRootHttpClientRepository<PracticeTactic>(sp.GetRequiredService<HttpClient>(), "", ""));
+        }
+
+        private static void AddJsonDbRepository<TEntity, TDataEntity>(this IServiceCollection services, string tableName)
+            where TEntity : class, IEntity
+            where TDataEntity : JsonEntity, new()
+        {
+            services.AddSingleton<IRepository<TEntity>>(sp =>
+            {
+                var dbContext = sp.Get<IDbContextFactory<AppDbContext>>().CreateDbContext();
+                var dbContextRP = new DbContextRepository<TDataEntity>(dbContext);
+                return new JsonEntityRepositoryDecorator<TEntity, TDataEntity>(dbContextRP);
+            });
         }
     }
 }

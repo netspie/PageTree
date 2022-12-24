@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
-using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.UseCases.Users.Commands;
-using PageTree.Server.ApiContracts.Users.Commands;
 using System.Security.Claims;
 
 namespace PageTree.Server.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;

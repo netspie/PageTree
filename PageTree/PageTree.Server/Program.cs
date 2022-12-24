@@ -1,7 +1,10 @@
+using Corelibs.AspNetApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using PageTree.Server.Api;
 using PageTree.Server.ApiContracts;
+using PageTree.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddDownstreamWebApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
                     .AddInMemoryTokenCaches();
 
+builder.Services.AddDbContext<AppDbContext>(builder.Environment, builder.Configuration.GetConnectionString);
 builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews(opts => opts.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddRazorPages();
@@ -23,6 +27,8 @@ builder.Services.AddRepositories();
 builder.Services.AddAutoMapper();
 
 var app = builder.Build();
+
+await app.Services.InitilizeDatabase<AppDbContext>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
