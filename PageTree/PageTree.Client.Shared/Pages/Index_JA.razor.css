@@ -1,0 +1,35 @@
+﻿.main-section {
+}
+
+.bg-image {
+    width: contain;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: -100;
+    opacity: 0.45;
+}
+
+.right-image {
+    top: -15%;
+    right: 0;
+    transform: translateX(50%);
+}
+
+.left-image {
+    top: -15%;
+    left: 0;
+    transform: translateX(-25%);
+}
+
+.top-image {
+    left: 0;
+    height: 50%;
+    width: 100%;
+    opacity: 0.3;
+    transform: translateY(-60%);
+}
+
+.title {
+    bottom: 0;
+}
