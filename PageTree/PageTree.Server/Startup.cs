@@ -1,16 +1,14 @@
 ﻿using BuildingBlocks.Repository;
+using Common.Basic.DDD;
 using Common.Basic.Repository;
+using Corelibs.Basic.Repository;
+using Corelibs.BlazorShared;
+using Mediator;
+using Microsoft.EntityFrameworkCore;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
-using PageTree.Domain.Users;
-using Practicer.Domain.Practice;
-using Corelibs.Basic.Repository;
 using PageTree.Server.Data;
-using Corelibs.BlazorShared;
-using Common.Basic.DDD;
-using System.Linq.Expressions;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore;
+using Practicer.Domain.Practice;
 
 namespace PageTree.Server.Api
 {
@@ -18,6 +16,11 @@ namespace PageTree.Server.Api
     {
         public static void AddRepositories(this IServiceCollection services)
         {
+            services.AddTransient<DbContext>(sp =>
+                sp.Get<IDbContextFactory<AppDbContext>>().CreateDbContext());
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionBehaviour<,>));
+
             services.AddJsonDbRepository<Domain.Users.User, PageTree.Server.Data.User>(nameof(AppDbContext.Users));
 
             services.AddSingleton<IRepository<Page>>(sp =>

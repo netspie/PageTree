@@ -7,15 +7,17 @@
     @if (_isSignedIn)
     {
         @*<p>Hello, </p>@_authUser.Name*@
-        <button class="button" @onclick="_authUser.SignOut">Log out</button>
+        <a class="button @Class" @onclick="_authUser.SignOut">Log out</a>
     }
     else
     {
-        <button class="button" @onclick="@(async () => await OnSignIn())">Log in</button>
+        <a class="button @Class" @onclick="@(async () => await OnSignIn())">Log in</a>
     }
 </div>
 
 @code {
+    [Parameter]
+    public string Class { get; set; } = new("");
     private bool _isSignedIn = false;
 
     protected override async Task OnInitializedAsync()
