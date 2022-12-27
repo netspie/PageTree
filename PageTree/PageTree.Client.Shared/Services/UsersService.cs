@@ -1,5 +1,5 @@
 ﻿using Corelibs.BlazorShared;
-using PageTree.Server.ApiContracts.Users.Commands;
+using PageTree.App.UseCases.Users.Queries;
 
 namespace PageTree.Client.Shared.Services
 {
@@ -12,7 +12,12 @@ namespace PageTree.Client.Shared.Services
 
         public async Task CreateUser()
         {
-            var response = await _clientFactory.PostResource<CreateUserApiCommand>(_signInRedirector, "api/v1/users?action=create");
+            var response = await PostResource("api/v1/users?action=create");
+        }
+
+        public Task<GetUserQueryOut> GetUser()
+        {
+            return _clientFactory.GetResource<GetUserQueryOut>(_signInRedirector, "api/v1/users/me");
         }
     }
 }

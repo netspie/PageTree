@@ -21,13 +21,11 @@ namespace PageTree.Server.Api
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionBehaviour<,>));
 
-            services.AddJsonDbRepository<Domain.Users.User, PageTree.Server.Data.User>(nameof(AppDbContext.Users));
-
-            services.AddSingleton<IRepository<Page>>(sp =>
-               new WWWRootHttpClientRepository<Page>(sp.GetRequiredService<HttpClient>(), "", ""));
-
-            services.AddSingleton<IRepository<Signature>>(sp =>
-               new WWWRootHttpClientRepository<Signature>(sp.GetRequiredService<HttpClient>(), "", ""));
+            services.AddJsonDbRepository<Domain.Users.User,                 PageTree.Server.Data.User>              (nameof(AppDbContext.Users));
+            services.AddJsonDbRepository<Domain.Projects.ProjectUserList,   PageTree.Server.Data.ProjectUserList>   (nameof(AppDbContext.ProjectUserLists));
+            services.AddJsonDbRepository<Domain.Projects.Project,           PageTree.Server.Data.Project>           (nameof(AppDbContext.Projects));
+            services.AddJsonDbRepository<Domain.Page,                       PageTree.Server.Data.Page>              (nameof(AppDbContext.Pages));
+            services.AddJsonDbRepository<Domain.Signature,                  PageTree.Server.Data.Signature>         (nameof(AppDbContext.Signatures));
 
             services.AddSingleton<IRepository<PracticeCategory>>(sp =>
                new WWWRootHttpClientRepository<PracticeCategory>(sp.GetRequiredService<HttpClient>(), "", ""));

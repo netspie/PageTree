@@ -18,5 +18,7 @@ public static class Startup
     public static void AddServices(this IServiceCollection services)
     {
         services.AddSingleton<UsersService>();
+        services.AddSingleton<ProjectUserListsService>();
+        services.AddSingleton<ProjectService>();
     }
 }

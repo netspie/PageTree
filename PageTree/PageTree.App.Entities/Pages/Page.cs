@@ -4,6 +4,8 @@ namespace PageTree.Domain
 {
     public class Page : Entity
     {
+        public Page(string id) : base(id) {}
+
         public string AuthorID { get; init; } = new("");
         public string Name { get; init; } = string.Empty;
 

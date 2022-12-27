@@ -1,4 +1,5 @@
 ﻿using Corelibs.BlazorShared;
+using PageTree.Client.Shared.Services;
 
 namespace PageTree.Client.Native;
 
@@ -8,5 +9,9 @@ public static class Startup
     {
         services.AddMediator();
         services.AddSingleton<IQueryExecutor, MediatorQueryExecutor>();
+
+        services.AddSingleton<UsersService>();
+        services.AddSingleton<ProjectUserListsService>();
+        services.AddSingleton<ProjectService>();
     }
 }

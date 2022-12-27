@@ -6,6 +6,6 @@ namespace PageTree.Domain.Users
     {
         public User(string id) : base(id) { }   
 
-        public string ProjectSetID { get; set; } = new("");
+        public string ProjectUserListID { get; set; } = new("");
     }
 }

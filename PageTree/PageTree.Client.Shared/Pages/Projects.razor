@@ -1,0 +1,58 @@
+﻿@inherits ComponentBase
+@page "/pagetree/learn/projects"
+@using PageTree.App.ProjectUserLists.Queries;
+
+<PageTitle>PageTree</PageTitle>
+
+<div class="main">
+    <h1>My Projects</h1>
+
+    @foreach (var project in _projectUserListVM.Projects)
+    {
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title">
+                    @project.Name
+                </p>
+                <button class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    @project.Description
+                    <a href="#">Card</a>. <a href="#">#css</a> <a href="#">#responsive</a>
+                    <br>
+                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="#" class="card-footer-item">Archive</a>
+            </footer>
+        </div>
+    }
+    <button class="button is-primary" @onclick=AddProject>Add</button>
+</div>
+
+@code {
+    [Inject] private UsersService UsersService { get; set; }
+    [Inject] private ProjectUserListsService ProjectUserListsService { get; set; }
+    [Inject] private ProjectService ProjectService { get; set; }
+
+    private ProjectUserListVM _projectUserListVM = new(string.Empty, new ProjectVM[] {});
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await UsersService.GetUser();
+        var projectList = await ProjectUserListsService.GetProjectUserList(user.ProjectUserListID);
+        if (projectList != null)
+            _projectUserListVM = projectList.ProjectUserListVM;
+    }
+
+    private Task AddProject()
+    {
+        return ProjectService.CreateProject();
+    }
+}
