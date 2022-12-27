@@ -4,12 +4,7 @@ namespace PageTree.Domain.Projects
 {
     public class Project : Entity
     {
-        public string AuthorID { get; set; }
-        public string RootPageID { get; set; }
-    }
-
-    public class ECProject : Entity
-    {
-        public string RootPageID { get; set; }
+        public string RootPageID { get; set; } = new("");
+        public string Description { get; set; } = new("");
     }
 }
