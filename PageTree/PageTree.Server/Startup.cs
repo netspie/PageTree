@@ -16,10 +16,10 @@ namespace PageTree.Server.Api
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<DbContext>(sp =>
+            services.AddScoped<DbContext>(sp =>
                 sp.Get<IDbContextFactory<AppDbContext>>().CreateDbContext());
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionBehaviour<,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionBehaviour<,>));
 
             services.AddJsonDbRepository<Domain.Users.User,                 PageTree.Server.Data.User>              (nameof(AppDbContext.Users));
             services.AddJsonDbRepository<Domain.Projects.ProjectUserList,   PageTree.Server.Data.ProjectUserList>   (nameof(AppDbContext.ProjectUserLists));
@@ -38,7 +38,7 @@ namespace PageTree.Server.Api
             where TEntity : class, IEntity
             where TDataEntity : JsonEntity, new()
         {
-            services.AddSingleton<IRepository<TEntity>>(sp =>
+            services.AddScoped<IRepository<TEntity>>(sp =>
             {
                 var dbContext = sp.Get<IDbContextFactory<AppDbContext>>().CreateDbContext();
                 var dbContextRP = new DbContextRepository<TDataEntity>(dbContext);
