@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Corelibs.AspNetApi\Corelibs.AspNetApi\Corelibs.AspNetApi\Corelibs.AspNetApi.csproj" />
+    <ProjectReference Include="..\..\..\Corelibs.MongoDB\Corelibs.MongoDB\Corelibs.MongoDB.csproj" />
     <ProjectReference Include="..\PageTree.App.UseCases\PageTree.App.UseCases.csproj" />
     <ProjectReference Include="..\PageTree.Client.Web\PageTree.Client.Web.csproj" />
     <ProjectReference Include="..\PageTree.Server.ApiContracts\PageTree.Server.ApiContracts.csproj" />

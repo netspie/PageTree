@@ -1,4 +1,5 @@
 using Corelibs.AspNetApi;
+using Corelibs.Basic.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
@@ -6,6 +7,7 @@ using PageTree.App.UseCases;
 using PageTree.Server.Api;
 using PageTree.Server.ApiContracts;
 using PageTree.Server.Data;
+using PageTree.Server.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +25,13 @@ builder.Services.AddControllersWithViews(opts => opts.SuppressImplicitRequiredAt
 builder.Services.AddRazorPages();
 
 builder.Services.AddMediatorExt();
-builder.Services.AddRepositories();
+builder.Services.AddRepositories(builder.Environment);
 builder.Services.AddAutoMapper();
 
 var app = builder.Build();
 
-await app.Services.InitilizeDatabase<AppDbContext>();
+var logger = app.Services.GetRequiredService<Corelibs.Basic.Logging.ILogger>();
+logger.Log("Init log");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -43,6 +46,7 @@ else
     app.UseHttpsRedirection();
 }
 
+app.UseExceptionLog();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 

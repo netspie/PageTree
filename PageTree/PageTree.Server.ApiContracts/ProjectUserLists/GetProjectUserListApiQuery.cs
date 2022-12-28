@@ -7,6 +7,7 @@ namespace PageTree.Server.ApiContracts.Pages
         [FromRoute]
         public string ID { get; set; }
 
+        public GetProjectUserListApiQuery() {}
         public GetProjectUserListApiQuery(string id)
         {
             ID = id;

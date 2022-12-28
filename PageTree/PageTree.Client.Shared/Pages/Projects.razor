@@ -45,14 +45,21 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Refresh();
+    }
+
+    private async Task Refresh()
+    {
         var user = await UsersService.GetUser();
         var projectList = await ProjectUserListsService.GetProjectUserList(user.ProjectUserListID);
         if (projectList != null)
             _projectUserListVM = projectList.ProjectUserListVM;
     }
 
-    private Task AddProject()
+    private async Task AddProject()
     {
-        return ProjectService.CreateProject();
+        await ProjectService.CreateProject();
+        await Refresh();
+        await InvokeAsync(StateHasChanged);
     }
 }

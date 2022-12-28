@@ -17,11 +17,11 @@ namespace PageTree.Server.Data
         {
             base.OnModelCreating(mb);
 
-            mb.SetPrimaryKey<User>();
-            mb.SetPrimaryKey<ProjectUserList>();
-            mb.SetPrimaryKey<Project>();
-            mb.SetPrimaryKey<Page>();
-            mb.SetPrimaryKey<Signature>();
+            //mb.SetPrimaryKey<User>();
+            //mb.SetPrimaryKey<ProjectUserList>();
+            //mb.SetPrimaryKey<Project>();
+            //mb.SetPrimaryKey<Page>();
+            //mb.SetPrimaryKey<Signature>();
         }
     }
 

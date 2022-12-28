@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.BlazorWebAssembly"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.BlazorShared", "..\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared.csproj", "{FC670863-AF03-49EC-BECE-8EB4FD030787}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageTree.Server.ApiContracts", "PageTree\PageTree.Server.ApiContracts\PageTree.Server.ApiContracts.csproj", "{4DC92A62-2794-4AB1-ADF4-0A156B377E02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.Server.ApiContracts", "PageTree\PageTree.Server.ApiContracts\PageTree.Server.ApiContracts.csproj", "{4DC92A62-2794-4AB1-ADF4-0A156B377E02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.MongoDB", "..\Corelibs.MongoDB\Corelibs.MongoDB\Corelibs.MongoDB.csproj", "{28204661-6DF8-4438-B77E-8D63EC728625}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +137,14 @@ Global
 		{4DC92A62-2794-4AB1-ADF4-0A156B377E02}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4DC92A62-2794-4AB1-ADF4-0A156B377E02}.Release|x64.ActiveCfg = Release|Any CPU
 		{4DC92A62-2794-4AB1-ADF4-0A156B377E02}.Release|x64.Build.0 = Release|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Debug|x64.Build.0 = Debug|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Release|x64.ActiveCfg = Release|Any CPU
+		{28204661-6DF8-4438-B77E-8D63EC728625}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

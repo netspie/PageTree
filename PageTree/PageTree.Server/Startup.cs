@@ -3,9 +3,10 @@ using Common.Basic.DDD;
 using Common.Basic.Repository;
 using Corelibs.Basic.Repository;
 using Corelibs.BlazorShared;
+using Corelibs.MongoDB;
+using Corelibs.MongoDB.Logging;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
-using PageTree.Domain;
 using PageTree.Domain.Practice;
 using PageTree.Server.Data;
 using Practicer.Domain.Practice;
@@ -14,11 +15,11 @@ namespace PageTree.Server.Api
 {
     public static class Startup
     {
-        public static void AddRepositories(this IServiceCollection services)
+        public static void AddRepositories(this IServiceCollection services, IWebHostEnvironment env)
         {
-            services.AddScoped<DbContext>(sp =>
-                sp.Get<IDbContextFactory<AppDbContext>>().CreateDbContext());
+            services.AddMongoDbLogger(env);
 
+            services.AddScoped<DbContext>(sp => sp.GetRequiredService<AppDbContext>());
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionBehaviour<,>));
 
             services.AddJsonDbRepository<Domain.Users.User,                 PageTree.Server.Data.User>              (nameof(AppDbContext.Users));
@@ -40,10 +41,19 @@ namespace PageTree.Server.Api
         {
             services.AddScoped<IRepository<TEntity>>(sp =>
             {
-                var dbContext = sp.Get<IDbContextFactory<AppDbContext>>().CreateDbContext();
+                var dbContext = sp.Get<AppDbContext>();
                 var dbContextRP = new DbContextRepository<TDataEntity>(dbContext);
                 return new JsonEntityRepositoryDecorator<TEntity, TDataEntity>(dbContextRP);
             });
+        }
+
+        private static void AddMongoDbLogger(this IServiceCollection services, IWebHostEnvironment env)
+        {
+            var conn = Environment.GetEnvironmentVariable("LogDatabaseConn");
+            var databaseName = env.IsDevelopment() ? "pageTree_log_dev" : "pageTree_log_prod";
+
+            services.AddSingleton<Corelibs.Basic.Logging.ILogger>(new MongoDbLogger(
+                new MongoDbRepositoryT<Log>(conn, databaseName, "logs")));
         }
     }
 }

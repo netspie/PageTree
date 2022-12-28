@@ -1,6 +1,7 @@
 ﻿using Common.Basic.Collections;
 using Corelibs.BlazorShared;
 using PageTree.App.ProjectUserLists.Queries;
+using PageTree.Server.ApiContracts.Attributes;
 using PageTree.Server.ApiContracts.Pages;
 
 namespace PageTree.Client.Shared.Services
@@ -17,7 +18,8 @@ namespace PageTree.Client.Shared.Services
             if (id.IsNullOrEmpty())
                 return default;
 
-            return await GetResource<GetProjectUserListApiQuery, GetProjectUserListQueryOut>(new GetProjectUserListApiQuery(id), "api/v1/projectUserLists");
+            return await GetResource<GetProjectUserListApiQuery, GetProjectUserListQueryOut>(
+                new GetProjectUserListApiQuery(id), $"api/v1/projectUserLists/{id}/", typeof(FromRouteAttribute));
         }
     }
 }
