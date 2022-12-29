@@ -1,12 +1,11 @@
 using Corelibs.AspNetApi;
-using Corelibs.Basic.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
-using PageTree.App.UseCases;
 using PageTree.Server.Api;
 using PageTree.Server.ApiContracts;
 using PageTree.Server.Data;
+using PageTree.Server.DataUpdates;
 using PageTree.Server.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,14 +23,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews(opts => opts.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddRazorPages();
 
-builder.Services.AddMediatorExt();
-builder.Services.AddRepositories(builder.Environment);
+builder.Services.AddPageTreeSetup(builder.Environment);
 builder.Services.AddAutoMapper();
 
 var app = builder.Build();
-
-var logger = app.Services.GetRequiredService<Corelibs.Basic.Logging.ILogger>();
-logger.Log("Init log");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -58,5 +53,7 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
+await app.Services.UpdateData();
 
 app.Run();

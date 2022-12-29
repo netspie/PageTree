@@ -23,7 +23,7 @@ namespace PageTree.App.UseCases.Common
             TChild item = default;
             if (childID.IsNullOrEmpty())
             {
-                item = await childRepository.Create(result);
+                item = await childRepository.Create(result, owner.ID);
             }
             else
             {
@@ -31,7 +31,7 @@ namespace PageTree.App.UseCases.Common
                 if (item)
                     return (owner, item);
 
-                item = await childRepository.Create(result);
+                item = await childRepository.Create(result, owner.ID);
             }
 
             ownerChildIDProperty.SetValue(owner, item.ID);
@@ -40,9 +40,9 @@ namespace PageTree.App.UseCases.Common
             return (owner, item);
         }
 
-        public static async Task<T> Create<T>(this IRepository<T> repository, Result result)
+        public static async Task<T> Create<T>(this IRepository<T> repository, Result result, string ownerID)
         {
-            T item = (T)Activator.CreateInstance(typeof(T), NewID);
+            T item = (T) Activator.CreateInstance(typeof(T), NewID, ownerID);
 
             await repository.Save(item, result);
 

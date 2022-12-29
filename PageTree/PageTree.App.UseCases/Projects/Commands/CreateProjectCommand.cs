@@ -32,7 +32,8 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
     {
         var result = Result.Success();
 
-        var (user, projectList) = await _userRepository.GetOwnerAndChildOrCreateChild(_projectUserListRepository, command.UserID, nameof(User.ProjectUserListID), result);
+        var (user, projectList) = await _userRepository.GetOwnerAndChildOrCreateChild(
+            _projectUserListRepository, command.UserID, nameof(User.ProjectUserListID), result);
 
         var rootPage = new Page(NewID);
 
@@ -40,7 +41,7 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
         if (!projectList.ProjectsCreatedIDs.Create(projectID))
             return result.Fail();
 
-        var project = new Project(projectID, rootPage.ID);
+        var project = new Project(projectID, rootPage.ID, user.ID);
 
         await _pageRepository.Save(rootPage, result);
         await _projectRepository.Save(project, result);

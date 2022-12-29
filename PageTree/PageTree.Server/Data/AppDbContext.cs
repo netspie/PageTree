@@ -1,10 +1,12 @@
 ﻿using Corelibs.Basic.Repository;
 using Microsoft.EntityFrameworkCore;
+using PageTree.Server.DataUpdates;
 
 namespace PageTree.Server.Data
 {
     public class AppDbContext : DbContext
     {
+        public DbSet<DataUpdate> DataUpdates { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ProjectUserList> ProjectUserLists { get; set; }
         public DbSet<Project> Projects { get; set; }

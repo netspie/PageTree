@@ -1,12 +1,13 @@
 ﻿using Common.Basic.DDD;
+using Corelibs.Basic.Architecture.DDD;
 
 namespace PageTree.Domain
 {
-    public class Page : Entity
+    public class Page : Entity, IOwnedEntity
     {
         public Page(string id) : base(id) {}
 
-        public string AuthorID { get; init; } = new("");
+        public string OwnerID { get; set; } = new("");
         public string Name { get; init; } = string.Empty;
 
         public string SignatureID { get; init; } = new("");

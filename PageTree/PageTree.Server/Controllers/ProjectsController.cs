@@ -5,6 +5,7 @@ using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Projects.Commands;
+using PageTree.Server.Authorization;
 using PageTree.Server.Controllers;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -27,5 +28,12 @@ namespace PageTree.Server.Api.Controllers
         [HttpPost, Action("create")]
         public Task<IActionResult> Create() =>
             _mediator.SendAndGetPostResponse(new CreateProjectCommand(UserID));
+
+        [HttpPost, Action("changeName"), Authorize(Policy = AuthPolicies.Edit)]
+        public Task<IActionResult> ChangeName()
+        {
+            Console.WriteLine(UserID);
+            return Task.FromResult<IActionResult>(null);
+        }
     }
 }
