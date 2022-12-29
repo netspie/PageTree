@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Repository;
 using Common.Basic.DDD;
 using Common.Basic.Repository;
+using Corelibs.AspNetApi.Authorization;
 using Corelibs.Basic.Repository;
 using Corelibs.BlazorShared;
 using Corelibs.MongoDB;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using PageTree.App.UseCases;
 using PageTree.Domain.Practice;
-using PageTree.Server.Authorization;
 using PageTree.Server.Data;
 using PageTree.Server.DataUpdates;
 using Practicer.Domain.Practice;
@@ -51,14 +51,12 @@ namespace PageTree.Server.Api
         private static void AddResourceAuthorizationHandlers(this IServiceCollection services)
         {
             services.AddAuthorization(options =>
-            {
                 options.AddPolicy(AuthPolicies.Edit, policy =>
-                    policy.Requirements.Add(new SameAuthorRequirement()));
-            });
+                    policy.Requirements.Add(new SameAuthorRequirement())));
 
-            services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Projects.ProjectUserList>>();
             services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Projects.Project>>();
-
+            services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Projects.ProjectUserList>>();
+            services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Page>>();
         }
 
         private static void AddJsonDbRepository<TEntity, TDataEntity>(this IServiceCollection services, string tableName)

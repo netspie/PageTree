@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Corelibs.AspNetApi.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PageTree.Server.Controllers
 {

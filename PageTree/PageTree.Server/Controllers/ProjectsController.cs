@@ -1,11 +1,11 @@
 using AutoMapper;
+using Corelibs.AspNetApi.Authorization;
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Projects.Commands;
-using PageTree.Server.Authorization;
 using PageTree.Server.Controllers;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -29,7 +29,7 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> Create() =>
             _mediator.SendAndGetPostResponse(new CreateProjectCommand(UserID));
 
-        [HttpPost, Action("changeName"), Authorize(Policy = AuthPolicies.Edit)]
+        [HttpPost, Route("{id}"), Action("changeName"), Authorize(Policy = AuthPolicies.Edit)]
         public Task<IActionResult> ChangeName()
         {
             Console.WriteLine(UserID);
