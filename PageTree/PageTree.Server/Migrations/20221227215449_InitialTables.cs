@@ -72,7 +72,7 @@ namespace PageTree.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Guid", x => x.ID);
+                    table.PrimaryKey("PK_Users", x => x.ID);
                 });
         }
 

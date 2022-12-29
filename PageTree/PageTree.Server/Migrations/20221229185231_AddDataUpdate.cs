@@ -10,15 +10,6 @@ namespace PageTree.Server.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Guid",
-                table: "Users");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "ID");
-
             migrationBuilder.CreateTable(
                 name: "DataUpdates",
                 columns: table => new
