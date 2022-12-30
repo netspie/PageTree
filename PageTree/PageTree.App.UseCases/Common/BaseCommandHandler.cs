@@ -2,6 +2,6 @@
 {
     public abstract class BaseCommandHandler
     {
-        protected string NewID => Guid.NewGuid().ToString();
+        protected static string NewID => Guid.NewGuid().ToString();
     }
 }
