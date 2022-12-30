@@ -11,18 +11,15 @@ namespace PageTree.App.Projects.Commands;
 
 public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<CreateProjectCommand, Result>
 {
-    private IRepository<User> _userRepository;
     private IRepository<Project> _projectRepository;
     private IRepository<ProjectUserList> _projectUserListRepository;
     private IRepository<Page> _pageRepository;
 
     public CreateProjectCommandHandler(
-         IRepository<User> userRepository,
          IRepository<Project> projectRepository,
          IRepository<ProjectUserList> projectUserListRepository,
          IRepository<Page> pageRepository)
     {
-        _userRepository = userRepository;
         _projectRepository = projectRepository;
         _projectUserListRepository = projectUserListRepository;
         _pageRepository = pageRepository;
@@ -32,16 +29,15 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
     {
         var result = Result.Success();
 
-        var (user, projectList) = await _userRepository.GetOwnerAndChildOrCreateChild(
-            _projectUserListRepository, command.UserID, nameof(User.ProjectUserListID), result);
+        var projectList = await _projectUserListRepository.Get(command.ProjectUserListID, result);
+        if (!result.IsSuccess || projectList != null)
+            return result;
 
         var rootPage = new Page(NewID);
 
-        var projectID = NewID;
+        var project = new Project(NewID, rootPage.ID, user.ID);
         if (!projectList.ProjectsCreatedIDs.Create(projectID))
             return result.Fail();
-
-        var project = new Project(projectID, rootPage.ID, user.ID);
 
         await _pageRepository.Save(rootPage, result);
         await _projectRepository.Save(project, result);
@@ -51,4 +47,4 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
     }
 }
 
-public sealed record CreateProjectCommand(string UserID) : ICommand<Result>;
+public sealed record CreateProjectCommand(string ProjectUserListID) : ICommand<Result>;
