@@ -1,0 +1,107 @@
+﻿@inherits ComponentBase
+@page "/pagetree/learn/projects/{ProjectID?}"
+@using PageTree.App.Projects.Queries;
+
+<PageTitle>PageTree</PageTitle>
+
+<div class="main">
+    <h1>Edit project</h1>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label">Name</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" placeholder="e.g. Partnership opportunity" value="@_projectVM.Name" @oninput="OnNameEdit">
+                </div>
+                @*<p class="help is-danger">
+                    This field is required
+                </p>*@
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label">Description</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <textarea class="textarea" placeholder="Provide a description for your project" @oninput="OnDescriptionEdit">@_projectVM.Description</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <button class="button is-primary @CssClass_IsStatic">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string? ProjectID { get; set; }
+
+    [Inject] private ProjectService ProjectService { get; set; }
+
+    private ProjectVM _projectVM = new ProjectVM("", "", "");
+
+    private string CssClass_IsStatic => _hasEdit ? null : "is-static";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
+
+    private async Task Refresh()
+    {
+        var projectOut = await ProjectService.GetProject(ProjectID);
+        if (projectOut != null)
+            _projectVM = projectOut.ProjectVM;
+
+        _name = _projectVM.Name;
+    }
+
+    private string _name;
+
+    private void OnNameEdit(ChangeEventArgs args)
+    {
+        _name = args.Value as string;
+        UpdateEditIfAny();
+    }
+
+    private string _description;
+
+    private void OnDescriptionEdit(ChangeEventArgs args)
+    {
+        _description = args.Value as string;
+        UpdateEditIfAny();
+    }
+
+    private bool _hasEdit;
+    private void UpdateEditIfAny()
+    {
+        _hasEdit = false;
+
+        if (_name != _projectVM.Name)
+            _hasEdit = true;
+
+        if (_description != _projectVM.Description)
+            _hasEdit = true;
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using Common.Basic.Blocks;
+using Common.Basic.Collections;
 using Common.Basic.Repository;
 using PageTree.Domain;
 using PageTree.Domain.Projects;
@@ -33,6 +34,9 @@ namespace PageTree.Server.DataUpdates
             var users = await _userRepository.GetAll(res);
             foreach (var user in users)
             {
+                if (user.ProjectUserListID.IsNullOrEmpty())
+                    continue;
+
                 var projectUserList = await _projectUserListRepository.ModifyAndSaveEntity(
                     user.ProjectUserListID, e => e.OwnerID = user.ID, res);
 
