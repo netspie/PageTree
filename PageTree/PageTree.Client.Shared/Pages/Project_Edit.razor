@@ -43,7 +43,7 @@
         <div class="field-body">
             <div class="field">
                 <div class="control">
-                    <button class="button is-primary @CssClass_IsStatic">
+                    <button class="button is-primary @CssClass_IsStatic" @onclick="OnSave">
                         Save
                     </button>
                 </div>
@@ -57,7 +57,7 @@
     [Parameter]
     public string? ProjectID { get; set; }
 
-    [Inject] private ProjectService ProjectService { get; set; }
+    [Inject] private ProjectsService ProjectsService { get; set; }
 
     private ProjectVM _projectVM = new ProjectVM("", "", "");
 
@@ -65,16 +65,23 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Refresh();
+        await RefreshVM();
     }
 
-    private async Task Refresh()
+    private async Task RefreshVM()
     {
-        var projectOut = await ProjectService.GetProject(ProjectID);
+        var projectOut = await ProjectsService.GetProject(ProjectID);
         if (projectOut != null)
             _projectVM = projectOut.ProjectVM;
 
         _name = _projectVM.Name;
+        _description = _projectVM.Description;
+    }
+
+    private async Task RefreshVMAndView()
+    {
+        await RefreshVM();
+        await InvokeAsync(StateHasChanged);
     }
 
     private string _name;
@@ -103,5 +110,14 @@
 
         if (_description != _projectVM.Description)
             _hasEdit = true;
+    }
+
+    private async Task OnSave()
+    {
+        if (!_hasEdit)
+            return;
+
+        await ProjectsService.EditProject(_projectVM.ID, _name, _description);
+        await RefreshVMAndView();
     }
 }

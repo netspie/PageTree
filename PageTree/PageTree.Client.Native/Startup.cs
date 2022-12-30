@@ -12,6 +12,6 @@ public static class Startup
 
         services.AddSingleton<UsersService>();
         services.AddSingleton<ProjectUserListsService>();
-        services.AddSingleton<ProjectService>();
+        services.AddSingleton<ProjectsService>();
     }
 }

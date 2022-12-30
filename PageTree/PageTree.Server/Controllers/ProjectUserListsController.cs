@@ -1,4 +1,5 @@
 using AutoMapper;
+using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
@@ -25,7 +26,7 @@ namespace PageTree.Server.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet, Route("{id}"), AllowAnonymous]
+        [HttpGet, Route_ID, AllowAnonymous]
         public Task<IActionResult> Get([FromRouteAndQuery] GetProjectUserListApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetProjectUserListQuery, GetProjectUserListQueryOut>(query, _mapper);
     }

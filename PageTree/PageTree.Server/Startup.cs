@@ -9,6 +9,7 @@ using Corelibs.MongoDB.Logging;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PageTree.App.UseCases;
 using PageTree.Domain.Practice;
 using PageTree.Server.Data;
@@ -50,13 +51,18 @@ namespace PageTree.Server.Api
 
         private static void AddResourceAuthorizationHandlers(this IServiceCollection services)
         {
-            services.AddAuthorization(options =>
-                options.AddPolicy(AuthPolicies.Edit, policy =>
-                    policy.Requirements.Add(new SameAuthorRequirement())));
-
+            // clean up! common method!
+            services.AddAuthorization(AddEditPolicies);
             services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Projects.Project>>();
             services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Projects.ProjectUserList>>();
             services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Page>>();
+
+            void AddEditPolicies(AuthorizationOptions options)
+            {
+                services.AddPolicyAndHandler<Domain.Projects.Project>(options);
+                services.AddPolicyAndHandler<Domain.Projects.ProjectUserList>(options);
+                services.AddPolicyAndHandler<Domain.Page>(options);
+            }
         }
 
         private static void AddJsonDbRepository<TEntity, TDataEntity>(this IServiceCollection services, string tableName)

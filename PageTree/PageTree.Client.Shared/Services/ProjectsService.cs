@@ -8,9 +8,9 @@ using PageTree.Server.ApiContracts.Project;
 
 namespace PageTree.Client.Shared.Services
 {
-    public class ProjectService : BaseService
+    public class ProjectsService : BaseService
     {
-        public ProjectService(IHttpClientFactory clientFactory, ISignInRedirector signInRedirector) 
+        public ProjectsService(IHttpClientFactory clientFactory, ISignInRedirector signInRedirector) 
             : base(clientFactory, signInRedirector)
         {
         }
@@ -27,6 +27,12 @@ namespace PageTree.Client.Shared.Services
 
             return await GetResource<GetProjectApiQuery, GetProjectOfIDQueryOut>(
                 new GetProjectApiQuery(id), $"api/v1/projects/{id}/", typeof(FromRouteAttribute));
+        }
+
+        public async Task EditProject(string id, string name, string description)
+        {
+            var response = await PutResource($"api/v1/projects/{id}?action=edit",
+                new EditProjectApiCommand(id, name, description));
         }
     }
 }

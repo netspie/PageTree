@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Projects.Commands;
 using PageTree.App.Projects.Queries;
-using PageTree.App.ProjectUserLists.Queries;
-using PageTree.Server.ApiContracts.Pages;
 using PageTree.Server.ApiContracts.Project;
 using PageTree.Server.Controllers;
+using PageTree.Domain.Projects;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace PageTree.Server.Api.Controllers
@@ -30,19 +29,21 @@ namespace PageTree.Server.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost, Action("create")]
-        public Task<IActionResult> Create() =>
-            _mediator.SendAndGetPostResponse(new CreateProjectCommand(UserID));
-
-        [HttpGet, Route("{id}"), AllowAnonymous]
+        [HttpGet, Route_ID, AllowAnonymous]
         public Task<IActionResult> Get([FromRouteAndQuery] GetProjectApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetProjectOfIDQuery, GetProjectOfIDQueryOut>(query, _mapper);
 
-        [HttpPatch, Route("{id}"), Action("changeName"), Authorize(Policy = AuthPolicies.Edit)]
-        public Task<IActionResult> ChangeName()
-        {
-            Console.WriteLine(UserID);
-            return Task.FromResult<IActionResult>(null);
-        }
+        [HttpPost, Action_Create]
+        public Task<IActionResult> Create() =>
+            _mediator.SendAndGetPostResponse(new CreateProjectCommand(UserID));
+
+        [HttpPut, Route_ID, Action_Edit, Authorize_Edit_Project]
+        public Task<IActionResult> Edit([FromRouteAndBody] EditProjectApiCommand command) =>
+            _mediator.MapSendAndGetPutResponse<EditProjectCommand>(command, _mapper);
+    }
+
+    public class Authorize_Edit_ProjectAttribute : Authorize_EditAttribute
+    {
+        protected override string ResourceName => nameof(Project);
     }
 }

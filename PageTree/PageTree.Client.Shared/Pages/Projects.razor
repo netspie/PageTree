@@ -34,7 +34,7 @@
 @code {
     [Inject] private UsersService UsersService { get; set; }
     [Inject] private ProjectUserListsService ProjectUserListsService { get; set; }
-    [Inject] private ProjectService ProjectService { get; set; }
+    [Inject] private ProjectsService ProjectService { get; set; }
 
     private ProjectUserListVM _projectUserListVM = new(string.Empty, new ProjectVM[] {});
 
