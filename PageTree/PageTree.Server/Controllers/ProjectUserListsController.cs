@@ -1,4 +1,5 @@
 using AutoMapper;
+using Corelibs.AspNetApi.Controllers;
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
@@ -15,7 +16,7 @@ namespace PageTree.Server.Api.Controllers
     [ApiController]
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class ProjectUserListsController : ControllerBase
+    public class ProjectUserListsController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;

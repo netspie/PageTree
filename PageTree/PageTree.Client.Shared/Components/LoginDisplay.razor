@@ -1,7 +1,7 @@
-﻿@using global::PageTree.Client.Shared.Services;
+﻿@using PageTree.App.UseCases.Users.Commands;
+@using global::PageTree.Client.Shared.Services;
 @inject IAuthUser _authUser
 @inject NavigationManager _navigation
-@inject UsersService _usersService
 
 <div class="login-display">
     @if (_isSignedIn)
@@ -16,6 +16,8 @@
 </div>
 
 @code {
+    [Inject] private ICommandExecutor Commands { get; set; }
+
     [Parameter]
     public string Class { get; set; } = new("");
     private bool _isSignedIn = false;
@@ -27,7 +29,7 @@
 
         if (_isSignedIn)
         {
-            await _usersService.CreateUser();
+            await Commands.Execute<CreateUserCommand>();
         }
     }
 
@@ -35,7 +37,7 @@
     {
         if (isSignedIn)
         {
-            await _usersService.CreateUser();
+            await Commands.Execute<CreateUserCommand>();
             _navigation.NavigateTo(_navigation.Uri, forceLoad: true);
         }
         else

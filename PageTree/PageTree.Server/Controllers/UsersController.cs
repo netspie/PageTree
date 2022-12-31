@@ -1,4 +1,4 @@
-﻿using Corelibs.AspNetApi.Controllers.ActionConstraints;
+﻿using Corelibs.AspNetApi.Controllers;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
@@ -31,11 +31,7 @@ namespace PageTree.Server.Controllers
             if (!User.Identity.IsAuthenticated)
                 return BadRequest();
 
-            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (idClaim == null)
-                return BadRequest();
-
-            var appCommand = new CreateUserCommand(idClaim.Value);
+            var appCommand = new CreateUserCommand();
             return await _mediator.SendAndGetPostResponse(appCommand);
         }
     }

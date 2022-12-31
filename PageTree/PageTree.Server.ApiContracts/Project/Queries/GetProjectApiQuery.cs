@@ -1,8 +1,9 @@
-﻿using PageTree.Server.ApiContracts.Attributes;
+﻿using Common.Basic.CQRS.Query;
+using Corelibs.Basic.Net;
 
 namespace PageTree.Server.ApiContracts.Project
 {
-    public class GetProjectApiQuery
+    public class GetProjectApiQuery : IApiQuery
     {
         [FromRoute]
         public string ID { get; set; }

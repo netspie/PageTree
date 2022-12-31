@@ -1,16 +1,17 @@
 ﻿using Common.Basic.Blocks;
+using Common.Basic.CQRS.Query;
 using Common.Basic.Repository;
 using Mediator;
 using PageTree.Domain.Projects;
 
 namespace PageTree.App.ProjectUserLists.Queries;
 
-public class GetProjectUserListOfIDQueryHandler : IQueryHandler<GetProjectUserListQuery, Result<GetProjectUserListQueryOut>>
+public class GetProjectUserListQueryHandler : Mediator.IQueryHandler<GetProjectUserListQuery, Result<GetProjectUserListQueryOut>>
 {
     private IRepository<Project> _projectRepository;
     private IRepository<ProjectUserList> _projectUserListRepository;
 
-    public GetProjectUserListOfIDQueryHandler(IRepository<Project> projectRepository, IRepository<ProjectUserList> projectUserListRepository)
+    public GetProjectUserListQueryHandler(IRepository<Project> projectRepository, IRepository<ProjectUserList> projectUserListRepository)
     {
         _projectRepository = projectRepository;
         _projectUserListRepository = projectUserListRepository;
@@ -32,7 +33,7 @@ public class GetProjectUserListOfIDQueryHandler : IQueryHandler<GetProjectUserLi
     }
 }
 
-public sealed record GetProjectUserListQuery(string ID) : IQuery<Result<GetProjectUserListQueryOut>>;
+public sealed record GetProjectUserListQuery(string ID) : IQuery<Result<GetProjectUserListQueryOut>>, IGetQuery;
 public sealed record GetProjectUserListQueryOut(ProjectUserListVM ProjectUserListVM);
 
 public sealed record ProjectUserListVM(string ID, ProjectVM[] Projects);

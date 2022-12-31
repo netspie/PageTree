@@ -7,7 +7,7 @@ namespace PageTree.Server.ApiContracts.Pages
     {
         public Pages_ApiToApp_MapProfile()
         {
-            CreateMap<GetPageApiQuery, GetPageOfIDQuery>();
+            CreateMap<GetPageApiQuery, GetPageQuery>();
             CreateMap<CreatePageApiCommand, CreatePageCommand>();
         }
     }

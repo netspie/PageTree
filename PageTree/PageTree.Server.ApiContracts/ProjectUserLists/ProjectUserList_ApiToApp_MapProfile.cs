@@ -1,13 +1,13 @@
-﻿using AutoMapper;
-using PageTree.App.ProjectUserLists.Queries;
+﻿using PageTree.App.ProjectUserLists.Queries;
+using PageTree.Server.ApiContracts.Common;
 
 namespace PageTree.Server.ApiContracts.Pages
 {
-    public class ProjectUserList_ApiToApp_MapProfile : Profile
+    public class ProjectUserList_ApiToApp_MapProfile : BaseProfile
     {
         public ProjectUserList_ApiToApp_MapProfile()
         {
-            CreateMap<GetProjectUserListApiQuery, GetProjectUserListQuery>();
+            CreateMapCirc<GetProjectUserListApiQuery, GetProjectUserListQuery>();
         }
     }
 }

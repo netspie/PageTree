@@ -27,7 +27,7 @@ namespace PageTree.Server.Api.Controllers
 
         [HttpGet, Route_ID, AllowAnonymous]
         public Task<IActionResult> Get([FromQuery] GetPageApiQuery query) =>
-            _mediator.MapSendAndGetResponse<GetPageOfIDQuery, GetPageOfIDQueryOut>(query, _mapper);
+            _mediator.MapSendAndGetResponse<GetPageQuery, GetPageQueryOut>(query, _mapper);
 
         [HttpGet]
         public Task<IActionResult> GetAll([FromQuery] GetPagesApiQuery query) =>

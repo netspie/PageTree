@@ -1,5 +1,6 @@
 ﻿@inherits ComponentBase
 @page "/pagetree/learn/projects/{ProjectID?}"
+@using PageTree.App.Projects.Commands;
 @using PageTree.App.Projects.Queries;
 
 <PageTitle>PageTree</PageTitle>
@@ -57,7 +58,8 @@
     [Parameter]
     public string? ProjectID { get; set; }
 
-    [Inject] private ProjectsService ProjectsService { get; set; }
+    [Inject] private IQueryExecutor Queries { get; set; }
+    [Inject] private ICommandExecutor Commands { get; set; }
 
     private ProjectVM _projectVM = new ProjectVM("", "", "");
 
@@ -70,7 +72,7 @@
 
     private async Task RefreshVM()
     {
-        var projectOut = await ProjectsService.GetProject(ProjectID);
+        var projectOut = await Queries.Execute<GetProjectQuery, GetProjectQueryOut>(ProjectID);
         if (projectOut != null)
             _projectVM = projectOut.ProjectVM;
 
@@ -117,7 +119,7 @@
         if (!_hasEdit)
             return;
 
-        await ProjectsService.EditProject(_projectVM.ID, _name, _description);
+        await Commands.Execute(new EditProjectCommand(_projectVM.ID, _name, _description));
         await RefreshVMAndView();
     }
 }

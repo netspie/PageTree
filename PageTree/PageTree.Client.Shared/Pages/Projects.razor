@@ -1,6 +1,8 @@
 ﻿@inherits ComponentBase
 @page "/pagetree/learn/projects"
 @using PageTree.App.ProjectUserLists.Queries;
+@using PageTree.App.Projects.Commands;
+@using PageTree.App.UseCases.Users.Queries;
 
 <PageTitle>PageTree</PageTitle>
 
@@ -32,9 +34,8 @@
 </div>
 
 @code {
-    [Inject] private UsersService UsersService { get; set; }
-    [Inject] private ProjectUserListsService ProjectUserListsService { get; set; }
-    [Inject] private ProjectsService ProjectService { get; set; }
+    [Inject] private IQueryExecutor Queries { get; set; }
+    [Inject] private ICommandExecutor Commands { get; set; }
 
     private ProjectUserListVM _projectUserListVM = new(string.Empty, new ProjectVM[] {});
 
@@ -45,15 +46,15 @@
 
     private async Task Refresh()
     {
-        var user = await UsersService.GetUser();
-        var projectList = await ProjectUserListsService.GetProjectUserList(user.ProjectUserListID);
+        var user = await Queries.Execute<GetUserQuery, GetUserQueryOut>();
+        var projectList = await Queries.Execute<GetProjectUserListQuery, GetProjectUserListQueryOut>(user.ProjectUserListID);
         if (projectList != null)
             _projectUserListVM = projectList.ProjectUserListVM;
     }
 
     private async Task AddProject()
     {
-        await ProjectService.CreateProject();
+        await Commands.Execute<CreateProjectCommand>(_projectUserListVM.ID);
         await Refresh();
         await InvokeAsync(StateHasChanged);
     }

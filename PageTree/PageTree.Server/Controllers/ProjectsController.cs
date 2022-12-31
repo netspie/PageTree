@@ -12,6 +12,7 @@ using PageTree.Server.ApiContracts.Project;
 using PageTree.Server.Controllers;
 using PageTree.Domain.Projects;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+using Corelibs.AspNetApi.Controllers;
 
 namespace PageTree.Server.Api.Controllers
 {
@@ -31,14 +32,14 @@ namespace PageTree.Server.Api.Controllers
 
         [HttpGet, Route_ID, AllowAnonymous]
         public Task<IActionResult> Get([FromRouteAndQuery] GetProjectApiQuery query) =>
-            _mediator.MapSendAndGetResponse<GetProjectOfIDQuery, GetProjectOfIDQueryOut>(query, _mapper);
+            _mediator.MapSendAndGetResponse<GetProjectQuery, GetProjectQueryOut>(query, _mapper);
 
-        [HttpPost, Action_Create]
-        public Task<IActionResult> Create() =>
-            _mediator.SendAndGetPostResponse(new CreateProjectCommand(UserID));
+        [HttpPost]
+        public Task<IActionResult> Create([FromRouteAndBody] CreateProjectApiCommand command) =>
+            _mediator.MapSendAndGetPutResponse<CreateProjectCommand>(command, _mapper);
 
-        [HttpPut, Route_ID, Action_Edit, Authorize_Edit_Project]
-        public Task<IActionResult> Edit([FromRouteAndBody] EditProjectApiCommand command) =>
+        [HttpPut, Route_ID, Authorize_Edit_Project]
+        public Task<IActionResult> Replace([FromRouteAndBody] EditProjectApiCommand command) =>
             _mediator.MapSendAndGetPutResponse<EditProjectCommand>(command, _mapper);
     }
 

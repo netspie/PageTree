@@ -1,5 +1,6 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
+using Corelibs.Basic.Architecture.DDD;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain.Projects;
@@ -11,24 +12,29 @@ namespace PageTree.App.UseCases.Users.Commands
     {
         private IRepository<User> _userRepository;
         private IRepository<ProjectUserList> _projectUserListRepository;
+        private IAccessor<CurrentUser> _currentUserAccessor;
 
         public CreateUserCommandHandler(
-            IRepository<User> userRepository, 
-            IRepository<ProjectUserList> projectUserListRepository)
+            IRepository<User> userRepository,
+            IRepository<ProjectUserList> projectUserListRepository,
+            IAccessor<CurrentUser> currentUserAccessor)
         {
             _userRepository = userRepository;
             _projectUserListRepository = projectUserListRepository;
+            _currentUserAccessor = currentUserAccessor;
         }
 
         public async ValueTask<Result> Handle(CreateUserCommand command, CancellationToken ct)
         {
             var result = Result.Success();
 
-            var user = await _userRepository.Get(command.UserID, result);
+            var currentUser = _currentUserAccessor.Get();
+
+            var user = await _userRepository.Get(currentUser.ID, result);
             if (!result.IsSuccess || user != null)
                 return result;
 
-            user = new User(command.UserID);
+            user = new User(currentUser.ID);
 
             var projectUserList = new ProjectUserList(NewID, user.ID);
             await _projectUserListRepository.Save(projectUserList, result);
@@ -43,5 +49,5 @@ namespace PageTree.App.UseCases.Users.Commands
         }
     }
 
-    public record CreateUserCommand(string UserID) : ICommand<Result>;
+    public record CreateUserCommand() : ICommand<Result>;
 }
