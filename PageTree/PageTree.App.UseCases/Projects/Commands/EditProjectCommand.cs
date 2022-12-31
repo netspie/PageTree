@@ -1,5 +1,6 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
+using Corelibs.Basic.Architecture.CQRS.Command.Types;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain.Projects;
@@ -33,4 +34,4 @@ public class EditProjectCommandHandler : BaseCommandHandler, ICommandHandler<Edi
     }
 }
 
-public sealed record EditProjectCommand(string ID, string Name, string Description) : ICommand<Result>;
+public sealed record EditProjectCommand(string ID, string Name, string Description) : ICommand<Result>, IReplaceCommand;

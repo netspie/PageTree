@@ -22,7 +22,7 @@ namespace PageTree.Client.Shared.Services
                 return GetResource<GetUserQueryOut, GetUserApiQuery>(q, $"{_baseRoute}/users/{q.ID}");
             });
 
-            Add<GetProjectUserListApiQuery, GetProjectUserListQuery, GetProjectUserListQueryOut>("projectsUserLists");
+            Add<GetProjectUserListApiQuery, GetProjectUserListQuery, GetProjectUserListQueryOut>("projectUserLists");
             Add<GetProjectApiQuery, GetProjectQuery, GetProjectQueryOut>("projects");
         }
     }

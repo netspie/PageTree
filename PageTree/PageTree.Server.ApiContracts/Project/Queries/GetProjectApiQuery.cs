@@ -1,4 +1,4 @@
-﻿using Common.Basic.CQRS.Query;
+﻿using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Corelibs.Basic.Net;
 
 namespace PageTree.Server.ApiContracts.Project

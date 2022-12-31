@@ -1,6 +1,6 @@
 ﻿using Common.Basic.Blocks;
-using Common.Basic.CQRS.Query;
 using Common.Basic.Repository;
+using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Mediator;
 using PageTree.Domain.Projects;
 

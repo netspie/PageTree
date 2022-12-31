@@ -27,7 +27,11 @@ namespace PageTree.Server.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet, Route_ID, AllowAnonymous]
+        [HttpGet, AllowAnonymous]
+        public Task<IActionResult> Get() =>
+            _mediator.MapSendAndGetResponse<GetProjectUserListQuery, GetProjectUserListQueryOut>(new object(), _mapper);
+
+        [HttpGet, Route("{id}"), AllowAnonymous]
         public Task<IActionResult> Get([FromRouteAndQuery] GetProjectUserListApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetProjectUserListQuery, GetProjectUserListQueryOut>(query, _mapper);
     }

@@ -1,7 +1,7 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Collections;
-using Common.Basic.CQRS.Query;
 using Common.Basic.Repository;
+using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Corelibs.Basic.Architecture.DDD;
 using Mediator;
 using PageTree.Domain.Users;
