@@ -41,11 +41,11 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> Delete([FromQuery] DeletePageApiCommand command) =>
             _mediator.MapSendAndGetDeleteResponse<CreatePageCommand>(command, _mapper);
 
-        [HttpPatch, Route_ID, Action_ChangeName]
+        [HttpPut, Route("{name}")]
         public Task<IActionResult> ChangeName([FromBody] ChangePageNameApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageCommand>(command, _mapper);
 
-        [HttpPatch, Route_ID, Action("changeSignature")]
+        [HttpPut, Route("{signature}")]
         public Task<IActionResult> ChangeSignature([FromBody] ChangePageSignatureApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeSignatureOfPageCommand>(command, _mapper);
     }

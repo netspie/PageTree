@@ -25,7 +25,7 @@ namespace PageTree.Server.Controllers
         public Task<IActionResult> Get() =>
             _mediator.SendAndGetResponse(new GetUserQuery(UserID));
 
-        [HttpPost, Action_Create]
+        [HttpPost]
         public async Task<IActionResult> Create()
         {
             if (!User.Identity.IsAuthenticated)

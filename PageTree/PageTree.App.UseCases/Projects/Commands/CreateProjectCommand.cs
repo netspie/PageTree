@@ -30,13 +30,13 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
         var result = Result.Success();
 
         var projectList = await _projectUserListRepository.Get(command.ProjectUserListID, result);
-        if (!result.IsSuccess || projectList != null)
-            return result;
+        if (!result.IsSuccess || projectList == null)
+            return result.Fail();
 
         var rootPage = new Page(NewID);
 
-        var project = new Project(NewID, rootPage.ID, user.ID);
-        if (!projectList.ProjectsCreatedIDs.Create(projectID))
+        var project = new Project(NewID, rootPage.ID, projectList.OwnerID);
+        if (!projectList.ProjectsCreatedIDs.Create(project.ID))
             return result.Fail();
 
         await _pageRepository.Save(rootPage, result);

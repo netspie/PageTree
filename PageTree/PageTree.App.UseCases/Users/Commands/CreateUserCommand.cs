@@ -36,6 +36,10 @@ namespace PageTree.App.UseCases.Users.Commands
                 return result;
 
             user.ProjectUserListID = projectUserList.ID;
+
+            await _userRepository.Save(user, result);
+
+            return result;
         }
     }
 
