@@ -1,5 +1,5 @@
 ﻿@inherits ComponentBase
-@page "/pagetree/learn/projects"
+@attribute [Route(Uris.Projects)]
 @using PageTree.App.ProjectUserLists.Queries;
 @using PageTree.App.Projects.Commands;
 @using PageTree.App.UseCases.Users.Queries;
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <footer class="card-footer">
-                @{var editUri = $"/pagetree/learn/projects/{@project.ID}"; }
+                @{var editUri = $"{Uris.Projects}/{@project.ID}"; }
                 <NavLink href="@editUri" class="card-footer-item">
                     <div class=class="card-footer-item">Edit</div>
                 </NavLink>
