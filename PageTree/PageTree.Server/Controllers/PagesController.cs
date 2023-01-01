@@ -1,6 +1,7 @@
 using AutoMapper;
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
+using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace PageTree.Server.Api.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class PagesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -26,7 +27,7 @@ namespace PageTree.Server.Api.Controllers
         }
 
         [HttpGet, Route_ID, AllowAnonymous]
-        public Task<IActionResult> Get([FromQuery] GetPageApiQuery query) =>
+        public Task<IActionResult> Get([FromRouteAndQuery] GetPageApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetPageQuery, GetPageQueryOut>(query, _mapper);
 
         [HttpGet]
