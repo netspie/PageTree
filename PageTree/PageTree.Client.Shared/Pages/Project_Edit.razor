@@ -58,8 +58,9 @@
     [Parameter]
     public string? ProjectID { get; set; }
 
-    [Inject] private IQueryExecutor Queries { get; set; }
-    [Inject] private ICommandExecutor Commands { get; set; }
+    [Inject] private NavigationManager _navigation { get; set; }
+    [Inject] private IQueryExecutor _queries { get; set; }
+    [Inject] private ICommandExecutor _commands { get; set; }
 
     private ProjectVM _projectVM = new ProjectVM("", "", "");
 
@@ -72,7 +73,7 @@
 
     private async Task RefreshVM()
     {
-        var projectOut = await Queries.Execute<GetProjectQuery, GetProjectQueryOut>(ProjectID);
+        var projectOut = await _queries.Execute<GetProjectQuery, GetProjectQueryOut>(ProjectID);
         if (projectOut != null)
             _projectVM = projectOut.ProjectVM;
 
@@ -119,7 +120,8 @@
         if (!_hasEdit)
             return;
 
-        await Commands.Execute(new EditProjectCommand(_projectVM.ID, _name, _description));
+        await _commands.Execute(new EditProjectCommand(_projectVM.ID, _name, _description));
         await RefreshVMAndView();
+        _navigation.NavigateTo(Uris.Projects);
     }
 }
