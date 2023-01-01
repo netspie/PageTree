@@ -1,6 +1,6 @@
 ﻿using Common.Basic.DDD;
 
-namespace Practicer.Domain.Practice
+namespace PageTree.Domain.Practice
 {
     public class PracticeTactic : Entity
     {

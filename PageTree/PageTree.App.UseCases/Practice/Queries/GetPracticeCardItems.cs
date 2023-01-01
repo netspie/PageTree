@@ -3,7 +3,7 @@ using Common.Basic.Collections;
 using Common.Basic.Repository;
 using PageTree.App.Common;
 using PageTree.Domain;
-using Practicer.Domain.Practice;
+using PageTree.Domain.Practice;
 
 namespace PageTree.App.Practice.Queries;
 

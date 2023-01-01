@@ -23,9 +23,14 @@
                 </div>
             </div>
             <footer class="card-footer">
-                @{var editUri = $"{Uris.Projects}/{@project.ID}"; }
-                <NavLink href="@editUri" class="card-footer-item">
+                @{var projectEditUri = $"{Uris.Projects}/{@project.ID}"; }
+                <NavLink href="@projectEditUri" class="card-footer-item">
                     <div class=class="card-footer-item">Edit</div>
+                </NavLink>
+
+                @{var pageUri = $"{projectEditUri}/pages/{@project.RootPageID}"; }
+                <NavLink href="@pageUri" class="card-footer-item">
+                    <div class=class="card-footer-item">Pages</div>
                 </NavLink>
             </footer>
         </div>

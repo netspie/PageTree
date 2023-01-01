@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Repository;
-using Common.Basic.DDD;
+﻿using Common.Basic.DDD;
 using Common.Basic.Repository;
 using Corelibs.AspNetApi.Authorization;
 using Corelibs.Basic.Repository;
@@ -9,12 +8,9 @@ using Corelibs.MongoDB.Logging;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using PageTree.App.UseCases;
-using PageTree.Domain.Practice;
 using PageTree.Server.Data;
 using PageTree.Server.DataUpdates;
-using Practicer.Domain.Practice;
 
 namespace PageTree.Server.Api
 {
@@ -41,12 +37,8 @@ namespace PageTree.Server.Api
             services.AddJsonDbRepository<Domain.Projects.Project, PageTree.Server.Data.Project>(nameof(AppDbContext.Projects));
             services.AddJsonDbRepository<Domain.Page, PageTree.Server.Data.Page>(nameof(AppDbContext.Pages));
             services.AddJsonDbRepository<Domain.Signature, PageTree.Server.Data.Signature>(nameof(AppDbContext.Signatures));
-
-            services.AddSingleton<IRepository<PracticeCategory>>(sp =>
-               new WWWRootHttpClientRepository<PracticeCategory>(sp.GetRequiredService<HttpClient>(), "", ""));
-
-            services.AddSingleton<IRepository<PracticeTactic>>(sp =>
-               new WWWRootHttpClientRepository<PracticeTactic>(sp.GetRequiredService<HttpClient>(), "", ""));
+            services.AddJsonDbRepository<Domain.Practice.PracticeCategory, PageTree.Server.Data.PracticeCategory>(nameof(AppDbContext.PracticeCategories));
+            services.AddJsonDbRepository<Domain.Practice.PracticeTactic, PageTree.Server.Data.PracticeTactic>(nameof(AppDbContext.PracticeTactics));
         }
 
         private static void AddResourceAuthorizationHandlers(this IServiceCollection services)

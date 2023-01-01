@@ -12,6 +12,8 @@ namespace PageTree.Server.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<Signature> Signatures { get; set; }
+        public DbSet<PracticeCategory> PracticeCategories { get; set; }
+        public DbSet<PracticeTactic> PracticeTactics { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -32,6 +34,8 @@ namespace PageTree.Server.Data
     public class Project : JsonEntity {}
     public class Page : JsonEntity {}
     public class Signature : JsonEntity {}
+    public class PracticeCategory : JsonEntity {}
+    public class PracticeTactic : JsonEntity {}
 
     static class ModelBuilderExtensions
     {

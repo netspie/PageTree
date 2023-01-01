@@ -1,4 +1,4 @@
-﻿namespace Practicer.Domain.Practice
+﻿namespace PageTree.Domain.Practice
 {
     public class PracticeTacticItem
     {

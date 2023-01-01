@@ -120,6 +120,9 @@
 @code {
     //[Inject] private IPagesService PagesService { get; set; }
 
+    [Parameter] public string ProjectID { get; set; }
+    [Parameter] public string PageID { get; set; }
+
     private PageVM _vm = new PageVM();
     private PracticeCardDTO[] _practiceCards = Array.Empty<PracticeCardDTO>();
     private int _currentCardIndex;
