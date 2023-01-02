@@ -1,5 +1,10 @@
-﻿@using PageTree.App.UseCases.Users.Commands;
+﻿@using Common.Basic.Collections;
+@using Newtonsoft.Json;
+@using PageTree.App.UseCases.Users.Commands;
 @using global::PageTree.Client.Shared.Services;
+@using Blazored.LocalStorage;
+@using System.Linq;
+
 @inject IAuthUser _authUser
 @inject NavigationManager _navigation
 
@@ -17,14 +22,55 @@
 
 @code {
     [Inject] private ICommandExecutor Commands { get; set; }
+    [Inject] private ILocalStorageService LocalStorage { get; set; }
 
     [Parameter]
     public string Class { get; set; } = new("");
     private bool _isSignedIn = false;
 
+    public async Task<bool> ClearTokenIfExpired()
+    {
+        var keys = (await LocalStorage.KeysAsync()).Where(k =>
+            k.Contains("telemetry") ||
+            k.Contains("pagetree.b2clogin.com")).ToArray();
+
+        var accessTokenKey = keys.FirstOrDefault(k => k.Contains("accesstoken"));
+        if (accessTokenKey.IsNullOrEmpty())
+            return false;
+
+        var accessTokenObject = await LocalStorage.GetItemAsStringAsync(accessTokenKey);
+        if (accessTokenObject.IsNullOrEmpty())
+            return false;
+
+        var accessTokenObjectDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(accessTokenObject);
+        if (accessTokenObjectDict.IsNullOrEmpty())
+            return false;
+
+        var accessTokenStr = accessTokenObjectDict["secret"];
+        if (accessTokenStr.IsNullOrEmpty())
+            return false;
+
+        var accessToken = new JwtSecurityToken(accessTokenStr);
+        var isExpiredToken = accessToken.IsExpiredToken(DateTime.UtcNow);
+        if (!isExpiredToken)
+            return false;
+
+        await LocalStorage.RemoveItemsAsync(keys);
+
+        return true;
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        _isSignedIn = await _authUser.IsSignedIn();
+        var isExpiredToken = await ClearTokenIfExpired();
+        if (isExpiredToken)
+        {
+            _navigation.NavigateTo(_navigation.BaseUri, forceLoad: true);
+            // send message
+        }
+        else
+            _isSignedIn = await _authUser.IsSignedIn();
+
         _authUser.OnAuthenticatedStateChanged += OnAuthenticatedStateChanged;
 
         if (_isSignedIn)

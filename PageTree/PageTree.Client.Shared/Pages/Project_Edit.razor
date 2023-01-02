@@ -92,6 +92,9 @@
     private void OnNameEdit(ChangeEventArgs args)
     {
         _name = args.Value as string;
+        _name = _name.Trim();
+        args.Value = _name;
+
         UpdateEditIfAny();
     }
 
@@ -100,6 +103,9 @@
     private void OnDescriptionEdit(ChangeEventArgs args)
     {
         _description = args.Value as string;
+        _description = _description.Trim();
+        args.Value = _description;
+
         UpdateEditIfAny();
     }
 
@@ -107,6 +113,9 @@
     private void UpdateEditIfAny()
     {
         _hasEdit = false;
+        
+        _description.Trim();
+
 
         if (_name != _projectVM.Name)
             _hasEdit = true;
