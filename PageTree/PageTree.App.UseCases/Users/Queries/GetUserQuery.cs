@@ -4,6 +4,7 @@ using Common.Basic.Repository;
 using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Corelibs.Basic.Architecture.DDD;
 using Mediator;
+using PageTree.App.UseCases.Common;
 using PageTree.Domain.Users;
 
 namespace PageTree.App.UseCases.Users.Queries;
@@ -40,4 +41,4 @@ public sealed record GetUserQuery(string ID) : IQuery<Result<GetUserQueryOut>>, 
     public GetUserQuery() : this("") {}
 }
 
-public sealed record GetUserQueryOut(string ID, string ProjectUserListID);
+public sealed record GetUserQueryOut(string ID, string ProjectUserListID) : QueryOut;

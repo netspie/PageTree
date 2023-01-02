@@ -1,8 +1,9 @@
-﻿@inherits ComponentBase
-@attribute [Route(Uris.Projects)]
+﻿@using Corelibs.Basic.Collections;
 @using PageTree.App.ProjectUserLists.Queries;
 @using PageTree.App.Projects.Commands;
 @using PageTree.App.UseCases.Users.Queries;
+@inherits ComponentBase
+@attribute [Route(Uris.Projects)]
 
 <PageTitle>PageTree</PageTitle>
 
@@ -41,6 +42,7 @@
 @code {
     [Inject] private IQueryExecutor Queries { get; set; }
     [Inject] private ICommandExecutor Commands { get; set; }
+    [Inject] private NavigationManager Navigation { get; set; }
 
     private ProjectUserListVM _projectUserListVM = new(string.Empty, new ProjectVM[] {});
 
@@ -52,9 +54,20 @@
     private async Task Refresh()
     {
         var user = await Queries.Execute<GetUserQuery, GetUserQueryOut>();
+        if (!user || !user.ProjectUserListID.IsID())
+        {
+            Navigation.NavigateToBase();
+            return;
+        }
+
         var projectList = await Queries.Execute<GetProjectUserListQuery, GetProjectUserListQueryOut>(user.ProjectUserListID);
-        if (projectList != null)
-            _projectUserListVM = projectList.ProjectUserListVM;
+        if (projectList == null)
+        {
+            Navigation.NavigateToBase();
+            return;
+        }
+
+        _projectUserListVM = projectList.ProjectUserListVM;
     }
 
     private async Task AddProject()

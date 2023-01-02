@@ -2,6 +2,7 @@
 using Common.Basic.Repository;
 using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Mediator;
+using PageTree.App.UseCases.Common;
 using PageTree.Domain.Projects;
 
 namespace PageTree.App.ProjectUserLists.Queries;
@@ -37,4 +38,4 @@ public sealed record GetProjectUserListQuery(string ID) : IQuery<Result<GetProje
 public sealed record GetProjectUserListQueryOut(ProjectUserListVM ProjectUserListVM);
 
 public sealed record ProjectUserListVM(string ID, ProjectVM[] Projects);
-public sealed record ProjectVM(string ID, string Name, string Description, string RootPageID);
+public sealed record ProjectVM(string ID, string Name, string Description, string RootPageID) : QueryOut;
