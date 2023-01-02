@@ -1,4 +1,4 @@
-﻿namespace PageTree.Server.ApiContracts.Pages
+﻿namespace PageTree.Server.ApiContracts
 {
     public class DeletePageApiCommand
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace PageTree.Server.ApiContracts.Common
+namespace PageTree.Server.ApiContracts
 {
     public abstract class BaseProfile : Profile
     {

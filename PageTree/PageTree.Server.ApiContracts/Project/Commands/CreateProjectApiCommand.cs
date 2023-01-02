@@ -1,10 +1,9 @@
 ﻿using Corelibs.Basic.Net;
 
-namespace PageTree.Server.ApiContracts.Project
+namespace PageTree.Server.ApiContracts
 {
     public class CreateProjectApiCommand
     {
-        [FromRoute]
         public string ProjectUserListID { get; set; }
 
         public CreateProjectApiCommand() {}

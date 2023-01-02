@@ -16,4 +16,8 @@
     <ProjectReference Include="..\PageTree.App.UseCases\PageTree.App.UseCases.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PagesSub\Queries\" />
+  </ItemGroup>
+
 </Project>

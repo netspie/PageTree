@@ -1,19 +1,32 @@
 ﻿using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
+using Practicer.Domain.Pages.Common;
 
 namespace PageTree.Domain
 {
     public class Page : Entity, IOwnedEntity
     {
-        public Page(string id) : base(id) {}
+        public Page() {}
+        public Page(string id) : base(id) { }
+        public Page(string id, string name) : this(id) { Name = name; }
+        public Page(string id, string name, string ownerID) : this(id, name) { OwnerID = ownerID; }
 
         public string OwnerID { get; set; } = new("");
-        public string Name { get; init; } = string.Empty;
+        public string Name { get; init; } = "New Page";
 
         public string SignatureID { get; init; } = new("");
 
         public string ParentID { get; init; } = new("");
+
+        /// <summary>
+        /// Ordered property ids. Contains of all of types of properties, like subpages, links etc.
+        /// </summary>
         public List<string> ChildrenIDs { get; init; } = new();
+
+        /// <summary>
+        /// Part of children ids. Subpage can have only one parent.
+        /// </summary>
+        public List<string> SubPages { get; private set; } = new();
 
         /// <summary>
         /// Should be independent of styling? I don't think so... at least partially
@@ -54,6 +67,9 @@ namespace PageTree.Domain
         public string BakedPageID { get; init; } = new("");
 
         public bool IsSubPage(string id) => true;
-            //SubPages.FirstOrDefault(p => p.ID == id) != null;
+        //SubPages.FirstOrDefault(p => p.ID == id) != null;
+        
+        public bool CreateSubPage(string id) =>
+            EditableItemOwnerFunctions_NoName.Create(id, ChildrenIDs, SubPages);
     }
 }

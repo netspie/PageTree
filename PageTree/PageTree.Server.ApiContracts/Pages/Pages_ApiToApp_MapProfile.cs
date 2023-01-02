@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PageTree.App.Pages.Queries;
 
-namespace PageTree.Server.ApiContracts.Pages
+namespace PageTree.Server.ApiContracts
 {
     public class Pages_ApiToApp_MapProfile : Profile
     {

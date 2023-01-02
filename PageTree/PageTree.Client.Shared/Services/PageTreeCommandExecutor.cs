@@ -2,7 +2,7 @@
 using Corelibs.BlazorShared;
 using PageTree.App.Projects.Commands;
 using PageTree.App.UseCases.Users.Commands;
-using PageTree.Server.ApiContracts.Project;
+using PageTree.Server.ApiContracts;
 
 namespace PageTree.Client.Shared.Services
 {
@@ -12,8 +12,11 @@ namespace PageTree.Client.Shared.Services
             : base("/api/v1", mapper, clientFactory, signInRedirector)
         {
             AddPost<CreateUserCommand>("users");
+
             AddPost<CreateProjectCommand, CreateProjectApiCommand>("projects");
             AddPut<EditProjectCommand, EditProjectApiCommand>("projects");
+
+            AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{parentID}/subpages");
         }
     }
 }

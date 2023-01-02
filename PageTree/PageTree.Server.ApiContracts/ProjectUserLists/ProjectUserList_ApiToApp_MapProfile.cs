@@ -1,7 +1,6 @@
 ﻿using PageTree.App.ProjectUserLists.Queries;
-using PageTree.Server.ApiContracts.Common;
 
-namespace PageTree.Server.ApiContracts.Pages
+namespace PageTree.Server.ApiContracts
 {
     public class ProjectUserList_ApiToApp_MapProfile : BaseProfile
     {

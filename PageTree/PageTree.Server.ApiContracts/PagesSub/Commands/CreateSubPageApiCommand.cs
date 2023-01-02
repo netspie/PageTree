@@ -2,9 +2,9 @@
 
 namespace PageTree.Server.ApiContracts
 {
-    public class GetPagesApiQuery
+    public class CreateSubPageApiCommand
     {
         [FromRoute]
-        public string Name { get; set; }
+        public string ParentID { get; set; }
     }
 }

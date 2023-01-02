@@ -125,7 +125,14 @@ namespace Practicer.Domain.Pages.Common
         private static bool CreateItemAndAdd<TItem>(string id, List<TItem> items)
            where TItem : class
         {
-            Activator.CreateInstance(typeof(TItem), new object[] { id })
+            var type = typeof(TItem);
+            if (type ==  typeof(string))
+            {
+                items.Add(id as TItem);
+                return true;
+            }
+
+            Activator.CreateInstance(type, id)
                             .As<TItem>()
                             .Then(item => items.Add(item));
 

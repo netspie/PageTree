@@ -1,9 +1,7 @@
 ﻿using PageTree.App.Projects.Commands;
 using PageTree.App.Projects.Queries;
-using PageTree.Server.ApiContracts.Common;
-using PageTree.Server.ApiContracts.Project;
 
-namespace PageTree.Server.ApiContracts.Projects
+namespace PageTree.Server.ApiContracts
 {
     public class Projects_ApiToApp_MapProfile : BaseProfile
     {

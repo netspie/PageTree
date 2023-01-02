@@ -4,8 +4,7 @@ using Corelibs.BlazorShared;
 using PageTree.App.Projects.Queries;
 using PageTree.App.ProjectUserLists.Queries;
 using PageTree.App.UseCases.Users.Queries;
-using PageTree.Server.ApiContracts.Pages;
-using PageTree.Server.ApiContracts.Project;
+using PageTree.Server.ApiContracts;
 
 namespace PageTree.Client.Shared.Services
 {

@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.UseCases.Users.Commands;
 using PageTree.App.UseCases.Users.Queries;
-using System.Security.Claims;
 
 namespace PageTree.Server.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/users")]
     [Authorize]
     public class UsersController : BaseController
     {

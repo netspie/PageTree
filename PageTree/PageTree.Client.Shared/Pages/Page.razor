@@ -5,6 +5,7 @@
 @using PageTree.App
 @using PageTree.App.Pages.Queries
 @using PageTree.App.Practice.Queries
+@using PageTree.App.Projects.Commands;
 @using PageTree.Domain
 @using System.Numerics;
 @inject IQueryExecutor QueryExecutor
@@ -123,14 +124,15 @@
         </div>
     }
     <nav class="page-navbar">
-        <button>
+        <button @onclick="CreateSubPage">
             <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
         </button> 
     </nav>
 </div>
 
 @code {
-    //[Inject] private IPagesService PagesService { get; set; }
+    [Inject] private ICommandExecutor _commands { get; set; }
+    [Inject] private IQueryExecutor _queries { get; set; }
 
     [Parameter] public string ProjectID { get; set; }
     [Parameter] public string PageID { get; set; }
@@ -193,7 +195,12 @@
     private void SwitchAnswerVisibility()
     {
         _answerVisible = !_answerVisible;
-
         InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CreateSubPage()
+    {
+        await _commands.Execute<CreateSubPageCommand>(PageID);
+        await InvokeAsync(StateHasChanged);
     }
 }

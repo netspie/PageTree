@@ -1,20 +1,19 @@
 using AutoMapper;
 using Corelibs.AspNetApi.Controllers;
-using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.ProjectUserLists.Queries;
-using PageTree.Server.ApiContracts.Pages;
+using PageTree.Server.ApiContracts;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace PageTree.Server.Api.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/projectUserLists")]
     [Authorize]
     public class ProjectUserListsController : BaseController
     {

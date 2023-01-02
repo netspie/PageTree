@@ -1,7 +1,7 @@
 ﻿using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Corelibs.Basic.Net;
 
-namespace PageTree.Server.ApiContracts.Pages
+namespace PageTree.Server.ApiContracts
 {
     public class GetProjectUserListApiQuery : IApiQuery
     {

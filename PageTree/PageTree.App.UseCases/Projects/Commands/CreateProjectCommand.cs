@@ -33,7 +33,7 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
         if (!result.IsSuccess || projectList == null)
             return result.Fail();
 
-        var rootPage = new Page(NewID);
+        var rootPage = new Page(NewID, "Root Page", projectList.OwnerID);
 
         var project = new Project(NewID, rootPage.ID, projectList.OwnerID);
         if (!projectList.ProjectsCreatedIDs.Create(project.ID))

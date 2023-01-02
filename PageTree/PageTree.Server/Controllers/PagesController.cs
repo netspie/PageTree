@@ -6,14 +6,14 @@ using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Pages.Queries;
-using PageTree.Server.ApiContracts.Pages;
+using PageTree.Server.ApiContracts;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace PageTree.Server.Api.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/pages")]
     [Authorize]
     public class PagesController : ControllerBase
     {
