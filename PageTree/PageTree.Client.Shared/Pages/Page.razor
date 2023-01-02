@@ -19,17 +19,24 @@
         }
 
         <div class="page-path-contents">
-            @for (int i = 0; i < _vm.Path.Length; i++)
-            {
-                var pathIdentity = _vm.Path[i];
-                <button class="page-path-button" @onclick="@((args) => LoadPage(pathIdentity.ID))">
-                    @pathIdentity.Name
-                    @if (i < _vm.Path.Length - 1)
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    @for (int i = 0; i < _vm.Path.Length; i++)
                     {
-                        <span>&nbsp;/&nbsp;</span>
+                        var pathIdentity = _vm.Path[i];
+                        <li><a href="#" @onclick="@((args) => LoadPage(pathIdentity.ID))">Bulma</a></li>
+
+                        @*<button class="page-path-button" @onclick="@((args) => LoadPage(pathIdentity.ID))">
+                            @pathIdentity.Name
+                            @if (i < _vm.Path.Length - 1)
+                            {
+                                <span>&nbsp;/&nbsp;</span>
+                            }
+                        </button>*@
                     }
-                </button>
-            }
+                </ul>
+            </nav>
+
         </div>
     </p>
     <div>
@@ -115,6 +122,11 @@
             </div>
         </div>
     }
+    <nav class="page-navbar">
+        <button>
+            <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
+        </button> 
+    </nav>
 </div>
 
 @code {
@@ -123,7 +135,14 @@
     [Parameter] public string ProjectID { get; set; }
     [Parameter] public string PageID { get; set; }
 
-    private PageVM _vm = new PageVM();
+    private PageVM _vm = new PageVM()
+    {
+        Identity = new IdentityVM()
+        {
+            Name = "Root Page"
+        }
+    };
+
     private PracticeCardDTO[] _practiceCards = Array.Empty<PracticeCardDTO>();
     private int _currentCardIndex;
     private bool _answerVisible;
@@ -133,7 +152,7 @@
         //var dto = await QueryExecutor.Execute<GetPageOfIDQueryOut>(new GetPageOfIDQuery("asd"));
         //RefreshPage();
         //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
-
+        Console.WriteLine("Page");
     }
 
     private Task RefreshPage() => Task.CompletedTask;

@@ -26,4 +26,8 @@
     <ProjectReference Include="..\PageTree.Server.ApiContracts\PageTree.Server.ApiContracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\icons\" />
+  </ItemGroup>
+
 </Project>

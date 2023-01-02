@@ -64,11 +64,11 @@
         _currentUri == _baseUri;
 
     private bool IsJapaneseArcanaLearn() =>
-        _currentUri.StartsWith($"{_baseUri}{LearnRoute}");
+        _currentUri.ToLower().StartsWith($"{_baseUri}{LearnRoute}");
 
     private bool IsPageTreeHome() =>
-        _currentUri.StartsWith($"{_baseUri}{PageTreeRoute}");
+        _currentUri.ToLower().StartsWith($"{_baseUri}{PageTreeRoute}");
 
     private bool IsPageTreeLearn() =>
-        _currentUri.StartsWith($"{_baseUri}{PageTreeRoute}/{LearnRoute}");
+        _currentUri.ToLower().StartsWith($"{_baseUri}{PageTreeRoute}/{LearnRoute}");
 }

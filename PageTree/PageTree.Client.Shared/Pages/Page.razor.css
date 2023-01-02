@@ -1,0 +1,16 @@
+﻿.page-icon {
+    color: black;
+    filter: opacity(60%);
+
+    top: 50%;
+}
+
+.page-navbar {
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
