@@ -36,7 +36,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var res = Result<GetPageQueryOut>.Success();
 
         var page = await _pageRepository.Get(query.ID, res);
-        
+
         var project = await _projectRepository.Get(page.ProjectID, res);
         var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, res);
         var practiceTacticRoot = await _practiceTacticRepository.Get(project.PracticeTacticRootID, res);
@@ -56,13 +56,13 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
             await GetParentPage(parentPage, pages);
         }
 
-        var pages = new List<Page>();
-        await GetParentPage(page, pages);
-        pages.Reverse();
+        var parentPages = new List<Page>();
+        await GetParentPage(page, parentPages);
+        parentPages.Reverse();
         return res.With(new GetPageQueryOut(
             new PageVM()
             {
-                Path = pages
+                Path = parentPages
                     .Select(p => new IdentityVM()
                     {
                         ID = p.ID,
@@ -88,7 +88,6 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                     ID = p.ID,
                     Name = p.Name
                 }).ToArray()
-
             }
         ));
     }

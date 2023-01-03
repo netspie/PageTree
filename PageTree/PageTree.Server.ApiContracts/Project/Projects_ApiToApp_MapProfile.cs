@@ -10,6 +10,7 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<GetProjectApiQuery, GetProjectQuery>();
             CreateMapCirc<CreateProjectApiCommand, CreateProjectCommand>();
             CreateMapCirc<EditProjectApiCommand, EditProjectCommand>();
+            CreateMapCirc<ArchiveProjectApiCommand, ArchiveProjectCommand>();
         }
     }
 }

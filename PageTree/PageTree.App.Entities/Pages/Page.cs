@@ -26,9 +26,9 @@ namespace PageTree.Domain
         public string ProjectID { get; set; } = new("");
         public string Name { get; set; } = "New Page";
 
-        public string SignatureID { get; private set; } = new("");
+        public string SignatureID { get; set; } = new("");
 
-        public string ParentID { get; private set; } = new("");
+        public string ParentID { get; set; } = new("");
 
         /// <summary>
         /// Ordered property ids. Contains of all of types of properties, like subpages, links etc.

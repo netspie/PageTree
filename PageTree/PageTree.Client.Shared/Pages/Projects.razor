@@ -26,12 +26,36 @@
             <footer class="card-footer">
                 @{var projectEditUri = $"{Uris.Projects}/{@project.ID}"; }
                 <NavLink href="@projectEditUri" class="card-footer-item">
-                    <div class=class="card-footer-item">Edit</div>
+                    <div class="card-footer-item">Edit</div>
+                </NavLink>
+
+                <NavLink class="card-footer-item" @onclick="(() => ArchiveProject(project.ID))">
+                    <div class="card-footer-item">Archive</div>
                 </NavLink>
 
                 @{var pageUri = $"{projectEditUri}/pages/{@project.RootPageID}"; }
                 <NavLink href="@pageUri" class="card-footer-item">
-                    <div class=class="card-footer-item">Pages</div>
+                    <div class="card-footer-item">Pages</div>
+                </NavLink>
+
+                @{var signaturesUri = $"{projectEditUri}/signatures/{@project.SignatureRootID}"; }
+                <NavLink href="@signaturesUri" class="card-footer-item">
+                    <div class="card-footer-item">Signatures</div>
+                </NavLink>
+
+                @{var templatePagesUri = $"{projectEditUri}/templatePages/{@project.TemplatePageRootID}"; }
+                <NavLink href="@templatePagesUri" class="card-footer-item">
+                    <div class="card-footer-item">Template Pages</div>
+                </NavLink>
+
+                @{var practiceCategoriesUri = $"{projectEditUri}/practiceCategories/{@project.PracticeCategoriesID}"; }
+                <NavLink href="@practiceCategoriesUri" class="card-footer-item">
+                    <div class="card-footer-item">Practice Categories</div>
+                </NavLink>
+
+                @{var practiceTacticsUri = $"{projectEditUri}/practiceTactics/{@project.PracticeTacticsID}"; }
+                <NavLink href="@practiceTacticsUri" class="card-footer-item">
+                    <div class="card-footer-item">Practice Tactics</div>
                 </NavLink>
             </footer>
         </div>
@@ -73,6 +97,13 @@
     private async Task AddProject()
     {
         await Commands.Execute<CreateProjectCommand>(_projectUserListVM.ID);
+        await Refresh();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ArchiveProject(string projectID)
+    {
+        await Commands.Execute(new ArchiveProjectCommand(projectID, _projectUserListVM.ID));
         await Refresh();
         await InvokeAsync(StateHasChanged);
     }

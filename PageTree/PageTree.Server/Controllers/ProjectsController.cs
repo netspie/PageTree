@@ -40,6 +40,10 @@ namespace PageTree.Server.Api.Controllers
         [HttpPut, Route_ID, Authorize_Edit_Project]
         public Task<IActionResult> Replace([FromRouteAndBody] EditProjectApiCommand command) =>
             _mediator.MapSendAndGetPutResponse<EditProjectCommand>(command, _mapper);
+
+        [HttpDelete, Route_ID, Authorize_Edit_Project]
+        public Task<IActionResult> Archive([FromRouteAndBody] ArchiveProjectApiCommand command) =>
+            _mediator.MapSendAndGetPutResponse<ArchiveProjectCommand>(command, _mapper);
     }
 
     public class Authorize_Edit_ProjectAttribute : Authorize_EditAttribute

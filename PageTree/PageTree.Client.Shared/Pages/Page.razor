@@ -2,6 +2,7 @@
 @attribute [Route(Uris.Page)]
 @using Common.Basic.Collections
 @using Common.Basic.Maths;
+@using Corelibs.Basic.Collections;
 @using PageTree.App
 @using PageTree.App.Pages.Queries
 @using PageTree.App.Practice.Queries
@@ -24,8 +25,7 @@
                     @for (int i = 0; i < _vm.Path.Length; i++)
                     {
                         var pathIdentity = _vm.Path[i];
-                        <li><a href="#" @onclick="@((args) => LoadPage(pathIdentity.ID))">Bulma</a></li>
-
+                        <li><a href="#" @onclick="@((args) => LoadPage(pathIdentity.ID))">@pathIdentity.Name</a></li>
                         @*<button class="page-path-button" @onclick="@((args) => LoadPage(pathIdentity.ID))">
                             @pathIdentity.Name
                             @if (i < _vm.Path.Length - 1)
@@ -47,7 +47,7 @@
 
         <span class="signature-text">@_vm.SignatureIdentity.Name</span>
         <div>
-            <input class="page-name-input is-size-2" type="text" placeholder="e.g. Partnership opportunity" value="@_vm.Identity.Name" @oninput="OnNameEdit" @onfocusout="OnPageNameFocusOut" />
+            <input class="page-name-input is-size-2" type="text" placeholder="Enter the page name" value="@_vm.Identity.Name" @oninput="OnNameEdit" @onfocusout="OnPageNameFocusOut" />
         </div>
 
         <div class="page-property-list">
@@ -140,6 +140,15 @@
         <button class="page-tool-button" @onclick="CreateSubPage">
             <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
         </button>
+        <button class="page-tool-button" >
+            <img src="_content/PageTree.Client.Shared/images/icons/arrow-left-bold.png" class="page-icon" />
+        </button>
+        <button class="page-tool-button" >
+            <img src="_content/PageTree.Client.Shared/images/icons/arrow-right-bold.png" class="page-icon" />
+        </button>
+        <button class="page-tool-button" @onclick="OnNavigateUp">
+            <img src="_content/PageTree.Client.Shared/images/icons/arrow-up-bold-box.png" class="page-icon" />
+        </button>
     </nav>
 </div>
 
@@ -183,8 +192,8 @@
 
     private async Task LoadPage(string pageID)
     {
-        //_vm = await PagesService.GetPage(string.Empty);
-        await InvokeAsync(StateHasChanged);
+        PageID = pageID;
+        await RefreshVMAndView();
     }
 
     private async Task LoadPracticeCard(string tacticID)
@@ -241,5 +250,15 @@
     private void OnPageNameFocusOut(FocusEventArgs args)
     {
         Console.WriteLine("Focus Out");
+    }
+
+    private async Task OnNavigateUp()
+    {
+        var parentID = _vm.Path.LastOrDefault()?.ID;
+        if (!parentID.IsID() || parentID == PageID)
+            return;
+
+        PageID = parentID;
+        await RefreshVMAndView();
     }
 }
