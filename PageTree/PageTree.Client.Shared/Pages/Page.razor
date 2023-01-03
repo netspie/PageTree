@@ -46,7 +46,10 @@
         }
 
         <span class="signature-text">@_vm.SignatureIdentity.Name</span>
-        <h1>@_vm.Identity.Name</h1>
+        <div>
+            <input class="page-name-input is-size-2" type="text" placeholder="e.g. Partnership opportunity" value="@_vm.Identity.Name" @oninput="OnNameEdit" @onfocusout="OnPageNameFocusOut" />
+        </div>
+
         <div class="page-property-list">
             @foreach (var property in _vm.Properties)
             {
@@ -209,5 +212,23 @@
     {
         await _commands.Execute<CreateSubPageCommand>(PageID);
         await RefreshVMAndView();
+    }
+
+    private async Task OnNameEdit(ChangeEventArgs args)
+    {
+        var valueStr = args.Value as string;
+        _vm.Identity.Name = valueStr.Trim();
+        await _commands.Execute(new UpdatePageCommand(_vm.Identity.ID) { Name = _vm.Identity.Name });
+        Console.WriteLine("Edit");
+    }
+
+    private void OnNameChange(ChangeEventArgs args)
+    {
+        Console.WriteLine("Change");
+    }
+
+    private void OnPageNameFocusOut(FocusEventArgs args)
+    {
+        Console.WriteLine("Focus Out");
     }
 }

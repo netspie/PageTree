@@ -13,13 +13,22 @@ namespace PageTree.Domain
         public Page(string id, string name, string ownerID, string projectID) : this(id, name, ownerID) 
             { ProjectID = projectID; }
 
+        public bool IsSubPage(string id) =>
+            SubPages.FirstOrDefault(sID => sID == id) != null;
+
+        public bool CreateSubPage(string id) =>
+            EditableItemOwnerFunctions_NoName.Create(id, ChildrenIDs, SubPages);
+
+        public bool Rename(string newName) =>
+           EditableItemFunctions.Rename(newName, () => Name = newName);
+
         public string OwnerID { get; set; } = new("");
         public string ProjectID { get; set; } = new("");
-        public string Name { get; init; } = "New Page";
+        public string Name { get; set; } = "New Page";
 
-        public string SignatureID { get; init; } = new("");
+        public string SignatureID { get; private set; } = new("");
 
-        public string ParentID { get; init; } = new("");
+        public string ParentID { get; private set; } = new("");
 
         /// <summary>
         /// Ordered property ids. Contains of all of types of properties, like subpages, links etc.
@@ -68,11 +77,5 @@ namespace PageTree.Domain
         /// For optimization purposes, so query handler does not have to work much later, just fetch
         /// </summary>
         public string BakedPageID { get; init; } = new("");
-
-        public bool IsSubPage(string id) => true;
-        //SubPages.FirstOrDefault(p => p.ID == id) != null;
-        
-        public bool CreateSubPage(string id) =>
-            EditableItemOwnerFunctions_NoName.Create(id, ChildrenIDs, SubPages);
     }
 }

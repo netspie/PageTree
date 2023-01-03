@@ -131,7 +131,6 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
 public sealed record CreatePageCommand() : ICommand<Result>;
 public sealed record ReplacePageCommand(string PageID) : ICommand<Result>;
 public sealed record DeletePageCommand(string PageID) : ICommand<Result>;
-public sealed record ChangeNameOfPageCommand(string PageID, string NewName) : ICommand<Result>;
 public sealed record ChangeSignatureOfPageCommand(string PageID, string NewSignatureName) : ICommand<Result>;
 
 public sealed record GetPagesQuery() : IQuery<Result<GetPagesQueryOut>>;
@@ -159,5 +158,5 @@ public class PropertyVM
 public class IdentityVM
 {
     public string ID { get; init; } = string.Empty;
-    public string Name { get; init; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 }

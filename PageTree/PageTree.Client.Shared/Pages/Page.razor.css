@@ -14,3 +14,21 @@
     align-items: center;
     align-content: center;
 }
+
+.page-name-input {
+    color: rgb(40, 40, 40);
+    outline: none;
+    text-decoration: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.page-name-input:focus {
+    color: black;
+    outline: none;
+    text-decoration: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}

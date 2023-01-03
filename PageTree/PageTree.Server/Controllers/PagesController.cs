@@ -1,4 +1,5 @@
 using AutoMapper;
+using Corelibs.AspNetApi.Authorization;
 using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
@@ -6,6 +7,8 @@ using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Pages.Queries;
+using PageTree.App.Projects.Commands;
+using PageTree.Domain;
 using PageTree.Server.ApiContracts;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
@@ -34,20 +37,17 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> GetAll([FromQuery] GetPagesApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetPagesQuery, GetPagesQueryOut>(query, _mapper);
 
-        [HttpPost, Action_Create]
-        public Task<IActionResult> Create([FromBody] CreatePageApiCommand command = null) =>
-            _mediator.MapSendAndGetPostResponse<CreatePageCommand>(command, _mapper);
-
         [HttpDelete, Route_ID, Action_Delete]
         public Task<IActionResult> Delete([FromQuery] DeletePageApiCommand command) =>
             _mediator.MapSendAndGetDeleteResponse<CreatePageCommand>(command, _mapper);
 
-        [HttpPut, Route("{name}")]
-        public Task<IActionResult> ChangeName([FromBody] ChangePageNameApiCommand command) =>
-            _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageCommand>(command, _mapper);
+        [HttpPatch, Route("{pageID}"), Authorize_Edit_Page]
+        public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<UpdatePageCommand>(command, _mapper);
 
-        [HttpPut, Route("{signature}")]
-        public Task<IActionResult> ChangeSignature([FromBody] ChangePageSignatureApiCommand command) =>
-            _mediator.MapSendAndGetPatchResponse<ChangeSignatureOfPageCommand>(command, _mapper);
+        private class Authorize_Edit_PageAttribute : Authorize_EditAttribute
+        {
+            protected override string ResourceName => nameof(Page);
+        }
     }
 }

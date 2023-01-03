@@ -29,10 +29,10 @@ namespace PageTree.Server.Api.Controllers
         [HttpPost, Authorize_Edit_PageAttribute]
         public Task<IActionResult> Create([FromRouteAndBody] CreateSubPageApiCommand command = null) =>
             _mediator.MapSendAndGetPostResponse<CreateSubPageCommand>(command, _mapper);
-    }
 
-    public class Authorize_Edit_PageAttribute : Authorize_EditAttribute
-    {
-        protected override string ResourceName => nameof(Page);
+        private class Authorize_Edit_PageAttribute : Authorize_EditAttribute
+        {
+            protected override string ResourceName => nameof(Page);
+        }
     }
 }

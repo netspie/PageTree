@@ -17,6 +17,7 @@ namespace PageTree.Client.Shared.Services
             AddPut<EditProjectCommand, EditProjectApiCommand>("projects");
 
             AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{parentID}/subpages");
+            AddPatch<UpdatePageCommand, UpdatePageApiCommand>("pages/{pageID}");
         }
     }
 }
