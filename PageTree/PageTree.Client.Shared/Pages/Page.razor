@@ -60,7 +60,7 @@
                             <button class="page-tool-button">
                                 <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
                             </button>
-                            <button class="page-tool-button">
+                            <button @onclick="OnEditButton" class="page-tool-button">
                                 <img src="_content/PageTree.Client.Shared/images/icons/file-document-edit-outline.png" class="page-icon" />
                             </button>
                             <button class="page-tool-button">
@@ -260,5 +260,10 @@
 
         PageID = parentID;
         await RefreshVMAndView();
+    }
+
+    private void OnEditButton()
+    {
+        Console.WriteLine("OnEditButton");
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Common.Basic.Blocks;
+using Common.Basic.Functional;
 using Common.Basic.Repository;
+using Corelibs.Basic.Collections;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
@@ -31,7 +33,7 @@ public class UpdatePageCommandHandler : BaseCommandHandler, ICommandHandler<Upda
                 return result.Fail();
 
         // Modify Parent ID
-        if (command.ParentPageID != page.ParentID)
+        if (!command.ParentPageID.IsNull() && command.ParentPageID != page.ParentID)
             ;
 
         await _pageRepository.Save(page, result);
