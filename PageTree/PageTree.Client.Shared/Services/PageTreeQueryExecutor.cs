@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Common.Basic.Collections;
 using Corelibs.BlazorShared;
+using PageTree.App.Pages.Queries;
 using PageTree.App.Projects.Queries;
 using PageTree.App.ProjectUserLists.Queries;
 using PageTree.App.UseCases.Users.Queries;
@@ -23,6 +24,7 @@ namespace PageTree.Client.Shared.Services
 
             Add<GetProjectUserListApiQuery, GetProjectUserListQuery, GetProjectUserListQueryOut>("projectUserLists");
             Add<GetProjectApiQuery, GetProjectQuery, GetProjectQueryOut>("projects");
+            Add<GetPageApiQuery, GetPageQuery, GetPageQueryOut>("pages");
         }
     }
 }

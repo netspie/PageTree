@@ -1,7 +1,9 @@
-﻿namespace PageTree.Server.DataUpdates
+﻿using Common.Basic.Blocks;
+
+namespace PageTree.Server.DataUpdates
 {
     public interface IDataUpdater
     {
-        Task Update();
+        Task<Result> Update();
     }
 }

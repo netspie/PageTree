@@ -8,7 +8,6 @@
 @using PageTree.App.Projects.Commands;
 @using PageTree.Domain
 @using System.Numerics;
-@inject IQueryExecutor QueryExecutor
 
 <PageTitle>PageTree</PageTitle>
 
@@ -151,14 +150,22 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //var dto = await QueryExecutor.Execute<GetPageOfIDQueryOut>(new GetPageOfIDQuery("asd"));
-        //RefreshPage();
-        //Exts.TryOrCatchAccessTokenNotAvailableAndRedirect(RefreshPage);
-        Console.WriteLine("Page");
+        var dto = await _queries.Execute<GetPageQuery, GetPageQueryOut>(PageID);
+        await RefreshVM();
     }
 
-    private Task RefreshPage() => Task.CompletedTask;
-    //_vm = await PagesService.GetPage(string.Empty);
+    private async Task RefreshVM()
+    {
+        var dto = await _queries.Execute<GetPageQuery, GetPageQueryOut>(PageID);
+        if (dto != null && dto.PageVM != null)
+            _vm = dto.PageVM;
+    }
+
+    private async Task RefreshVMAndView()
+    {
+        await RefreshVM();
+        await InvokeAsync(StateHasChanged);
+    }
 
     private async Task LoadPage(string pageID)
     {
@@ -201,6 +208,6 @@
     private async Task CreateSubPage()
     {
         await _commands.Execute<CreateSubPageCommand>(PageID);
-        await InvokeAsync(StateHasChanged);
+        await RefreshVMAndView();
     }
 }

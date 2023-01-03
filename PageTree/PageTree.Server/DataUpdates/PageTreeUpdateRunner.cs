@@ -1,4 +1,8 @@
-﻿namespace PageTree.Server.DataUpdates
+﻿using Common.Basic.Blocks;
+using Mediator;
+using PageTree.Server.Data;
+
+namespace PageTree.Server.DataUpdates
 {
     public static class PageTreeUpdateRunner
     {
@@ -13,9 +17,28 @@
 
             using (var scope = services.CreateScope()) 
             {
-                var updates = types.Select(t => ActivatorUtilities.CreateInstance(scope.ServiceProvider, t)).Cast<IDataUpdater>().ToArray();
-                foreach (var update in updates)
-                    await update.Update();
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                using (var transaction = await dbContext.Database.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        var updates = types.Select(t => ActivatorUtilities.CreateInstance(
+                            scope.ServiceProvider, t)).Cast<IDataUpdater>().ToArray();
+
+                        var result = Result.Success();
+                        foreach (var update in updates)
+                            result.Add(await update.Update());
+                        
+                        if (result.IsSuccess)
+                            await transaction.CommitAsync();
+
+                        Console.WriteLine("Data update result: " + result.IsSuccess);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+                }
             }
         }
     }

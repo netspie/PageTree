@@ -10,8 +10,11 @@ namespace PageTree.Domain
         public Page(string id) : base(id) { }
         public Page(string id, string name) : this(id) { Name = name; }
         public Page(string id, string name, string ownerID) : this(id, name) { OwnerID = ownerID; }
+        public Page(string id, string name, string ownerID, string projectID) : this(id, name, ownerID) 
+            { ProjectID = projectID; }
 
         public string OwnerID { get; set; } = new("");
+        public string ProjectID { get; set; } = new("");
         public string Name { get; init; } = "New Page";
 
         public string SignatureID { get; init; } = new("");

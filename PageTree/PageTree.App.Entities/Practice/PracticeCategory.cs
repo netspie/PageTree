@@ -4,7 +4,10 @@ namespace PageTree.Domain.Practice
 {
     public class PracticeCategory : Entity
     {
-        public string Name { get; init; } = string.Empty;
-        public List<string> Items { get; init; } = new List<string>();
+        public PracticeCategory() {}
+        public PracticeCategory(string id) : base(id) {}
+
+        public string Name { get; init; } = new("");
+        public List<string> Items { get; init; } = new();
     }
 }

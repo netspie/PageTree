@@ -24,7 +24,7 @@ public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<C
         if (!result.IsSuccess || parentPage == null)
             return result.Fail();
 
-        var subPage = new Page(NewID, "New Page", parentPage.OwnerID);
+        var subPage = new Page(NewID, "New Page", parentPage.OwnerID, parentPage.ProjectID);
         if (!parentPage.CreateSubPage(subPage.ID))
             return result.Fail();
 

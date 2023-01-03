@@ -1,24 +1,30 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
+using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Mediator;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
+using PageTree.Domain.Projects;
+using PageTree.Domain.Users;
 
 namespace PageTree.App.Pages.Queries;
 
 public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQueryOut>>
 {
-    private IRepository<Page> _pageRepository;
-    private IRepository<Signature> _signatureRepository;
-    private IRepository<PracticeCategory> _practiceCategoryRepository;
-    private IRepository<PracticeTactic> _practiceTacticRepository;
+    private readonly IRepository<Project> _projectRepository;
+    private readonly IRepository<Page> _pageRepository;
+    private readonly IRepository<Signature> _signatureRepository;
+    private readonly IRepository<PracticeCategory> _practiceCategoryRepository;
+    private readonly IRepository<PracticeTactic> _practiceTacticRepository;
 
     public GetPageQueryHandler(
+        IRepository<Project> projectRepository,
         IRepository<Page> pageRepository,
         IRepository<Signature> signatureRepository,
         IRepository<PracticeCategory> practiceCategoryRepository,
         IRepository<PracticeTactic> practiceTacticRepository)
     {
+        _projectRepository = projectRepository;
         _pageRepository = pageRepository;
         _signatureRepository = signatureRepository;
         _practiceCategoryRepository = practiceCategoryRepository;
@@ -29,13 +35,15 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
     {
         var res = Result<GetPageQueryOut>.Success();
 
-        var practiceCategoryRoot = await _practiceCategoryRepository.Get("PracticeCategoryRootID", res);
-        var practiceTacticRoot = await _practiceTacticRepository.Get("PracticeTacticRootID", res);
+        var page = await _pageRepository.Get(query.ID, res);
+        
+        var project = await _projectRepository.Get(page.ProjectID, res);
+        var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, res);
+        var practiceTacticRoot = await _practiceTacticRepository.Get(project.PracticeTacticRootID, res);
 
         var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoryRoot.Items, res);
         var practiceTactics = await _practiceTacticRepository.Get(practiceTacticRoot.Items, res);
 
-        var page = await _pageRepository.Get(query.ID, res);
         var signature = await _signatureRepository.Get(page.SignatureID, res);
 
         async Task GetParentPage(Page page, List<Page> pages)
@@ -129,7 +137,7 @@ public sealed record ChangeSignatureOfPageCommand(string PageID, string NewSigna
 public sealed record GetPagesQuery() : IQuery<Result<GetPagesQueryOut>>;
 public sealed record GetPagesQueryOut();
 
-public sealed record GetPageQuery(string ID) : IQuery<Result<GetPageQueryOut>>;
+public sealed record GetPageQuery(string ID) : IQuery<Result<GetPageQueryOut>>, IGetQuery;
 public sealed record GetPageQueryOut(PageVM PageVM);
 
 public class PageVM
