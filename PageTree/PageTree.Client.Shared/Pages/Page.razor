@@ -57,16 +57,27 @@
                     <div class="item">
                         @property.Identity.Name
                         <ul class="item-menu">
-                            <li class="item-menu-element">
-                                <img class="item-menu-element-icon" src="/icons/fi-rs-treatment.png">
-                                <div class="item-menu-element-tooltip">It does nothing for now.</div>
-                            </li>
-                            <li class="item-menu-element"><img class="item-menu-element-icon" src="/icons/fi-rs-treatment.png"></li>
-                            <li class="item-menu-element"><img class="item-menu-element-icon" src="/icons/fi-rs-treatment.png"></li>
+                            <button class="page-tool-button">
+                                <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
+                            </button>
+                            <button class="page-tool-button">
+                                <img src="_content/PageTree.Client.Shared/images/icons/file-document-edit-outline.png" class="page-icon" />
+                            </button>
+                            <button class="page-tool-button">
+                                <img src="_content/PageTree.Client.Shared/images/icons/arrow-up-thin.png" class="page-icon" />
+                            </button>
+                            <button class="page-tool-button">
+                                <img src="_content/PageTree.Client.Shared/images/icons/arrow-down-thin.png" class="page-icon" />
+                            </button>
+                            <button class="page-tool-button">
+                                <img src="_content/PageTree.Client.Shared/images/icons/file-document-remove-outline.png" class="page-icon" />
+                            </button>
                         </ul>
                         <div class="item-menu-side">
                             <input type="checkbox">
-                            <li class="item-menu-element"><img class="item-menu-element-icon" src="/icons/fi-rs-angle-right.png"></li>
+                            <button class="page-tool-button">
+                                <img src="_content/PageTree.Client.Shared/images/icons/chevron-right.png" class="page-icon" />
+                            </button>
                         </div>
                     </div>
                 </button>
@@ -126,9 +137,9 @@
         </div>
     }
     <nav class="page-navbar">
-        <button @onclick="CreateSubPage">
+        <button class="page-tool-button" @onclick="CreateSubPage">
             <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
-        </button> 
+        </button>
     </nav>
 </div>
 

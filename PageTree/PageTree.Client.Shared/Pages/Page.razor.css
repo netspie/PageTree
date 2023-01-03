@@ -32,3 +32,12 @@
     padding: 0;
     margin: 0;
 }
+
+.page-tool-button {
+    background: none;
+    outline: none;
+    text-decoration: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
