@@ -1,4 +1,6 @@
-﻿@using Common.Basic.Collections;
+﻿@inherits LayoutComponentBase
+
+@using Common.Basic.Collections;
 @using Newtonsoft.Json;
 @using PageTree.App.UseCases.Users.Commands;
 @using global::PageTree.Client.Shared.Services;
@@ -12,11 +14,11 @@
     @if (_isSignedIn)
     {
         @*<p>Hello, </p>@_authUser.Name*@
-        <a class="button @Class" @onclick="_authUser.SignOut">Log out</a>
+        <a class="button @Class" @onclick="OnSignOut">Log out</a>
     }
     else
     {
-        <a class="button @Class" @onclick="@(async () => await OnSignIn())">Log in</a>
+        <a class="button @Class" @onclick="OnSignIn">Log in</a>
     }
 </div>
 
@@ -66,8 +68,21 @@
         return true;
     }
 
+    public async Task<bool> ClearToken()
+    {
+        var keys = (await LocalStorage.KeysAsync()).Where(k =>
+            k.Contains("telemetry") ||
+            k.Contains("pagetree.b2clogin.com")).ToArray();
+
+        await LocalStorage.RemoveItemsAsync(keys);
+
+        return true;
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        LoadingScreen.Enabled = true;
+
         var isExpiredToken = await ClearTokenIfExpired();
         if (isExpiredToken)
         {
@@ -83,24 +98,38 @@
         {
             await Commands.Execute<CreateUserCommand>();
         }
+        LoadingScreen.Enabled = false;
     }
 
     private async void OnAuthenticatedStateChanged(bool isSignedIn)
     {
+        LoadingScreen.Enabled = false;
+        _isSignedIn = await _authUser.IsSignedIn();
+
         if (isSignedIn)
         {
             await Commands.Execute<CreateUserCommand>();
-            _navigation.NavigateTo(_navigation.Uri, forceLoad: true);
+            //_navigation.NavigateTo(_navigation.Uri, forceLoad: true);
         }
         else
-            _navigation.NavigateTo("/");
+        {
+            _navigation.NavigateTo("/", forceLoad: true);
+        }
 
-        _isSignedIn = await _authUser.IsSignedIn();
         await InvokeAsync(StateHasChanged);
     }
 
     private async Task OnSignIn()
     {
+        LoadingScreen.Enabled = true;
         await _authUser.SignIn();
+    }
+
+    private async Task OnSignOut()
+    {
+        LoadingScreen.Enabled = true;
+        await ClearToken();
+        await _authUser.SignOut();
+        OnAuthenticatedStateChanged(false);
     }
 }

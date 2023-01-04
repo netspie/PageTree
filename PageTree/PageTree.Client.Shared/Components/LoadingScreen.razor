@@ -1,0 +1,30 @@
+﻿<div class="hide-screen @_hideScreenHiddenCssClass">
+    <div class="sk-fold sk-center pos-abs">
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+    </div>
+</div>
+
+@code {
+    private static LoadingScreen _instance;
+
+    protected override void OnInitialized()
+    {
+        _instance = this;
+    }
+
+    private static bool _isEnabled = false;
+    public static bool Enabled
+    {
+        set
+        {
+            _isEnabled = value;
+            _instance.InvokeAsync(_instance.StateHasChanged);
+        }
+        get => _isEnabled;
+    }
+
+    private string _hideScreenHiddenCssClass => Enabled ? null : "hide-screen-hidden";
+}

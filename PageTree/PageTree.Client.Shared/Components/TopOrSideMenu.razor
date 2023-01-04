@@ -1,0 +1,98 @@
+﻿@using Microsoft.JSInterop;
+@using Microsoft.AspNetCore.Components;
+@inject IJSRuntime JSRuntime
+
+<div class="navbar-menu-parent">
+    <div id="bulma-navbar-menu" class="navbar-menu navbar-menu-ext">
+        <div class="navbar-start">
+            <div class="navbar-brand">
+                <div class="navbar-item navbar-brand-item-text is-size-5"><p><b>Japanese</b>Arcana</p></div>
+            </div>
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons pr-4">
+                    <NavLink href="page" class="button is-text">
+                        Learn
+                    </NavLink>
+                    <NavLink href="page" class="button is-text">
+                        Contact
+                    </NavLink>
+                    <LoginDisplay Class="button is-text" />
+                </div>
+            </div>
+        </div>tw
+
+    </div>
+</div>
+
+<div class="menu-topmost">
+    <aside class="menu left-menu @_menuCollapseCssClass">
+        <div class="navbar-start">
+            <div class="navbar-brand">
+                <div class="navbar-item navbar-brand-item-text is-size-5"><p><b>Japanese</b>Arcana</p></div>
+            </div>
+        </div>
+        <ul class="menu-list menu-list-here pt-5">
+            <NavLink href="page" class="button is-text">
+                Learn
+            </NavLink>
+            <NavLink href="page" class="button is-text">
+                Contact
+            </NavLink>
+            <LoginDisplay Class="button is-text" />
+        </ul>
+    </aside>
+    <a title="Expand" class="menu-icon-link" @onclick="ToggleNavMenu">
+        <span class="menu-icon-span">
+            <img src="@_menuIconImg" class="menu-icon" />
+        </span>
+    </a>
+</div>
+
+@code {
+    private static bool _isCollapsed = true;
+
+    private string _menuCollapseCssClass => _isCollapsed ? "collapse" : null;
+    private string _menuIconImg;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await HandleInitialMenuCollapse();
+    }
+
+    private void ToggleNavMenu()
+    {
+        _isCollapsed = !_isCollapsed;
+        SetMenuIcon();
+    }
+
+    private async Task HandleInitialMenuCollapse()
+    {
+        var dimension = await JSRuntime.InvokeAsync<WindowDimension>("getWindowDimensions");
+        if (dimension.Width <= 1023)
+        {
+            _isCollapsed = true;
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            _isCollapsed = false;
+        }
+        SetMenuIcon();
+    }
+
+    private void SetMenuIcon()
+    {
+        if (_isCollapsed)
+            _menuIconImg = "_content/PageTree.Client.Shared/images/icons/forwardburger.png";
+        else
+            _menuIconImg = "_content/PageTree.Client.Shared/images/icons/backburger.png";
+    }
+
+    public class WindowDimension
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+    }
+}

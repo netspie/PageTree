@@ -7,10 +7,10 @@
     @if (IsJapaneseArcanaHome())
     {
         <main>
-            <div><JAHomeNavBar /></div>
             <article class="main-content">
                 @Body
             </article>
+            <div><TopOrSideMenu /></div>
         </main>
     }
     else
@@ -45,6 +45,8 @@
             </article>
         </main>
     }
+
+    <LoadingScreen/>
 </div>
 
 @code {
