@@ -23,15 +23,8 @@
     border: none;
     padding: 0;
     margin: 0;
-}
-
-.page-name-input:focus {
-    color: black;
-    outline: none;
-    text-decoration: none;
-    border: none;
-    padding: 0;
-    margin: 0;
+    background: transparent;
+    width: contain;
 }
 
 .page-tool-button {

@@ -53,14 +53,14 @@
         <div class="page-property-list">
             @foreach (var property in _vm.Properties)
             {
-                <button class="page-property-button" @onclick="@((args) => LoadPage(property.Identity.ID))">
+                <div class="page-property-button" @onclick="@((args) => LoadPage(property.Identity.ID))">
                     <div class="item">
-                        @property.Identity.Name
+                        <input class="page-name-input" type="text" placeholder="Enter the name" value="@property.Identity.Name" @oninput="((args) => OnPropertyNameEdit(args, property.Identity.ID))" @onclick:stopPropagation="true" @onclick:preventDefault="true"/>
                         <ul class="item-menu">
                             <button class="page-tool-button">
                                 <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
                             </button>
-                            <button @onclick="OnEditButton" class="page-tool-button">
+                            <button @onclick="(() => EditName(property.Identity.ID))" class="page-tool-button" @onclick:stopPropagation="true" @onclick:preventDefault="true">
                                 <img src="_content/PageTree.Client.Shared/images/icons/file-document-edit-outline.png" class="page-icon" />
                             </button>
                             <button class="page-tool-button">
@@ -80,7 +80,7 @@
                             </button>
                         </div>
                     </div>
-                </button>
+                </div>
             }
         </div>
     </div>
@@ -242,6 +242,11 @@
         Console.WriteLine("Edit");
     }
 
+    private async Task OnPropertyNameEdit(ChangeEventArgs args, string propertyID)
+    {
+        Console.WriteLine("OnPropertyNameEdit");
+    }
+
     private void OnNameChange(ChangeEventArgs args)
     {
         Console.WriteLine("Change");
@@ -262,7 +267,7 @@
         await RefreshVMAndView();
     }
 
-    private void OnEditButton()
+    private void EditName(string propertyID)
     {
         Console.WriteLine("OnEditButton");
     }
