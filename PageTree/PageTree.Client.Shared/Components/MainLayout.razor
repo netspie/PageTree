@@ -10,18 +10,30 @@
             <article class="main-content">
                 @Body
             </article>
-            <div><TopOrSideMenu /></div>
+            @{
+                var links = new string[][]
+                {
+                    new[] {"Learn", "learn" },
+                    new[] {"Contact", "contact" },
+                };
+            }
+            <div><TopOrSideMenu Links="@links" /></div>
         </main>
     }
     else
     @if (IsJapaneseArcanaLearn())
     {
-        <JALearnNavMenu />
         <main>
-            <div class="top-row"><JALearnNavBar /></div>
             <article class="main-content pl-5">
                 @Body
             </article>
+             @{
+                var links = new string[][]
+                {
+                    new[] {"Pages", "pages" },
+                };
+            }
+            <div><TopOrSideMenu Links="@links" SideOnly=true/></div>
         </main>
     }
     else
@@ -58,6 +70,7 @@
 
     protected override void OnInitialized()
     {
+        Navigation.LocationChanged += OnLocationChanged;
         _baseUri = Navigation.BaseUri;
         _currentUri = Navigation.Uri;
     }
@@ -73,4 +86,11 @@
 
     private bool IsPageTreeLearn() =>
         _currentUri.ToLower().StartsWith($"{_baseUri}{PageTreeRoute}/{LearnRoute}");
+
+    private void OnLocationChanged(object sender, LocationChangedEventArgs args)
+    {
+        _baseUri = Navigation.BaseUri;
+        _currentUri = args.Location;
+        InvokeAsync(StateHasChanged);
+    }
 }

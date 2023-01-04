@@ -12,7 +12,7 @@
 
 .left-menu {
     position: relative;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgb(33,33,33);
     display: flex;
     height: 100vh;
     max-height: -webkit-fill-available;
@@ -21,17 +21,17 @@
 }
 
 @media only screen and (max-width: 1023px) {
-    .left-menu {
+    .left-menu-hidden {
         display: flex;
     }
 }
 
 @media only screen and (min-width: 1023px) {
-    .left-menu {
+    .left-menu-hidden {
         display: none;
     }
 
-    .menu-icon-link {
+    .menu-icon-link-hidden {
         display: none;
     }
 }
@@ -79,6 +79,7 @@
 
 .nav-item {
     color: white;
+    width: max-content;
 }
 
 .nav-item ::deep .nav-item-text {
@@ -142,8 +143,27 @@ div ::deep .button:hover {
     color: #111;
 }
 
+.navbar-list-top-border {
+    border-top: solid;
+    border-top-width: 1px;
+}
+
 div ::deep .is-text {
     color: black;
+}
+
+div ::deep .is-menu-text {
+    color: white;
+    width: 9rem;
+    height: 2.5rem;
+    padding-top: 0.5rem;
+    align-self: center;
+    justify-self: center;
+}
+
+div ::deep .is-menu-text:hover {
+    background: transparent;
+    color: lightblue;
 }
 
 .menu-topmost ::deep .is-text {
@@ -162,4 +182,8 @@ div ::deep .is-text {
 
 .navbar-menu-ext {
     width: 100vw;
+}
+
+.button {
+    border: none;
 }
