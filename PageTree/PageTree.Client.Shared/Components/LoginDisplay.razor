@@ -10,15 +10,15 @@
 @inject IAuthUser _authUser
 @inject NavigationManager _navigation
 
-<div class="login-display">
+<div class="login-display @Class">
     @if (_isSignedIn)
     {
         @*<p>Hello, </p>@_authUser.Name*@
-        <a class="button @Class" @onclick="OnSignOut">Log out</a>
+        <a class="button @ButtonClass" @onclick="OnSignOut">Log out</a>
     }
     else
     {
-        <a class="button @Class" @onclick="OnSignIn">Log in</a>
+        <a class="button @ButtonClass" @onclick="OnSignIn">Log in</a>
     }
 </div>
 
@@ -26,8 +26,8 @@
     [Inject] private ICommandExecutor Commands { get; set; }
     [Inject] private ILocalStorageService LocalStorage { get; set; }
 
-    [Parameter]
-    public string Class { get; set; } = new("");
+    [Parameter] public string Class { get; set; } = new("");
+    [Parameter] public string ButtonClass { get; set; } = new("");
     private bool _isSignedIn = false;
 
     public async Task<bool> ClearTokenIfExpired()

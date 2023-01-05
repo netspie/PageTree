@@ -20,7 +20,7 @@
                                 @link[0]
                             </NavLink>
                         }
-                        <LoginDisplay Class="button is-text" />
+                        <LoginDisplay ButtonClass="button is-text" />
                     </div>
                 </div>
             </div>
@@ -30,9 +30,9 @@
 
 <div class="menu-topmost">
     <aside class="menu left-menu @_menuCollapseCssClass @_menuHiddenCssClass">
-        <div class="navbar-start">
-            <div class="navbar-brand">
-                <div class="navbar-item navbar-brand-item-text is-size-5 is-menu-text"><p><b>Japanese</b>Arcana</p></div>
+        <div class="navbar-start navbar-start-ext">
+            <div class="navbar-brand navbar-brand-ext">
+                <div class="navbar-item navbar-brand-item-text is-size-5"><p><b>Japanese</b>Arcana</p></div>
             </div>
         </div>
         <ul class="menu-list menu-list-here navbar-list-top-border pt-5">
@@ -42,7 +42,9 @@
                     @link[0]
                 </NavLink>
             }
-            <LoginDisplay Class="button is-text is-menu-text" />
+            <div class="nav-item is-menu-bottom">
+                <LoginDisplay Class="login-display-ext" ButtonClass=" button is-text is-menu-text is-login-text" />
+            </div>
         </ul>
     </aside>
     <a title="Expand" class="menu-icon-link @_menuIconHiddenCssClass" @onclick="ToggleNavMenu">
