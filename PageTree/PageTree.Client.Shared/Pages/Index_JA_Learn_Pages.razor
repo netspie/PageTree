@@ -3,7 +3,7 @@
 @using Microsoft.JSInterop;
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
-    <PageContent Left=@context.Item1 Top=@context.Item2 />
+    <PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>
 </BackgroundAndContent>
 
 @code {
@@ -11,6 +11,12 @@
     private IBgAndContent _backgroundOwner;
 
     [CascadingParameter] public RefreshInvoker RefreshInvoker { get; set; }
+
+#if DEBUG
+    private const string _pageID = "350b10d0-f72a-4f8f-92a6-5da3b80cac6a";
+#else
+    private const string _pageID = "20caa0c3-243b-47f9-968f-2d6a1e0dd27a";
+#endif
 
     protected override void OnInitialized()
     {
