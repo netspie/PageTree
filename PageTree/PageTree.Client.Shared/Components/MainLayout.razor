@@ -36,9 +36,9 @@
     @if (IsJapaneseArcanaLearn())
     {
         <main>
-            <article class="main-content pl-5">
+            <article class="main-content">
                 <Index_JA_Learn>
-                    <BackgroundAndContent @ref=@_backgroundOwner>
+                    <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
                         <PageContent Left=@context.Item1 Top=@context.Item2 />
                     </BackgroundAndContent>
                 </Index_JA_Learn>
@@ -107,7 +107,7 @@
             return;
 
         int left = 0;
-        int top = 56;
+        int top = 60;
         try
         {
             var menuRect = await _jsRuntime.GetRect("menu-topmost");

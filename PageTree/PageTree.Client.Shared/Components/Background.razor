@@ -1,19 +1,25 @@
 ﻿<div class="bgs">
-    <div class="bg-image top-image" style=@_leftStyle>
+    <div class="bg-image top-image" style=@_topImageStyle>
         <img src="_content/PageTree.Client.Shared/images/dark-storm.png" />
     </div>
-    <div class="bg-image left-image" style=@_leftStyle>
+    <div class="bg-image left-image" style=@_leftImageStyle>
         <img src="_content/PageTree.Client.Shared/images/samurai-left.png" />
     </div>
-    <div class="bg-image right-image">
+    <div class="bg-image right-image" style=@_rightImageStyle>
         <img src="_content/PageTree.Client.Shared/images/samurai-right.png" />
     </div>
 </div>
 
 @code {
-    private string _leftStyle => $"left: {Left}px";
-    private string _topStyle => $"top: {Top}px";
+    private string _topImageStyle => $"{_leftStyle}{_opacityStyle}";
+    private string _leftImageStyle => $"{_leftStyle}{_opacityStyle}";
+    private string _rightImageStyle => $"{_opacityStyle}";
 
+    private string _opacityStyle => $"opacity: {Opacity};";
+    private string _leftStyle => $"left: {Left}px; ";
+    private string _topStyle => $"top: {Top}px;";
+
+    private float _opacity { get; set; } = 1;
     private int _left { get; set; }
     private int _top { get; set; }
 
@@ -24,10 +30,19 @@
             InvokeAsync(StateHasChanged);
         }
     }
+
     public int Top {
         get => _top;
         set {
             _left = value;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public float Opacity {
+        get => _opacity;
+        set {
+            _opacity = value;
             InvokeAsync(StateHasChanged);
         }
     }

@@ -29,13 +29,13 @@
                             {
                                 var pathIdentity = _vm.Path[i];
                                 <li><a href="#" @onclick="@((args) => LoadPage(pathIdentity.ID))">@pathIdentity.Name</a></li>
-                                @*<button class="page-path-button" @onclick="@((args) => LoadPage(pathIdentity.ID))">
+                                <button class="page-path-button" @onclick="@((args) => LoadPage(pathIdentity.ID))">
                                     @pathIdentity.Name
                                     @if (i < _vm.Path.Length - 1)
                                     {
                                         <span>&nbsp;/&nbsp;</span>
                                     }
-                                </button>*@
+                                </button>
                             }
                         </ul>
                     </nav>
@@ -99,20 +99,20 @@
                         <button class="practice-choose-panel-item" @onclick="@((args) => LoadPracticeCard(practiceTactic.ID))">@practiceTactic.Name</button>
                     }
 
-                    @*<div class="practice-choose-panel-group">
+                    <div class="practice-choose-panel-group">
                     <b>Listening</b>
                     <button class="practice-choose-panel-item">Radicals</button>
                     <button class="practice-choose-panel-item">Words</button>
-                    </div>*@
+                    </div>
                 </div>
             </div>
             @if (!_practiceCards.IsNullOrEmpty())
             {
                 <button class="outside-button-panel" @onclick=CloseCard></button>
                 <div class="practice-panel">
-                    @*<div class="loader-panel">
+                    <div class="loader-panel">
                 <div class="loader"></div>
-                </div>*@
+                </div>
                     <div class="practice-panel-card">
                         <div class="practice-counter">@(_currentCardIndex + 1) / @_practiceCards.Length</div>
 
@@ -139,7 +139,7 @@
                             <button class="practice-menu-button" @onclick=SwitchAnswerVisibility><b>ANSWER</b></button>
                             <button class="practice-menu-button" @onclick=@(() => NextCard(1))><b>NEXT</b></button>
                         </div>
-                        @*<button class="practice-quit-button"><b>X</b></button>*@
+                        <button class="practice-quit-button"><b>X</b></button>
                     </div>
                 </div>
             }

@@ -6,13 +6,19 @@
 </div>
 
 @code {
+    [Parameter] public float Opacity { get; set; } = 0.3f;
     [Parameter] public RenderFragment<(int, int)> ChildContent { get; set; }
 
-    private string _leftStyle => $"position: absolute; left: {_left}px";
+    private string _leftStyle => $"left: {_left}px";
 
     private int _left = 178;
     private int _top;
     private Background _background { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        _background.Opacity = Opacity;
+    }
 
     void IBgAndContent.Resize(int left, int top)
     {

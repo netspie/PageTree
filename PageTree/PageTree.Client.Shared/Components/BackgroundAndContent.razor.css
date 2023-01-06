@@ -1,6 +1,8 @@
 ﻿.child {
+    position: relative;
     overflow-x: hidden;
     overflow-y: hidden;
-    height: 95vh;
+    height: 100%;
     width: 100%;
+    padding-top: 53px;
 }
