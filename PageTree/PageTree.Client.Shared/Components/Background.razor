@@ -1,0 +1,41 @@
+﻿<div class="bgs">
+    <div class="bg-image top-image" style=@_leftStyle>
+        <img src="_content/PageTree.Client.Shared/images/dark-storm.png" />
+    </div>
+    <div class="bg-image left-image" style=@_leftStyle>
+        <img src="_content/PageTree.Client.Shared/images/samurai-left.png" />
+    </div>
+    <div class="bg-image right-image">
+        <img src="_content/PageTree.Client.Shared/images/samurai-right.png" />
+    </div>
+</div>
+
+@code {
+    private string _leftStyle => $"left: {Left}px";
+    private string _topStyle => $"top: {Top}px";
+
+    private int _left { get; set; }
+    private int _top { get; set; }
+
+    public int Left {
+        get => _left;
+        set {
+            _left = value;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+    public int Top {
+        get => _top;
+        set {
+            _left = value;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public void Resize(int left, int top)
+    {
+        _left = left;
+        _top = top;
+        InvokeAsync(StateHasChanged);
+    }
+}

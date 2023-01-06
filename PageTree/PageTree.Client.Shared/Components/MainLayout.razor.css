@@ -1,3 +1,7 @@
+.Index_JA ::deep .top-image {
+    top: 0;
+}
+
 .about-menu,
 .services-menu {
     display: none;

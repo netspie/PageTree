@@ -1,0 +1,216 @@
+﻿.menu-topmost {
+    --top-bar-h: 3rem;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    width: fit-content;
+}
+
+.navbar-start-ext {
+    width: fit-content;
+}
+
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.left-menu {
+    position: relative;
+    background: rgb(33,33,33);
+    display: flex;
+    height: 100vh;
+    max-height: -webkit-fill-available;
+    flex-direction: column;
+    z-index: 10000;
+    width: fit-content;
+}
+
+@media only screen and (max-width: 1023px) {
+    .left-menu-hidden {
+        display: flex;
+    }
+}
+
+@media only screen and (min-width: 1023px) {
+    .left-menu-hidden {
+        display: none;
+    }
+
+    .menu-icon-link-hidden {
+        display: none;
+    }
+}
+
+.collapse {
+    display: none;
+}
+
+.menu-topmost ::deep .is-menu-bottom {
+    margin-top: auto;
+    min-width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    padding-top: 0.4rem;
+    padding-bottom: 0.2em;
+    display: flex;
+    align-content: end;
+}
+
+.menu-topmost ::deep .is-login-text {
+    min-width: 100%;
+    min-height: 1.75rem;
+    min-width: 100%;
+    max-height: 1.75rem;
+}
+
+.menu-topmost ::deep .login-display-ext {
+    display: flex;
+    place-self: center;
+    width: 100%;
+    right: 0;
+}
+
+.menu-list-here {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-x: hidden;
+    width: contain;
+    padding-bottom: 0;
+    align-items: center;
+}
+
+    .menu-list-here::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    .menu-list-here::-webkit-scrollbar-track {
+        background: #2e323a;
+    }
+
+    .menu-list-here::-webkit-scrollbar-thumb {
+        background: #666;
+    }
+
+.c-has-bg-grey-light {
+    background-color: #F5F5F5;
+}
+
+.c-has-bg-grey {
+    background-color: grey;
+}
+
+.nav-item {
+    color: white;
+    width: max-content;
+}
+
+    .nav-item ::deep .nav-item-text {
+        color: #9da3b1;
+    }
+
+    .nav-item ::deep a:hover {
+        background: grey;
+    }
+
+    .nav-item ::deep a.active {
+        background: rgba(255, 255, 255, 0.1)
+    }
+
+.brand {
+    min-height: var(--top-bar-h);
+    background-color: #17191e;
+    display: flex;
+}
+
+.brand-text {
+    align-self: center;
+    color: #ddd;
+}
+
+.navlink:hover {
+    background-color: green;
+}
+
+.menu-icon-link {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    right: 0px;
+    top: 0px;
+    z-index: 10000;
+    transform: translate(125%, 25%);
+}
+
+.menu-icon {
+    position: relative;
+    z-index: -10;
+    opacity: 75%;
+    width: 2rem;
+    height: 2rem;
+    -webkit-tap-highlight-color: transparent;
+}
+
+div ::deep .button {
+    text-decoration: none;
+    color: rgb(179, 174, 166);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+    div ::deep .button:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+
+.navbar-brand-item-text {
+    color: #ddd;
+    width: fit-content;
+}
+
+.navbar-brand-ext {
+    width: fit-content;
+}
+
+.navbar-list-top-border {
+    border-top: solid;
+    border-top-width: 1px;
+}
+
+div ::deep .is-text {
+    color: black;
+}
+
+div ::deep .is-menu-text {
+    color: white;
+    min-width: 100%;
+    height: 2.5rem;
+    padding-top: 0.5rem;
+    align-self: center;
+    justify-self: center;
+}
+
+    div ::deep .is-menu-text:hover {
+        background: transparent;
+        color: lightblue;
+    }
+
+.menu-topmost ::deep .is-text {
+    padding: 0;
+    align-self: center;
+    left: 0;
+    margin-left: 0;
+    display: inline;
+}
+
+.navbar-menu-parent {
+    position: -webkit-sticky;
+    position: fixed;
+    top: 0;
+}
+
+.navbar-menu-ext {
+    width: 100vw;
+}
+
+.button {
+    border: none;
+}

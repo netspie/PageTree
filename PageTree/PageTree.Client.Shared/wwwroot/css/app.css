@@ -21,6 +21,11 @@ body::-webkit-scrollbar-thumb {
 }
 
 html, body {
+    height: 95vh;
+    overflow: hidden;
+}
+
+html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 

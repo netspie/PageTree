@@ -1,15 +1,7 @@
 ﻿@page "/learn"
 
-<section class="hero is-large main-section">
-    <div class="hero-body is-justify-content-center">
-        <div class="bg-image top-image">
-            <img src="_content/PageTree.Client.Shared/images/dark-storm.png" />
-        </div>
-        <div class="bg-image left-image">
-            <img src="_content/PageTree.Client.Shared/images/samurai-left.png" />
-        </div>
-        <div class="bg-image right-image">
-            <img src="_content/PageTree.Client.Shared/images/samurai-right.png" />
-        </div>
-    </div>
-</section>
+@ChildContent
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

@@ -1,0 +1,26 @@
+﻿<div class="navbar-menu-parent">
+    <div id="bulma-navbar-menu" class="navbar-menu navbar-menu-ext">
+        <div class="navbar-start">
+            <div class="navbar-brand">
+                <div class="navbar-item navbar-brand-item-text is-size-5 has-text-black"><p><b>Japanese</b>Arcana</p></div>
+            </div>
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons pr-4">
+                    @foreach (var link in Links)
+                    {
+                        <NavLink href="@link[1]" class="button is-text">
+                            @link[0]
+                        </NavLink>
+                    }
+                    <LoginDisplay ButtonClass="button is-text" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string[][] Links { get; set; } = new string[][] { };
+}

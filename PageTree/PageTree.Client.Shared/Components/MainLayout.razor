@@ -1,4 +1,6 @@
 ﻿@using Common.Basic.Collections;
+@using Corelibs.BlazorShared.UI;
+@using Microsoft.JSInterop;
 @using PageTree.Client.Shared.Pages
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
@@ -8,7 +10,11 @@
     {
         <main>
             <article class="main-content">
-                @Body
+                <Index_JA>
+                    <BackgroundAndContent @ref=@_backgroundOwner>
+                        <JAHomeContent/>
+                    </BackgroundAndContent>
+                </Index_JA>
             </article>
             @{
                 var links = new string[][]
@@ -17,7 +23,13 @@
                     new[] {"Contact", "contact" },
                 };
             }
-            <div><TopOrSideMenu Links="@links" /></div>
+            <div>
+                <TopOrSideMenu Links="@links" OnCollapseChanged="@OnCollapseChanged">
+                    <Navbar>
+                        <HomeNavbar Links="@links"/>
+                    </Navbar>
+                </TopOrSideMenu>
+            </div>
         </main>
     }
     else
@@ -25,15 +37,25 @@
     {
         <main>
             <article class="main-content pl-5">
-                @Body
+                <Index_JA_Learn>
+                    <BackgroundAndContent @ref=@_backgroundOwner>
+                        <PageContent Left=@context.Item1 Top=@context.Item2 />
+                    </BackgroundAndContent>
+                </Index_JA_Learn>
             </article>
              @{
                 var links = new string[][]
                 {
-                    new[] {"Pages", "pages" },
+                    new[] {"Pages", "/learn/pages" },
                 };
             }
-            <div><TopOrSideMenu Links="@links" SideOnly=true/></div>
+            <div>
+                <TopOrSideMenu Links="@links" SideOnly=true OnCollapseChanged="@OnCollapseChanged">
+                    <Navbar>
+                        <HomeNavbar Links="@links" />
+                    </Navbar>
+                </TopOrSideMenu>
+            </div>
         </main>
     }
     else
@@ -62,6 +84,10 @@
 </div>
 
 @code {
+    [Inject] private IJSRuntime _jsRuntime { get; set; }
+
+    private IBgAndContent _backgroundOwner;
+
     private readonly static string LearnRoute = "learn";
     private readonly static string PageTreeRoute = "pagetree";
 
@@ -70,13 +96,40 @@
 
     protected override void OnInitialized()
     {
-        Navigation.LocationChanged += OnLocationChanged;
         _baseUri = Navigation.BaseUri;
         _currentUri = Navigation.Uri;
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_backgroundOwner == null)
+            return;
+
+        int left = 0;
+        int top = 56;
+        try
+        {
+            var menuRect = await _jsRuntime.GetRect("menu-topmost");
+            left = (int) menuRect.Width;
+        } catch(Exception) {}
+        try
+        {
+            var topRect = await _jsRuntime.GetRect("navbar-menu-parent");
+            top = (int) topRect.Height;
+        }
+        catch (Exception) { }
+
+        _backgroundOwner.Resize(left, top);
+    }
+
+    private async Task OnCollapseChanged(bool collapsed)
+    {
+        await InvokeAsync(StateHasChanged);
     }
 
     private bool IsJapaneseArcanaHome() =>
-        _currentUri == _baseUri;
+    _currentUri == _baseUri;
 
     private bool IsJapaneseArcanaLearn() =>
         _currentUri.ToLower().StartsWith($"{_baseUri}{LearnRoute}");

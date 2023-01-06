@@ -1,0 +1,24 @@
+﻿@implements IBgAndContent
+
+<Background @ref=@_background />
+<div class="child" style=@_leftStyle>
+    @ChildContent((_left, _top))
+</div>
+
+@code {
+    [Parameter] public RenderFragment<(int, int)> ChildContent { get; set; }
+
+    private string _leftStyle => $"position: absolute; left: {_left}px";
+
+    private int _left = 178;
+    private int _top;
+    private Background _background { get; set; }
+
+    void IBgAndContent.Resize(int left, int top)
+    {
+        _left = left;
+        _top = top;
+        _background.Resize(left, top);
+        InvokeAsync(StateHasChanged);
+    }
+}
