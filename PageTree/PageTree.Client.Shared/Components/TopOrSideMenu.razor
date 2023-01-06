@@ -17,7 +17,7 @@
         <ul class="menu-list menu-list-here navbar-list-top-border pt-5">
             @foreach (var link in Links)
             {
-                <NavLink href="@link[1]" class="button is-text is-menu-text">
+                <NavLink @onclick=@OnButtonClick href="@link[1]" class="is-text is-menu-text" style="background: transparent">
                     @link[0]
                 </NavLink>
             }
@@ -57,9 +57,14 @@
     {
         _isCollapsed = !_isCollapsed;
         SetMenuIcon();
-        
+
         if (OnCollapseChanged != null)
             await OnCollapseChanged(_isCollapsed);
+    }
+
+    private Task OnButtonClick()
+    {
+        return InvokeAsync(StateHasChanged);
     }
 
     private async Task HandleInitialMenuCollapse()
@@ -86,6 +91,11 @@
             _menuIconImg = "_content/PageTree.Client.Shared/images/icons/forwardburger.png";
         else
             _menuIconImg = "_content/PageTree.Client.Shared/images/icons/backburger.png";
+    }
+
+    public Task RefreshView()
+    {
+        return InvokeAsync(StateHasChanged);
     }
 
     public class WindowDimension

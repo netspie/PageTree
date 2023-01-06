@@ -181,7 +181,6 @@ div ::deep .is-text {
 
 div ::deep .is-menu-text {
     color: white;
-    min-width: 100%;
     height: 2.5rem;
     padding-top: 0.5rem;
     align-self: center;
@@ -191,6 +190,10 @@ div ::deep .is-menu-text {
 div ::deep .is-menu-text:hover {
     background: transparent;
     color: lightblue;
+}
+
+div ::deep .is-menu-text:visited {
+    background: transparent;
 }
 
 .menu-topmost ::deep .is-text {

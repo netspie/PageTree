@@ -1,7 +1,35 @@
 ﻿@page "/"
+@using Corelibs.BlazorShared.UI;
+@using Microsoft.JSInterop;
 
-@ChildContent
+<BackgroundAndContent @ref=@_backgroundOwner>
+    <JAHomeContent />
+</BackgroundAndContent>
 
 @code {
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Inject] private IJSRuntime _jsRuntime { get; set; }
+    private IBgAndContent _backgroundOwner;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_backgroundOwner == null)
+            return;
+
+        int left = 0;
+        int top = 56;
+        try
+        {
+            var menuRect = await _jsRuntime.GetRect("menu-topmost");
+            left = (int)menuRect.Width;
+        }
+        catch (Exception) { }
+        try
+        {
+            var topRect = await _jsRuntime.GetRect("navbar-menu-parent");
+            top = (int)topRect.Height;
+        }
+        catch (Exception) { }
+
+        _backgroundOwner.Resize(left, top);
+    }
 }

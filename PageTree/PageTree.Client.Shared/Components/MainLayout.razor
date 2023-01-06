@@ -2,6 +2,7 @@
 @using Corelibs.BlazorShared.UI;
 @using Microsoft.JSInterop;
 @using PageTree.Client.Shared.Pages
+@using static PageTree.Client.Shared.Pages.Index_JA_Learn;
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
 
@@ -10,21 +11,19 @@
     {
         <main>
             <article class="main-content">
-                <Index_JA>
-                    <BackgroundAndContent @ref=@_backgroundOwner>
-                        <JAHomeContent/>
-                    </BackgroundAndContent>
-                </Index_JA>
+                <CascadingValue Value=@RefreshInvoker>
+                    @Body
+                </CascadingValue>
             </article>
             @{
                 var links = new string[][]
                 {
-                    new[] {"Learn", "learn" },
-                    new[] {"Contact", "contact" },
+                    new[] {"Learn", "/learn/pages" },
+                    new[] {"Contact", "/contact" },
                 };
             }
             <div>
-                <TopOrSideMenu Links="@links" OnCollapseChanged="@OnCollapseChanged">
+                <TopOrSideMenu @ref=@_menu Links="@links" OnCollapseChanged="@OnCollapseChanged">
                     <Navbar>
                         <HomeNavbar Links="@links"/>
                     </Navbar>
@@ -37,11 +36,9 @@
     {
         <main>
             <article class="main-content">
-                <Index_JA_Learn>
-                    <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
-                        <PageContent Left=@context.Item1 Top=@context.Item2 />
-                    </BackgroundAndContent>
-                </Index_JA_Learn>
+                <CascadingValue Value=@RefreshInvoker>
+                    @Body
+                </CascadingValue>
             </article>
              @{
                 var links = new string[][]
@@ -50,7 +47,7 @@
                 };
             }
             <div>
-                <TopOrSideMenu Links="@links" SideOnly=true OnCollapseChanged="@OnCollapseChanged">
+                <TopOrSideMenu @ref=@_menu Links ="@links" SideOnly=true OnCollapseChanged="@OnCollapseChanged">
                     <Navbar>
                         <HomeNavbar Links="@links" />
                     </Navbar>
@@ -79,20 +76,26 @@
             </article>
         </main>
     }
-
+    else
+    {
+        <main>
+            <article class="main-content pl-5">
+                @Body
+            </article>
+        </main>
+    }
     <LoadingScreen/>
 </div>
 
 @code {
-    [Inject] private IJSRuntime _jsRuntime { get; set; }
-
-    private IBgAndContent _backgroundOwner;
-
     private readonly static string LearnRoute = "learn";
     private readonly static string PageTreeRoute = "pagetree";
 
     private string _baseUri;
     private string _currentUri;
+
+    public RefreshInvoker RefreshInvoker { get; set; } = new RefreshInvoker();
+    private TopOrSideMenu _menu;
 
     protected override void OnInitialized()
     {
@@ -101,35 +104,14 @@
         Navigation.LocationChanged += OnLocationChanged;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (_backgroundOwner == null)
-            return;
-
-        int left = 0;
-        int top = 60;
-        try
-        {
-            var menuRect = await _jsRuntime.GetRect("menu-topmost");
-            left = (int) menuRect.Width;
-        } catch(Exception) {}
-        try
-        {
-            var topRect = await _jsRuntime.GetRect("navbar-menu-parent");
-            top = (int) topRect.Height;
-        }
-        catch (Exception) { }
-
-        _backgroundOwner.Resize(left, top);
-    }
-
     private async Task OnCollapseChanged(bool collapsed)
     {
+        await RefreshInvoker.Invoke();
         await InvokeAsync(StateHasChanged);
     }
 
     private bool IsJapaneseArcanaHome() =>
-    _currentUri == _baseUri;
+        _currentUri == _baseUri;
 
     private bool IsJapaneseArcanaLearn() =>
         _currentUri.ToLower().StartsWith($"{_baseUri}{LearnRoute}");
@@ -142,8 +124,12 @@
 
     private void OnLocationChanged(object sender, LocationChangedEventArgs args)
     {
+        var oldUri = _currentUri;
         _baseUri = Navigation.BaseUri;
         _currentUri = args.Location;
-        InvokeAsync(StateHasChanged);
+        if (!oldUri.Contains("learn") && _currentUri.Contains("learn"))
+            InvokeAsync(StateHasChanged);
+
+        //RefreshInvoker.Invoke();
     }
 }
