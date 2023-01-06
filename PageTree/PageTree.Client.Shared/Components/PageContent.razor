@@ -92,7 +92,6 @@
                 </div>
             </div>
             <div class="practice-choose-panel-parent">
-                <button class="button has-background-info has-text-white"id="practice-button">Practice</button>
                 <div class="practice-choose-panel">
                     @foreach (var practiceTactic in _vm.PracticeTactics)
                     {
@@ -144,21 +143,24 @@
                 </div>
             }
         </div>
+        <button class="button practice-button">Practice</button>
     </div>
-    <nav class="page-navbar">
-        <button class="page-tool-button" @onclick="CreateSubPage">
-            <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
-        </button>
-        <button class="page-tool-button" >
-            <img src="_content/PageTree.Client.Shared/images/icons/arrow-left-bold.png" class="page-icon" />
-        </button>
-        <button class="page-tool-button" >
-            <img src="_content/PageTree.Client.Shared/images/icons/arrow-right-bold.png" class="page-icon" />
-        </button>
-        <button class="page-tool-button" @onclick="OnNavigateUp">
-            <img src="_content/PageTree.Client.Shared/images/icons/arrow-up-bold-box.png" class="page-icon" />
-        </button>
-    </nav>
+    <div class="page-navbar-container">
+        <nav class="page-navbar">
+            <button class="page-tool-button" @onclick="CreateSubPage">
+                <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
+            </button>
+            <button class="page-tool-button" >
+                <img src="_content/PageTree.Client.Shared/images/icons/arrow-left-bold.png" class="page-icon" />
+            </button>
+            <button class="page-tool-button" >
+                <img src="_content/PageTree.Client.Shared/images/icons/arrow-right-bold.png" class="page-icon" />
+            </button>
+            <button class="page-tool-button" @onclick="OnNavigateUp">
+                <img src="_content/PageTree.Client.Shared/images/icons/arrow-up-bold-box.png" class="page-icon" />
+            </button>
+        </nav>
+    </div>
 </div>
 
 @code {

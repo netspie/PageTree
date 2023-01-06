@@ -140,16 +140,6 @@
     position: relative;
 }
 
-#practice-button {
-    position: fixed;
-    background: #785589;
-    padding: 20px;
-    bottom: 1rem;
-    right: 1rem;
-    border-width: 0;
-    color: white;
-}
-
 #practice-button:hover {
     background: #977390;
 }
