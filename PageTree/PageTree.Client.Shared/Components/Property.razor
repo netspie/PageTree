@@ -1,0 +1,36 @@
+﻿@using PageTree.App.Pages.Queries;
+
+<div class="property" @onclick="@((args) => OnClick(ID))">
+    <div class="item">
+        <input class="page-name-input" type="text" placeholder="Enter the name" value="@Name" @onclick:stopPropagation="true" @onclick:preventDefault="true" />
+        <ul class="item-menu">
+            <button class="page-tool-button" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
+            </button>
+            <button class="page-tool-button" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                <img src="_content/PageTree.Client.Shared/images/icons/file-document-edit-outline.png" class="page-icon" />
+            </button>
+            <button class="page-tool-button" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                <img src="_content/PageTree.Client.Shared/images/icons/arrow-up-thin.png" class="page-icon" />
+            </button>
+            <button class="page-tool-button" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                <img src="_content/PageTree.Client.Shared/images/icons/arrow-down-thin.png" class="page-icon" />
+            </button>
+            <button class="page-tool-button" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                <img src="_content/PageTree.Client.Shared/images/icons/file-document-remove-outline.png" class="page-icon" />
+            </button>
+        </ul>
+        <div class="item-menu-side">
+            <input type="checkbox">
+            <button class="page-tool-button">
+                <img src="_content/PageTree.Client.Shared/images/icons/chevron-right.png" class="page-icon" />
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string ID { get; set; }
+    [Parameter] public string Name { get; set; }
+    [Parameter] public Func<string, Task> OnClick { get; set; }
+}

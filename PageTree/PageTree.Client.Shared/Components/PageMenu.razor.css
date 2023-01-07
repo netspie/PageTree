@@ -1,0 +1,58 @@
+﻿.page-navbar-container {
+    width: 100vw;
+    min-height: 38px;
+    border-top: solid 1px;
+    overflow-x: auto;
+}
+
+.page-navbar {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    bottom: 0;
+    width: fit-content;
+    height: 100%;
+    margin: 0;
+    padding-left: 1px;
+}
+
+.page-navbar-container::-webkit-scrollbar {
+    height: 0.25rem;
+}
+
+.page-navbar-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.page-navbar-container::-webkit-scrollbar-thumb {
+    background: #000000;
+}
+
+@media only screen and (max-width: 1023px) {
+    .page-navbar-container::-webkit-scrollbar {
+        height: 0rem;
+    }
+}
+
+.page-tool-button {
+    background: none;
+    outline: none;
+    text-decoration: none;
+    border: none;
+    height: 100%;
+    min-width: 60px;
+    padding: 0;
+    margin: 0;
+    z-index: 100000;
+    border-right: solid 1px;
+}
+
+.page-tool-button:hover {
+    background: #cecece;
+}
+
+.page-icon {
+    color: black;
+    height: 20px;
+    image-rendering: -moz-crisp-edges;
+}

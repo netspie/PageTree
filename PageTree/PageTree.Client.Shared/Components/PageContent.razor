@@ -47,36 +47,9 @@
                 </div>
 
                 <div class="page-property-list">
-                    @foreach (var property in _vm.Properties)
+                    @foreach (var p in _vm.Properties)
                     {
-                        <div class="page-property-button" @onclick="@((args) => LoadPage(property.Identity.ID))">
-                            <div class="item">
-                                <input class="page-name-input" type="text" placeholder="Enter the name" value="@property.Identity.Name" @oninput="((args) => OnPropertyNameEdit(args, property.Identity.ID))" @onclick:stopPropagation="true" @onclick:preventDefault="true"/>
-                                <ul class="item-menu">
-                                    <button class="page-tool-button">
-                                        <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
-                                    </button>
-                                    <button @onclick="(() => EditName(property.Identity.ID))" class="page-tool-button" @onclick:stopPropagation="true" @onclick:preventDefault="true">
-                                        <img src="_content/PageTree.Client.Shared/images/icons/file-document-edit-outline.png" class="page-icon" />
-                                    </button>
-                                    <button class="page-tool-button">
-                                        <img src="_content/PageTree.Client.Shared/images/icons/arrow-up-thin.png" class="page-icon" />
-                                    </button>
-                                    <button class="page-tool-button">
-                                        <img src="_content/PageTree.Client.Shared/images/icons/arrow-down-thin.png" class="page-icon" />
-                                    </button>
-                                    <button class="page-tool-button">
-                                        <img src="_content/PageTree.Client.Shared/images/icons/file-document-remove-outline.png" class="page-icon" />
-                                    </button>
-                                </ul>
-                                <div class="item-menu-side">
-                                    <input type="checkbox">
-                                    <button class="page-tool-button">
-                                        <img src="_content/PageTree.Client.Shared/images/icons/chevron-right.png" class="page-icon" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <Property ID=@p.Identity.ID Name=@p.Identity.Name OnClick=@LoadPage></Property>
                     }
                 </div>
             </div>
@@ -134,22 +107,7 @@
         </div>
         <button class="button practice-button">Practice</button>
     </div>
-    <div class="page-navbar-container">
-        <nav class="page-navbar">
-            <button class="page-tool-button" @onclick="CreateSubPage">
-                <img src="_content/PageTree.Client.Shared/images/icons/file-document-plus-outline.png" class="page-icon" />
-            </button>
-            <button class="page-tool-button" >
-                <img src="_content/PageTree.Client.Shared/images/icons/arrow-left-bold.png" class="page-icon" />
-            </button>
-            <button class="page-tool-button" >
-                <img src="_content/PageTree.Client.Shared/images/icons/arrow-right-bold.png" class="page-icon" />
-            </button>
-            <button class="page-tool-button" @onclick="OnNavigateUp">
-                <img src="_content/PageTree.Client.Shared/images/icons/arrow-up-bold-box.png" class="page-icon" />
-            </button>
-        </nav>
-    </div>
+    <PageMenu OnCreateBottomClick=@CreateSubPage OnNavigateUpClick=@OnNavigateUp/>
 </div>
 
 @code {
