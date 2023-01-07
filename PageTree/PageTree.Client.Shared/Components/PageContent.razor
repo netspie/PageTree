@@ -29,13 +29,6 @@
                             {
                                 var pathIdentity = _vm.Path[i];
                                 <li><a href="#" @onclick="@((args) => LoadPage(pathIdentity.ID))">@pathIdentity.Name</a></li>
-                                <button class="page-path-button" @onclick="@((args) => LoadPage(pathIdentity.ID))">
-                                    @pathIdentity.Name
-                                    @if (i < _vm.Path.Length - 1)
-                                    {
-                                        <span>&nbsp;/&nbsp;</span>
-                                    }
-                                </button>
                             }
                         </ul>
                     </nav>
