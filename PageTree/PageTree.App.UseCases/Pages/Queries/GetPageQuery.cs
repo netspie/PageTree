@@ -5,7 +5,6 @@ using Mediator;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 using PageTree.Domain.Projects;
-using PageTree.Domain.Users;
 
 namespace PageTree.App.Pages.Queries;
 
@@ -35,7 +34,14 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
     {
         var res = Result<GetPageQueryOut>.Success();
 
+        // Get public version !?
         var page = await _pageRepository.Get(query.ID, res);
+
+        // var pageStyle
+        // get all project styles
+        // get default project style
+        // get default style for page of the signature
+        // get selected... or available version and apply style from it too..
 
         var project = await _projectRepository.Get(page.ProjectID, res);
         var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, res);

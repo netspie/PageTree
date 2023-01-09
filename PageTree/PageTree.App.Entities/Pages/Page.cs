@@ -47,9 +47,7 @@ namespace PageTree.Domain
         public string ExpandInfoID { get; init; } = new("");
 
         /// <summary>
-        /// Styles can be independent, although styles marked for unique elements not taken into consideration if reused - or checkmark - (apply only for any page?)
-        /// Consider css - how much can you reuse idea? Maybe generate css dynamically? Or use from created earlier dynamically..
-        /// Has to be global and unique version, so user does not change for others accidentally.
+        /// Style applied for a unique page overrides all other styles applied (project, signature)
         /// </summary>
         public string StyleID { get; init; } = new("");
 
@@ -59,6 +57,11 @@ namespace PageTree.Domain
         /// Allow to create versions groups... have some predefined ones (above) - change history in it as well, even multiple ones?
         /// </summary>
         public List<string> VersionsIDs { get; init; } = new();
+
+        /// <summary>
+        /// A id of versions of the page which will be public to everyone. If not exist, then default is core version.
+        /// </summary>
+        public List<string> PublishedVersionIDs { get; set; } = new();
 
         /// <summary>
         /// List of n previous changes, so user can go back anytime he wants
