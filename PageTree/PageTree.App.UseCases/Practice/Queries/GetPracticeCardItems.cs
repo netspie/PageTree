@@ -2,6 +2,7 @@
 using Common.Basic.Collections;
 using Common.Basic.Repository;
 using PageTree.App.Common;
+using PageTree.App.Entities.Signatures;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 

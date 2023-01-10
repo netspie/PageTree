@@ -36,7 +36,7 @@ namespace PageTree.Server.Api
             services.AddJsonDbRepository<Domain.Projects.ProjectUserList, PageTree.Server.Data.ProjectUserList>(nameof(AppDbContext.ProjectUserLists));
             services.AddJsonDbRepository<Domain.Projects.Project, PageTree.Server.Data.Project>(nameof(AppDbContext.Projects));
             services.AddJsonDbRepository<Domain.Page, PageTree.Server.Data.Page>(nameof(AppDbContext.Pages));
-            services.AddJsonDbRepository<Domain.Signature, PageTree.Server.Data.Signature>(nameof(AppDbContext.Signatures));
+            services.AddJsonDbRepository<App.Entities.Signatures.Signature, PageTree.Server.Data.Signature>(nameof(AppDbContext.Signatures));
             services.AddJsonDbRepository<Domain.Practice.PracticeCategory, PageTree.Server.Data.PracticeCategory>(nameof(AppDbContext.PracticeCategories));
             services.AddJsonDbRepository<Domain.Practice.PracticeTactic, PageTree.Server.Data.PracticeTactic>(nameof(AppDbContext.PracticeTactics));
         }

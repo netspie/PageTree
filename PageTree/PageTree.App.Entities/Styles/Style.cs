@@ -8,7 +8,7 @@ namespace PageTree.App.Entities.Styles
         public SignatureDisplayType SignatureDisplayType { get; set; }
 
         public VisualInfo VisualInfo { get; set; }
-        public bool OverrideChildren { get; set; } = false;
+        public bool OverrideChildren { get; set; } = true;
 
         public List<ChildStyleInfo> ChildStyles { get; set; } = new();
 

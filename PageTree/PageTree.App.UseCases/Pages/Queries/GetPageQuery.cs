@@ -2,6 +2,7 @@
 using Common.Basic.Repository;
 using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Mediator;
+using PageTree.App.Entities.Signatures;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 using PageTree.Domain.Projects;
