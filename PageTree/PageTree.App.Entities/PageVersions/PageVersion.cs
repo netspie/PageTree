@@ -29,10 +29,13 @@ namespace PageTree.App.Entities.PageVersions
 
     public enum ChildrenModificationType
     {
-        Ordering, 
-        Sorting,
-        Filtering,
-        Pagination
+        Ordering, // if you wanna order pages manually by id
+        Sorting, // if you wanna sort pages in a specific order by a condition
+        Filtering, // if you wanna filter out results based on condition
+        Pagination, // if you want to show only one group at a time but be able to navigate between groups
+        Grouping, // if you want to group into virtual pages / folders, could be expanded or not, depending on amount or desire
+
+        Include // if you want to first filter some results but also show others after that (some or all)
     }
 
     public class Ordering
@@ -73,6 +76,7 @@ namespace PageTree.App.Entities.PageVersions
         Alphabetical,
         Random
     }
+
 
     public enum SortingOrder
     {

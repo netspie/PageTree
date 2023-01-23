@@ -2,6 +2,6 @@
 {
     public class CreatePageVersionCommand
     {
-        public string PageID { get; init; }
+        public string OriginalPageID { get; init; }
     }
 }

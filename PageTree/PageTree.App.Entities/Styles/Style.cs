@@ -1,31 +1,65 @@
 ﻿using Common.Basic.DDD;
+using Corelibs.Basic.Reflection;
+using System.ComponentModel;
 
 namespace PageTree.App.Entities.Styles
 {
     public class Style : Entity
     {
         public string Name { get; init; } = new("");
-        public SignatureDisplayType SignatureDisplayType { get; set; }
+        public StyleProperty Property { get; set; }
 
-        public VisualInfo VisualInfo { get; set; }
         public bool OverrideChildren { get; set; } = true;
-
-        public List<ChildStyleInfo> ChildStyles { get; set; } = new();
 
         public TreeExpandInfo TreeExpandInfo { get; set; } = null;
     }
 
+    public class StyleProperty
+    {
+        public List<StyleArtifact> Artifacts { get; } = new();
+        public bool Visible { get; set; }
+        public object Layout { get; set; }
+        public object LayoutOfChildren { get; set; }
+
+        public List<StyleProperty> Children { get; } = new();
+    }
+
+    public class StyleArtifact
+    {
+        public StyleArtifactType Type { get; private set; }
+        public string ChildIndex { get; private set; }
+        public VisualInfo VisualInfo { get; private set; }
+    }
+
+    public enum StyleArtifactType
+    {
+        [Description("Name")]
+        Name,
+
+        [Description("Signature")]
+        Signature,
+
+        [Description("Signature")]
+        Child,
+    }
+
+    public static class StyleArtifactTypeExtensions
+    {
+        public static string AsString(this StyleArtifactType type) =>
+            type.GetAttribute<DescriptionAttribute>()?.Description ?? "";
+    }
+
     public class VisualInfo
     {
+        public bool Visible { get; set; }
         public FontInfo Font { get ; set; }
         public ColorInfo FontColor { get; set; }
         public ColorInfo BackgroundColor { get; set; }
 
         public BorderGroupInfo Borders { get; set; }
 
-        // Delimiter
-        public bool DelimiterBeforeEnabled { get; init; }
-        public bool DelimiterAfterEnabled { get; init; }
+        public bool DelimiterBeforeEnabled { get; set; }
+        public bool DelimiterAfterEnabled { get; set; }
     }
 
     public class FontInfo
@@ -73,17 +107,34 @@ namespace PageTree.App.Entities.Styles
         PropertyType
     }
 
-    public enum SignatureDisplayType
+    public enum DisplayType
     {
         Top,
         Right,
         Left
     }
 
-    public enum SignatureVisibility
+    public enum TextTransform
     {
-        Visible,
-        Hidden
+        None,
+        Uppercase,
+        Lowercase,
+        Capitalize,
+    }
+
+    public enum TextDecoration
+    {
+        None,
+        Underline,
+        Overline,
+        LineThrough,
+    }
+
+    public enum TextAlign
+    {
+        Left,
+        Center,
+        Right,
     }
 
     public class ChildStyleInfo
@@ -100,5 +151,5 @@ namespace PageTree.App.Entities.Styles
     }
 
     public class TreeExpandInfo
-    { }
+    {}
 }

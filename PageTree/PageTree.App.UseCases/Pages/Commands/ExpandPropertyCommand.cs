@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PageTree.App.UseCases.Pages.Command
 {
-    internal class ExpandPageCommand
+    internal class ExpandPropertyCommand
     {
     }
 }
