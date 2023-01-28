@@ -78,6 +78,7 @@ namespace PageTree.App.Entities.Styles
 
     public class BorderGroupInfo
     {
+        public float Radius { get; set; }
         public LineInfo Top { get; set; }
         public LineInfo Bottom { get; set; }
         public LineInfo Right { get; set; }
@@ -93,6 +94,14 @@ namespace PageTree.App.Entities.Styles
         public string EditThickness { get; set; }
     }
 
+    public enum DisplayType
+    {
+        None,
+        Border,
+        Background,
+        Shadow
+    }
+
     public enum LineType
     {
         Solid,
@@ -100,9 +109,10 @@ namespace PageTree.App.Entities.Styles
         Dotted
     }
 
+    // done rather from signature or page/property 
     public enum ApplyChildStyleBy
     {
-        Index,
+        Index, // id?
         SignatureID,
         PropertyType
     }
