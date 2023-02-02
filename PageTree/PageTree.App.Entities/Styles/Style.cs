@@ -6,29 +6,161 @@ namespace PageTree.App.Entities.Styles
 {
     public class Style : Entity
     {
+        /// <summary>
+        /// Name of the style.
+        /// </summary>
         public string Name { get; init; } = new("");
-        public StyleProperty Property { get; set; }
 
-        public bool OverrideChildren { get; set; } = true;
+        /// <summary>
+        /// Describes styles for root and children properties.
+        /// </summary>
+        public StyleOfRootProperty RootProperty { get; set; }
 
-        public TreeExpandInfo TreeExpandInfo { get; set; } = null;
+        /// <summary>
+        /// Describes an expand state of a page.
+        /// </summary>
+        public ExpandInfo TreeExpandInfo { get; set; } = new();
     }
 
-    public class StyleProperty
+    public class ExpandInfo
     {
-        public List<StyleArtifact> Artifacts { get; } = new();
-        public bool Visible { get; set; }
-        public object Layout { get; set; }
-        public object LayoutOfChildren { get; set; }
-
-        public List<StyleProperty> Children { get; } = new();
+        public string ID { get; set; } = "";
+        public string ParentID { get; set; } = "";
+        public string PageID { get; set; } = "";
+        public bool HasChildren { get; set; }
+        public bool CanExpand { get; set; } = true;
+        public bool IsExpanded { get; set; }
+        public List<ExpandInfo> Children { get; set; } = new();
     }
 
-    public class StyleArtifact
+    public class StyleOfRootProperty
     {
-        public StyleArtifactType Type { get; private set; }
-        public string ChildIndex { get; private set; }
-        public VisualInfo VisualInfo { get; private set; }
+        #region This
+
+        /// <summary>
+        /// Describes common style for all of the artifacts of this property
+        /// or all of the children artifacts if none overriden.
+        /// </summary>
+        public VisualInfo VisualInfo { get; set; } = new();
+
+        /// <summary>
+        /// Describes which artifacts should be displayed in the property and their styles.
+        /// It can be a name, signature or metadata.
+        /// </summary>
+        public List<StyleOfArtifact> Artifacts { get; set; } = new();
+
+        /// <summary>
+        /// Describes which layout should be used to display the artifacts.
+        /// </summary>
+        public LayoutType Layout { get; set; }
+
+        #endregion
+
+        #region Children
+
+        /// <summary>
+        /// Describes common style for all of this property children.
+        /// </summary>
+        public VisualInfo VisualInfoOfChildren { get; set; } = new();
+
+        /// <summary>
+        /// Describes common style for all of this property direct children artifacts.
+        /// </summary>
+        public List<StyleOfArtifact> ChildrenStyle { get; set; } = new();
+
+        /// <summary>
+        /// Describes custom styles for a children properties of specific type or index.
+        /// </summary>
+        public List<StyleOfChildProperty> Children { get; set; } = new();
+
+        /// <summary>
+        /// Informs which layout should be used to display the children properties.
+        /// </summary>
+        public LayoutType LayoutOfChildren { get; set; }
+
+        #endregion
+    }
+
+    public class StyleOfChildProperty : StyleOfRootProperty
+    {
+        /// <summary>
+        /// Defines method by which property or group of properties should be destined to apply this style.
+        /// </summary>
+        public ApplyStyleBy StyleType { get; set; }
+
+        /// <summary>
+        /// Defines an index of the property that should apply this style.
+        /// Applies only if StyleType is set to ApplyStyleBy.Index.
+        /// </summary>
+        public int ChildIndex { get; set; }
+
+        /// <summary>
+        /// Defines a type of a property that should apply this style.
+        /// Applies only if StyleType is set to ApplyStyleBy.PropertyType.
+        /// </summary>
+        public PropertyType PropertyType { get; set; } // StyleArtifactType.PropertyType only (or should be children)
+
+    }
+
+    public class StyleOfArtifact
+    {
+        /// <summary>
+        /// Defines a type of the artifact.
+        /// </summary>
+        public StyleArtifactType Type { get; set; }
+
+        /// <summary>
+        /// Describes a style for this artifact only.
+        /// </summary>
+        public VisualInfo VisualInfo { get; set; }
+
+        /// <summary>
+        /// Describes which elements should be presented as a name of a property.
+        /// Applies only if Type is set to StyleArtifactType.Name.
+        /// </summary>
+        public List<ContentElement> NameDisplay { get; } = new();
+    }
+
+    public class ContentElement
+    {
+        public ContentElementType Type { get; set; }
+
+        /// <summary>
+        /// Applies only if Type is set to StyleArtifactType.ChildNameOfIndex.
+        /// </summary>
+        public string ChildIndexID { get; set; }
+
+        /// <summary>
+        /// Applies only if Type is set to StyleArtifactType.FirstChildNameOfSignature or  StyleArtifactType.AllChildrenNamesOfSignature.
+        /// </summary>
+        public string ChildSignatureID { get; set; } // only ContentElementType.ChildNameOfSignature
+
+        /// <summary>
+        /// Applies only if Type is set to StyleArtifactType.Delimiter.
+        /// </summary>
+        public string Delimiter { get; set; } // only ContentElementType.Delimiter
+    }
+
+    public enum ContentElementType
+    {
+        Name,
+
+        Delimiter,
+
+        Children,
+        ChildNameOfIndex,
+        FirstChildNameOfSignature,
+        AllChildrenNamesOfSignature,
+
+        ChildCount
+    }
+
+    public enum PropertyType
+    {
+        Subpage,
+        Link,
+        Query,
+        Metadata
     }
 
     public enum StyleArtifactType
@@ -39,8 +171,8 @@ namespace PageTree.App.Entities.Styles
         [Description("Signature")]
         Signature,
 
-        [Description("Signature")]
-        Child,
+        [Description("Metadata")]
+        Metadata,
     }
 
     public static class StyleArtifactTypeExtensions
@@ -51,7 +183,7 @@ namespace PageTree.App.Entities.Styles
 
     public class VisualInfo
     {
-        public bool Visible { get; set; }
+        public bool Visible { get; set; } = true;
         public FontInfo Font { get ; set; }
         public ColorInfo FontColor { get; set; }
         public ColorInfo BackgroundColor { get; set; }
@@ -94,7 +226,7 @@ namespace PageTree.App.Entities.Styles
         public string EditThickness { get; set; }
     }
 
-    public enum DisplayType
+    public enum PropertyDisplayType
     {
         None,
         Border,
@@ -110,19 +242,20 @@ namespace PageTree.App.Entities.Styles
     }
 
     // done rather from signature or page/property 
-    public enum ApplyChildStyleBy
+    public enum ApplyStyleBy
     {
         Index, // id?
+        PageID,
         SignatureID,
         PropertyType
     }
 
-    public enum DisplayType
-    {
-        Top,
-        Right,
-        Left
-    }
+    //public enum DisplayType
+    //{
+    //    Top,
+    //    Right,
+    //    Left
+    //}
 
     public enum TextTransform
     {
@@ -149,17 +282,14 @@ namespace PageTree.App.Entities.Styles
 
     public class ChildStyleInfo
     {
-        public ApplyChildStyleBy StyleType { get; set; }
+        public ApplyStyleBy StyleType { get; set; }
         //public PropertyStyle PropertyStyle { get; set; }
     }
 
     public enum LayoutType
     {
-        Horizontal,
         Vertical,
+        Horizontal,
         Grid
     }
-
-    public class TreeExpandInfo
-    {}
 }
