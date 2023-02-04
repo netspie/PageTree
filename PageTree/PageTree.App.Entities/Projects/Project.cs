@@ -25,5 +25,6 @@ namespace PageTree.Domain.Projects
         public string Name { get; set; } = new("New Project");
         public string Description { get; set; } = new("");
         public string OwnerID { get; set; } = new("");
+        public string StyleID { get; set; } = new("");
     }
 }

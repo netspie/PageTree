@@ -6,6 +6,7 @@ using PageTree.App.Entities.Signatures;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 using PageTree.Domain.Projects;
+using PageTree.App.Entities.Styles;
 
 namespace PageTree.App.Pages.Queries;
 
@@ -13,6 +14,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
 {
     private readonly IRepository<Project> _projectRepository;
     private readonly IRepository<Page> _pageRepository;
+    private readonly IRepository<Style> _styleRepository;
     private readonly IRepository<Signature> _signatureRepository;
     private readonly IRepository<PracticeCategory> _practiceCategoryRepository;
     private readonly IRepository<PracticeTactic> _practiceTacticRepository;
@@ -20,12 +22,14 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
     public GetPageQueryHandler(
         IRepository<Project> projectRepository,
         IRepository<Page> pageRepository,
+        IRepository<Style> styleRepository,
         IRepository<Signature> signatureRepository,
         IRepository<PracticeCategory> practiceCategoryRepository,
         IRepository<PracticeTactic> practiceTacticRepository)
     {
         _projectRepository = projectRepository;
         _pageRepository = pageRepository;
+        _styleRepository = styleRepository;
         _signatureRepository = signatureRepository;
         _practiceCategoryRepository = practiceCategoryRepository;
         _practiceTacticRepository = practiceTacticRepository;
@@ -37,12 +41,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
 
         // Get public version !?
         var page = await _pageRepository.Get(query.ID, res);
-
-        // var pageStyle
-        // get all project styles
-        // get default project style
-        // get default style for page of the signature
-        // get selected... or available version and apply style from it too..
+        var signature = await _signatureRepository.Get(page.SignatureID, res);
 
         var project = await _projectRepository.Get(page.ProjectID, res);
         var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, res);
@@ -51,7 +50,10 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoryRoot.Items, res);
         var practiceTactics = await _practiceTacticRepository.Get(practiceTacticRoot.Items, res);
 
-        var signature = await _signatureRepository.Get(page.SignatureID, res);
+        var projectStyle = await _styleRepository.Get(project.StyleID, res);
+        var signatureStyles = await _styleRepository.Get(signature.StyleIDs, res);
+        var pageStyle = await _styleRepository.Get(page.StyleID, res);
+        var finalStyle = projectStyle.Override(signatureStyles.Append(pageStyle).ToArray());
 
         async Task GetParentPage(Page page, List<Page> pages)
         {
@@ -94,7 +96,9 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                 {
                     ID = p.ID,
                     Name = p.Name
-                }).ToArray()
+                }).ToArray(),
+                
+                Style = finalStyle
             }
         ));
     }
@@ -152,6 +156,7 @@ public class PageVM
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
     public PropertyVM[] Properties { get; init; } = Array.Empty<PropertyVM>();
     public IdentityVM[] PracticeTactics { get; init; } = Array.Empty<IdentityVM>();
+    public Style Style { get; init; }
 }
 
 public class PropertyVM

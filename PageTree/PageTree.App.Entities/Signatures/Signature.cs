@@ -1,6 +1,4 @@
 ﻿using Common.Basic.DDD;
-using PageTree.Domain;
-using PageTree.Domain.EC;
 
 namespace PageTree.App.Entities.Signatures
 {

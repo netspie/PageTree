@@ -1,6 +1,9 @@
-﻿using Common.Basic.DDD;
+﻿using Common.Basic.Collections;
+using Common.Basic.DDD;
 using Corelibs.Basic.Reflection;
 using System.ComponentModel;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PageTree.App.Entities.Styles
 {
@@ -9,7 +12,7 @@ namespace PageTree.App.Entities.Styles
         /// <summary>
         /// Name of the style.
         /// </summary>
-        public string Name { get; init; } = new("");
+        public string Name { get; set; } = new("");
 
         /// <summary>
         /// Describes styles for root and children properties.
@@ -20,6 +23,30 @@ namespace PageTree.App.Entities.Styles
         /// Describes an expand state of a page.
         /// </summary>
         public ExpandInfo TreeExpandInfo { get; set; } = new();
+
+        public Style Override(params Style[] other)
+        {
+            var n = Override(new Style());
+            foreach (var o in other)
+            {
+                if (!o)
+                    continue;
+
+                n = n.Override(o);
+            }
+
+            return n;
+        }
+
+        public Style Override(Style other)
+        {
+            var n = new Style();
+
+            n.Name = $"{Name} - {other.Name}";
+            n.RootProperty = RootProperty.Override(other.RootProperty);
+
+            return n;
+        }
     }
 
     public class ExpandInfo
@@ -52,7 +79,7 @@ namespace PageTree.App.Entities.Styles
         /// <summary>
         /// Describes which layout should be used to display the artifacts.
         /// </summary>
-        public LayoutType Layout { get; set; }
+        public Layout Layout { get; set; }
 
         #endregion
 
@@ -76,15 +103,62 @@ namespace PageTree.App.Entities.Styles
         /// <summary>
         /// Informs which layout should be used to display the children properties.
         /// </summary>
-        public LayoutType LayoutOfChildren { get; set; }
+        public Layout LayoutOfChildren { get; set; }
 
         #endregion
+
+        public StyleOfRootProperty Override(StyleOfRootProperty other)
+        {
+            var n = new StyleOfRootProperty();
+
+            n.VisualInfo = VisualInfo.Override(other.VisualInfo);
+            n.Layout = Layout.Override(other.Layout);
+            n.Artifacts = Artifacts
+                .Zip(other.Artifacts, (t, o) => t.Type == o.Type)
+                .Select(z => z.Item2.IsNullOrEmpty() ? z.Item1 : z.Item1.Override(z.Item2.First()))
+                .ToList();
+
+            n.VisualInfoOfChildren = VisualInfoOfChildren.Override(other.VisualInfoOfChildren);
+            n.LayoutOfChildren = LayoutOfChildren.Override(other.LayoutOfChildren);
+            n.ChildrenStyle = ChildrenStyle
+                .Zip(other.ChildrenStyle, (t, o) => t.Type == o.Type)
+                .Select(z => z.Item2.IsNullOrEmpty() ? z.Item1 : z.Item1.Override(z.Item2.First()))
+                .ToList();
+
+            n.Children = Children
+                .Zip(other.Children, (t, o) => 
+                    (t.StyleType == ApplyStyleBy.Index && t.ChildIndex == o.ChildIndex) || 
+                    (t.StyleType == ApplyStyleBy.PropertyType && t.PropertyType == o.PropertyType))
+                .Select(z => z.Item2.IsNullOrEmpty() ? z.Item1 : z.Item1.Override(z.Item2.First()))
+                .ToList();
+
+            return n;
+        }
     }
 
     public class Layout
     {
-        public LayoutType? Type { get; set; }
+        public LayoutType Type { get; set; }
         public float? Gap { get; set; }
+
+        public Size ChildWidth { get; set; }
+        public Size ChildHeight { get; set; }
+
+        public List<int> ColumnCounts { get; set; }
+
+        public Layout Override(Layout other)
+        {
+            var n = new Layout();
+
+            n.Type = Type;
+            n.Gap = other.Gap ?? Gap;
+
+            n.ChildWidth = other.ChildWidth ?? ChildWidth;
+            n.ChildHeight = other.ChildHeight ?? ChildHeight;
+            n.ColumnCounts = other.ColumnCounts ?? ColumnCounts;
+
+            return n;
+        }
     }
 
     public enum LayoutType
@@ -105,13 +179,45 @@ namespace PageTree.App.Entities.Styles
         /// Defines an index of the property that should apply this style.
         /// Applies only if StyleType is set to ApplyStyleBy.Index.
         /// </summary>
-        public int ChildIndex { get; set; }
+        public int? ChildIndex { get; set; }
 
         /// <summary>
         /// Defines a type of a property that should apply this style.
         /// Applies only if StyleType is set to ApplyStyleBy.PropertyType.
         /// </summary>
-        public PropertyType PropertyType { get; set; } // StyleArtifactType.PropertyType only (or should be children)
+        public PropertyType? PropertyType { get; set; } // StyleArtifactType.PropertyType only (or should be children)
+
+        public StyleOfChildProperty Override(StyleOfChildProperty other)
+        {
+            var n = new StyleOfChildProperty();
+
+            n.VisualInfo = VisualInfo.Override(other.VisualInfo);
+            n.Layout = Layout.Override(other.Layout);
+            n.Artifacts = Artifacts
+                .Zip(other.Artifacts, (t, o) => t.Type == o.Type)
+                .Select(z => z.Item2.IsNullOrEmpty() ? z.Item1 : z.Item1.Override(z.Item2.First()))
+                .ToList();
+
+            n.VisualInfoOfChildren = VisualInfoOfChildren.Override(other.VisualInfoOfChildren);
+            n.LayoutOfChildren = LayoutOfChildren.Override(other.LayoutOfChildren);
+            n.ChildrenStyle = ChildrenStyle
+                .Zip(other.ChildrenStyle, (t, o) => t.Type == o.Type)
+                .Select(z => z.Item2.IsNullOrEmpty() ? z.Item1 : z.Item1.Override(z.Item2.First()))
+                .ToList();
+
+            n.Children = Children
+                .Zip(other.Children, (t, o) =>
+                    (t.StyleType == ApplyStyleBy.Index && t.ChildIndex == o.ChildIndex) ||
+                    (t.StyleType == ApplyStyleBy.PropertyType && t.PropertyType == o.PropertyType))
+                .Select(z => z.Item2.IsNullOrEmpty() ? z.Item1 : z.Item1.Override(z.Item2.First()))
+                .ToList();
+
+            n.StyleType = other.StyleType;
+            n.ChildIndex = other.ChildIndex ?? ChildIndex;
+            n.PropertyType = other.PropertyType ?? PropertyType;
+
+            return n;
+        }
 
     }
 
@@ -131,7 +237,18 @@ namespace PageTree.App.Entities.Styles
         /// Describes which elements should be presented as a name of a property.
         /// Applies only if Type is set to StyleArtifactType.Name.
         /// </summary>
-        public List<ContentElement> NameDisplay { get; } = new();
+        public List<ContentElement> NameDisplay { get; private set; } = new();
+
+        public StyleOfArtifact Override(StyleOfArtifact other)
+        {
+            var res = new StyleOfArtifact();
+
+            res.Type = other.Type;
+            res.VisualInfo = VisualInfo.Override(other.VisualInfo);
+            res.NameDisplay = NameDisplay ?? new(other.NameDisplay);
+
+            return res;
+        }
     }
 
     public class ContentElement
@@ -146,12 +263,12 @@ namespace PageTree.App.Entities.Styles
         /// <summary>
         /// Applies only if Type is set to StyleArtifactType.FirstChildNameOfSignature or  StyleArtifactType.AllChildrenNamesOfSignature.
         /// </summary>
-        public string ChildSignatureID { get; set; } // only ContentElementType.ChildNameOfSignature
+        public string ChildSignatureID { get; set; }
 
         /// <summary>
         /// Applies only if Type is set to StyleArtifactType.Delimiter.
         /// </summary>
-        public string Delimiter { get; set; } // only ContentElementType.Delimiter
+        public string Delimiter { get; set; }
     }
 
     public enum ContentElementType
@@ -198,22 +315,46 @@ namespace PageTree.App.Entities.Styles
     {
         public bool? Visible { get; set; } = true;
         
-        public Size? Width { get; set; }
+        public Size Width { get; set; }
 
-        public TextInfo TextInfo { get; set; }
+        public TextInfo Text { get; set; }
 
         public FontInfo Font { get ; set; }
         public ColorInfo FontColor { get; set; }
         public ColorInfo BackgroundColor { get; set; }
 
-        public RectSpace Margin { get; set; }
-        public RectSpace Padding { get; set; }
+        public RectArea Margin { get; set; }
+        public RectArea Padding { get; set; }
 
         public Rect Outline { get; set; }
         public Rect Borders { get; set; }
 
-        public Line DelimiterBeforeEnabled { get; set; }
-        public Line DelimiterAfterEnabled { get; set; }
+        public Line DelimiterBefore { get; set; }
+        public Line DelimiterAfter { get; set; }
+
+        public VisualInfo Override(VisualInfo other)
+        {
+            var res = new VisualInfo();
+
+            res.Visible = other.Visible ?? Visible;
+            res.Width = Width.Override(other.Width);
+
+            res.Text = Text.Override(other.Text);
+            res.Font = Font.Override(other.Font);
+            res.FontColor = FontColor.Override(other.FontColor);
+            res.BackgroundColor = BackgroundColor.Override(other.BackgroundColor);
+
+            res.Margin = Margin.Override(other.Margin);
+            res.Padding = Margin.Override(other.Padding);
+
+            res.Outline = Outline.Override(other.Outline);
+            res.Borders = Borders.Override(other.Borders);
+
+            res.DelimiterBefore = DelimiterBefore.Override(other.DelimiterBefore);
+            res.DelimiterAfter = DelimiterAfter.Override(other.DelimiterAfter);
+
+            return res;
+        }
     }
 
     public class TextInfo
@@ -223,6 +364,19 @@ namespace PageTree.App.Entities.Styles
         public TextWrap? TextWrap { get; set; }
         public TextTransform? TextTransform { get; set; }
         public List<TextDecoration> TextDecorations { get; set; }
+
+        public TextInfo Override(TextInfo other)
+        {
+            var res = new TextInfo();
+
+            res.TextAlign = other.TextAlign ?? TextAlign;
+            res.TextIndent = other.TextIndent ?? TextIndent;
+            res.TextWrap = other.TextWrap ?? TextWrap;
+            res.TextTransform = other.TextTransform ?? TextTransform;
+            res.TextDecorations = other.TextDecorations ?? new(TextDecorations);
+
+            return res;
+        } 
     }
 
     public class FontInfo
@@ -230,6 +384,17 @@ namespace PageTree.App.Entities.Styles
         public string Font { get; set; }
         public string FontSize { get; set; }
         public FontWeight? FontWeight { get; set; }
+
+        public FontInfo Override(FontInfo other)
+        {
+            var res = new FontInfo();
+
+            res.Font = other.Font ?? Font;
+            res.FontSize = other.FontSize ?? FontSize;
+            res.FontWeight = other.FontWeight ?? FontWeight;
+
+            return res;
+        }
     }
 
     public enum FontWeight
@@ -251,6 +416,17 @@ namespace PageTree.App.Entities.Styles
         public int? Default { get; set; }
         public int? Hover { get; set; }
         public int? Edit { get; set; }
+
+        public ColorInfo Override(ColorInfo other)
+        {
+            var res = new ColorInfo();
+
+            res.Default = other.Default ?? Default;
+            res.Hover = other.Hover ?? Hover;
+            res.Edit = other.Edit ?? Edit;
+
+            return res;
+        }
     }
 
     public class Rect
@@ -260,15 +436,41 @@ namespace PageTree.App.Entities.Styles
         public Line Bottom { get; set; }
         public Line Right { get; set; }
         public Line Left { get; set; }
+
+        public Rect Override(Rect other)
+        {
+            var res = new Rect();
+
+            res.Radius = other.Radius ?? Radius;
+            res.Top = Top.Override(other.Top);
+            res.Bottom = Bottom.Override(other.Bottom);
+            res.Right = Right.Override(other.Right);
+            res.Left = Left.Override(other.Left);
+
+            return res;
+        }
     }
 
-    public class RectSpace
+    public class RectArea
     {
         public string All { get; set; }
         public string Top { get; set; }
         public string Bottom { get; set; }
         public string Right { get; set; }
         public string Left { get; set; }
+
+        public RectArea Override(RectArea other)
+        {
+            var res = new RectArea();
+
+            res.All = other.All ?? All;
+            res.Top = other.Top ?? Top;
+            res.Bottom = other.Bottom ?? Bottom;
+            res.Right = other.Right ?? Right;
+            res.Left = other.Left ?? Left;
+
+            return res;
+        }
     }
 
     public class Line
@@ -276,9 +478,36 @@ namespace PageTree.App.Entities.Styles
         public LineType? Type { get; set; }
         public ColorInfo Color { get; set; }
         public float? Thickness { get; set; }
+
+        public Line Override(Line other)
+        {
+            var res = new Line();
+
+            res.Type = other.Type ?? Type;
+            res.Color = Color.Override(other.Color);
+            res.Thickness = other.Thickness ?? Thickness;
+
+            return res;
+        }
     }
 
-    public enum Size
+    public class Size
+    {
+        public SizeType? Type { get; set; }
+        public float? Value { get; set; }
+
+        public Size Override(Size other)
+        {
+            var res = new Size();
+
+            res.Type = other.Type ?? Type;
+            res.Value = other.Value ?? Value;
+
+            return res;
+        }
+    }
+
+    public enum SizeType
     {
         Parent,
         Content,
