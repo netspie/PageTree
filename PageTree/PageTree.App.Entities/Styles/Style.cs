@@ -81,6 +81,19 @@ namespace PageTree.App.Entities.Styles
         #endregion
     }
 
+    public class Layout
+    {
+        public LayoutType? Type { get; set; }
+        public float? Gap { get; set; }
+    }
+
+    public enum LayoutType
+    {
+        Vertical,
+        Horizontal,
+        Grid
+    }
+
     public class StyleOfChildProperty : StyleOfRootProperty
     {
         /// <summary>
@@ -183,56 +196,96 @@ namespace PageTree.App.Entities.Styles
 
     public class VisualInfo
     {
-        public bool Visible { get; set; } = true;
+        public bool? Visible { get; set; } = true;
+        
+        public Size? Width { get; set; }
+
+        public TextInfo TextInfo { get; set; }
+
         public FontInfo Font { get ; set; }
         public ColorInfo FontColor { get; set; }
         public ColorInfo BackgroundColor { get; set; }
 
-        public BorderGroupInfo Borders { get; set; }
+        public RectSpace Margin { get; set; }
+        public RectSpace Padding { get; set; }
 
-        public bool DelimiterBeforeEnabled { get; set; }
-        public bool DelimiterAfterEnabled { get; set; }
+        public Rect Outline { get; set; }
+        public Rect Borders { get; set; }
+
+        public Line DelimiterBeforeEnabled { get; set; }
+        public Line DelimiterAfterEnabled { get; set; }
+    }
+
+    public class TextInfo
+    {
+        public TextAlign? TextAlign { get; set; }
+        public TextIndent? TextIndent { get; set; }
+        public TextWrap? TextWrap { get; set; }
+        public TextTransform? TextTransform { get; set; }
+        public List<TextDecoration> TextDecorations { get; set; }
     }
 
     public class FontInfo
     {
-        public string FontID { get; init; }
-        public string FontSize { get; init; }
-        public string FontWeightType { get; init; }
+        public string Font { get; set; }
+        public string FontSize { get; set; }
+        public FontWeight? FontWeight { get; set; }
+    }
+
+    public enum FontWeight
+    {
+        Thin,
+        ExtraLight,
+        Light,
+
+        Normal,
+
+        Medium,
+        SemiBold,
+        Bold,
+        ExtraBold
     }
 
     public class ColorInfo
     {
-        public string Color { get; init; }
-        public string HoverColor { get; init; }
-        public string EditColor { get; init; }
+        public int? Default { get; set; }
+        public int? Hover { get; set; }
+        public int? Edit { get; set; }
     }
 
-    public class BorderGroupInfo
+    public class Rect
     {
-        public float Radius { get; set; }
-        public LineInfo Top { get; set; }
-        public LineInfo Bottom { get; set; }
-        public LineInfo Right { get; set; }
-        public LineInfo Left { get; set; }
+        public float? Radius { get; set; }
+        public Line Top { get; set; }
+        public Line Bottom { get; set; }
+        public Line Right { get; set; }
+        public Line Left { get; set; }
     }
 
-    public class LineInfo
+    public class RectSpace
     {
-        public LineType Type { get; set; }
-        public string Color { get; set; }
-        public float Thickness { get; set; } = 1;
-        public string EditColor { get; set; }
-        public string EditThickness { get; set; }
+        public string All { get; set; }
+        public string Top { get; set; }
+        public string Bottom { get; set; }
+        public string Right { get; set; }
+        public string Left { get; set; }
     }
 
-    public enum PropertyDisplayType
+    public class Line
     {
-        None,
-        Border,
-        Background,
-        Shadow
+        public LineType? Type { get; set; }
+        public ColorInfo Color { get; set; }
+        public float? Thickness { get; set; }
     }
+
+    public enum Size
+    {
+        Parent,
+        Content,
+        Value
+    }
+
+    public enum TextIndent {}
 
     public enum LineType
     {
@@ -241,21 +294,11 @@ namespace PageTree.App.Entities.Styles
         Dotted
     }
 
-    // done rather from signature or page/property 
     public enum ApplyStyleBy
     {
-        Index, // id?
-        PageID,
-        SignatureID,
+        Index,
         PropertyType
     }
-
-    //public enum DisplayType
-    //{
-    //    Top,
-    //    Right,
-    //    Left
-    //}
 
     public enum TextTransform
     {
@@ -280,16 +323,10 @@ namespace PageTree.App.Entities.Styles
         Right,
     }
 
-    public class ChildStyleInfo
+    public enum TextWrap
     {
-        public ApplyStyleBy StyleType { get; set; }
-        //public PropertyStyle PropertyStyle { get; set; }
-    }
-
-    public enum LayoutType
-    {
-        Vertical,
-        Horizontal,
-        Grid
+        Wrap,
+        NoWrap,
+        Right,
     }
 }
