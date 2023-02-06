@@ -97,8 +97,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                     ID = p.ID,
                     Name = p.Name
                 }).ToArray(),
-                
-                Style = finalStyle
+
+                StyleOfPage = finalStyle
             }
         ));
     }
@@ -156,7 +156,8 @@ public class PageVM
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
     public PropertyVM[] Properties { get; init; } = Array.Empty<PropertyVM>();
     public IdentityVM[] PracticeTactics { get; init; } = Array.Empty<IdentityVM>();
-    public Style Style { get; init; }
+    public Style StyleOfPage { get; init; }
+    public Style[] StylesOfChildren { get; init; } = Array.Empty<Style>();
 }
 
 public class PropertyVM

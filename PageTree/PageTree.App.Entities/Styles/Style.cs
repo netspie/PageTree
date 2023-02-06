@@ -24,6 +24,8 @@ namespace PageTree.App.Entities.Styles
         /// </summary>
         public ExpandInfo TreeExpandInfo { get; set; } = new();
 
+        public List<string> SignatureIDs { get; private set; } = new();
+
         public Style Override(params Style[] other)
         {
             var n = Override(new Style());
@@ -53,9 +55,8 @@ namespace PageTree.App.Entities.Styles
     {
         public string ID { get; set; } = "";
         public string ParentID { get; set; } = "";
-        public string PageID { get; set; } = "";
-        public bool HasChildren { get; set; }
         public bool CanExpand { get; set; } = true;
+        public bool HasChildren { get; set; }
         public bool IsExpanded { get; set; }
         public List<ExpandInfo> Children { get; set; } = new();
     }
@@ -81,6 +82,11 @@ namespace PageTree.App.Entities.Styles
         /// </summary>
         public Layout Layout { get; set; }
 
+        /// <summary>
+        /// Tells whether the style should override custom defined styles.
+        /// </summary>
+        public bool? ShouldOverride { get; set; }
+
         #endregion
 
         #region Children
@@ -104,6 +110,11 @@ namespace PageTree.App.Entities.Styles
         /// Informs which layout should be used to display the children properties.
         /// </summary>
         public Layout LayoutOfChildren { get; set; }
+
+        /// <summary>
+        /// Tells whether the style should override custom defined styles of children.
+        /// </summary>
+        public bool? ShouldOverrideChildren { get; set; }
 
         #endregion
 
@@ -313,8 +324,8 @@ namespace PageTree.App.Entities.Styles
 
     public class VisualInfo
     {
-        public bool? Visible { get; set; } = true;
-        
+        public Visibility? Visibility { get; set; }
+
         public Size Width { get; set; }
 
         public TextInfo Text { get; set; }
@@ -336,7 +347,7 @@ namespace PageTree.App.Entities.Styles
         {
             var res = new VisualInfo();
 
-            res.Visible = other.Visible ?? Visible;
+            res.Visibility = other.Visibility ?? Visibility;
             res.Width = Width.Override(other.Width);
 
             res.Text = Text.Override(other.Text);
@@ -395,6 +406,13 @@ namespace PageTree.App.Entities.Styles
 
             return res;
         }
+    }
+
+    public enum Visibility
+    {
+        Always,
+        Never,
+        IfHasChildren
     }
 
     public enum FontWeight
