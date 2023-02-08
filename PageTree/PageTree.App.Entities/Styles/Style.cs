@@ -91,6 +91,8 @@ namespace PageTree.App.Entities.Styles
 
         #region Children
 
+        public SignatureFilter SignatureFilter { get; set; }
+
         /// <summary>
         /// Describes common style for all of this property children.
         /// </summary>
@@ -145,6 +147,22 @@ namespace PageTree.App.Entities.Styles
 
             return n;
         }
+    }
+
+    /// <summary>
+    /// Describes which elements of same signature should be presented under the same filter in a view.
+    /// </summary>
+    public class SignatureFilter
+    {
+        /// <summary>
+        /// Parent signature or page id.
+        /// </summary>
+        public string ParentID { get; set; } = "";
+
+        /// <summary>
+        /// Ids of signature of pages which will be presented under common signature filter.
+        /// </summary>
+        public List<string> SignatureIDs { get; private set; } = new();
     }
 
     public class Layout
@@ -393,7 +411,7 @@ namespace PageTree.App.Entities.Styles
     public class FontInfo
     {
         public string Font { get; set; }
-        public string FontSize { get; set; }
+        public float? FontSize { get; set; }
         public FontWeight? FontWeight { get; set; }
 
         public FontInfo Override(FontInfo other)
