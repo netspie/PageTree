@@ -50,10 +50,10 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoryRoot.Items, res);
         var practiceTactics = await _practiceTacticRepository.Get(practiceTacticRoot.Items, res);
 
-        var projectStyle = await _styleRepository.Get(project.StyleID, res);
-        var signatureStyles = await _styleRepository.Get(signature.StyleIDs, res);
-        var pageStyle = await _styleRepository.Get(page.StyleID, res);
-        var finalStyle = projectStyle.Override(signatureStyles.Append(pageStyle).ToArray());
+        var projectStyle = await _styleRepository.Get(project?.StyleID, res);
+        var signatureStyles = await _styleRepository.Get(signature?.StyleIDs, res);
+        var pageStyle = await _styleRepository.Get(page?.StyleID, res);
+        var finalStyle = projectStyle?.Override(signatureStyles.Append(pageStyle).ToArray());
 
         async Task GetParentPage(Page page, List<Page> pages)
         {

@@ -8,7 +8,9 @@ using Corelibs.MongoDB.Logging;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using PageTree.App.Entities.Styles;
 using PageTree.App.UseCases;
+using PageTree.App.UseCases.Styles.StyleDefinitions;
 using PageTree.Server.Data;
 using PageTree.Server.DataUpdates;
 
@@ -39,6 +41,7 @@ namespace PageTree.Server.Api
             services.AddJsonDbRepository<App.Entities.Signatures.Signature, PageTree.Server.Data.Signature>(nameof(AppDbContext.Signatures));
             services.AddJsonDbRepository<Domain.Practice.PracticeCategory, PageTree.Server.Data.PracticeCategory>(nameof(AppDbContext.PracticeCategories));
             services.AddJsonDbRepository<Domain.Practice.PracticeTactic, PageTree.Server.Data.PracticeTactic>(nameof(AppDbContext.PracticeTactics));
+            services.AddScoped<IRepository<Style>>(sp => new StyleRepository());
         }
 
         private static void AddResourceAuthorizationHandlers(this IServiceCollection services)
