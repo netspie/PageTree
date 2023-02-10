@@ -1,4 +1,9 @@
-﻿.bg-image {
+﻿.bgs {
+    position: fixed;
+    height: 100%;
+}
+
+.bg-image {
     width: contain;
     max-height: 100%;
     position: fixed;

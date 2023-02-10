@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Corelibs.BlazorComponents\Corelibs.BlazorComponents\Corelibs.BlazorViews\Corelibs.BlazorViews.csproj" />
     <ProjectReference Include="..\..\..\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared\Corelibs.BlazorShared.csproj" />
     <ProjectReference Include="..\PageTree.App.UseCases\PageTree.App.UseCases.csproj" />
     <ProjectReference Include="..\PageTree.Server.ApiContracts\PageTree.Server.ApiContracts.csproj" />

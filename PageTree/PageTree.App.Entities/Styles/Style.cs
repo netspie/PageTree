@@ -489,11 +489,11 @@ namespace PageTree.App.Entities.Styles
 
     public class RectArea
     {
-        public string All { get; set; }
-        public string Top { get; set; }
-        public string Bottom { get; set; }
-        public string Right { get; set; }
-        public string Left { get; set; }
+        public float? All { get; set; }
+        public float? Top { get; set; }
+        public float? Bottom { get; set; }
+        public float? Right { get; set; }
+        public float? Left { get; set; }
 
         public RectArea Override(RectArea other)
         {

@@ -1,11 +1,9 @@
-﻿@page "/learn/pages"
-
+﻿@*@page "/learn/pages"*@
 @using Corelibs.BlazorShared.UI;
 @using Microsoft.JSInterop;
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
-    @*<PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>*@
-    <Corelibs.BlazorViews.Components.Page Left=@context.Item1 Top=@context.Item2 />
+    <PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>
 </BackgroundAndContent>
 
 @code {
