@@ -1,9 +1,10 @@
 ﻿@page "/"
 @using Corelibs.BlazorShared.UI;
 @using Microsoft.JSInterop;
+@using PageTree.Client.Shared.Components._JapaneseArcana;
 
 <BackgroundAndContent @ref=@_backgroundOwner>
-    <JAHomeContent />
+    <IndexContent />
 </BackgroundAndContent>
 
 @code {

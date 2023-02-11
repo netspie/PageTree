@@ -57,9 +57,9 @@
     else
     @if (IsPageTreeLearn())
     {
-        <PTNavMenu />
+        <PageTree.Client.Shared.Components._PageTree.NavMenu />
         <main>
-            <div class="top-row"><PTLearnNavBar /></div>
+            <div class="top-row"><PageTree.Client.Shared.Components._PageTree.LearnNavBar /></div>
             <article class="main-content pl-5">
                 @Body
             </article>
@@ -69,7 +69,7 @@
     @if (IsPageTreeHome())
     {
         <main>
-            <div class="top-row"><PTHomeNavBar /></div>
+            <div class="top-row"><PageTree.Client.Shared.Components._PageTree.IndexNavBar /></div>
             <article class="main-content pl-5">
                 @Body
             </article>
