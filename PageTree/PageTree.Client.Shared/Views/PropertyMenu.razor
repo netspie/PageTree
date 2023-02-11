@@ -1,0 +1,18 @@
+﻿@using Corelibs.BlazorViews.Components
+@using Corelibs.BlazorViews.Layouts
+
+<OuterClickComponent @ref=OuterClick class="property-menu-outer">
+    <ContextMenu @ref=ContextMenu class="property-context-menu">
+        <VerticalLayout>
+            <span>Create</span>
+            <span>Move</span>
+            <span>Delete</span>
+        </VerticalLayout>
+    </ContextMenu>
+</OuterClickComponent>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    public OuterClickComponent? OuterClick { get; set; }
+    public ContextMenu? ContextMenu { get; set; }
+}

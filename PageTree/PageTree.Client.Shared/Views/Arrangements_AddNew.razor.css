@@ -1,0 +1,42 @@
+﻿.add-button {
+    padding: 5px;
+    margin: 0;
+    background: #cecece;
+    border: none;
+    width: fit-content;
+}
+
+.add-button:hover {
+    background: #808080;
+}
+
+.add-button-parent {
+    width: fit-content;
+    position: relative;
+}
+
+.add-button-parent:hover .add-panel {
+    display: flex;
+}
+
+.add-panel {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    align-items: flex-start;
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+    background: #cecece;
+    position: absolute;
+    top: 0;
+}
+
+.mod-list {
+    width: 100%;
+    height: fit-content;
+    background: #e5dbdb;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}

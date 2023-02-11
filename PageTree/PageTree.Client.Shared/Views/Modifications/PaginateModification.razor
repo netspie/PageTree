@@ -1,0 +1,110 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Components
+
+<div class="row">
+    <span>Sort</span>
+    <span>by</span>
+    <Dropdown VM=_artifactDropdownVM OnValueChanged=OnArtifactChanged />
+    <Dropdown VM=_methodDropdownVM OnValueChanged=OnMethodChanged />
+    <input class="index-input" type="text" placeholder="Enter Index" value="@VM.Number" @oninput=OnArgumentChanged />
+</div>
+
+@code {
+    [Parameter] public ViewModel VM { get; set; } = new();
+
+    private Dropdown.ViewModel _artifactDropdownVM = new();
+    private Dropdown.ViewModel _methodDropdownVM = new();
+
+    protected override void OnInitialized()
+    {
+        _artifactDropdownVM.Values = new()
+        {
+            new IdentityVM()
+            {
+                ID = PaginateArtifacts.Page,
+                Name = "Page",
+            },
+
+            new IdentityVM()
+            {
+                ID = PaginateArtifacts.Signature,
+                Name = "Signature",
+            },
+
+            new IdentityVM()
+            {
+                ID = PaginateArtifacts.PropertyType,
+                Name = "Property Type",
+            }
+        };
+
+        _methodDropdownVM.Values = new()
+        {
+            new IdentityVM()
+            {
+                ID = PaginateMethods.ByGroupCount,
+                Name = "By Group Count",
+            },
+
+            new IdentityVM()
+            {
+                ID = PaginateMethods.ByQuantityPerGroup,
+                Name = "By Quantity Per Group",
+            },
+
+            new IdentityVM()
+            {
+                ID = PaginateMethods.ByInitialCharacter,
+                Name = "By Initial Character",
+            },
+        };
+    }
+
+    private Task<bool> OnArtifactChanged(IdentityVM propertyVM)
+    {
+        return Task.FromResult(true);
+    }
+
+    private Task<bool> OnMethodChanged(IdentityVM propertyVM)
+    {
+        VM.PaginateMethod = propertyVM.ID;
+        InvokeAsync(StateHasChanged);
+        return Task.FromResult(true);
+    }
+
+    private void OnArgumentChanged(ChangeEventArgs args)
+    {
+        if (VM.PaginateMethod == PaginateMethods.ByInitialCharacter)
+        {
+            VM.Character = args.Value as string;
+            return;
+        }
+
+        var str = args.Value as string;
+        if (!int.TryParse(str, out int number))
+            return;
+
+        VM.Number = number;
+    }
+
+    public class ViewModel
+    {
+        public string PaginateMethod { get; set; } = PaginateMethods.ByGroupCount;
+        public int Number { get; set; }
+        public string Character { get; set; } = "";
+    }
+
+    public static class PaginateMethods
+    {
+        public const string ByQuantityPerGroup = "ByQuantityPerGroup";
+        public const string ByGroupCount = "ByGroupCount";
+        public const string ByInitialCharacter = "ByInitialCharacter";
+    }
+
+    public static class PaginateArtifacts
+    {
+        public const string Page = "Page";
+        public const string Signature = "Signature";
+        public const string PropertyType = "PropertyType";
+    }
+}

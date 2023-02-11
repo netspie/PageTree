@@ -1,0 +1,158 @@
+﻿@using Corelibs.BlazorViews.Components
+@using Corelibs.BlazorViews.Layouts
+@using Corelibs.BlazorShared.UI;
+@using Corelibs.BlazorShared.UI.Css;
+@using Microsoft.JSInterop;
+
+@inherits BaseElement
+
+<div class="property-container" style=@Style @onclick="HandleClick" @oncontextmenu="HandleRightClick" @oncontextmenu:preventDefault="true">
+    <div class="property">
+        @*<div class="property-highlight"/>*@
+        @*<HoverableMenu Title="S" VM=_menuVM OnClick=OnMenuButtonClick MenuButtonCSS="property-menu-button" />*@
+        <PropertyMenu @ref=_menu />
+        @*<ul class="side-menu">
+            <input type="checkbox" class="select-checkbox" />
+        </ul>*@
+        @foreach (var artifact in Model.Artifacts)
+        {
+            var fontWeight = new CssAttribute((double) artifact.VisualInfo.Font.FontWeight, Unit.None);
+
+            <CText 
+                FontSize=@artifact.VisualInfo.Font.FontSize
+                FontWeight=@fontWeight>
+                    @artifact.Identity.Name
+            </CText>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Text1 { get; set; }
+    [Parameter] public string Text2 { get; set; }
+    [Parameter] public string ID { get; set; }
+
+    [Parameter] public CssAttribute? Width { get; set; }
+    [Parameter] public CssAttribute? MinWidth { get; set; }
+    [Parameter] public CssAttribute? MaxWidth { get; set; }
+
+    [Parameter] public CssAttribute? Height { get; set; }
+    [Parameter] public CssAttribute? MinHeight { get; set; }
+    [Parameter] public CssAttribute? MaxHeight { get; set; }
+
+    [Parameter] public ViewModel Model { get; set; } = new();
+
+    [Inject] private IJSRuntime _jsRuntime { get; set; }
+
+    private PropertyMenu? _menu;
+
+    private Task<bool> OnMenuButtonClick(HoverableMenu.ButtonVM vm)
+    {
+        return Task.FromResult(true);
+    }
+
+    void HandleClick(MouseEventArgs args)
+    {
+        Console.WriteLine("This is a left click");
+    }
+
+    private async Task HandleRightClick(MouseEventArgs args)
+    {
+        //var menuRect = await _jsRuntime.GetRect("property-menu-outer");
+        //var siteRect = await _jsRuntime.GetRect("app");
+
+        var x = args.ClientX;
+        var y = args.ClientY;
+
+        //if (x + menuRect.Width > siteRect.Width)
+        //{
+        //    x = siteRect.Width - menuRect.Width;
+        //}
+        //if (y + menuRect.Height > siteRect.Height)
+        //{
+        //    y = siteRect.Height - menuRect.Height;
+        //}
+
+        await _jsRuntime.InvokeVoidAsync("setPosition", _menu.ContextMenu!.ElementReference, x, y);
+
+        _menu.OuterClick.Enabled = !_menu.OuterClick.Enabled;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private HoverableMenu.MenuVM _menuVM = new()
+    {
+        Buttons = new()
+        {
+            new("Create"),
+            new("Archive"),
+            new("Move Up"),
+            new("Move Down"),
+            new("Move To Index"),
+        }
+    };
+
+    public class ViewModel
+    {
+        public Layout Layout { get; set; }
+        public List<ArtifactVM> Artifacts { get; set; } = new();
+    }
+
+    public class Layout
+    {
+        public LayoutType Type { get; set; }
+        public float Gap { get; set; }
+    }
+
+    public class ArtifactVM
+    {
+        public ArtifactType Type { get; set; }
+        public IdentityVM Identity { get; set; }
+        public VisualInfoVM VisualInfo { get; set; } = new();
+    }
+
+    public class VisualInfoVM
+    {
+        public bool Visible { get; set; }
+        public FontVM Font { get; set; } = new();
+    }
+
+    public class FontVM
+    {
+        public string Font { get; set; }
+        public float FontSize { get; set; } = 12;
+        public FontWeightType FontWeight { get; set; }
+    }
+
+    public class IdentityVM
+    {
+        public string ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public enum FontWeightType
+    {
+        Thin = 100, 
+        ExtraLight = 200,
+        Light = 300,
+
+        Normal = 400,
+
+        Medium = 500,
+        SemiBold = 600,
+        Bold = 700,
+        ExtraBold = 800
+    }
+
+    public enum LayoutType
+    {
+        Vertical,
+        Horizontal
+    }
+
+    public enum ArtifactType
+    {
+        Name,
+        Signature,
+        Metadata
+    }
+}

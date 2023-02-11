@@ -1,0 +1,14 @@
+﻿.row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.index-input {
+    width: 1rem;
+    height: min-content;
+}
+
+.is-not-active {
+    display: none;
+}

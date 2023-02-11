@@ -165,6 +165,12 @@ public class PropertyVM
     public IdentityVM Identity { get; init; } = new IdentityVM();
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
     public PropertyVM[] Properties { get; init; } = Array.Empty<PropertyVM>();
+
+    public PropertyType PropertyType { get; init; }
+
+    public bool IsExpanded { get; init; } = true;
+    public bool CanExpand { get; init; } = true;
+    public bool HasChildren { get; init; }
 }
 
 public class IdentityVM

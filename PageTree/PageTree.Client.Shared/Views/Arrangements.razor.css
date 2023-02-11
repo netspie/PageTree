@@ -1,0 +1,42 @@
+﻿.arrangements {
+    width: 400px;
+    height: 400px;
+
+    position: fixed;
+    background: #e5dbdb;
+    z-index: 10000; 
+
+    position: fixed;
+    left: 50%;
+    top: 25%;
+
+    transform: translateX(-50%);   
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    box-sizing: border-box;
+}
+
+.all-arrangements {
+    margin-top: 10px;
+}
+
+
+
+.add-button-parent:hover .add-panel {
+    display: flex;   
+}
+
+.add-button {
+    padding: 5px;
+    margin: 0;
+    background: #cecece;
+    border: none;
+    width: fit-content;
+}
+
+.add-button:hover {
+    background: #808080;
+}

@@ -1,0 +1,14 @@
+﻿<button class="arrangement" @onclick=OnButtonClick><b>Arrangement X</b> - @ID</button>
+
+@code {
+    [Parameter] public string ID { get; set; }
+    [Parameter] public Action<string>? OnClick { get; set; }
+
+    private void OnButtonClick()
+    {
+        if (OnClick == null)
+            return;
+
+        OnClick.Invoke(ID);
+    }
+}

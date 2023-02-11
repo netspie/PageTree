@@ -1,0 +1,79 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Components
+
+<div class="row">
+    <span>Order&nbsp;</span>
+    <Dropdown VM=_propertiesDropdownVM OnValueChanged=OnPropertyChanged />
+    <Dropdown VM=_orderMethodDropdownVM OnValueChanged=OnOrderMethodChanged />
+    <input class="index-input @_isIndexInputActiveCssClass" type="text" placeholder="Enter Index" value="@VM.Index" @oninput=OnIndexChanged />
+</div>
+
+@code {
+    [Parameter] public ViewModel VM { get; set; } = new();
+
+    private Dropdown.ViewModel _propertiesDropdownVM = new();
+    private Dropdown.ViewModel _orderMethodDropdownVM = new();
+
+    private string _isIndexInputActiveCssClass => VM.OrderMethod == OrderMethods.SetAtIndex ? "" : "is-not-active";
+
+    protected override void OnInitialized()
+    {
+        _propertiesDropdownVM.Values = VM.Properties;
+
+        _orderMethodDropdownVM.Values = new()
+        {
+            new IdentityVM()
+            {
+                ID = OrderMethods.SetAtIndex,
+                Name = "At Index",
+            },
+            new IdentityVM()
+            {
+                ID = OrderMethods.SetAsFirst,
+                Name = "As First",
+            },
+            new IdentityVM()
+            {
+                ID = OrderMethods.SetAsLast,
+                Name = "As Last",
+            }
+        };
+
+        _orderMethodDropdownVM.SelectedValue = _orderMethodDropdownVM.Values.FirstOrDefault(v => v.ID == VM.OrderMethod)!;
+    }
+
+    private Task<bool> OnPropertyChanged(IdentityVM propertyVM)
+    {
+        return Task.FromResult(true);
+    }
+
+    private Task<bool> OnOrderMethodChanged(IdentityVM propertyVM)
+    {
+        VM.OrderMethod = propertyVM.ID;
+        InvokeAsync(StateHasChanged);
+        return Task.FromResult(true);
+    }
+
+    private void OnIndexChanged(ChangeEventArgs args)
+    {
+        var indexStr = args.Value as string;
+        if (!int.TryParse(indexStr, out int index))
+            return;
+
+        VM.Index = index;
+    }
+
+    public class ViewModel
+    {
+        public List<IdentityVM> Properties { get; set; } = new();
+        public string OrderMethod { get; set; } = OrderMethods.SetAtIndex;
+        public int Index { get; set; }
+    }
+
+    public static class OrderMethods
+    {
+        public const string SetAsFirst = "Set As First Order Method";
+        public const string SetAsLast = "Set As Last Order Method";
+        public const string SetAtIndex = "Set At Index Order Method";
+    }
+}

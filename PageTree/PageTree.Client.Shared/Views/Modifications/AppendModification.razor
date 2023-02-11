@@ -1,0 +1,43 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Components
+
+<div class="row">
+    <span>Sort</span>
+    <span>by</span>
+    <Dropdown VM=_methodDropdownVM OnValueChanged=OnMethodChanged />
+</div>
+
+@code {
+    [Parameter] public ViewModel VM { get; set; } = new();
+
+    private Dropdown.ViewModel _methodDropdownVM = new();
+
+    protected override void OnInitialized()
+    {
+        _methodDropdownVM.Values = new()
+        {
+            new IdentityVM()
+            {
+                ID = AppendMethods.AllTheRest,
+                Name = "All The Rest",
+            },
+        };
+    }
+
+    private Task<bool> OnMethodChanged(IdentityVM propertyVM)
+    {
+        VM.AppendMethod = propertyVM.ID;
+        InvokeAsync(StateHasChanged);
+        return Task.FromResult(true);
+    }
+
+    public class ViewModel
+    {
+        public string AppendMethod { get; set; } = AppendMethods.AllTheRest;
+    }
+
+    public static class AppendMethods
+    {
+        public const string AllTheRest = "Alphabetically";
+    }
+}

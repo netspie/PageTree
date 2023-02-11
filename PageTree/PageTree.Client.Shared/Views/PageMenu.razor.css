@@ -1,0 +1,83 @@
+﻿.mod-menu {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: calc(100% - 0px);
+    height: fit-content;
+    background: white;
+    margin: auto;
+    margin-bottom: 15px;
+    margin-top: 0;
+    padding: 8px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.mod-menu-button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+}
+
+.mod-menu-button:hover {
+    color: red;
+}
+
+.settings-button {
+    border: none;
+    max-height: 16px;
+    background: none;
+    padding: 0;
+    margin: 0;
+    justify-self: center;
+    align-self: center;
+    margin-left: auto;
+    position: relative;
+}
+
+.settings-image {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    margin: 0;
+    opacity: 0.6;
+}
+
+.settings-image:hover {
+    filter: brightness(50) invert(0.5);
+}
+
+.settings-button:hover .page-settings-menu {
+    display: flex;
+}
+
+.page-settings-menu {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    height: fit-content;
+    width: fit-content;
+    left: 0;
+    top: 0;
+    transform: translate(-80%, 70%);
+    background: #efefef;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 99999;
+}
+
+.checkbox-row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: nowrap;
+}
+
+.checkbox {
+    border-radius: 0;
+}
+
+.text {
+    white-space: nowrap;
+}

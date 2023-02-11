@@ -1,0 +1,85 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Components
+
+<div class="row">
+    <span>Sort</span>
+    <span>by</span>
+    <Dropdown VM=_sortArtifactDropdownVM OnValueChanged=OnArtifactChanged />
+    <Dropdown VM=_sortMethodDropdownVM OnValueChanged=OnMethodChanged />
+</div>
+
+@code {
+    [Parameter] public ViewModel VM { get; set; } = new();
+
+    private Dropdown.ViewModel _sortArtifactDropdownVM = new();
+    private Dropdown.ViewModel _sortMethodDropdownVM = new();
+
+    protected override void OnInitialized()
+    {
+        _sortArtifactDropdownVM.Values = new()
+        {
+            new IdentityVM()
+            {
+                ID = SortArtifacts.Page,
+                Name = "Page",
+            },
+
+            new IdentityVM()
+            {
+                ID = SortArtifacts.Signature,
+                Name = "Signature",
+            },
+
+            new IdentityVM()
+            {
+                ID = SortArtifacts.PropertyType,
+                Name = "Property Type",
+            }
+        };
+
+        _sortMethodDropdownVM.Values = new()
+        {
+            new IdentityVM()
+            {
+                ID = SortMethods.Alphabetically,
+                Name = "Alphabetically",
+            },
+
+            new IdentityVM()
+            {
+                ID = SortMethods.Randomly,
+                Name = "Randomly",
+            },
+        };
+    }
+
+    private Task<bool> OnArtifactChanged(IdentityVM propertyVM)
+    {
+        return Task.FromResult(true);
+    }
+
+    private Task<bool> OnMethodChanged(IdentityVM propertyVM)
+    {
+        VM.SortMethod = propertyVM.ID;
+        InvokeAsync(StateHasChanged);
+        return Task.FromResult(true);
+    }
+
+    public class ViewModel
+    {
+        public string SortMethod { get; set; } = SortMethods.Alphabetically;
+    }
+
+    public static class SortMethods
+    {
+        public const string Alphabetically = "Alphabetically";
+        public const string Randomly = "Randomly";
+    }
+
+    public static class SortArtifacts
+    {
+        public const string Page = "Page";
+        public const string Signature = "Signature";
+        public const string PropertyType = "PropertyType";
+    }
+}

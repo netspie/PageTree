@@ -1,0 +1,90 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Layouts
+@using Corelibs.BlazorViews.Components
+@using PageTree.Client.Shared.Views.Modifications
+
+<OuterClickComponent @ref=@OuterClick>
+    <ToolWindow>
+        <VerticalLayout Gap=5 OverflowX=@("auto")>
+            @foreach (var mod in _modifications)
+            {
+                if (mod is OrderModification.ViewModel orderVM)
+                {
+                    <OrderModification VM=orderVM />
+                    continue;
+                }
+
+                if (mod is SortModification.ViewModel sortVM)
+                {
+                    <SortModification VM=sortVM />
+                    continue;
+                }
+
+                if (mod is FilterModification.ViewModel filterVM)
+                {
+                    <FilterModification VM=filterVM />
+                    continue;
+                }
+
+                if (mod is PaginateModification.ViewModel paginateVM)
+                {
+                    <PaginateModification VM=paginateVM />
+                    continue;
+                }
+
+                if (mod is GroupModification.ViewModel groupVM)
+                {
+                    <GroupModification VM=groupVM />
+                    continue;
+                }
+
+                if (mod is ReverseModification reverseVM)
+                {
+                    <span>Reverse</span>
+                    continue;
+                }
+
+                if (mod is AppendModification.ViewModel appendVM)
+                {
+                    <AppendModification VM=appendVM />
+                    continue;
+                }
+            }
+            <div class="add-button-parent">
+                <button class="add-button">Add New Mod</button>
+                <div class="add-panel">
+                    <button @onclick=@(AddModification<OrderModification.ViewModel>())>Order</button>
+                    <button @onclick=@(AddModification<SortModification.ViewModel>())>Sort</button>
+                    <button @onclick=@(AddModification<FilterModification.ViewModel>())>Filter</button>
+                    <button @onclick=@(AddModification<PaginateModification.ViewModel>())>Paginate</button>
+                    <button @onclick=@(AddModification<GroupModification.ViewModel>())>Group</button>
+                    <button @onclick=@(AddModification<ReverseModification>())>Reverse</button>
+                    <button @onclick=@(AddModification<AppendModification.ViewModel>())>Add</button>
+                </div>
+            </div>
+        </VerticalLayout>
+    </ToolWindow>
+</OuterClickComponent>
+
+@code {
+    [Parameter] public List<IdentityVM> Properties { get; set; } = new();
+
+    public OuterClickComponent? OuterClick { get; private set; }
+
+    private List<object> _modifications = new();
+
+    private Action AddModification<T>() where T : new()
+    {
+        return () =>
+        {
+            var mod = new T();
+            if (mod is OrderModification.ViewModel orderModVM)
+                orderModVM.Properties = Properties;
+
+            _modifications.Add(mod);
+            InvokeAsync(StateHasChanged);
+        };
+    }
+
+    class ReverseModification {}
+}

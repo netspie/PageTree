@@ -1,0 +1,65 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Components
+
+<div class="row">
+    <span>Filter</span>
+    <span>by</span>
+    <Dropdown VM=_filterMethodDropdownVM OnValueChanged=OnMethodChanged />
+    <input class="index-input" type="text" placeholder="Enter Index" value="@VM.Filter" @oninput=OnTextChanged />
+</div>
+
+@code {
+    [Parameter] public ViewModel VM { get; set; } = new();
+
+    private Dropdown.ViewModel _filterMethodDropdownVM = new();
+
+    protected override void OnInitialized()
+    {
+        _filterMethodDropdownVM.Values = new()
+        {
+            new IdentityVM()
+            {
+                ID = FilterMethods.Contains,
+                Name = "Contains",
+            },
+
+            new IdentityVM()
+            {
+                ID = FilterMethods.StartsWith,
+                Name = "Starts With",
+            },
+
+            new IdentityVM()
+            {
+                ID = FilterMethods.EndsWith,
+                Name = "Ends With",
+            },
+        };
+    }
+
+    private Task<bool> OnMethodChanged(IdentityVM propertyVM)
+    {
+        VM.FilterMethod = propertyVM.ID;
+        InvokeAsync(StateHasChanged);
+        return Task.FromResult(true);
+    }
+
+    private void OnTextChanged(ChangeEventArgs args)
+    {
+        VM.Filter = args.Value as string;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public class ViewModel
+    {
+        public string FilterMethod { get; set; } = FilterMethods.Contains;
+        public string Filter { get; set; } = "";
+    }
+
+    public static class FilterMethods
+    {
+        public const string Contains = "Contains";
+        public const string StartsWith = "StartsWith";
+        public const string EndsWith = "EndsWith";
+    }
+}

@@ -1,0 +1,302 @@
+﻿@using Corelibs.BlazorViews.ViewModels;
+@using System.Drawing;
+@using Common.Basic.Collections;
+@using Common.Basic.Functional;
+@using Corelibs.Basic.Colors;
+@using Microsoft.AspNetCore.Components.Rendering;
+@using Corelibs.BlazorShared.UI;
+@using Corelibs.BlazorShared.UI.Css;
+@using Corelibs.BlazorViews.Layouts;
+@using PageTree.App.Entities.Styles;
+@using PageTree.App.Pages.Queries;
+
+<div class="page" style=@_mainStyle>
+    <PageMenu OnArrangmentsButton=@OnArrangmentsButton />
+    <PageHeader Model=@GetPageHeader() />
+    <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
+    <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick />
+    <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
+</div>
+
+@code {
+    [Parameter]
+    public GetPageQueryOut? Model { get; set; } = TestQueries.Query;
+
+    [Parameter] public int Left { get; set; }
+    [Parameter] public int Top { get; set; }
+
+    private string _mainStyle => $"width: calc(100% - {Left}px); ";
+
+    private PageTree.App.Entities.Styles.Style _style => Model!.PageVM.StyleOfPage!;
+
+    private Arrangements? _arrangements;
+    private Arrangements_AddNew? _arrangements_AddNew;
+    private TreeLayout? _treeLayout;
+
+    private List<Corelibs.BlazorViews.ViewModels.IdentityVM> _properties = new();
+
+    private TreeLayout.TreeNode? _treeNode;
+    protected override void OnInitialized()
+    {
+        _treeNode = GetTreeNode();
+        _properties = _treeNode.Children.Select(n => n.Identity).ToList();
+    }
+
+    private void OnArrangmentsButton()
+    {
+        _arrangements.OuterClick.Enabled = !_arrangements.OuterClick.Enabled;
+    }
+
+    private void OnAddNewArrangmentClick()
+    {
+        _arrangements.OuterClick.Enabled = !_arrangements.OuterClick.Enabled;
+        _arrangements_AddNew.OuterClick.Enabled = !_arrangements_AddNew.OuterClick.Enabled;
+    }
+
+    private Task<bool> BeforeExpand(string id)
+    {
+        return Task.FromResult(true);
+    }
+
+    private Task AfterExpand(string id) => InvokeAsync(StateHasChanged);
+
+    private static TreeLayout.TreeNode.GetContentDelegate GetProperty(
+        PropertyVM propertyVM,
+        int propertyIndex,
+        StyleOfRootProperty parentStyle,
+        StyleOfChildProperty childStyle,
+        Style[] signatureOrPageStyles)
+    {
+        return GetContent;
+        RenderFragment GetContent(TreeLayout.TreeNode node, ref int seq)
+        {
+            int seqLocal = seq;
+            seq += 4;
+
+            return RenderFragmentExtensions.CreateComponent<Property>(builder =>
+            {
+                var vmModel = GetPropertyViewModel(propertyVM, parentStyle, childStyle, propertyIndex, propertyVM.PropertyType);
+                // override main by signature or page style
+
+                builder.AddAttribute(seqLocal++, "Model", vmModel);
+            });
+        };
+    }
+
+    private static Property.ViewModel GetPropertyViewModel(
+        PropertyVM propertyVM,
+        StyleOfRootProperty parentStyle,
+        StyleOfChildProperty childStyle,
+        int propertyIndex,
+        PropertyType propertyType)
+    {
+        var vmModel = new Property.ViewModel();
+
+        bool hasDefinedChildrenArtifacts = childStyle != null && !childStyle.Artifacts.IsNullOrEmpty();
+
+        // apply parent style
+        if (parentStyle != null && !parentStyle.ChildrenStyle.IsNullOrEmpty())
+        {
+            parentStyle.ChildrenStyle.ForEach(artifact =>
+            {
+                var visualInfoVM = new Property.VisualInfoVM()
+                    .OverrideBy(parentStyle.VisualInfoOfChildren)
+                    .OverrideBy(artifact.VisualInfo);
+
+                var newArtifactVM = propertyVM.ToArtifactVM(artifact.Type, visualInfoVM);
+                vmModel.Artifacts.Add(newArtifactVM);
+            });
+        }
+        else if (!hasDefinedChildrenArtifacts)
+        {
+            if (propertyVM.SignatureIdentity != null)
+                vmModel.Artifacts.Add(propertyVM.ToSignatureArtifactVM());
+
+            vmModel.Artifacts.Add(propertyVM.ToNameArtifactVM());
+        }
+
+        // apply child style visual info
+        if (childStyle != null && childStyle.VisualInfo != null && vmModel.Artifacts != null)
+        {
+            vmModel.Artifacts
+                //.Where(vmArtifact => childStyle.Artifacts
+                //.FirstOrDefault(artifact => ((Property.ArtifactType)artifact.Type) != vmArtifact.Type) != null)
+                .ForEach((vmArtifact, i) =>
+                {
+                    vmArtifact.VisualInfo.OverrideBy(childStyle.VisualInfo);
+                });
+        }
+
+        // apply child style artifacts
+        if (hasDefinedChildrenArtifacts)
+        {
+            childStyle.Artifacts.ForEach((artifact, i) =>
+            {
+                var vmArtifactInfo = vmModel.Artifacts
+                    .Select((a, i) => new { vmArtifact = a, index = i })
+                    .FirstOrDefault(a => a.vmArtifact.Type == (Property.ArtifactType)artifact.Type);
+
+                if (vmArtifactInfo == null)
+                {
+                    var newArtifactVM = propertyVM.ToArtifactVM(artifact.Type);
+
+                    vmArtifactInfo = new { vmArtifact = newArtifactVM, index = vmModel.Artifacts.Count };
+                    vmModel.Artifacts.Add(vmArtifactInfo.vmArtifact);
+                }
+
+                vmModel.Artifacts.Swap(vmArtifactInfo.index, i);
+                vmArtifactInfo.vmArtifact.VisualInfo
+                    .OverrideBy(artifact.VisualInfo);
+            });
+        }
+
+        return vmModel;
+    }
+
+    private void ModifyNode(RenderTreeBuilder builder, TreeLayout.TreeNode node, ref int sequence)
+    {
+        var styleData = node.Data as StyleData;
+
+        //if (node.Parent != null && node.Parent.GetContent != null)
+        //{
+        //    builder
+        //        .AddCssAttribute(ref sequence, "Padding", 4)
+        //        .AddCssAttribute(ref sequence, "PaddingLeft", 10);
+        //}
+        //else
+        //{
+        //    builder.AddCssAttribute(ref sequence, "Padding", 8);
+        //}
+
+        builder.AddCssAttribute(ref sequence, "BorderRadius", 10);
+
+        if (styleData.Parent != null)
+            Apply(styleData.Parent.VisualInfoOfChildren, ref sequence);
+
+        if (styleData.Child != null)
+            Apply(styleData.Child.VisualInfo, ref sequence);
+
+        void Apply(PageTree.App.Entities.Styles.VisualInfo visualInfo, ref int sequence)
+        {
+            if (visualInfo?.BackgroundColor?.Default != null)
+                builder.AddCssAttribute(ref sequence, "Background", visualInfo.BackgroundColor.Default.ToColor().ToHexString());
+
+            if (visualInfo?.Padding?.All != null)
+                builder.AddCssAttribute(ref sequence, "Padding", visualInfo.Padding.All.Value);
+
+            if (visualInfo?.Padding?.Left != null)
+                builder.AddCssAttribute(ref sequence, "PaddingLeft", visualInfo.Padding.Left.Value);
+
+            if (visualInfo?.Padding?.Right != null)
+                builder.AddCssAttribute(ref sequence, "PaddingRight", visualInfo.Padding.Right.Value);
+
+            if (visualInfo?.Padding?.Top != null)
+                builder.AddCssAttribute(ref sequence, "PaddingTop", visualInfo.Padding.Top.Value);
+
+            if (visualInfo?.Padding?.Bottom != null)
+                builder.AddCssAttribute(ref sequence, "PaddingBottom", visualInfo.Padding.Bottom.Value);
+        }
+    }
+
+    private PageHeader.ViewModel GetPageHeader()
+    {
+        var vm = new PageHeader.ViewModel();
+
+        if (Model!.PageVM.SignatureIdentity != null && !Model!.PageVM.SignatureIdentity.Name.IsNullOrEmpty())
+            vm.Artifacts.Add(
+                new()
+                { 
+                    Text = Model.PageVM.SignatureIdentity.Name,
+                    Font = new() { FontSize = 16 }
+                });
+        else
+            vm.Artifacts.Add(
+                new()
+                { 
+                    Text = "",
+                    Font = new() { FontSize = 16 }
+                });
+
+        vm.Artifacts.Add(
+            new() 
+            {
+                Text = Model.PageVM.Identity.Name,
+                Font = new() { FontSize = 24 }
+            });
+
+        return vm;
+    }
+
+    private TreeLayout.TreeNode GetTreeNode()
+    {
+        var layout = Model.PageVM.StyleOfPage.RootProperty.Layout;
+        var layoutGap = layout != null && layout.Gap.HasValue ? layout.Gap.Value : 0;
+
+        return new()
+        {
+            CanExpand = false,
+            IsExpanded = true,
+            Children = GetTreeNodes(Model.PageVM.Properties, Model.PageVM.StyleOfPage.RootProperty, Model.PageVM.StylesOfChildren),
+            Data = new StyleData(Model.PageVM.StylesOfChildren, null, Model.PageVM.StyleOfPage.RootProperty),
+            Layout = new()
+            {
+                Gap = layoutGap
+            },
+        };
+    }
+
+    private List<TreeLayout.TreeNode> GetTreeNodes(
+        PropertyVM[] propertyVMs, 
+        StyleOfRootProperty parentStyle,
+        Style[] signatureOrPageStyles)
+    {
+        var list = new List<TreeLayout.TreeNode>();
+
+        propertyVMs.ForEach((propertyVM, i) =>
+        {
+            var styleOfIndex = parentStyle?.Children?.FirstOrDefault(c => c.StyleType == PageTree.App.Entities.Styles.ApplyStyleBy.Index && c.ChildIndex == i);
+            var styleOfType = parentStyle?.Children?.FirstOrDefault(c => c.StyleType == PageTree.App.Entities.Styles.ApplyStyleBy.PropertyType && propertyVM.PropertyType == c.PropertyType);
+            var childStyle = styleOfType ?? styleOfIndex;
+
+            var layout = parentStyle?.Layout;
+            var layoutGap = layout != null && layout.Gap.HasValue ? layout.Gap.Value : 0;
+
+            list.Add(new()
+            {
+                Identity = new() { ID = propertyVM.Identity.ID, Name = propertyVM.Identity.Name },
+                CanExpand = propertyVM.CanExpand,
+                HasChildren = propertyVM.HasChildren,
+                IsExpanded = propertyVM.IsExpanded,
+                Layout = new()
+                {
+                    Type = parentStyle?.LayoutOfChildren != null ? (TreeLayout.LayoutType) parentStyle?.LayoutOfChildren?.Type : TreeLayout.LayoutType.Vertical,
+                    Gap = layoutGap
+                },
+                Children = GetTreeNodes(propertyVM.Properties, childStyle, signatureOrPageStyles),
+                GetContent = GetProperty(propertyVM, i, parentStyle, childStyle, signatureOrPageStyles),
+                Data = new StyleData(Model.PageVM.StylesOfChildren, parentStyle, childStyle)
+            });
+        });
+
+        return list;
+    }
+
+    private class StyleData
+    {
+        public StyleOfRootProperty? Parent { get; }
+        public StyleOfRootProperty? Child { get; }
+        public Style[] StylesOfChildren { get; }
+
+        public StyleData(
+            Style[] stylesOfChildren,
+            StyleOfRootProperty parent,
+            StyleOfRootProperty child)
+        {
+            StylesOfChildren = stylesOfChildren;
+            Parent = parent;
+            Child = child;
+        }
+    }
+
+    private readonly static Color BackgroundColor = Color.FromArgb(255, 225, 228, 228);
+}

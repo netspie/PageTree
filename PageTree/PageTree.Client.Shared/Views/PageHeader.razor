@@ -1,0 +1,50 @@
+﻿@using Corelibs.BlazorViews.Components;
+@using Corelibs.BlazorViews.Layouts;
+
+@inherits BaseElement
+
+<div class="page-header">
+    @foreach (var artifact in Model.Artifacts)
+    {
+        <CText
+            FontSize=artifact.Font.FontSize>
+            @artifact.Text
+        </CText>
+    }
+</div>
+
+@code {
+    [Parameter] public ViewModel? Model { get; set; } = new();
+
+    public class ViewModel
+    {
+        public List<Artifact> Artifacts { get; set; } = new();
+
+        public class Artifact
+        {
+            public string Text { get; set; } = "";
+            public Font Font { get; set; } = new();
+        }
+
+        public class Font
+        {
+            public string FontID { get; init; }
+            public float FontSize { get; init; } = 12;
+            public FontWeightType FontWeightType { get; init; }
+        }
+
+        public enum FontWeightType
+        {
+            Thin,
+            ExtraLight,
+            Light,
+
+            Normal,
+
+            Medium,
+            SemiBold,
+            Bold,
+            ExtraBold
+        }
+    }
+}

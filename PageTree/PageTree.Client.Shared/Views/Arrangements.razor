@@ -1,0 +1,47 @@
+﻿@using Corelibs.BlazorViews.Components
+
+<OuterClickComponent @ref=@OuterClick>
+    <div class="arrangements">
+        <div class="current-arrangement">
+            <div class="current-arrangement-label"><i>Current: </i></div>
+            <ArrangementOneLine ID="Sort: by-name, Group: by-20-quantity, Filter: where-name-contains(a)" />
+        </div>
+        <div class="all-arrangements">
+            <div class="current-arrangement-label"><i>All: </i></div>
+            <ArrangementOneLine ID="Sort: by-signature-ascending" />
+            <ArrangementOneLine ID="Group: in-7-groups" />
+            <ArrangementOneLine ID="Paginate: in-7-groups" />
+            <ArrangementOneLine ID="Order: id-1341-at-first" />
+            <ArrangementOneLine ID="Order: id-6534-at-4, id-765-at-3" />
+        </div>
+        <div class="add-button-parent">
+            <button class="add-button" @onclick="@(() => OnAddNewClick?.Invoke())">Add New</button>
+        </div>
+    </div>
+</OuterClickComponent>
+
+@code {
+    public OuterClickComponent? OuterClick { get; private set; }
+    [Parameter] public Action? OnAddNewClick { get; set; }
+}
+@*
+@code {
+    private string _displayNoneCssClass => _enabled ? "" : "display-none";
+
+    private bool _enabled;
+    public bool Enabled
+    {
+        get => _enabled;
+        set
+        {
+            _enabled = value;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void OnMouseOut()
+    {
+        Enabled = false;
+    }
+}
+*@

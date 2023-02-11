@@ -1,0 +1,10 @@
+﻿.row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.index-input {
+    width: 100%;
+    height: min-content;
+}
