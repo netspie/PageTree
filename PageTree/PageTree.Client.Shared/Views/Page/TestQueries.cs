@@ -2,7 +2,7 @@
 using PageTree.App.Pages.Queries;
 using System.Drawing;
 
-namespace PageTree.Client.Shared.Views
+namespace PageTree.Client.Shared.Views.Page
 {
     public static class TestQueries
     {

@@ -1,9 +1,8 @@
 ﻿using Common.Basic.Collections;
 using Common.Basic.Functional;
 using PageTree.App.Pages.Queries;
-using PageTree.Client.Shared.Views;
 
-namespace Corelibs.BlazorViews.ViewModels
+namespace PageTree.Client.Shared.Views.Page
 {
     public static class PropertyExtensions
     {
