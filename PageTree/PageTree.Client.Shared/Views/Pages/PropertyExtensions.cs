@@ -2,7 +2,7 @@
 using Common.Basic.Functional;
 using PageTree.App.Pages.Queries;
 
-namespace PageTree.Client.Shared.Views.Page
+namespace PageTree.Client.Shared.Views.Pages
 {
     public static class PropertyExtensions
     {

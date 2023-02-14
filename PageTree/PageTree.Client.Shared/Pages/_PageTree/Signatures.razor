@@ -1,0 +1,20 @@
+﻿@attribute [Route(Uris.Signatures)]
+@inherits BasePage
+
+@using Corelibs.BlazorShared.UI;
+@using Corelibs.BlazorViews.Layouts;
+@using Microsoft.JSInterop;
+
+<BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
+    <PageTree.Client.Shared.Views.Signatures.Signatures  />
+</BackgroundAndContent>
+
+@code {
+    [Parameter] public string ProjectID { get; set; }
+
+    protected override void OnInitialized()
+    {
+        RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
+    }
+
+}

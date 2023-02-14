@@ -1,4 +1,5 @@
 ﻿@page "/learn/pages"
+@inherits BasePage
 
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
@@ -6,15 +7,10 @@
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     @*<PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>*@
-    <PageTree.Client.Shared.Views.Page.Page Left=@context.Item1 Top=@context.Item2 OnPropertyClick=OnPropertyClick IsEditMode=false/>
+    <PageTree.Client.Shared.Views.Pages.Page Left=@context.Item1 Top=@context.Item2 OnPropertyClick=OnPropertyClick IsEditMode=false/>
 </BackgroundAndContent>
 
 @code {
-    [Inject] private IJSRuntime _jsRuntime { get; set; }
-    private IBgAndContent _backgroundOwner;
-
-    [CascadingParameter] public RefreshInvoker RefreshInvoker { get; set; }
-
 #if DEBUG
     private const string _pageID = "350b10d0-f72a-4f8f-92a6-5da3b80cac6a";
 #else
@@ -26,38 +22,10 @@
         RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
     }
 
-    private async Task OnCollapseChanged(bool collapsed)
-    {
-        await InvokeAsync(StateHasChanged);
-    }
-
     private Task OnPropertyClick(TreeLayout.TreeNode property)
     {
         Console.WriteLine(property.Identity.Name);
 
         return Task.CompletedTask;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (_backgroundOwner == null)
-            return;
-
-        int left = 0;
-        int top = 56;
-        try
-        {
-            var menuRect = await _jsRuntime.GetRect("menu-topmost");
-            left = (int)menuRect.Width;
-        }
-        catch (Exception) { }
-        try
-        {
-            var topRect = await _jsRuntime.GetRect("navbar-menu-parent");
-            top = (int)topRect.Height;
-        }
-        catch (Exception) { }
-
-        _backgroundOwner.Resize(0, 0);
     }
 }
