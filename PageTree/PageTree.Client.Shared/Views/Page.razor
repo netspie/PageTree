@@ -19,11 +19,12 @@
 </div>
 
 @code {
-    [Parameter]
-    public GetPageQueryOut? Model { get; set; } = TestQueries.Query;
+    [Parameter] public GetPageQueryOut? Model { get; set; } = TestQueries.Query;
 
     [Parameter] public int Left { get; set; }
     [Parameter] public int Top { get; set; }
+
+    [Parameter] public Func<TreeLayout.TreeNode, Task> OnPropertyClick { get; set; }
 
     private string _mainStyle => $"width: calc(100% - {Left}px); ";
 
@@ -167,6 +168,9 @@
         //{
         //    builder.AddCssAttribute(ref sequence, "Padding", 8);
         //}
+
+        builder.AddAttribute(sequence++, "OnClick", OnClick);
+        Task OnClick() => OnPropertyClick?.InvokeIfOk(node);
 
         builder.AddCssAttribute(ref sequence, "BorderRadius", 10);
 
