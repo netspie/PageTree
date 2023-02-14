@@ -14,15 +14,21 @@
             <ArrangementOneLine ID="Order: id-1341-at-first" />
             <ArrangementOneLine ID="Order: id-6534-at-4, id-765-at-3" />
         </div>
-        <div class="add-button-parent">
-            <button class="add-button" @onclick="@(() => OnAddNewClick?.Invoke())">Add New</button>
-        </div>
+
+        @if (IsEditMode)
+        {
+            <div class="add-button-parent">
+                <button class="add-button" @onclick="@(() => OnAddNewClick?.Invoke())">Add New</button>
+            </div>
+        }
     </div>
 </OuterClickComponent>
 
 @code {
     public OuterClickComponent? OuterClick { get; private set; }
     [Parameter] public Action? OnAddNewClick { get; set; }
+
+    [Parameter] public bool IsEditMode { get; set; } = true;
 }
 @*
 @code {

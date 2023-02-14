@@ -11,11 +11,16 @@
 @using PageTree.App.Pages.Queries;
 
 <div class="page" style=@_mainStyle>
-    <PageMenu OnArrangmentsButton=@OnArrangmentsButton />
+    <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
+    
     <PageHeader Model=@GetPageHeader() />
     <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
-    <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick />
-    <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
+    <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick IsEditMode=IsEditMode/>
+
+    @if (IsEditMode)
+    {
+        <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
+    }
 </div>
 
 @code {
@@ -25,6 +30,8 @@
     [Parameter] public int Top { get; set; }
 
     [Parameter] public Func<TreeLayout.TreeNode, Task> OnPropertyClick { get; set; }
+
+    [Parameter] public bool IsEditMode { get; set; } = true;
 
     private string _mainStyle => $"width: calc(100% - {Left}px); ";
 
@@ -66,7 +73,8 @@
         int propertyIndex,
         StyleOfRootProperty parentStyle,
         StyleOfChildProperty childStyle,
-        Style[] signatureOrPageStyles)
+        Style[] signatureOrPageStyles,
+        bool isEditMode)
     {
         return GetContent;
         RenderFragment GetContent(TreeLayout.TreeNode node, ref int seq)
@@ -80,6 +88,7 @@
                 // override main by signature or page style
 
                 builder.AddAttribute(seqLocal++, "Model", vmModel);
+                builder.AddAttribute(seqLocal++, "IsEditMode", isEditMode);
             });
         };
     }
@@ -268,7 +277,7 @@
             list.Add(new()
             {
                 Identity = new() { ID = propertyVM.Identity.ID, Name = propertyVM.Identity.Name },
-                CanExpand = propertyVM.CanExpand,
+                CanExpand = IsEditMode ? propertyVM.CanExpand : false,
                 HasChildren = propertyVM.HasChildren,
                 IsExpanded = propertyVM.IsExpanded,
                 Layout = new()
@@ -277,7 +286,7 @@
                     Gap = layoutGap
                 },
                 Children = GetTreeNodes(propertyVM.Properties, childStyle, signatureOrPageStyles),
-                GetContent = GetProperty(propertyVM, i, parentStyle, childStyle, signatureOrPageStyles),
+                GetContent = GetProperty(propertyVM, i, parentStyle, childStyle, signatureOrPageStyles, IsEditMode),
                 Data = new StyleData(Model.PageVM.StylesOfChildren, parentStyle, childStyle)
             });
         });

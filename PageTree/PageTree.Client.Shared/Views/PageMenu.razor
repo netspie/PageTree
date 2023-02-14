@@ -1,18 +1,32 @@
 ﻿<div class="mod-menu">
-    <button class="mod-menu-button">Styles</button>
+    @if (IsEditMode)
+    {
+        <button class="mod-menu-button">Styles</button>
+    }
+
     <button class="mod-menu-button" onclick="@(() => OnArrangmentsButton?.Invoke())">Arrangements</button>
-    <button class="mod-menu-button">Versions</button>
-    <button class="settings-button">
-        <img class="settings-image" src="/icons/cog.png"/>
-        <div class="page-settings-menu">
-            <div class="checkbox-row">
-                <input class="checkbox" type="checkbox" />
-                <span class="text">Show Expand Buttons</span>
+
+    @if (IsEditMode)
+    {
+        <button class="mod-menu-button">Versions</button>
+    }
+
+    @if (IsEditMode)
+    {
+        <button class="settings-button">
+            <img class="settings-image" src="_content/PageTree.Client.Shared/images/icons/cog.png" />
+            <div class="page-settings-menu">
+                <div class="checkbox-row">
+                    <input class="checkbox" type="checkbox" />
+                    <span class="text">Show Expand Buttons</span>
+                </div>
             </div>
-        </div>
-    </button>
+        </button>
+    }
 </div>
 
 @code {
     [Parameter] public Action OnArrangmentsButton { get; set; }
+
+    [Parameter] public bool IsEditMode { get; set; } = true;
 }

@@ -10,7 +10,10 @@
     <div class="property">
         @*<div class="property-highlight"/>*@
         @*<HoverableMenu Title="S" VM=_menuVM OnClick=OnMenuButtonClick MenuButtonCSS="property-menu-button" />*@
-        <PropertyMenu @ref=_menu />
+        @if (IsEditMode)
+        {
+            <PropertyMenu @ref=_menu />
+        }
         @*<ul class="side-menu">
             <input type="checkbox" class="select-checkbox" />
         </ul>*@
@@ -42,6 +45,8 @@
 
     [Parameter] public ViewModel Model { get; set; } = new();
 
+    [Parameter] public bool IsEditMode { get; set; } = true;
+
     [Inject] private IJSRuntime _jsRuntime { get; set; }
 
     private PropertyMenu? _menu;
@@ -58,6 +63,9 @@
 
     private async Task HandleRightClick(MouseEventArgs args)
     {
+        if (!IsEditMode)
+            return;
+
         //var menuRect = await _jsRuntime.GetRect("property-menu-outer");
         //var siteRect = await _jsRuntime.GetRect("app");
 

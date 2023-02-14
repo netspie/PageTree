@@ -57,12 +57,26 @@
     else
     @if (IsPageTreeLearn())
     {
-        <PageTree.Client.Shared.Components._PageTree.NavMenu />
         <main>
-            <div class="top-row"><PageTree.Client.Shared.Components._PageTree.LearnNavBar /></div>
-            <article class="main-content pl-5">
-                @Body
+            <article class="main-content">
+                <CascadingValue Value=@RefreshInvoker>
+                    @Body
+                </CascadingValue>
             </article>
+            @{
+                var links = new string[][]
+                {
+                    new[] {"Home", "pagetree/learn" },
+                    new[] {"My Projects", "pagetree/learn/projects" },
+                };
+            }
+            <div>
+                <TopOrSideMenu @ref=@_menu Links="@links" SideOnly=true OnCollapseChanged="@OnCollapseChanged">
+                    <Navbar>
+                        <HomeNavbar Links="@links" />
+                    </Navbar>
+                </TopOrSideMenu>
+            </div>
         </main>
     }
     else

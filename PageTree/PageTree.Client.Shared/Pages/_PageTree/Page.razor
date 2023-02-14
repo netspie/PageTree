@@ -1,4 +1,4 @@
-﻿@page "/learn/pages"
+﻿@attribute [Route(Uris.Page)]
 
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
@@ -6,12 +6,15 @@
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     @*<PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>*@
-    <PageTree.Client.Shared.Views.Page Left=@context.Item1 Top=@context.Item2 OnPropertyClick=OnPropertyClick IsEditMode=false/>
+    <PageTree.Client.Shared.Views.Page Left=@context.Item1 Top=@context.Item2 OnPropertyClick=OnPropertyClick />
 </BackgroundAndContent>
 
 @code {
     [Inject] private IJSRuntime _jsRuntime { get; set; }
     private IBgAndContent _backgroundOwner;
+
+    [Parameter] public string ProjectID { get; set; }
+    [Parameter] public string PageID { get; set; }
 
     [CascadingParameter] public RefreshInvoker RefreshInvoker { get; set; }
 

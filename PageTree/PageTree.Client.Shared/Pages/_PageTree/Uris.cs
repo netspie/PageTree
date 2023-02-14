@@ -1,4 +1,4 @@
-﻿namespace PageTree.Client.Shared.Pages
+﻿namespace PageTree.Client.Shared.Pages._PageTree
 {
     public static class Uris
     {
