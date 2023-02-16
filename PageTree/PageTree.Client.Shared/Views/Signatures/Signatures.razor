@@ -5,49 +5,55 @@
 
 <div class="signatures">
     <VerticalLayout class="signature-list">
-        @foreach (var signature in Model.SignatureList.Values)
+        @foreach (var signature in Model.Values)
         {
-            <Signature Model=signature/>
+            <Signature Model=signature 
+                OnAddButtonClick=OnAddSignature 
+                OnRemoveButtonClick=OnRemoveSignature
+                OnNameChanged=OnNameChanged />
         }
     </VerticalLayout>
 </div>
 
 @code {
-    [Parameter] public GetSignaturesQueryOut Model { get; set; } = TestModel;
+    [Parameter] public SignatureListVM Model { get; set; } = TestModel;
 
-    public static readonly GetSignaturesQueryOut TestModel = new(
-        new()
+    [Parameter] public Func<string, Task> OnAddSignature { get; set; }
+    [Parameter] public Func<string, Task> OnRemoveSignature { get; set; }
+    [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
+
+    public static readonly SignatureListVM TestModel = new()
+    {
+        Values = new SignatureVM[]
         {
-            Values = new SignatureVM[]
+            new()
             {
-                new()
+                Identity = new()
                 {
-                    Identity = new()
-                    {
-                        Name = "Authors"
-                    }
-                },
-                new()
+                    Name = "Authors"
+                }
+            },
+            new()
+            {
+                Identity = new()
                 {
-                    Identity = new()
-                    {
-                        Name = "Author"
-                    }
-                },
-                new()
+                    Name = "Author"
+                }
+            },
+            new()
+            {
+                Identity = new()
                 {
-                    Identity = new()
-                    {
-                        Name = "Lesson"
-                    }
-                },
-                new()
+                    Name = "Lesson"
+                }
+            },
+            new()
+            {
+                Identity = new()
                 {
-                    Identity = new()
-                    {
-                        Name = "Phrase"
-                    }
+                    Name = "Phrase"
                 }
             }
-        });
+        }
+    };
 }

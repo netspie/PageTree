@@ -1,22 +1,63 @@
-﻿@attribute [Route(Uris.Signatures)]
-
-@inherits BasePage
-
-@using Corelibs.BlazorShared.UI;
+﻿@using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
+@using PageTree.App.UseCases.Signatures.Queries;
+
+@attribute [Route(Uris.Signatures)]
+@inherits BasePage
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     <div class="signatures-container">
-        <PageTree.Client.Shared.Views.Signatures.Signatures  />
+        <PageTree.Client.Shared.Views.Signatures.Signatures 
+            OnAddSignature=OnAddSignature 
+            OnRemoveSignature=OnRemoveSignature
+            OnNameChanged=OnSignatureNameChanged />
     </div>
 </BackgroundAndContent>
 
 @code {
     [Parameter] public string ProjectID { get; set; }
 
+    [Inject] private IQueryExecutor _queries { get; set; }
+
+    private SignatureListVM _signatureList = new();
+
     protected override void OnInitialized()
     {
         RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshViewModel();
+    }
+
+    private async Task OnAddSignature(string id)
+    {
+
+        await RefreshView();
+    }
+
+    private async Task OnRemoveSignature(string id)
+    {
+        await RefreshView();
+    }
+
+    private async Task OnSignatureNameChanged(string id, string name)
+    {
+        await RefreshView();
+    }
+
+    private async Task RefreshView()
+    {
+        await RefreshViewModel();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task RefreshViewModel()
+    {
+        var result = await _queries.Execute<GetSignaturesQuery, GetSignaturesQueryOut>(ProjectID);
+        if (result != null && result.SignatureList != null)
+            _signatureList = result.SignatureList;
     }
 }

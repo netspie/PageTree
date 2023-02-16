@@ -5,12 +5,12 @@
     <div class="top-panel">
         <div class="top-panel-row">
             <h3>@Model.Identity.Name</h3>
-            <EditableText>Koko</EditableText>
+            <EditableText Text=Kokokoko @ref=_nameText OnEnter=OnNameInputEnter />
             <div class="top-right-buttons">
+                <button class="button" @onclick=OnAddButtonClickInternal>+</button>
+                <button class="button" @onclick=OnAddButtonClickInternal>-</button>
+                <button class="button" @onclick=OnEditButtonClick>E</button>
                 <button class="button" @onclick=OnStylesButtonClick>S</button>
-                <button class="button" @onclick=OnStylesButtonClick>
-                    <img src="_content/PageTree.Client.Shared/images/icons/file-document-edit-outline.png" />
-                </button>
             </div>
         </div>
         @if (!_isAllCollapsed)
@@ -37,14 +37,45 @@
 @code {
     [Parameter] public SignatureVM Model { get; set; }
     [Parameter] public Func<SignatureVM, Task> OnClick { get; set; }
+    [Parameter] public Func<string, Task> OnAddButtonClick { get; set; }
+    [Parameter] public Func<string, Task> OnRemoveButtonClick { get; set; }
+    [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
 
     private bool _isStylesCollapsed = true;
     private bool _isAllCollapsed => _isStylesCollapsed;
+
+    private EditableText _nameText;
 
     private async Task OnStylesButtonClick()
     {
         _isStylesCollapsed = !_isStylesCollapsed;
         await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnAddButtonClickInternal()
+    {
+        if (OnAddButtonClick != null)
+            await OnAddButtonClick?.Invoke(Model.Identity.ID);
+    }
+
+    private async Task OnRemoveButtonClickInternal()
+    {
+        if (OnRemoveButtonClick != null)
+            await OnRemoveButtonClick?.Invoke(Model.Identity.ID);
+    }
+
+    private void OnEditButtonClick()
+    {
+        _nameText.IsEdit = true;
+    }
+
+    private async Task<bool> OnNameInputEnter(string name)
+    {
+        if (OnNameChanged == null)
+            return false;
+
+        await OnNameChanged?.Invoke(Model.Identity.ID, name);
+        return true;
     }
 
     private void OnClickInternal()

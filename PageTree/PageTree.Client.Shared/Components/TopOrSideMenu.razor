@@ -36,7 +36,7 @@
 @code {
     [Parameter] public Func<bool, Task> OnCollapseChanged { get; set; }
 
-    private static bool _isCollapsed = true;
+    private static bool _isCollapsed = false;
 
     private string _menuCollapseCssClass => _isCollapsed ? "collapse" : null;
     private string _menuIconImg;
@@ -77,7 +77,7 @@
         }
         else
         {
-            _isCollapsed = false;
+            _isCollapsed = true;
         }
         SetMenuIcon();
 
