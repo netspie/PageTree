@@ -1,0 +1,16 @@
+﻿@using PageTree.App.UseCases.Signatures.Queries;
+
+<div class="signature" @onclick=OnClickInternal>
+    <h3>@Model.Identity.Name</h3>
+</div>
+
+@code {
+    [Parameter] public SignatureVM Model { get; set; }
+    [Parameter] public Func<SignatureVM, Task> OnClick { get; set; }
+
+    public void OnClickInternal()
+    {
+        if (OnClick != null)
+            OnClick.Invoke(Model);
+    }
+}

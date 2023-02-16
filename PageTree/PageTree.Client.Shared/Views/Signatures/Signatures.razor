@@ -1,9 +1,53 @@
-﻿<h3>Signatures</h3>
+﻿@using Corelibs.BlazorViews.Layouts
+@using PageTree.App.UseCases.Signatures.Queries;
+
+<h3>Signatures</h3>
 
 <div class="signatures">
-
+    <VerticalLayout class="signature-list">
+        @foreach (var signature in Model.SignatureList.Values)
+        {
+            <Signature Model=signature/>
+        }
+    </VerticalLayout>
 </div>
 
 @code {
+    [Parameter] public GetSignaturesQueryOut Model { get; set; } = TestModel;
 
+    public static readonly GetSignaturesQueryOut TestModel = new(
+        new()
+        {
+            Values = new SignatureVM[]
+            {
+                new()
+                {
+                    Identity = new()
+                    {
+                        Name = "Authors"
+                    }
+                },
+                new()
+                {
+                    Identity = new()
+                    {
+                        Name = "Author"
+                    }
+                },
+                new()
+                {
+                    Identity = new()
+                    {
+                        Name = "Lesson"
+                    }
+                },
+                new()
+                {
+                    Identity = new()
+                    {
+                        Name = "Phrase"
+                    }
+                }
+            }
+        });
 }

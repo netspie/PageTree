@@ -1,4 +1,5 @@
 ﻿@attribute [Route(Uris.Signatures)]
+
 @inherits BasePage
 
 @using Corelibs.BlazorShared.UI;
@@ -6,7 +7,9 @@
 @using Microsoft.JSInterop;
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
-    <PageTree.Client.Shared.Views.Signatures.Signatures  />
+    <div class="signatures-container">
+        <PageTree.Client.Shared.Views.Signatures.Signatures  />
+    </div>
 </BackgroundAndContent>
 
 @code {
@@ -16,5 +19,4 @@
     {
         RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
     }
-
 }

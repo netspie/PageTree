@@ -10,3 +10,7 @@
     padding-left: 25px;
     padding-right: 10px;
 }
+
+div ::deep .signature-list {
+    gap: 10px;
+}

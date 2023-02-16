@@ -1,5 +1,4 @@
 ﻿using Common.Basic.Blocks;
-using Common.Basic.Collections;
 using Common.Basic.Repository;
 using Mediator;
 using PageTree.App.Entities.Signatures;
@@ -72,7 +71,7 @@ public class GetSignaturesQueryHandler : IQueryHandler<GetSignaturesQuery, Resul
 }
 
 public sealed record GetSignaturesQuery(string projectID) : IQuery<Result<GetSignaturesQueryOut>>;
-public sealed record GetSignaturesQueryOut(SignatureListVM SignatureListVM);
+public sealed record GetSignaturesQueryOut(SignatureListVM SignatureList);
 
 public class SignatureListVM
 {
