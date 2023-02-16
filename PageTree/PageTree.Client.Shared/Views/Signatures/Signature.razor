@@ -1,14 +1,53 @@
-﻿@using PageTree.App.UseCases.Signatures.Queries;
+﻿@using Corelibs.BlazorViews.Components;
+@using PageTree.App.UseCases.Signatures.Queries;
 
 <div class="signature" @onclick=OnClickInternal>
-    <h3>@Model.Identity.Name</h3>
+    <div class="top-panel">
+        <div class="top-panel-row">
+            <h3>@Model.Identity.Name</h3>
+            <EditableText>Koko</EditableText>
+            <div class="top-right-buttons">
+                <button class="button" @onclick=OnStylesButtonClick>S</button>
+                <button class="button" @onclick=OnStylesButtonClick>
+                    <img src="_content/PageTree.Client.Shared/images/icons/file-document-edit-outline.png" />
+                </button>
+            </div>
+        </div>
+        @if (!_isAllCollapsed)
+        {
+            <div class="top-delimiter" />
+        }
+    </div>
+    @if (!_isStylesCollapsed)
+    {
+        <div class="styles">
+            <h5 class="styles-text">Styles</h5>
+            <div class="styles-list">
+                <span class="style-text">Word Style</span>
+                <span class="style-text">Author Style</span>
+                @foreach (var style in Model.Styles)
+                {
+
+                }
+            </div>
+        </div>
+    }
 </div>
 
 @code {
     [Parameter] public SignatureVM Model { get; set; }
     [Parameter] public Func<SignatureVM, Task> OnClick { get; set; }
 
-    public void OnClickInternal()
+    private bool _isStylesCollapsed = true;
+    private bool _isAllCollapsed => _isStylesCollapsed;
+
+    private async Task OnStylesButtonClick()
+    {
+        _isStylesCollapsed = !_isStylesCollapsed;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void OnClickInternal()
     {
         if (OnClick != null)
             OnClick.Invoke(Model);

@@ -2,3 +2,60 @@
     background: rgb(125, 125, 125, 0.3);
     padding: 15px;
 }
+
+.top-delimiter {
+    width: 100%;
+    height: 1px;
+    background: black;
+    opacity: 0.4;
+}
+
+.top-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-panel-row {
+    display: flex;
+}
+
+.top-right-buttons {
+    display: flex;
+    margin-right: 0;
+    margin-left: auto;
+    height: 100%;
+    width: fit-content;
+    gap: 5px;
+}
+
+.button {
+    box-sizing: border-box;
+    background: rgb(0, 0, 0, 0.3);
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    height: 22px;
+    width: 22px;
+    color: black;
+}
+
+.styles {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 5px;
+}
+
+.styles-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.styles-text {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.style-text {
+    font-size: 12px;
+}

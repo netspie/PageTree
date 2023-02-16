@@ -22,10 +22,9 @@
             var fontWeight = new CssAttribute((double) artifact.VisualInfo.Font.FontWeight, Unit.None);
 
             <CText 
+                Text=@artifact.Identity.Name
                 FontSize=@artifact.VisualInfo.Font.FontSize
-                FontWeight=@fontWeight>
-                    @artifact.Identity.Name
-            </CText>
+                FontWeight=@fontWeight />
         }
     </div>
 </div>

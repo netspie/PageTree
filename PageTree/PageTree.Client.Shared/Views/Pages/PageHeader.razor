@@ -7,9 +7,8 @@
     @foreach (var artifact in Model.Artifacts)
     {
         <CText
-            FontSize=artifact.Font.FontSize>
-            @artifact.Text
-        </CText>
+            Text=@artifact.Text
+            FontSize=artifact.Font.FontSize />
     }
 </div>
 
