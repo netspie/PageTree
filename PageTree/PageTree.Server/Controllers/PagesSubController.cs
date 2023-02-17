@@ -26,7 +26,7 @@ namespace PageTree.Server.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost, Authorize_Edit_PageAttribute]
+        [HttpPost, Authorize_Edit_Page]
         public Task<IActionResult> Create([FromRouteAndBody] CreateSubPageApiCommand command = null) =>
             _mediator.MapSendAndGetPostResponse<CreateSubPageCommand>(command, _mapper);
 

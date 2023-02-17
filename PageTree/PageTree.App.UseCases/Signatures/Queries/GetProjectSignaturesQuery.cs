@@ -7,14 +7,14 @@ using PageTree.Domain.Projects;
 
 namespace PageTree.App.UseCases.Signatures.Queries;
 
-public class GetSignaturesQueryHandler : IQueryHandler<GetSignaturesQuery, Result<GetSignaturesQueryOut>>
+public class GetProjectSignaturesQueryHandler : IQueryHandler<GetProjectSignaturesQuery, Result<GetProjectSignaturesQueryOut>>
 {
-    private IRepository<Project> _projectRepository;
-    private IRepository<Signature> _signatureRepository;
-    private IRepository<Style> _styleRepository;
+    private readonly IRepository<Project> _projectRepository;
+    private readonly IRepository<Signature> _signatureRepository;
+    private readonly IRepository<Style> _styleRepository;
 
-    public GetSignaturesQueryHandler(
-        IRepository<Project> projectRepository, 
+    public GetProjectSignaturesQueryHandler(
+        IRepository<Project> projectRepository,
         IRepository<Signature> signatureRepository,
         IRepository<Style> styleRepository)
     {
@@ -23,11 +23,11 @@ public class GetSignaturesQueryHandler : IQueryHandler<GetSignaturesQuery, Resul
         _styleRepository = styleRepository;
     }
 
-    public async ValueTask<Result<GetSignaturesQueryOut>> Handle(GetSignaturesQuery query, CancellationToken ct)
+    public async ValueTask<Result<GetProjectSignaturesQueryOut>> Handle(GetProjectSignaturesQuery query, CancellationToken ct)
     {
-        var result = Result<GetSignaturesQueryOut>.Success();
+        var result = Result<GetProjectSignaturesQueryOut>.Success();
 
-        var project = await _projectRepository.Get(query.projectID, result);
+        var project = await _projectRepository.Get(query.ProjectID, result);
         var signatureRoot = await _signatureRepository.Get(project.SignatureRootID, result);
 
         var signatureIDs = signatureRoot.ChildrenIDs;
@@ -44,7 +44,7 @@ public class GetSignaturesQueryHandler : IQueryHandler<GetSignaturesQuery, Resul
             })
             .ToArray());
 
-        var @out = new GetSignaturesQueryOut(
+        var @out = new GetProjectSignaturesQueryOut(
             new SignatureListVM() 
             {
                 Values = signatureInfos.Select(s => new SignatureVM()
@@ -70,8 +70,8 @@ public class GetSignaturesQueryHandler : IQueryHandler<GetSignaturesQuery, Resul
     }
 }
 
-public sealed record GetSignaturesQuery(string projectID) : IQuery<Result<GetSignaturesQueryOut>>;
-public sealed record GetSignaturesQueryOut(SignatureListVM SignatureList);
+public sealed record GetProjectSignaturesQuery(string ProjectID) : IQuery<Result<GetProjectSignaturesQueryOut>>;
+public sealed record GetProjectSignaturesQueryOut(SignatureListVM SignatureList);
 
 public class SignatureListVM
 {

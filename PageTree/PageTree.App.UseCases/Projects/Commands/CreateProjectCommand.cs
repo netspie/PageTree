@@ -1,6 +1,7 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
 using Mediator;
+using PageTree.App.Entities.Signatures;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
@@ -14,6 +15,7 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
     private readonly IRepository<Project> _projectRepository;
     private readonly IRepository<ProjectUserList> _projectUserListRepository;
     private readonly IRepository<Page> _pageRepository;
+    private readonly IRepository<Signature> _signatureRepository;
     private readonly IRepository<PracticeCategory> _practiceCategoryRepository;
     private readonly IRepository<PracticeTactic> _practiceTacticRepository;
 
@@ -21,12 +23,14 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
          IRepository<Project> projectRepository,
          IRepository<ProjectUserList> projectUserListRepository,
          IRepository<Page> pageRepository,
+         IRepository<Signature> signatureRepository,
          IRepository<PracticeCategory> practiceCategoryRepository,
          IRepository<PracticeTactic> practiceTacticRepository)
     {
         _projectRepository = projectRepository;
         _projectUserListRepository = projectUserListRepository;
         _pageRepository = pageRepository;
+        _signatureRepository = signatureRepository;
         _practiceCategoryRepository = practiceCategoryRepository;
         _practiceTacticRepository = practiceTacticRepository;
     }
@@ -42,12 +46,14 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
         var rootPage = new Page(NewID, "Root Page", projectList.OwnerID);
         var rootPracticeCategory = new PracticeCategory(NewID);
         var rootPracticeTactic = new PracticeTactic(NewID);
+        var rootSignature = new Signature(NewID, "Root Signature", projectList.OwnerID);
 
-        var project = new Project(NewID, rootPage.ID, projectList.OwnerID, rootPracticeCategory.ID, rootPracticeTactic.ID);
+        var project = new Project(NewID, rootPage.ID, rootSignature.ID, projectList.OwnerID, rootPracticeCategory.ID, rootPracticeTactic.ID);
         if (!projectList.ProjectsCreatedIDs.Create(project.ID))
             return result.Fail();
 
         rootPage.ProjectID = project.ID;
+        rootSignature.ProjectID = project.ID;
 
         await _pageRepository.Save(rootPage, result);
         await _projectRepository.Save(project, result);

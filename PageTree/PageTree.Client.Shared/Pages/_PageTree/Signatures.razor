@@ -56,7 +56,7 @@
 
     private async Task RefreshViewModel()
     {
-        var result = await _queries.Execute<GetSignaturesQuery, GetSignaturesQueryOut>(ProjectID);
+        var result = await _queries.Execute<GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(ProjectID);
         if (result != null && result.SignatureList != null)
             _signatureList = result.SignatureList;
     }

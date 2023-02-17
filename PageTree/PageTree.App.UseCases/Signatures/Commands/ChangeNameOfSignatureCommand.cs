@@ -1,4 +1,4 @@
-﻿namespace PageTree.App.UseCases.Signatures
+﻿namespace PageTree.App.UseCases.Signatures.Commands
 {
     public class ChangeNameOfSignatureCommand
     {

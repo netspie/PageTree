@@ -4,6 +4,7 @@ using Corelibs.BlazorShared;
 using PageTree.App.Pages.Queries;
 using PageTree.App.Projects.Queries;
 using PageTree.App.ProjectUserLists.Queries;
+using PageTree.App.UseCases.Signatures.Queries;
 using PageTree.App.UseCases.Users.Queries;
 using PageTree.Server.ApiContracts;
 
@@ -25,6 +26,8 @@ namespace PageTree.Client.Shared.Services
             Add<GetProjectUserListApiQuery, GetProjectUserListQuery, GetProjectUserListQueryOut>("projectUserLists");
             Add<GetProjectApiQuery, GetProjectQuery, GetProjectQueryOut>("projects");
             Add<GetPageApiQuery, GetPageQuery, GetPageQueryOut>("pages");
+
+            Add<GetProjectSignaturesApiQuery, GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(q => $"projects/{q.ProjectID}/signatures");
         }
     }
 }

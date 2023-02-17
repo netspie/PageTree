@@ -7,11 +7,15 @@ namespace PageTree.Domain.Projects
     {
         public Project() {}
         public Project(
-            string id, string rootPageID, string ownerID,
+            string id, 
+            string rootPageID,
+            string signatureRootID,
+            string ownerID,
             string practiceCategoryRootID,
             string practiceTacticRootID) : base(id)
         {
             RootPageID = rootPageID;
+            SignatureRootID = signatureRootID;
             OwnerID = ownerID;
             PracticeCategoryRootID = practiceCategoryRootID;
             PracticeTacticRootID = practiceTacticRootID;
