@@ -42,3 +42,16 @@ div ::deep .signature-list {
     width: fit-content;
     gap: 5px;
 }
+
+.signatures::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+.signatures::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+.signatures::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 10px;
+}
