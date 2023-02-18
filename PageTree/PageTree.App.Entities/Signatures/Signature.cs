@@ -29,5 +29,8 @@ namespace PageTree.App.Entities.Signatures
 
         public bool CreateSignature(string id, int index) =>
             EditableItemOwnerFunctions_NoName.Create(ChildrenIDs, id, index);
+
+        public bool RemoveSignature(string id) =>
+            EditableItemOwnerFunctions.Remove(id, ChildrenIDs);
     }
 }

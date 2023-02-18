@@ -1,5 +1,6 @@
 using AutoMapper;
 using Corelibs.AspNetApi.Authorization;
+using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
@@ -28,6 +29,10 @@ namespace PageTree.Server.Api.Controllers
         [HttpPost, Authorize_Edit]
         public Task<IActionResult> Create([FromRouteAndBody] CreateSignatureApiCommand command = null) =>
             _mediator.MapSendAndGetPostResponse<CreateSignatureCommand>(command, _mapper);
+
+        [HttpDelete, Route("{signatureID}"), Authorize_Edit]
+        public Task<IActionResult> Delete([FromRouteAndQuery] DeleteSignatureApiCommand command) =>
+            _mediator.MapSendAndGetDeleteResponse<DeleteSignatureCommand>(command, _mapper);
 
         //[HttpGet, Route_ID, AllowAnonymous]
         //public Task<IActionResult> Get([FromRouteAndQuery] GetProjectSignaturesApiQuery query) =>

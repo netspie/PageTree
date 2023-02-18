@@ -57,6 +57,7 @@
 
     private async Task OnRemoveSignature(string id)
     {
+        await _commands.Execute(new DeleteSignatureCommand(id));
         await RefreshView();
     }
 

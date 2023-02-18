@@ -7,7 +7,7 @@
             <EditableText Text=@Model.Identity.Name @ref=_nameText OnEnter=OnNameInputEnter />
             <div class="top-right-buttons">
                 <button class="button" @onclick=OnAddButtonClickInternal>+</button>
-                <button class="button" @onclick=OnAddButtonClickInternal>-</button>
+                <button class="button" @onclick=OnRemoveButtonClickInternal>-</button>
                 <button class="button" @onclick=OnEditButtonClick>E</button>
                 <button class="button" @onclick=OnStylesButtonClick>S</button>
             </div>

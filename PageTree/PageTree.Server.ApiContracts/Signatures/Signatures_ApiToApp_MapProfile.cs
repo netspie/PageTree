@@ -7,8 +7,9 @@ namespace PageTree.Server.ApiContracts
     {
         public Signatures_ApiToApp_MapProfile()
         {
-            CreateMapCirc<CreateSignatureApiCommand, CreateSignatureCommand>();
             CreateMapCirc<GetProjectSignaturesApiQuery, GetProjectSignaturesQuery>();
+            CreateMapCirc<CreateSignatureApiCommand, CreateSignatureCommand>();
+            CreateMapCirc<DeleteSignatureApiCommand, DeleteSignatureCommand>();
         }
     }
 }
