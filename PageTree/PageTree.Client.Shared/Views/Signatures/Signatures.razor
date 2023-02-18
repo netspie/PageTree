@@ -42,6 +42,6 @@
             .Select((v, i) => (v, i))
             .FirstOrDefault(o => o.v.Identity.ID == id);
 
-        return OnAddSignature?.Invoke(signatureInfo.i);
+        return OnAddSignature?.Invoke(signatureInfo.i + 1);
     }
 }
