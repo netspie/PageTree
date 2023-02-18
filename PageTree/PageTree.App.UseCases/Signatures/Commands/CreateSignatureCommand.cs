@@ -24,7 +24,7 @@ public class CreateSignatureCommandHandler : BaseCommandHandler, ICommandHandler
         if (!result.IsSuccess || parentSignature == null)
             return result.Fail();
 
-        var signature = new Signature(NewID, $"Signature - {NewID.Take(8)}", parentSignature.OwnerID, parentSignature.ProjectID, command.ParentID);
+        var signature = new Signature(NewID, $"Signature - {new string(NewID.Take(8).ToArray())}", parentSignature.OwnerID, parentSignature.ProjectID, command.ParentID);
         if (!parentSignature.CreateSignature(signature.ID, command.Index))
             return result.Fail();
 

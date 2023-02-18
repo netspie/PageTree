@@ -1,6 +1,7 @@
 ﻿@using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
+@using PageTree.App.UseCases.Signatures.Commands;
 @using PageTree.App.UseCases.Signatures.Queries;
 
 @attribute [Route(Uris.Signatures)]
@@ -9,7 +10,10 @@
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     <div class="signatures-container">
         <PageTree.Client.Shared.Views.Signatures.Signatures 
+            Model=_signatureList
             OnAddSignature=OnAddSignature 
+            OnAddSignatureOnTop=OnAddSignatureOnTop 
+            OnAddSignatureOnBottom=OnAddSignatureOnBottom
             OnRemoveSignature=OnRemoveSignature
             OnNameChanged=OnSignatureNameChanged />
     </div>
@@ -18,6 +22,7 @@
 @code {
     [Parameter] public string ProjectID { get; set; }
 
+    [Inject] private ICommandExecutor _commands { get; set; }
     [Inject] private IQueryExecutor _queries { get; set; }
 
     private SignatureListVM _signatureList = new();
@@ -32,9 +37,21 @@
         await RefreshViewModel();
     }
 
-    private async Task OnAddSignature(string id)
+    private async Task OnAddSignature(int index)
     {
+        await ExecuteCreateSignatureCommand(index);
+        await RefreshView();
+    }
 
+    private async Task OnAddSignatureOnTop()
+    {
+        await ExecuteCreateSignatureCommand(0);
+        await RefreshView();
+    }
+
+    private async Task OnAddSignatureOnBottom()
+    {
+        await ExecuteCreateSignatureCommand(int.MaxValue);
         await RefreshView();
     }
 
@@ -60,4 +77,8 @@
         if (result != null && result.SignatureList != null)
             _signatureList = result.SignatureList;
     }
+
+    private Task ExecuteCreateSignatureCommand(int index) =>
+        _commands.Execute(new CreateSignatureCommand(_signatureList.SignatureRootID, index));
+
 }

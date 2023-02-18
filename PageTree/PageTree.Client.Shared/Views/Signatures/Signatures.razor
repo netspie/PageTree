@@ -1,14 +1,21 @@
 ﻿@using Corelibs.BlazorViews.Layouts
 @using PageTree.App.UseCases.Signatures.Queries;
 
-<h3 class="signatures-text">Signatures</h3>
+<div class="top-panel">
+    <h3 class="signatures-text">Signatures</h3>
+    <div class="top-right-buttons">
+        <button class="button" @onclick=OnAddSignatureOnTop>+&lt;</button>
+        <button class="button" @onclick=OnAddSignatureOnBottom>+&gt;</button>
+    </div>
+</div>
 
 <div class="signatures">
-    <VerticalLayout class="signature-list">
+    <VerticalLayout class="signature-list" @ref=_signaturesLayout>
         @foreach (var signature in Model.Values)
         {
-            <Signature Model=signature 
-                OnAddButtonClick=OnAddSignature 
+            <Signature 
+                Model=signature 
+                OnAddButtonClick=OnAddSignatureInternal
                 OnRemoveButtonClick=OnRemoveSignature
                 OnNameChanged=OnNameChanged />
         }
@@ -16,44 +23,25 @@
 </div>
 
 @code {
-    [Parameter] public SignatureListVM Model { get; set; } = TestModel;
+    [Parameter] public SignatureListVM Model { get; set; }
 
-    [Parameter] public Func<string, Task> OnAddSignature { get; set; }
+    [Parameter] public Func<Task> OnAddSignatureOnTop { get; set; }
+    [Parameter] public Func<Task> OnAddSignatureOnBottom { get; set; }
+    [Parameter] public Func<int, Task> OnAddSignature { get; set; }
     [Parameter] public Func<string, Task> OnRemoveSignature { get; set; }
     [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
 
-    public static readonly SignatureListVM TestModel = new()
+    private VerticalLayout _signaturesLayout;
+
+    private Task OnAddSignatureInternal(string id)
     {
-        Values = new SignatureVM[]
-        {
-            new()
-            {
-                Identity = new()
-                {
-                    Name = "Authors"
-                }
-            },
-            new()
-            {
-                Identity = new()
-                {
-                    Name = "Author"
-                }
-            },
-            new()
-            {
-                Identity = new()
-                {
-                    Name = "Lesson"
-                }
-            },
-            new()
-            {
-                Identity = new()
-                {
-                    Name = "Phrase"
-                }
-            }
-        }
-    };
+        if (OnAddSignature == null)
+            return Task.CompletedTask;    
+
+        var signatureInfo = Model.Values
+            .Select((v, i) => (v, i))
+            .FirstOrDefault(o => o.v.Identity.ID == id);
+
+        return OnAddSignature?.Invoke(signatureInfo.i);
+    }
 }

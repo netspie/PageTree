@@ -47,6 +47,7 @@ public class GetProjectSignaturesQueryHandler : IQueryHandler<GetProjectSignatur
         var @out = new GetProjectSignaturesQueryOut(
             new SignatureListVM() 
             {
+                SignatureRootID = signatureRoot.ID,
                 Values = signatureInfos.Select(s => new SignatureVM()
                 {
                     Identity = new()
@@ -75,6 +76,7 @@ public sealed record GetProjectSignaturesQueryOut(SignatureListVM SignatureList)
 
 public class SignatureListVM
 {
+    public string SignatureRootID { get; set; } = "";
     public SignatureVM[] Values { get; set; } = Array.Empty<SignatureVM>();
 }
 

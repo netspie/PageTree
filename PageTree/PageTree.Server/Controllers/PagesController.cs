@@ -41,13 +41,8 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> Delete([FromQuery] DeletePageApiCommand command) =>
             _mediator.MapSendAndGetDeleteResponse<CreatePageCommand>(command, _mapper);
 
-        [HttpPatch, Route("{pageID}"), Authorize_Edit_Page]
+        [HttpPatch, Route("{pageID}"), Authorize_Edit]
         public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<UpdatePageCommand>(command, _mapper);
-
-        private class Authorize_Edit_PageAttribute : Authorize_EditAttribute
-        {
-            protected override string ResourceName => nameof(Page);
-        }
     }
 }

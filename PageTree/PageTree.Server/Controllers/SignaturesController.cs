@@ -2,6 +2,7 @@ using AutoMapper;
 using Corelibs.AspNetApi.Authorization;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
+using DnsClient.Internal;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace PageTree.Server.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost, Authorize_Edit_Signature]
+        [HttpPost, Authorize_Edit]
         public Task<IActionResult> Create([FromRouteAndBody] CreateSignatureApiCommand command = null) =>
             _mediator.MapSendAndGetPostResponse<CreateSignatureCommand>(command, _mapper);
 
@@ -41,10 +42,5 @@ namespace PageTree.Server.Api.Controllers
         //[HttpPatch, Route("{pageID}"), Authorize_Edit_Signature]
         //public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>
         //    _mediator.MapSendAndGetPatchResponse<UpdatePageCommand>(command, _mapper);
-
-        private class Authorize_Edit_SignatureAttribute : Authorize_EditAttribute
-        {
-            protected override string ResourceName => nameof(Signature);
-        }
     }
 }

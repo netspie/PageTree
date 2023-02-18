@@ -4,8 +4,7 @@
 <div class="signature" @onclick=OnClickInternal>
     <div class="top-panel">
         <div class="top-panel-row">
-            <h3>@Model.Identity.Name</h3>
-            <EditableText Text=Kokokoko @ref=_nameText OnEnter=OnNameInputEnter />
+            <EditableText Text=@Model.Identity.Name @ref=_nameText OnEnter=OnNameInputEnter />
             <div class="top-right-buttons">
                 <button class="button" @onclick=OnAddButtonClickInternal>+</button>
                 <button class="button" @onclick=OnAddButtonClickInternal>-</button>

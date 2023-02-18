@@ -46,17 +46,13 @@ namespace PageTree.Server.Api
 
         private static void AddResourceAuthorizationHandlers(this IServiceCollection services)
         {
-            // clean up! common method!
-            services.AddAuthorization(AddEditPolicies);
-            services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Projects.Project>>();
-            services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Projects.ProjectUserList>>();
-            services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler<Domain.Page>>();
+            services.AddAuthorization(AddEditPolicy);
+            services.AddSingleton<IAuthorizationHandler, ResourceAuthorizationHandler>();
 
-            void AddEditPolicies(AuthorizationOptions options)
+            void AddEditPolicy(AuthorizationOptions options)
             {
-                services.AddPolicyAndHandler<Domain.Projects.Project>(options);
-                services.AddPolicyAndHandler<Domain.Projects.ProjectUserList>(options);
-                services.AddPolicyAndHandler<Domain.Page>(options);
+                options.AddPolicy(AuthPolicies.Edit, policy =>
+                    policy.Requirements.Add(new SameOwnerRequirement()));
             }
         }
 

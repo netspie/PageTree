@@ -29,10 +29,9 @@ namespace PageTree.Server.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet, Route_ID, AllowAnonymous]
+        [HttpGet, AllowAnonymous]
         public Task<IActionResult> Get([FromRouteAndQuery] GetProjectSignaturesApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(query, _mapper);
-
 
         //[HttpDelete, Route_ID, Action_Delete]
         //public Task<IActionResult> Delete([FromQuery] DeletePageApiCommand command) =>
@@ -41,10 +40,5 @@ namespace PageTree.Server.Api.Controllers
         //[HttpPatch, Route("{pageID}"), Authorize_Edit_Signature]
         //public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>
         //    _mediator.MapSendAndGetPatchResponse<UpdatePageCommand>(command, _mapper);
-
-        private class Authorize_Edit_SignatureAttribute : Authorize_EditAttribute
-        {
-            protected override string ResourceName => nameof(Signature);
-        }
     }
 }

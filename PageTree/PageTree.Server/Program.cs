@@ -41,6 +41,12 @@ else
     app.UseHttpsRedirection();
 }
 
+app.Use(async (context, next) =>
+{
+    context.Request.EnableBuffering();
+    await next();
+});
+
 app.UseExceptionLog();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();

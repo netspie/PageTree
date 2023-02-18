@@ -37,17 +37,12 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> Create([FromRouteAndBody] CreateProjectApiCommand command) =>
             _mediator.MapSendAndGetPutResponse<CreateProjectCommand>(command, _mapper);
 
-        [HttpPut, Route_ID, Authorize_Edit_Project]
+        [HttpPut, Route_ID, Authorize_Edit]
         public Task<IActionResult> Replace([FromRouteAndBody] EditProjectApiCommand command) =>
             _mediator.MapSendAndGetPutResponse<EditProjectCommand>(command, _mapper);
 
-        [HttpDelete, Route_ID, Authorize_Edit_Project]
+        [HttpDelete, Route_ID, Authorize_Edit]
         public Task<IActionResult> Archive([FromRouteAndBody] ArchiveProjectApiCommand command) =>
             _mediator.MapSendAndGetPutResponse<ArchiveProjectCommand>(command, _mapper);
-    }
-
-    public class Authorize_Edit_ProjectAttribute : Authorize_EditAttribute
-    {
-        protected override string ResourceName => nameof(Project);
     }
 }
