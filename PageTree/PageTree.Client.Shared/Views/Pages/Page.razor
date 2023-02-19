@@ -12,7 +12,10 @@
 
 <div class="page" style=@_mainStyle>
     <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
-    
+    @if (IsEditMode)
+    {
+        <PageEditMenu />
+    }
     <PageHeader Model=@GetPageHeader() />
     <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
     <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick IsEditMode=IsEditMode/>

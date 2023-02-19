@@ -16,8 +16,8 @@ namespace PageTree.Domain
         public bool IsSubPage(string id) =>
             SubPages.FirstOrDefault(sID => sID == id) != null;
 
-        public bool CreateSubPage(string id) =>
-            EditableItemOwnerFunctions_NoName.Create(id, ChildrenIDs, SubPages);
+        public bool CreateSubPage(string id, int index) =>
+            EditableItemOwnerFunctions_NoName.Create(id, index, ChildrenIDs, SubPages);
 
         public bool Rename(string newName) =>
            EditableItemFunctions.Rename(newName, () => Name = newName);
@@ -80,5 +80,11 @@ namespace PageTree.Domain
         /// For optimization purposes, so query handler does not have to work much later, just fetch
         /// </summary>
         public string BakedPageID { get; init; } = new("");
+
+        /// <summary>
+        /// Ids of children considered private.
+        /// They shouldn't be presented to any users.
+        /// </summary>
+        public List<string>? PrivateChildrenIDs { get; set; }
     }
 }

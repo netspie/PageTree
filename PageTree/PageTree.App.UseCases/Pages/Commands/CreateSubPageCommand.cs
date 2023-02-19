@@ -28,7 +28,7 @@ public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<C
         {
             ParentID = parentPage.ID,
         };
-        if (!parentPage.CreateSubPage(subPage.ID))
+        if (!parentPage.CreateSubPage(subPage.ID, command.Index))
             return result.Fail();
 
         await _pageRepository.Save(subPage, result);
@@ -38,4 +38,4 @@ public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<C
     }
 }
 
-public sealed record CreateSubPageCommand(string ParentID) : ICommand<Result>;
+public sealed record CreateSubPageCommand(string ParentID, int Index = int.MaxValue) : ICommand<Result>;

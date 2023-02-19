@@ -22,6 +22,7 @@ namespace PageTree.Domain.Projects
         }
 
         public string RootPageID { get; set; } = new("");
+        public string PublicRootPageID { get; set; } = new("");
         public string SignatureRootID { get; set; } = new("");
         public string TemplatePageRootID { get; set; } = new("");
         public string PracticeCategoryRootID { get; set; } = new("");
