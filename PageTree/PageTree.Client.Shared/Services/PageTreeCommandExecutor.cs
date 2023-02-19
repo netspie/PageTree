@@ -27,6 +27,7 @@ namespace PageTree.Client.Shared.Services
             // Signatures
             AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("signatures");
             AddDelete<DeleteSignatureCommand, DeleteSignatureApiCommand>("signatures/{signatureID}");
+            AddPatch<ChangeNameOfSignatureCommand, ChangeNameOfSignatureApiCommand>("signatures/{signatureID}");
         }
     }
 }

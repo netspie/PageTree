@@ -10,6 +10,7 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<GetProjectSignaturesApiQuery, GetProjectSignaturesQuery>();
             CreateMapCirc<CreateSignatureApiCommand, CreateSignatureCommand>();
             CreateMapCirc<DeleteSignatureApiCommand, DeleteSignatureCommand>();
+            CreateMapCirc<ChangeNameOfSignatureApiCommand, ChangeNameOfSignatureCommand>();
         }
     }
 }

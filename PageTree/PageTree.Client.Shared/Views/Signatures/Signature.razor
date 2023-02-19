@@ -4,7 +4,7 @@
 <div class="signature" @onclick=OnClickInternal>
     <div class="top-panel">
         <div class="top-panel-row">
-            <EditableText Text=@Model.Identity.Name @ref=_nameText OnEnter=OnNameInputEnter />
+            <EditableText Text=@Model.Identity.Name @ref=_nameText OnSubmit=OnNameInputSubmit />
             <div class="top-right-buttons">
                 <button class="button" @onclick=OnAddButtonClickInternal>+</button>
                 <button class="button" @onclick=OnRemoveButtonClickInternal>-</button>
@@ -63,12 +63,12 @@
             await OnRemoveButtonClick?.Invoke(Model.Identity.ID);
     }
 
-    private void OnEditButtonClick()
+    private async Task OnEditButtonClick()
     {
-        _nameText.IsEdit = true;
+        await _nameText.SetIsEdit(true);
     }
 
-    private async Task<bool> OnNameInputEnter(string name)
+    private async Task<bool> OnNameInputSubmit(string name)
     {
         if (OnNameChanged == null)
             return false;

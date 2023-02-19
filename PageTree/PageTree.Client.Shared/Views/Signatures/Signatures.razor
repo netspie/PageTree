@@ -10,7 +10,7 @@
 </div>
 
 <div class="signatures">
-    <VerticalLayout class="signature-list" @ref=_signaturesLayout>
+    <VerticalLayout class="signature-list">
         @foreach (var signature in Model.Values)
         {
             <Signature 
@@ -30,8 +30,6 @@
     [Parameter] public Func<int, Task> OnAddSignature { get; set; }
     [Parameter] public Func<string, Task> OnRemoveSignature { get; set; }
     [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
-
-    private VerticalLayout _signaturesLayout;
 
     private Task OnAddSignatureInternal(string id)
     {

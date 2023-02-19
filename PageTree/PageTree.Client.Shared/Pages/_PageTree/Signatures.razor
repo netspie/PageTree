@@ -63,6 +63,7 @@
 
     private async Task OnSignatureNameChanged(string id, string name)
     {
+        await _commands.Execute(new ChangeNameOfSignatureCommand(id, name));
         await RefreshView();
     }
 

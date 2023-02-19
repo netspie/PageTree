@@ -1,6 +1,5 @@
 using AutoMapper;
 using Corelibs.AspNetApi.Authorization;
-using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
@@ -34,16 +33,8 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> Delete([FromRouteAndQuery] DeleteSignatureApiCommand command) =>
             _mediator.MapSendAndGetDeleteResponse<DeleteSignatureCommand>(command, _mapper);
 
-        //[HttpGet, Route_ID, AllowAnonymous]
-        //public Task<IActionResult> Get([FromRouteAndQuery] GetProjectSignaturesApiQuery query) =>
-        //    _mediator.MapSendAndGetResponse<GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(query, _mapper);
-
-        //[HttpDelete, Route_ID, Action_Delete]
-        //public Task<IActionResult> Delete([FromQuery] DeletePageApiCommand command) =>
-        //    _mediator.MapSendAndGetDeleteResponse<CreatePageCommand>(command, _mapper);
-
-        //[HttpPatch, Route("{pageID}"), Authorize_Edit_Signature]
-        //public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>
-        //    _mediator.MapSendAndGetPatchResponse<UpdatePageCommand>(command, _mapper);
+        [HttpPatch, Route("{signatureID}"), Authorize_Edit]
+        public Task<IActionResult> ChangeName([FromRouteAndBody] ChangeNameOfSignatureApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeNameOfSignatureCommand>(command, _mapper);
     }
 }

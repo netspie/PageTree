@@ -1,4 +1,5 @@
-﻿using Common.Basic.DDD;
+﻿using Common.Basic.Collections;
+using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
 using Practicer.Domain.Pages.Common;
 
@@ -32,5 +33,14 @@ namespace PageTree.App.Entities.Signatures
 
         public bool RemoveSignature(string id) =>
             EditableItemOwnerFunctions.Remove(id, ChildrenIDs);
+
+        public bool Rename(string name)
+        {
+            if (name.IsNullOrEmpty())
+                return false;
+
+            Name = name;
+            return true;
+        }
     }
 }
