@@ -11,13 +11,20 @@
 
 <div class="signatures">
     <VerticalLayout class="signature-list">
-        @foreach (var signature in Model.Values)
+        @for (int i = 0; i < Model.Values.Length; i++)
         {
-            <Signature 
-                Model=signature 
+            var signature = Model.Values[i];
+            bool isFirst = i == 0;
+            bool isLast = i == Model.Values.Length - 1;
+
+            <Signature Model=signature
                 OnAddButtonClick=OnAddSignatureInternal
                 OnRemoveButtonClick=OnRemoveSignature
-                OnNameChanged=OnNameChanged />
+                OnNameChanged=OnNameChanged
+                OnMoveDownButtonClick=OnMoveDownButtonClickInternal
+                OnMoveUpButtonClick=OnMoveUpButtonClickInternal
+                IsFirst=isFirst
+                IsLast=isLast/>
         }
     </VerticalLayout>
 </div>
@@ -25,6 +32,7 @@
 @code {
     [Parameter] public SignatureListVM Model { get; set; }
 
+    [Parameter] public Func<string, int, Task> OnMoveSignature { get; set; }
     [Parameter] public Func<Task> OnAddSignatureOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSignatureOnBottom { get; set; }
     [Parameter] public Func<int, Task> OnAddSignature { get; set; }
@@ -41,5 +49,29 @@
             .FirstOrDefault(o => o.v.Identity.ID == id);
 
         return OnAddSignature?.Invoke(signatureInfo.i + 1);
+    }
+
+    private Task OnMoveUpButtonClickInternal(string id)
+    {
+        if (OnMoveSignature == null)
+            return Task.CompletedTask;
+
+        var signatureInfo = Model.Values
+            .Select((v, i) => (v, i))
+            .FirstOrDefault(o => o.v.Identity.ID == id);
+
+        return OnMoveSignature?.Invoke(id, signatureInfo.i - 1);
+    }
+
+    private Task OnMoveDownButtonClickInternal(string id)
+    {
+        if (OnMoveSignature == null)
+            return Task.CompletedTask;
+
+        var signatureInfo = Model.Values
+            .Select((v, i) => (v, i))
+            .FirstOrDefault(o => o.v.Identity.ID == id);
+
+        return OnMoveSignature?.Invoke(id, signatureInfo.i + 1);
     }
 }

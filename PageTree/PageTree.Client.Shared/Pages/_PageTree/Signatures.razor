@@ -15,7 +15,8 @@
             OnAddSignatureOnTop=OnAddSignatureOnTop 
             OnAddSignatureOnBottom=OnAddSignatureOnBottom
             OnRemoveSignature=OnRemoveSignature
-            OnNameChanged=OnSignatureNameChanged />
+            OnNameChanged=OnSignatureNameChanged
+            OnMoveSignature=OnMoveSignature/>
     </div>
 </BackgroundAndContent>
 
@@ -52,6 +53,12 @@
     private async Task OnAddSignatureOnBottom()
     {
         await ExecuteCreateSignatureCommand(int.MaxValue);
+        await RefreshView();
+    }
+
+    private async Task OnMoveSignature(string id, int index)
+    {
+        await _commands.Execute(new ChangeIndexOfSignatureCommand(id, index));
         await RefreshView();
     }
 

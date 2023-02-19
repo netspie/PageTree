@@ -3,10 +3,10 @@ using PageTree.App.Entities.Signatures;
 
 namespace PageTree.Server.ApiContracts
 {
-    public class ChangeNameOfSignatureApiCommand
+    public class ChangeIndexOfSignatureApiCommand
     {
         [FromRoute, AuthorizeResource(typeof(Signature))]
         public string SignatureID { get; set; }
-        public string Name { get; set; }
+        public int Index { get; set; }
     }
 }

@@ -30,11 +30,15 @@ namespace PageTree.Server.Api.Controllers
             _mediator.MapSendAndGetPostResponse<CreateSignatureCommand>(command, _mapper);
 
         [HttpDelete, Route("{signatureID}"), Authorize_Edit]
-        public Task<IActionResult> Delete([FromRouteAndQuery] DeleteSignatureApiCommand command) =>
+        public Task<IActionResult> Delete([FromRouteAndBody] DeleteSignatureApiCommand command) =>
             _mediator.MapSendAndGetDeleteResponse<DeleteSignatureCommand>(command, _mapper);
 
-        [HttpPatch, Route("{signatureID}"), Authorize_Edit]
+        [HttpPatch, Route("{signatureID}/changeName"), Authorize_Edit]
         public Task<IActionResult> ChangeName([FromRouteAndBody] ChangeNameOfSignatureApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeNameOfSignatureCommand>(command, _mapper);
+
+        [HttpPatch, Route("{signatureID}/changeIndex"), Authorize_Edit]
+        public Task<IActionResult> ChangeIndex([FromRouteAndBody] ChangeIndexOfSignatureApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeIndexOfSignatureCommand>(command, _mapper);
     }
 }

@@ -11,6 +11,7 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<CreateSignatureApiCommand, CreateSignatureCommand>();
             CreateMapCirc<DeleteSignatureApiCommand, DeleteSignatureCommand>();
             CreateMapCirc<ChangeNameOfSignatureApiCommand, ChangeNameOfSignatureCommand>();
+            CreateMapCirc<ChangeIndexOfSignatureApiCommand, ChangeIndexOfSignatureCommand>();
         }
     }
 }

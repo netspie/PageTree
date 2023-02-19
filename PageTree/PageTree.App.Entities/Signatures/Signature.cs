@@ -34,6 +34,9 @@ namespace PageTree.App.Entities.Signatures
         public bool RemoveSignature(string id) =>
             EditableItemOwnerFunctions.Remove(id, ChildrenIDs);
 
+        public bool MoveSignature(string id, int index) =>
+            EditableItemOwnerFunctions.Reorder(id, index, ChildrenIDs);
+
         public bool Rename(string name)
         {
             if (name.IsNullOrEmpty())

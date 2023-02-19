@@ -32,6 +32,7 @@ public class GetProjectSignaturesQueryHandler : IQueryHandler<GetProjectSignatur
 
         var signatureIDs = signatureRoot.ChildrenIDs;
         var signatures = await _signatureRepository.Get(signatureIDs, result);
+        signatures = signatures.OrderBy(s => signatureIDs.IndexOf(s.ID)).ToArray();
 
         var signatureInfos = await Task.WhenAll(
             signatures.Select(async s =>
