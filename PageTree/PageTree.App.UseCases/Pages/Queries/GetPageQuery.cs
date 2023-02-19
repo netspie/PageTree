@@ -156,7 +156,7 @@ public class PageVM
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
     public PropertyVM[] Properties { get; init; } = Array.Empty<PropertyVM>();
     public IdentityVM[] PracticeTactics { get; init; } = Array.Empty<IdentityVM>();
-    public Style StyleOfPage { get; init; }
+    public Style StyleOfPage { get; init; } = new();
     public Style[] StylesOfChildren { get; init; } = Array.Empty<Style>();
 }
 

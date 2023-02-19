@@ -1,19 +1,23 @@
 ﻿@attribute [Route(Uris.Page)]
 
-@inherits BasePage
+@inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM>
 
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
+@using PageTree.App.Pages.Queries;
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     @*<PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>*@
-    <PageTree.Client.Shared.Views.Pages.Page Left=@context.Item1 Top=@context.Item2 OnPropertyClick=OnPropertyClick />
+    <PageTree.Client.Shared.Views.Pages.Page 
+        Left=@context.Item1 Top=@context.Item2 
+        OnPropertyClick=OnPropertyClick 
+        Model=_vm/>
 </BackgroundAndContent>
 
 @code {
     [Parameter] public string ProjectID { get; set; }
-    [Parameter] public string PageID { get; set; }
+    [Parameter] public string PageID { get; set; } = _pageID;
 
 #if DEBUG
     private const string _pageID = "350b10d0-f72a-4f8f-92a6-5da3b80cac6a";
@@ -27,4 +31,6 @@
 
         return Task.CompletedTask;
     }
+
+    protected override string QueryParameter => PageID;
 }

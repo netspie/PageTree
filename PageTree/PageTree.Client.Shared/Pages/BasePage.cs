@@ -1,11 +1,16 @@
-﻿using Corelibs.BlazorShared.UI;
+﻿using Common.Basic.Blocks;
+using Corelibs.BlazorShared.UI;
+using Corelibs.BlazorViews.Layouts;
+using Mediator;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using PageTree.Client.Shared.Interfaces;
 
 namespace PageTree.Client.Shared.Pages
 {
-    public class BasePage : ComponentBase
+    public abstract class BasePage<TQuery, TQueryOut, TVM> : BaseComponent<TQuery, TQueryOut, TVM>
+        where TQuery : IQuery<Result<TQueryOut>>
+        where TVM : new ()
     {
         [Inject] private IJSRuntime _jsRuntime { get; set; }
 

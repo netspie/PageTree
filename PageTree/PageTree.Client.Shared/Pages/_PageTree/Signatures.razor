@@ -5,12 +5,12 @@
 @using PageTree.App.UseCases.Signatures.Queries;
 
 @attribute [Route(Uris.Signatures)]
-@inherits BasePage
+@inherits BasePage<GetProjectSignaturesQuery, GetProjectSignaturesQueryOut, SignatureListVM>
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     <div class="signatures-container">
         <PageTree.Client.Shared.Views.Signatures.Signatures 
-            Model=_signatureList
+            Model=_vm
             OnAddSignature=OnAddSignature 
             OnAddSignatureOnTop=OnAddSignatureOnTop 
             OnAddSignatureOnBottom=OnAddSignatureOnBottom
@@ -22,16 +22,6 @@
 
 @code {
     [Parameter] public string ProjectID { get; set; }
-
-    [Inject] private ICommandExecutor _commands { get; set; }
-    [Inject] private IQueryExecutor _queries { get; set; }
-
-    private SignatureListVM _signatureList = new();
-
-    protected override void OnInitialized()
-    {
-        RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,20 +64,8 @@
         await RefreshView();
     }
 
-    private async Task RefreshView()
-    {
-        await RefreshViewModel();
-        await InvokeAsync(StateHasChanged);
-    }
-
-    private async Task RefreshViewModel()
-    {
-        var result = await _queries.Execute<GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(ProjectID);
-        if (result != null && result.SignatureList != null)
-            _signatureList = result.SignatureList;
-    }
-
     private Task ExecuteCreateSignatureCommand(int index) =>
-        _commands.Execute(new CreateSignatureCommand(_signatureList.SignatureRootID, index));
+        _commands.Execute(new CreateSignatureCommand(_vm.SignatureRootID, index));
 
+    protected override string QueryParameter => ProjectID;
 }

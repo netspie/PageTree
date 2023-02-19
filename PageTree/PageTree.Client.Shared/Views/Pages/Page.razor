@@ -27,7 +27,7 @@
 </div>
 
 @code {
-    [Parameter] public GetPageQueryOut? Model { get; set; } = TestQueries.Query;
+    [Parameter] public PageVM? Model { get; set; } = TestQueries.Query.PageVM;
 
     [Parameter] public int Left { get; set; }
     [Parameter] public int Top { get; set; }
@@ -38,7 +38,7 @@
 
     private string _mainStyle => $"width: calc(100% - {Left}px); ";
 
-    private PageTree.App.Entities.Styles.Style _style => Model!.PageVM.StyleOfPage!;
+    private PageTree.App.Entities.Styles.Style _style => Model.StyleOfPage!;
 
     private Arrangements? _arrangements;
     private Arrangements_AddNew? _arrangements_AddNew;
@@ -218,11 +218,11 @@
     {
         var vm = new PageHeader.ViewModel();
 
-        if (Model!.PageVM.SignatureIdentity != null && !Model!.PageVM.SignatureIdentity.Name.IsNullOrEmpty())
+        if (Model!.SignatureIdentity != null && !Model!.SignatureIdentity.Name.IsNullOrEmpty())
             vm.Artifacts.Add(
                 new()
                 { 
-                    Text = Model.PageVM.SignatureIdentity.Name,
+                    Text = Model.SignatureIdentity.Name,
                     Font = new() { FontSize = 16 }
                 });
         else
@@ -236,7 +236,7 @@
         vm.Artifacts.Add(
             new() 
             {
-                Text = Model.PageVM.Identity.Name,
+                Text = Model.Identity.Name,
                 Font = new() { FontSize = 24 }
             });
 
@@ -245,15 +245,15 @@
 
     private TreeLayout.TreeNode GetTreeNode()
     {
-        var layout = Model.PageVM.StyleOfPage.RootProperty.Layout;
+        var layout = Model?.StyleOfPage?.RootProperty?.Layout;
         var layoutGap = layout != null && layout.Gap.HasValue ? layout.Gap.Value : 0;
 
         return new()
         {
             CanExpand = false,
             IsExpanded = true,
-            Children = GetTreeNodes(Model.PageVM.Properties, Model.PageVM.StyleOfPage.RootProperty, Model.PageVM.StylesOfChildren),
-            Data = new StyleData(Model.PageVM.StylesOfChildren, null, Model.PageVM.StyleOfPage.RootProperty),
+            Children = GetTreeNodes(Model.Properties, Model.StyleOfPage.RootProperty, Model.StylesOfChildren),
+            Data = new StyleData(Model.StylesOfChildren, null, Model.StyleOfPage.RootProperty),
             Layout = new()
             {
                 Gap = layoutGap
@@ -290,7 +290,7 @@
                 },
                 Children = GetTreeNodes(propertyVM.Properties, childStyle, signatureOrPageStyles),
                 GetContent = GetProperty(propertyVM, i, parentStyle, childStyle, signatureOrPageStyles, IsEditMode),
-                Data = new StyleData(Model.PageVM.StylesOfChildren, parentStyle, childStyle)
+                Data = new StyleData(Model.StylesOfChildren, parentStyle, childStyle)
             });
         });
 

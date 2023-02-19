@@ -1,13 +1,19 @@
 ﻿@page "/learn/pages"
-@inherits BasePage
+
+@inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM>
 
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
+@using PageTree.App.Pages.Queries;
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     @*<PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>*@
-    <PageTree.Client.Shared.Views.Pages.Page Left=@context.Item1 Top=@context.Item2 OnPropertyClick=OnPropertyClick IsEditMode=false/>
+    <PageTree.Client.Shared.Views.Pages.Page 
+        Left=@context.Item1 
+        Top=@context.Item2 OnPropertyClick=OnPropertyClick 
+        IsEditMode=false
+        Model=_vm/>
 </BackgroundAndContent>
 
 @code {
@@ -17,15 +23,12 @@
     private const string _pageID = "20caa0c3-243b-47f9-968f-2d6a1e0dd27a";
 #endif
 
-    protected override void OnInitialized()
-    {
-        RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
-    }
-
     private Task OnPropertyClick(TreeLayout.TreeNode property)
     {
         Console.WriteLine(property.Identity.Name);
 
         return Task.CompletedTask;
     }
+
+    protected override string QueryParameter => _pageID;
 }
