@@ -10,11 +10,18 @@
 @using PageTree.App.Entities.Styles;
 @using PageTree.App.Pages.Queries;
 
+@implements IView<PageVM>
+
 <div class="page" style=@_mainStyle>
+    @{
+        Console.WriteLine("Page Component Render");
+    }
     <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
     @if (IsEditMode)
     {
-        <PageEditMenu />
+        <PageEditMenu 
+            OnAddSubPageOnTop=OnAddSubPageOnTop 
+            OnAddSubPageOnBottom=OnAddSubPageOnBottom />
     }
     <PageHeader Model=@GetPageHeader() />
     <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
@@ -27,12 +34,14 @@
 </div>
 
 @code {
-    [Parameter] public PageVM? Model { get; set; } = TestQueries.Query.PageVM;
+    [Parameter] public PageVM Model { get; set; }
 
     [Parameter] public int Left { get; set; }
     [Parameter] public int Top { get; set; }
 
     [Parameter] public Func<TreeLayout.TreeNode, Task> OnPropertyClick { get; set; }
+    [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
+    [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
 
     [Parameter] public bool IsEditMode { get; set; } = true;
 
@@ -47,10 +56,24 @@
     private List<Corelibs.BlazorViews.ViewModels.IdentityVM> _properties = new();
 
     private TreeLayout.TreeNode? _treeNode;
-    protected override void OnInitialized()
+
+    public Task RefreshViewModel()
     {
         _treeNode = GetTreeNode();
         _properties = _treeNode.Children.Select(n => n.Identity).ToList();
+
+        return Task.CompletedTask;
+    }
+
+    public async Task RefreshView()
+    {
+        await RefreshViewModel();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override void OnInitialized()
+    {
+        RefreshViewModel();
     }
 
     private void OnArrangmentsButton()
@@ -234,7 +257,7 @@
                 });
 
         vm.Artifacts.Add(
-            new() 
+            new()
             {
                 Text = Model.Identity.Name,
                 Font = new() { FontSize = 24 }
@@ -245,15 +268,20 @@
 
     private TreeLayout.TreeNode GetTreeNode()
     {
-        var layout = Model?.StyleOfPage?.RootProperty?.Layout;
-        var layoutGap = layout != null && layout.Gap.HasValue ? layout.Gap.Value : 0;
+        Layout layout = null;
+        if (Model != null && Model.StyleOfPage != null && Model?.StyleOfPage?.RootProperty != null)
+            layout = Model.StyleOfPage.RootProperty.Layout;
+
+        float layoutGap = 0;
+        if (layout != null && layout.Gap.HasValue)
+            layoutGap = layout.Gap.Value;
 
         return new()
         {
             CanExpand = false,
             IsExpanded = true,
-            Children = GetTreeNodes(Model.Properties, Model.StyleOfPage.RootProperty, Model.StylesOfChildren),
-            Data = new StyleData(Model.StylesOfChildren, null, Model.StyleOfPage.RootProperty),
+            Children = GetTreeNodes(Model.Properties, Model?.StyleOfPage?.RootProperty, Model?.StylesOfChildren),
+            Data = new StyleData(Model.StylesOfChildren, null, Model?.StyleOfPage?.RootProperty),
             Layout = new()
             {
                 Gap = layoutGap

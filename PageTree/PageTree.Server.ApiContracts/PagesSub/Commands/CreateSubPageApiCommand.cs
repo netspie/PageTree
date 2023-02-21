@@ -7,5 +7,6 @@ namespace PageTree.Server.ApiContracts
     {
         [FromRoute, AuthorizeResource(typeof(Page))]
         public string ParentID { get; set; }
+        public int Index { get; set; }
     }
 }

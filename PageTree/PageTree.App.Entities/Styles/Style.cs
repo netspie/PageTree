@@ -58,6 +58,7 @@ namespace PageTree.App.Entities.Styles
         public bool CanExpand { get; set; } = true;
         public bool HasChildren { get; set; }
         public bool IsExpanded { get; set; }
+        public bool AreChildrenExpanded { get; set; }
         public List<ExpandInfo> Children { get; set; } = new();
     }
 

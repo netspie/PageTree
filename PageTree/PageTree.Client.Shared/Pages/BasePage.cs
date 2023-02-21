@@ -8,9 +8,10 @@ using PageTree.Client.Shared.Interfaces;
 
 namespace PageTree.Client.Shared.Pages
 {
-    public abstract class BasePage<TQuery, TQueryOut, TVM> : BaseComponent<TQuery, TQueryOut, TVM>
+    public abstract class BasePage<TQuery, TQueryOut, TVM, TView> : BaseComponent<TQuery, TQueryOut, TVM, TView>
         where TQuery : IQuery<Result<TQueryOut>>
         where TVM : new ()
+        where TView : IView<TVM>
     {
         [Inject] private IJSRuntime _jsRuntime { get; set; }
 

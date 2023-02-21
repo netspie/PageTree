@@ -7,6 +7,8 @@ using PageTree.Domain;
 using PageTree.Domain.Practice;
 using PageTree.Domain.Projects;
 using PageTree.App.Entities.Styles;
+using PageTree.App.UseCases.Pages.Queries.Styles;
+using Common.Basic.Collections;
 
 namespace PageTree.App.Pages.Queries;
 
@@ -50,10 +52,14 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoryRoot.Items, res);
         var practiceTactics = await _practiceTacticRepository.Get(practiceTacticRoot.Items, res);
 
-        var projectStyle = await _styleRepository.Get(project?.StyleID, res);
-        var signatureStyles = await _styleRepository.Get(signature?.StyleIDs, res);
-        var pageStyle = await _styleRepository.Get(page?.StyleID, res);
-        var finalStyle = projectStyle?.Override(signatureStyles.Append(pageStyle).ToArray());
+        //var projectStyle = await _styleRepository.Get(project?.StyleID, res);
+        //var signatureStyles = await _styleRepository.Get(signature?.StyleIDs, res);
+        //var pageStyle = await _styleRepository.Get(page?.StyleID, res);
+        //var finalStyle = projectStyle?.Override(signatureStyles.Append(pageStyle).ToArray());
+
+        var mainStyle = HardcodedStyles.GetMainStyle(
+            new IdentityVM() { ID = page.ID, Name = page.Name },
+            new IdentityVM() { ID = signature?.ID, Name = signature?.Name });
 
         async Task GetParentPage(Page page, List<Page> pages)
         {
@@ -68,6 +74,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var parentPages = new List<Page>();
         await GetParentPage(page, parentPages);
         parentPages.Reverse();
+
+        var properties = await GetProperties(page, mainStyle?.TreeExpandInfo);
         return res.With(new GetPageQueryOut(
             new PageVM()
             {
@@ -90,7 +98,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                     Name = signature?.Name ?? string.Empty
                 },
 
-                Properties = await GetProperties(page),
+                Properties = properties,
 
                 PracticeTactics = practiceTactics.Select(p => new IdentityVM()
                 {
@@ -98,22 +106,34 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                     Name = p.Name
                 }).ToArray(),
 
-                StyleOfPage = finalStyle
+                StyleOfPage = mainStyle
             }
         ));
     }
 
-    public async Task<PropertyVM[]> GetProperties(Page currentPage)
+    public async Task<PropertyVM[]> GetProperties(Page currentPage, ExpandInfo expandInfo)
     {
         var res = Result.Success();
 
         var result = new List<PropertyVM>();
-        foreach (var childID in currentPage.ChildrenIDs)
+
+        for (int i = 0; i < currentPage.ChildrenIDs.Count; i++)
         {
+            var childID = currentPage.ChildrenIDs[i];
+
+            ExpandInfo childExpandInfo = null;
+            if (expandInfo != null && !expandInfo.Children.IsNullOrEmpty() && expandInfo.Children.Count >= i + 1)
+                childExpandInfo = expandInfo.Children[i];
+
             var childPage = await _pageRepository.Get(childID, res);
             var childSignature = !string.IsNullOrEmpty(childPage.SignatureID) ?
                 await _signatureRepository.Get(childPage.SignatureID, res) :
                 new Signature();
+
+            var properties = Array.Empty<PropertyVM>();
+            if ((expandInfo != null && expandInfo.AreChildrenExpanded) ||
+                 childExpandInfo != null && childExpandInfo.IsExpanded)
+                properties = await GetProperties(childPage, childExpandInfo);
 
             result.Add(new PropertyVM()
             {
@@ -129,8 +149,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                     Name = childSignature.Name
                 },
 
-                //Properties = await GetProperties(childPage)
-
+                Properties = properties
             });
         }
 

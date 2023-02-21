@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PagesSub\Queries\**" />
+    <EmbeddedResource Remove="PagesSub\Queries\**" />
+    <None Remove="PagesSub\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.0" />
@@ -14,10 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PageTree.App.UseCases\PageTree.App.UseCases.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="PagesSub\Queries\" />
   </ItemGroup>
 
 </Project>

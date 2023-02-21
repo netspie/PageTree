@@ -5,12 +5,12 @@
 @using PageTree.App.UseCases.Signatures.Queries;
 
 @attribute [Route(Uris.Signatures)]
-@inherits BasePage<GetProjectSignaturesQuery, GetProjectSignaturesQueryOut, SignatureListVM>
+@inherits BasePage<GetProjectSignaturesQuery, GetProjectSignaturesQueryOut, SignatureListVM, PageTree.Client.Shared.Views.Signatures.Signatures>
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     <div class="signatures-container">
         <PageTree.Client.Shared.Views.Signatures.Signatures 
-            Model=_vm
+            @ref=_view
             OnAddSignature=OnAddSignature 
             OnAddSignatureOnTop=OnAddSignatureOnTop 
             OnAddSignatureOnBottom=OnAddSignatureOnBottom
@@ -22,11 +22,6 @@
 
 @code {
     [Parameter] public string ProjectID { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshViewModel();
-    }
 
     private async Task OnAddSignature(int index)
     {

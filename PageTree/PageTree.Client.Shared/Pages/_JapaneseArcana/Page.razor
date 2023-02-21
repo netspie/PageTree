@@ -1,6 +1,6 @@
 ﻿@page "/learn/pages"
 
-@inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM>
+@inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM, PageTree.Client.Shared.Views.Pages.Page>
 
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
@@ -9,7 +9,11 @@
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     @*<PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>*@
+    @{
+        Console.WriteLine("Page Render");
+    }
     <PageTree.Client.Shared.Views.Pages.Page 
+        @ref=_view
         Left=@context.Item1 
         Top=@context.Item2 OnPropertyClick=OnPropertyClick 
         IsEditMode=false

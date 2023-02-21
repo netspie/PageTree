@@ -1,6 +1,8 @@
 ﻿@using Corelibs.BlazorViews.Layouts
 @using PageTree.App.UseCases.Signatures.Queries;
 
+@implements IView<SignatureListVM>
+
 <div class="top-panel">
     <h3 class="signatures-text">Signatures</h3>
     <div class="top-right-buttons">
@@ -39,39 +41,36 @@
     [Parameter] public Func<string, Task> OnRemoveSignature { get; set; }
     [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
 
-    private Task OnAddSignatureInternal(string id)
+    private Task OnAddSignatureInternal(string id) =>
+        CallHandlerAtIndex(id, i => i + 1, (id, i) => OnAddSignature(i));
+
+    private Task OnMoveUpButtonClickInternal(string id) =>
+        CallHandlerAtIndex(id, i => i - 1, (id, i) => OnMoveSignature(id, i));
+
+    private Task OnMoveDownButtonClickInternal(string id) => 
+        CallHandlerAtIndex(id, i => i + 1, (id, i) => OnMoveSignature(id, i));
+
+    private Task CallHandlerAtIndex(string id, Func<int, int> getIndex, Func<string, int, Task> handler)
     {
-        if (OnAddSignature == null)
-            return Task.CompletedTask;    
-
-        var signatureInfo = Model.Values
-            .Select((v, i) => (v, i))
-            .FirstOrDefault(o => o.v.Identity.ID == id);
-
-        return OnAddSignature?.Invoke(signatureInfo.i + 1);
-    }
-
-    private Task OnMoveUpButtonClickInternal(string id)
-    {
-        if (OnMoveSignature == null)
+        if (handler == null)
             return Task.CompletedTask;
 
-        var signatureInfo = Model.Values
+        var info = Model.Values
             .Select((v, i) => (v, i))
             .FirstOrDefault(o => o.v.Identity.ID == id);
 
-        return OnMoveSignature?.Invoke(id, signatureInfo.i - 1);
+        int index = getIndex(info.i);
+        return handler?.Invoke(id, index);
     }
 
-    private Task OnMoveDownButtonClickInternal(string id)
+    public async Task RefreshView()
     {
-        if (OnMoveSignature == null)
-            return Task.CompletedTask;
+        await RefreshViewModel();
+        await InvokeAsync(StateHasChanged);
+    }
 
-        var signatureInfo = Model.Values
-            .Select((v, i) => (v, i))
-            .FirstOrDefault(o => o.v.Identity.ID == id);
-
-        return OnMoveSignature?.Invoke(id, signatureInfo.i + 1);
+    public Task RefreshViewModel()
+    {
+        return Task.CompletedTask;
     }
 }
