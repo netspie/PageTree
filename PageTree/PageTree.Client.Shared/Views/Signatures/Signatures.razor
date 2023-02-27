@@ -32,7 +32,7 @@
 </div>
 
 @code {
-    [Parameter] public SignatureListVM Model { get; set; }
+    [Parameter] public SignatureListVM Model { get; set; } = new();
 
     [Parameter] public Func<string, int, Task> OnMoveSignature { get; set; }
     [Parameter] public Func<Task> OnAddSignatureOnTop { get; set; }
