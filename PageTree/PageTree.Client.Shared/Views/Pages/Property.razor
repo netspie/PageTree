@@ -8,11 +8,11 @@
 
 <div class="property-container" style=@Style @oncontextmenu="HandleRightClick" @oncontextmenu:preventDefault="true">
     <div class="property">
-        @*<div class="property-highlight"/>*@
-        @*<HoverableMenu Title="S" VM=_menuVM OnClick=OnMenuButtonClick MenuButtonCSS="property-menu-button" />*@
         @if (IsEditMode)
         {
-            <PropertyMenu @ref=_menu />
+            <PropertyMenu @ref=_menu 
+                ID=@Model.ID
+                OnRemove=OnRemove />
         }
         @*<ul class="side-menu">
             <input type="checkbox" class="select-checkbox" />
@@ -21,7 +21,7 @@
         {
             var fontWeight = new CssAttribute((double) artifact.VisualInfo.Font.FontWeight, Unit.None);
 
-            <CText 
+            <CText
                 Text=@artifact.Identity.Name
                 FontSize=@artifact.VisualInfo.Font.FontSize
                 FontWeight=@fontWeight 
@@ -31,9 +31,7 @@
 </div>
 
 @code {
-    [Parameter] public string Text1 { get; set; }
-    [Parameter] public string Text2 { get; set; }
-    [Parameter] public string ID { get; set; }
+    [Parameter] public ViewModel Model { get; set; } = new();
 
     [Parameter] public CssAttribute? Width { get; set; }
     [Parameter] public CssAttribute? MinWidth { get; set; }
@@ -43,9 +41,9 @@
     [Parameter] public CssAttribute? MinHeight { get; set; }
     [Parameter] public CssAttribute? MaxHeight { get; set; }
 
-    [Parameter] public ViewModel Model { get; set; } = new();
-
     [Parameter] public bool IsEditMode { get; set; } = true;
+
+    [Parameter] public Func<string, Task> OnRemove { get; set; }
 
     [Inject] private IJSRuntime _jsRuntime { get; set; }
 
@@ -101,6 +99,7 @@
 
     public class ViewModel
     {
+        public string ID { get; set; }
         public Layout Layout { get; set; }
         public List<ArtifactVM> Artifacts { get; set; } = new();
     }

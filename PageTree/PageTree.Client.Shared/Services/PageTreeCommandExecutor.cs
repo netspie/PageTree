@@ -23,6 +23,7 @@ namespace PageTree.Client.Shared.Services
             // Pages
             AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{parentID}/subpages");
             AddPatch<UpdatePageCommand, UpdatePageApiCommand>("pages/{pageID}");
+            AddDelete<RemovePropertyCommand, RemovePropertyApiCommand>("pages");
 
             // Signatures
             AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("signatures");

@@ -1,5 +1,6 @@
 ﻿using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
+using PageTree.App.Entities.Styles;
 using Practicer.Domain.Pages.Common;
 
 namespace PageTree.Domain
@@ -22,6 +23,17 @@ namespace PageTree.Domain
         public bool Rename(string newName) =>
            EditableItemFunctions.Rename(newName, () => Name = newName);
 
+        public bool RemoveProperty(string id)
+        {
+            if (Links.Any(lID => lID == id))
+                return EditableItemOwnerFunctions.Remove(id, ChildrenIDs, Links);
+
+            if (SubPages.Any(sID => sID == id))
+                return EditableItemOwnerFunctions.Remove(id, ChildrenIDs, SubPages);
+
+            return false;
+        }
+
         public string OwnerID { get; set; } = new("");
         public string ProjectID { get; set; } = new("");
         public string Name { get; set; } = "New Page";
@@ -39,6 +51,11 @@ namespace PageTree.Domain
         /// Part of children ids. Subpage can have only one parent.
         /// </summary>
         public List<string> SubPages { get; private set; } = new();
+
+        /// <summary>
+        /// Part of children ids. Link to another page.
+        /// </summary>
+        public List<string> Links { get; private set; } = new();
 
         /// <summary>
         /// Should be independent of styling? I don't think so... at least partially

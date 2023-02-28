@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Pages.Queries;
 using PageTree.App.Projects.Commands;
-using PageTree.Domain;
 using PageTree.Server.ApiContracts;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
@@ -33,13 +32,9 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> Get([FromRouteAndQuery] GetPageApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetPageQuery, GetPageQueryOut>(query, _mapper);
 
-        [HttpGet]
-        public Task<IActionResult> GetAll([FromQuery] GetPagesApiQuery query) =>
-            _mediator.MapSendAndGetResponse<GetPagesQuery, GetPagesQueryOut>(query, _mapper);
-
-        [HttpDelete, Route_ID, Action_Delete]
-        public Task<IActionResult> Delete([FromQuery] DeletePageApiCommand command) =>
-            _mediator.MapSendAndGetDeleteResponse<CreatePageCommand>(command, _mapper);
+        [HttpDelete, Authorize_Edit]
+        public Task<IActionResult> RemoveProperty([FromRouteAndBody] RemovePropertyApiCommand command) =>
+            _mediator.MapSendAndGetDeleteResponse<RemovePropertyCommand>(command, _mapper);
 
         [HttpPatch, Route("{pageID}"), Authorize_Edit]
         public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>

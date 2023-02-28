@@ -42,6 +42,7 @@
     [Parameter] public Func<TreeLayout.TreeNode, Task> OnPropertyClick { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
+    [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
 
     [Parameter] public bool IsEditMode { get; set; } = true;
 
@@ -100,7 +101,8 @@
         StyleOfRootProperty parentStyle,
         StyleOfChildProperty childStyle,
         Style[] signatureOrPageStyles,
-        bool isEditMode)
+        bool isEditMode,
+        Func<string, Task> onPropertyRemove)
     {
         return GetContent;
         RenderFragment GetContent(TreeLayout.TreeNode node, ref int seq)
@@ -115,6 +117,7 @@
 
                 builder.AddAttribute(seqLocal++, "Model", vmModel);
                 builder.AddAttribute(seqLocal++, "IsEditMode", isEditMode);
+                builder.AddAttribute(seqLocal++, "OnRemove", onPropertyRemove);
             });
         };
     }
@@ -127,6 +130,8 @@
         PropertyType propertyType)
     {
         var vmModel = new Property.ViewModel();
+
+        vmModel.ID = propertyVM.Identity.ID;
 
         bool hasDefinedChildrenArtifacts = childStyle != null && !childStyle.Artifacts.IsNullOrEmpty();
 
@@ -317,13 +322,16 @@
                     Gap = layoutGap
                 },
                 Children = GetTreeNodes(propertyVM.Properties, childStyle, signatureOrPageStyles),
-                GetContent = GetProperty(propertyVM, i, parentStyle, childStyle, signatureOrPageStyles, IsEditMode),
+                GetContent = GetProperty(propertyVM, i, parentStyle, childStyle, signatureOrPageStyles, IsEditMode, OnPropertyRemoveInternal),
                 Data = new StyleData(Model.StylesOfChildren, parentStyle, childStyle)
             });
         });
 
         return list;
     }
+
+    private Task OnPropertyRemoveInternal(string propertyID) =>
+        OnPropertyRemove?.Invoke(Model.Identity.ID, propertyID);
 
     private class StyleData
     {

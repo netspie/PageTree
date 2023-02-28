@@ -10,17 +10,16 @@
 @using PageTree.App.Projects.Commands;
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
-    @*<PageContent Left=@context.Item1 Top=@context.Item2 PageID=@_pageID/>*@
-    @{
-        Console.WriteLine("Page Render");
-    }
+
     <PageTree.Client.Shared.Views.Pages.Page 
         @ref=_view
         Left=@context.Item1 Top=@context.Item2 
         OnPropertyClick=OnPropertyClick 
         Model=_vm
         OnAddSubPageOnTop=OnAddSubPageOnTop
-        OnAddSubPageOnBottom=OnAddSubPageOnBottom />
+        OnAddSubPageOnBottom=OnAddSubPageOnBottom 
+        OnPropertyRemove=OnPropertyRemove />
+
 </BackgroundAndContent>
 
 @code {
@@ -40,9 +39,9 @@
         return base.OnInitializedAsync();
     }
 
-    private void OnLocationChanged(object sender, LocationChangedEventArgs args)
+    private async void OnLocationChanged(object sender, LocationChangedEventArgs args)
     {
-        RefreshView();
+        await RefreshView();
     }
 
     private async Task OnPropertyClick(TreeLayout.TreeNode property)
@@ -60,6 +59,12 @@
     private async Task OnAddSubPageOnBottom()
     {
         await _commands.Execute(new CreateSubPageCommand(PageID, int.MaxValue));
+        await RefreshView();
+    }
+
+    private async Task OnPropertyRemove(string pageID, string propertyID)
+    {
+        await _commands.Execute(new RemovePropertyCommand(PageID, propertyID));
         await RefreshView();
     }
 

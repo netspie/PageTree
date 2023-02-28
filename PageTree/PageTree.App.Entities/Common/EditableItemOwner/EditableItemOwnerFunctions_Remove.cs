@@ -23,6 +23,23 @@ namespace Practicer.Domain.Pages.Common
             return true;
         }
 
+        public static bool Remove(string id, List<string> orderedItemsIDs, List<string> items)
+        {
+            if (string.IsNullOrEmpty(id))
+                return false;
+
+            if (!orderedItemsIDs.Contains(id))
+                return false;
+
+            if (!items.Exists(itemID => itemID == id))
+                return false;
+
+            items.RemoveAll(itemID => itemID == id);
+            orderedItemsIDs.RemoveAll(orderedItemID => orderedItemID == id);
+
+            return true;
+        }
+
         public static bool Remove<TItem, TAdditionalItem>(string id, List<string> orderedItemsIDs, List<TAdditionalItem> otherItems, List<TItem> items)
             where TItem : Entity
         {
