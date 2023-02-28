@@ -15,6 +15,7 @@
                 OnRemove=OnRemove
                 OnMoveDownButtonClick=OnMoveDownInternal
                 OnMoveUpButtonClick=OnMoveUpInternal 
+                OnRename=OnRenameButtonClick
                 Index=Index
                 IsLast=IsLast />
         }
@@ -25,11 +26,15 @@
         {
             var fontWeight = new CssAttribute((double) artifact.VisualInfo.Font.FontWeight, Unit.None);
 
+            <EditableText Text=@artifact.Identity.Name OnSubmit=OnNameChangedInternal class="no-select" @ref=_nameRef
+                FontWeight=@fontWeight 
+                FontSize=@artifact.VisualInfo.Font.FontSize />
+@*
             <CText
                 Text=@artifact.Identity.Name
                 FontSize=@artifact.VisualInfo.Font.FontSize
                 FontWeight=@fontWeight 
-                class="no-select" />
+                class="no-select" />*@
         }
     </div>
 </div>
@@ -52,20 +57,20 @@
     [Parameter] public Func<string, Task> OnRemove { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveUp { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveDown { get; set; }
+    [Parameter] public Func<string, string, Task<bool>> OnRename { get; set; }
 
     [Inject] private IJSRuntime _jsRuntime { get; set; }
 
     private PropertyMenu? _menu;
+    private EditableText _nameRef;
 
-    private Task<bool> OnMenuButtonClick(HoverableMenu.ButtonVM vm)
+    private Task OnRenameButtonClick()
     {
-        return Task.FromResult(true);
+        _menu.OuterClick.Enabled = false;
+        return _nameRef.SetIsEdit(true);
     }
 
-    void HandleClick(MouseEventArgs args)
-    {
-        Console.WriteLine("This is a left click");
-    }
+    private Task<bool> OnNameChangedInternal(string name) => OnRename?.Invoke(Model.ID, name);
 
     private async Task HandleRightClick(MouseEventArgs args)
     {

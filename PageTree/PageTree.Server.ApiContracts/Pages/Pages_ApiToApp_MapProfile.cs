@@ -8,9 +8,9 @@ namespace PageTree.Server.ApiContracts
         public Pages_ApiToApp_MapProfile()
         {
             CreateMapCirc<GetPageApiQuery, GetPageQuery>();
-            CreateMapCirc<UpdatePageApiCommand, UpdatePageCommand>();
             CreateMapCirc<RemovePropertyApiCommand, RemovePropertyCommand>();
             CreateMapCirc<ChangeIndexOfPageApiCommand, ChangeIndexOfPageCommand>();
+            CreateMapCirc<ChangeNameOfPageApiCommand, ChangeNameOfPageCommand>();
         }
     }
 }

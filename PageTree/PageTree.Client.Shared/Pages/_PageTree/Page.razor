@@ -20,7 +20,8 @@
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom 
         OnPropertyRemove=OnPropertyRemove 
-        OnPropertyMove=OnPropertyReorder />
+        OnPropertyMove=OnPropertyReorder
+        OnPropertyRename=OnPropertyRename />
 
 </BackgroundAndContent>
 
@@ -74,6 +75,14 @@
     {
         await _commands.Execute(new ChangeIndexOfPageCommand(pageID, propertyID, index));
         await RefreshView();
+    }
+
+    private async Task<bool> OnPropertyRename(string propertyID, string name)
+    {
+        await _commands.Execute(new ChangeNameOfPageCommand(propertyID, name));
+        await RefreshView();
+        
+        return true;
     }
 
     protected override string QueryParameter => PageID;

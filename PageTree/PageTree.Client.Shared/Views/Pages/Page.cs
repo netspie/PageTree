@@ -26,12 +26,13 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
         [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
         [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
+        [Parameter] public Func<string, string, Task<bool>> OnPropertyRename { get; set; }
 
         [Parameter] public bool IsEditMode { get; set; } = true;
 
         private string _mainStyle => $"width: calc(100% - {Left}px); ";
 
-        private PageTree.App.Entities.Styles.Style _style => Model.StyleOfPage!;
+        private Style _style => Model.StyleOfPage!;
 
         private Arrangements? _arrangements;
         private Arrangements_AddNew? _arrangements_AddNew;
@@ -89,7 +90,8 @@ namespace PageTree.Client.Shared.Views.Pages
             bool isEditMode,
             Func<string, Task> onPropertyRemove,
             Func<string, string, int, Task> onPropertyMoveUp,
-            Func<string, string, int, Task> onPropertyMoveDown)
+            Func<string, string, int, Task> onPropertyMoveDown,
+            Func<string, string, Task<bool>> onPropertyRename)
         {
             return GetContent;
             RenderFragment GetContent(TreeLayout.TreeNode node, ref int seq)
@@ -107,6 +109,7 @@ namespace PageTree.Client.Shared.Views.Pages
                     builder.AddAttribute(seqLocal++, "OnRemove", onPropertyRemove);
                     builder.AddAttribute(seqLocal++, "OnMoveUp", onPropertyMoveUp);
                     builder.AddAttribute(seqLocal++, "OnMoveDown", onPropertyMoveDown);
+                    builder.AddAttribute(seqLocal++, "OnRename", onPropertyRename);
                     builder.AddAttribute(seqLocal++, "Index", propertyIndex);
                     builder.AddAttribute(seqLocal++, "IsLast", isLast);
                 });
@@ -325,7 +328,8 @@ namespace PageTree.Client.Shared.Views.Pages
                         parentStyle, childStyle, signatureOrPageStyles, IsEditMode,
                         OnPropertyRemoveInternal,
                         OnPropertyMoveUpInternal,
-                        OnPropertyMoveDownInternal),
+                        OnPropertyMoveDownInternal,
+                        OnPropertyRename),
 
                     Data = new StyleData(Model.StylesOfChildren, parentStyle, childStyle)
                 });
@@ -359,7 +363,6 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private Task OnPropertyMoveDownInternal(string parentPropertyOrPageID, string propertyID, int currentIndex) =>
             OnPropertyMove(parentPropertyOrPageID, propertyID, currentIndex + 1);
-
 
         private readonly static Color BackgroundColor = Color.FromArgb(255, 225, 228, 228);
     }

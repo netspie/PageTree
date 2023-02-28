@@ -6,22 +6,22 @@ using PageTree.Domain;
 
 namespace PageTree.App.Pages.Commands;
 
-public class ChangePageNameCommandHandler : BaseCommandHandler, ICommandHandler<ChangePageNameCommand, Result>
+public class ChangeNameOfPageCommandHandler : BaseCommandHandler, ICommandHandler<ChangeNameOfPageCommand, Result>
 {
     private readonly IRepository<Page> _pageRepository;
 
-    public ChangePageNameCommandHandler(
+    public ChangeNameOfPageCommandHandler(
          IRepository<Page> pageRepository)
     {
         _pageRepository = pageRepository;
     }
 
-    public async ValueTask<Result> Handle(ChangePageNameCommand command, CancellationToken ct)
+    public async ValueTask<Result> Handle(ChangeNameOfPageCommand command, CancellationToken ct)
     {
         var result = Result.Success();
 
         var page = await _pageRepository.Get(command.PageID, result);
-        if (!result.IsSuccess || page == null)
+        if (!result.ValidateSuccessAndValues() || page == null)
             return result.Fail();
         
         if (!page.Rename(command.Name))
@@ -33,4 +33,4 @@ public class ChangePageNameCommandHandler : BaseCommandHandler, ICommandHandler<
     }
 }
 
-public sealed record ChangePageNameCommand(string PageID, string Name) : ICommand<Result>;
+public sealed record ChangeNameOfPageCommand(string PageID, string Name) : ICommand<Result>;

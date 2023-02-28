@@ -36,9 +36,9 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> RemoveProperty([FromRouteAndBody] RemovePropertyApiCommand command) =>
             _mediator.MapSendAndGetDeleteResponse<RemovePropertyCommand>(command, _mapper);
 
-        [HttpPatch, Route("{pageID}"), Authorize_Edit]
-        public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>
-            _mediator.MapSendAndGetPatchResponse<UpdatePageCommand>(command, _mapper);
+        [HttpPatch, Route("{pageID}/changeName"), Authorize_Edit]
+        public Task<IActionResult> ChangeName([FromRouteAndBody] ChangeNameOfPageApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageCommand>(command, _mapper);
 
         [HttpPatch, Route("changeIndex"), Authorize_Edit]
         public Task<IActionResult> ChangeIndex([FromRouteAndBody] ChangeIndexOfPageApiCommand command) =>
