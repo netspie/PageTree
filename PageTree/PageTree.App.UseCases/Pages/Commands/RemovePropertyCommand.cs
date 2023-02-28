@@ -41,7 +41,7 @@ public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<
 
         var subPages = propertyPage.SubPages.ToArray();
         foreach (var propertyPageSubPageID in subPages)
-            await DeleteSubPage(repository, propertyPage, propertyPageSubPageID);
+            await DeleteThisAndNestedSubPages(repository, propertyPage, propertyPageSubPageID);
 
         if (parentPage.IsSubPage(propertyID))
         {
