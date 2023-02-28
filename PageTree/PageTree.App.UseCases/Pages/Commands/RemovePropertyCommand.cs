@@ -3,9 +3,8 @@ using Common.Basic.Repository;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace PageTree.App.Projects.Commands;
+namespace PageTree.App.Pages.Commands;
 
 public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<RemovePropertyCommand, Result>
 {

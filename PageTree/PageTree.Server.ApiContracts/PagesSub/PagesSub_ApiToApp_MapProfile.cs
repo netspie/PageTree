@@ -1,4 +1,4 @@
-﻿using PageTree.App.Projects.Commands;
+﻿using PageTree.App.Pages.Commands;
 
 namespace PageTree.Server.ApiContracts
 {

@@ -4,7 +4,7 @@ using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
 
-namespace PageTree.App.Projects.Commands;
+namespace PageTree.App.Pages.Commands;
 
 public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<CreateSubPageCommand, Result>
 {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Corelibs.BlazorShared;
+using PageTree.App.Pages.Commands;
 using PageTree.App.Projects.Commands;
 using PageTree.App.UseCases.Signatures.Commands;
 using PageTree.App.UseCases.Users.Commands;
@@ -17,13 +18,14 @@ namespace PageTree.Client.Shared.Services
 
             // Projects
             AddPost<CreateProjectCommand, CreateProjectApiCommand>("projects");
-            AddPut<EditProjectCommand, EditProjectApiCommand>("projects");
             AddDelete<ArchiveProjectCommand, ArchiveProjectApiCommand>("projects/{id}");
+            AddPut<EditProjectCommand, EditProjectApiCommand>("projects");
 
             // Pages
             AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{parentID}/subpages");
-            AddPatch<UpdatePageCommand, UpdatePageApiCommand>("pages/{pageID}");
             AddDelete<RemovePropertyCommand, RemovePropertyApiCommand>("pages");
+            AddPatch<UpdatePageCommand, UpdatePageApiCommand>("pages/{pageID}");
+            AddPatch<ChangeIndexOfPageCommand, ChangeIndexOfPageApiCommand>("pages/changeIndex");
 
             // Signatures
             AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("signatures");

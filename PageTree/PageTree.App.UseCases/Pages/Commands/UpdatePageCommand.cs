@@ -1,12 +1,11 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Functional;
 using Common.Basic.Repository;
-using Corelibs.Basic.Collections;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
 
-namespace PageTree.App.Projects.Commands;
+namespace PageTree.App.Pages.Commands;
 
 public class UpdatePageCommandHandler : BaseCommandHandler, ICommandHandler<UpdatePageCommand, Result>
 {

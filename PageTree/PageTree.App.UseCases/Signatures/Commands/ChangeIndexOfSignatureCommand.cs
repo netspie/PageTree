@@ -21,7 +21,7 @@ public class ChangeIndexOfSignatureCommandHandler : BaseCommandHandler, ICommand
         var result = Result.Success();
 
         var signature = await _signatureRepository.Get(command.SignatureID, result);
-        if (!result.IsSuccess || signature == null)
+        if (!result.ValidateSuccessAndValues() || signature == null)
             return result.Fail();
 
         var parentSignature = await _signatureRepository.Get(signature.ParentID, result);

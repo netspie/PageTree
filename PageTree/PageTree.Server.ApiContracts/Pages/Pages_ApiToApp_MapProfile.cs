@@ -1,5 +1,5 @@
-﻿using PageTree.App.Pages.Queries;
-using PageTree.App.Projects.Commands;
+﻿using PageTree.App.Pages.Commands;
+using PageTree.App.Pages.Queries;
 
 namespace PageTree.Server.ApiContracts
 {
@@ -10,6 +10,7 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<GetPageApiQuery, GetPageQuery>();
             CreateMapCirc<UpdatePageApiCommand, UpdatePageCommand>();
             CreateMapCirc<RemovePropertyApiCommand, RemovePropertyCommand>();
+            CreateMapCirc<ChangeIndexOfPageApiCommand, ChangeIndexOfPageCommand>();
         }
     }
 }

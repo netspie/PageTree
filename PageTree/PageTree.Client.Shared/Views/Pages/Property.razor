@@ -12,7 +12,11 @@
         {
             <PropertyMenu @ref=_menu 
                 ID=@Model.ID
-                OnRemove=OnRemove />
+                OnRemove=OnRemove
+                OnMoveDownButtonClick=OnMoveDownInternal
+                OnMoveUpButtonClick=OnMoveUpInternal 
+                Index=Index
+                IsLast=IsLast />
         }
         @*<ul class="side-menu">
             <input type="checkbox" class="select-checkbox" />
@@ -42,8 +46,12 @@
     [Parameter] public CssAttribute? MaxHeight { get; set; }
 
     [Parameter] public bool IsEditMode { get; set; } = true;
+    [Parameter] public int Index { get; set; }
+    [Parameter] public bool IsLast { get; set; }
 
     [Parameter] public Func<string, Task> OnRemove { get; set; }
+    [Parameter] public Func<string, string, int, Task> OnMoveUp { get; set; }
+    [Parameter] public Func<string, string, int, Task> OnMoveDown { get; set; }
 
     [Inject] private IJSRuntime _jsRuntime { get; set; }
 
@@ -85,6 +93,18 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    private Task OnMoveDownInternal(string propertyID, int index)
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnMoveDown?.Invoke(Model.ParentID, propertyID, index);
+    }
+
+    private Task OnMoveUpInternal(string propertyID, int index)
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnMoveUp?.Invoke(Model.ParentID, propertyID, index);
+    }
+
     private HoverableMenu.MenuVM _menuVM = new()
     {
         Buttons = new()
@@ -100,6 +120,8 @@
     public class ViewModel
     {
         public string ID { get; set; }
+        public string ParentID { get; set; }
+
         public Layout Layout { get; set; }
         public List<ArtifactVM> Artifacts { get; set; } = new();
     }

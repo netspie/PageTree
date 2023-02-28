@@ -6,8 +6,8 @@ using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PageTree.App.Pages.Commands;
 using PageTree.App.Pages.Queries;
-using PageTree.App.Projects.Commands;
 using PageTree.Server.ApiContracts;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
@@ -39,5 +39,9 @@ namespace PageTree.Server.Api.Controllers
         [HttpPatch, Route("{pageID}"), Authorize_Edit]
         public Task<IActionResult> ChangeName([FromRouteAndBody] UpdatePageApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<UpdatePageCommand>(command, _mapper);
+
+        [HttpPatch, Route("changeIndex"), Authorize_Edit]
+        public Task<IActionResult> ChangeIndex([FromRouteAndBody] ChangeIndexOfPageApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeIndexOfPageCommand>(command, _mapper);
     }
 }

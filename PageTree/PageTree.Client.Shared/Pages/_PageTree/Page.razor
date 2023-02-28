@@ -6,6 +6,7 @@
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.EntityFrameworkCore.Metadata.Internal;
 @using Microsoft.JSInterop;
+@using PageTree.App.Pages.Commands;
 @using PageTree.App.Pages.Queries;
 @using PageTree.App.Projects.Commands;
 
@@ -18,7 +19,8 @@
         Model=_vm
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom 
-        OnPropertyRemove=OnPropertyRemove />
+        OnPropertyRemove=OnPropertyRemove 
+        OnPropertyMove=OnPropertyReorder />
 
 </BackgroundAndContent>
 
@@ -65,6 +67,12 @@
     private async Task OnPropertyRemove(string pageID, string propertyID)
     {
         await _commands.Execute(new RemovePropertyCommand(PageID, propertyID));
+        await RefreshView();
+    }
+
+    private async Task OnPropertyReorder(string pageID, string propertyID, int index)
+    {
+        await _commands.Execute(new ChangeIndexOfPageCommand(pageID, propertyID, index));
         await RefreshView();
     }
 

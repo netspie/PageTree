@@ -5,18 +5,31 @@
     <ContextMenu @ref=ContextMenu class="property-context-menu">
         <VerticalLayout>
             <button class="button">Create</button>
-            <button class="button">Move Up</button>
-            <button class="button">Move Down</button>
+            @if (Index != 0)
+            {
+                <button class="button" @onclick=@(() => OnMoveUpButtonClick?.Invoke(ID, Index))>Move Up</button>
+            }
+            @if (!IsLast)
+            {
+                <button class="button" @onclick=@(() => OnMoveDownButtonClick?.Invoke(ID, Index))>Move Down</button>
+            }
             <button class="button" @onclick=@(() => OnRemove?.Invoke(ID))>Remove</button>
         </VerticalLayout>
     </ContextMenu>
 </OuterClickComponent>
 
 @code {
-    [Parameter] public string ID { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    public OuterClickComponent? OuterClick { get; set; }
-    public ContextMenu? ContextMenu { get; set; }
+
+    [Parameter] public string ID { get; set; }
+
+    [Parameter] public int Index { get; set; }
+    [Parameter] public bool IsLast { get; set; }
 
     [Parameter] public Func<string, Task> OnRemove { get; set; }
+    [Parameter] public Func<string, int, Task> OnMoveUpButtonClick { get; set; }
+    [Parameter] public Func<string, int, Task> OnMoveDownButtonClick { get; set; }
+
+    public OuterClickComponent? OuterClick { get; set; }
+    public ContextMenu? ContextMenu { get; set; }
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PageTree.App.UseCases.Pages.Command
+﻿namespace PageTree.App.Pages.Commands;
+internal class ExpandPropertyCommand
 {
-    internal class ExpandPropertyCommand
-    {
-    }
 }

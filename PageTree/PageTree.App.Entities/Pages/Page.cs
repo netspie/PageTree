@@ -1,6 +1,5 @@
 ﻿using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
-using PageTree.App.Entities.Styles;
 using Practicer.Domain.Pages.Common;
 
 namespace PageTree.Domain
@@ -22,6 +21,9 @@ namespace PageTree.Domain
 
         public bool Rename(string newName) =>
            EditableItemFunctions.Rename(newName, () => Name = newName);
+
+        public bool ReorderProperty(string id, int index) =>
+            EditableItemOwnerFunctions.Reorder(id, index, ChildrenIDs);
 
         public bool RemoveProperty(string id)
         {
