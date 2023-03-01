@@ -43,5 +43,9 @@ namespace PageTree.Server.Api.Controllers
         [HttpPatch, Route("changeIndex"), Authorize_Edit]
         public Task<IActionResult> ChangeIndex([FromRouteAndBody] ChangeIndexOfPageApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeIndexOfPageCommand>(command, _mapper);
+
+        [HttpPatch, Route("{pageID}/changeSignature"), Authorize_Edit]
+        public Task<IActionResult> ChangeSignature([FromRouteAndBody] ChangeSignatureOfPageApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeSignatureOfPageCommand>(command, _mapper);
     }
 }

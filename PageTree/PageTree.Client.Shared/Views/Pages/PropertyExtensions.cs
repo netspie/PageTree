@@ -6,7 +6,7 @@ namespace PageTree.Client.Shared.Views.Pages
 {
     public static class PropertyExtensions
     {
-        public static Property.IdentityVM ToPropertyIdentityVM(this PageTree.App.Pages.Queries.IdentityVM vm) =>
+        public static Property.IdentityVM ToPropertyIdentityVM(this IdentityVM vm) =>
             new() { ID = vm.ID, Name = vm.Name };
 
         public static Property.ArtifactVM ToNameArtifactVM(this PropertyVM vm, Property.VisualInfoVM visualInfoVM = null) =>

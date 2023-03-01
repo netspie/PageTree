@@ -1,5 +1,7 @@
-﻿using Common.Basic.DDD;
+﻿using Common.Basic.Collections;
+using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
+using Corelibs.Basic.Collections;
 using Practicer.Domain.Pages.Common;
 
 namespace PageTree.Domain
@@ -21,6 +23,16 @@ namespace PageTree.Domain
 
         public bool Rename(string newName) =>
            EditableItemFunctions.Rename(newName, () => Name = newName);
+
+        public bool Resignature(string signatureID)
+        {
+            if (!signatureID.IsID())
+                return false;
+
+            SignatureID = signatureID;
+
+            return true;
+        }
 
         public bool ReorderProperty(string id, int index) =>
             EditableItemOwnerFunctions.Reorder(id, index, ChildrenIDs);

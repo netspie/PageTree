@@ -11,6 +11,7 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<RemovePropertyApiCommand, RemovePropertyCommand>();
             CreateMapCirc<ChangeIndexOfPageApiCommand, ChangeIndexOfPageCommand>();
             CreateMapCirc<ChangeNameOfPageApiCommand, ChangeNameOfPageCommand>();
+            CreateMapCirc<ChangeSignatureOfPageApiCommand, ChangeSignatureOfPageCommand>();
         }
     }
 }

@@ -46,6 +46,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var signature = await _signatureRepository.Get(page.SignatureID, res);
 
         var project = await _projectRepository.Get(page.ProjectID, res);
+        var signaturesRoot = await _signatureRepository.Get(project.SignatureRootID, res);
         var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, res);
         var practiceTacticRoot = await _practiceTacticRepository.Get(project.PracticeTacticRootID, res);
 
@@ -76,6 +77,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         parentPages.Reverse();
 
         var properties = await GetProperties(page, mainStyle?.TreeExpandInfo);
+        var signatures = await _signatureRepository.Get(signaturesRoot.ChildrenIDs, res);
+
         return res.With(new GetPageQueryOut(
             new PageVM()
             {
@@ -86,11 +89,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                         Name = p.Name
                     }).ToArray(),
 
-                Identity = new IdentityVM()
-                {
-                    ID = page.ID,
-                    Name = page.Name,
-                },
+                Identity = (page.ID, page.Name),
 
                 SignatureIdentity = new IdentityVM()
                 {
@@ -100,11 +99,9 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
 
                 Properties = properties,
 
-                PracticeTactics = practiceTactics.Select(p => new IdentityVM()
-                {
-                    ID = p.ID,
-                    Name = p.Name
-                }).ToArray(),
+                Signatures = signatures.Select(s => new IdentityVM(s.ID, s.Name)).ToArray(),
+
+                PracticeTactics = practiceTactics.Select(p => new IdentityVM(p.ID, p.Name)).ToArray(),
 
                 StyleOfPage = mainStyle
             }
@@ -137,18 +134,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
 
             result.Add(new PropertyVM()
             {
-                Identity = new IdentityVM()
-                {
-                    ID = childPage.ID,
-                    Name = childPage.Name
-                },
-
-                SignatureIdentity = new IdentityVM()
-                {
-                    ID = childSignature.ID,
-                    Name = childSignature.Name
-                },
-
+                Identity = (childPage.ID, childPage.Name),
+                SignatureIdentity = (childSignature.ID, childSignature.Name),
                 Properties = properties
             });
         }
@@ -157,12 +144,6 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
     }
 }
 
-public sealed record CreatePageCommand() : ICommand<Result>;
-public sealed record ReplacePageCommand(string PageID) : ICommand<Result>;
-public sealed record DeletePageCommand(string PageID) : ICommand<Result>;
-public sealed record ChangeSignatureOfPageCommand(string PageID, string NewSignatureName) : ICommand<Result>;
-
-public sealed record GetPagesQuery() : IQuery<Result<GetPagesQueryOut>>;
 public sealed record GetPagesQueryOut();
 
 public sealed record GetPageQuery(string ID) : IQuery<Result<GetPageQueryOut>>, IGetQuery;
@@ -174,9 +155,11 @@ public class PageVM
     public IdentityVM Identity { get; init; } = new IdentityVM();
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
     public PropertyVM[] Properties { get; init; } = Array.Empty<PropertyVM>();
+    public IdentityVM[] Signatures { get; init; } = Array.Empty<IdentityVM>();
     public IdentityVM[] PracticeTactics { get; init; } = Array.Empty<IdentityVM>();
     public Style StyleOfPage { get; init; } = new();
     public Style[] StylesOfChildren { get; init; } = Array.Empty<Style>();
+
 }
 
 public class PropertyVM
@@ -196,4 +179,13 @@ public class IdentityVM
 {
     public string ID { get; init; } = string.Empty;
     public string Name { get; set; } = string.Empty;
+
+    public IdentityVM() {}
+    public IdentityVM(string id, string name)
+    {
+        ID = id;
+        Name = name;
+    }
+
+    public static implicit operator IdentityVM((string id, string name) args) => new IdentityVM(args.id, args.name);
 }

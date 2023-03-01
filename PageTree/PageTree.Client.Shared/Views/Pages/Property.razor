@@ -1,4 +1,5 @@
-﻿@using Corelibs.BlazorViews.Components
+﻿@using Common.Basic.Collections;
+@using Corelibs.BlazorViews.Components
 @using Corelibs.BlazorViews.Layouts
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorShared.UI.Css;
@@ -16,6 +17,7 @@
                 OnMoveDownButtonClick=OnMoveDownInternal
                 OnMoveUpButtonClick=OnMoveUpInternal 
                 OnRename=OnRenameButtonClick
+                OnResignature=OnResignatureInternal
                 Index=Index
                 IsLast=IsLast />
         }
@@ -29,12 +31,18 @@
             <EditableText Text=@artifact.Identity.Name OnSubmit=OnNameChangedInternal class="no-select" @ref=_nameRef
                 FontWeight=@fontWeight 
                 FontSize=@artifact.VisualInfo.Font.FontSize />
-@*
-            <CText
-                Text=@artifact.Identity.Name
-                FontSize=@artifact.VisualInfo.Font.FontSize
-                FontWeight=@fontWeight 
-                class="no-select" />*@
+        }
+
+        @if (IsEditMode)
+        {
+            @if (!Model.Signature.Name.IsNullOrEmpty())
+            {
+                <span class="signature">@Model.Signature.Name</span>
+            }
+            else
+            {
+                <p class="signature">---</p>
+            }
         }
     </div>
 </div>
@@ -58,6 +66,7 @@
     [Parameter] public Func<string, string, int, Task> OnMoveUp { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveDown { get; set; }
     [Parameter] public Func<string, string, Task<bool>> OnRename { get; set; }
+    [Parameter] public Func<string, Task> OnResignature { get; set; }
 
     [Inject] private IJSRuntime _jsRuntime { get; set; }
 
@@ -110,6 +119,12 @@
         return OnMoveUp?.Invoke(Model.ParentID, propertyID, index);
     }
 
+    private Task OnResignatureInternal() 
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnResignature?.Invoke(Model.ID);
+    }
+
     private HoverableMenu.MenuVM _menuVM = new()
     {
         Buttons = new()
@@ -126,6 +141,7 @@
     {
         public string ID { get; set; }
         public string ParentID { get; set; }
+        public IdentityVM Signature { get; set; }
 
         public Layout Layout { get; set; }
         public List<ArtifactVM> Artifacts { get; set; } = new();

@@ -1,16 +1,6 @@
-﻿@using System.Net.NetworkInformation;
-@using Corelibs.BlazorViews.ViewModels;
-@using System.Drawing;
-@using Common.Basic.Collections;
-@using Common.Basic.Functional;
-@using Corelibs.Basic.Colors;
-@using Microsoft.AspNetCore.Components.Rendering;
-@using Corelibs.BlazorShared.UI;
-@using Corelibs.BlazorShared.UI.Css;
+﻿@using Corelibs.BlazorViews.Components
 @using Corelibs.BlazorViews.Layouts;
-@using PageTree.App.Entities.Styles;
-@using PageTree.App.Pages.Queries;
-@using Microsoft.AspNetCore.Components;
+@using PageTree.Client.Shared.Extensions;
 
 <div class="page" style=@_mainStyle>
     <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
@@ -19,6 +9,9 @@
         <PageEditMenu 
             OnAddSubPageOnTop=OnAddSubPageOnTop 
             OnAddSubPageOnBottom=OnAddSubPageOnBottom />
+
+        var signaturesOptions = Model.Signatures.ToUIIdentityVM();
+        <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureInternal />
     }
     <PageHeader Model=@GetPageHeader() />
     <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />

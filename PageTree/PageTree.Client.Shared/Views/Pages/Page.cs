@@ -1,16 +1,14 @@
-﻿using System.Net.NetworkInformation;
-using Corelibs.BlazorViews.ViewModels;
-using System.Drawing;
-using Common.Basic.Collections;
+﻿using Common.Basic.Collections;
 using Common.Basic.Functional;
 using Corelibs.Basic.Colors;
-using Microsoft.AspNetCore.Components.Rendering;
 using Corelibs.BlazorShared.UI;
-using Corelibs.BlazorShared.UI.Css;
+using Corelibs.BlazorViews.Components;
 using Corelibs.BlazorViews.Layouts;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using PageTree.App.Entities.Styles;
 using PageTree.App.Pages.Queries;
-using Microsoft.AspNetCore.Components;
+using System.Drawing;
 
 namespace PageTree.Client.Shared.Views.Pages
 {
@@ -27,6 +25,7 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
         [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
         [Parameter] public Func<string, string, Task<bool>> OnPropertyRename { get; set; }
+        [Parameter] public Func<string, string, Task> OnPropertyResignature { get; set; }
 
         [Parameter] public bool IsEditMode { get; set; } = true;
 
@@ -37,6 +36,7 @@ namespace PageTree.Client.Shared.Views.Pages
         private Arrangements? _arrangements;
         private Arrangements_AddNew? _arrangements_AddNew;
         private TreeLayout? _treeLayout;
+        private ChooseFromListWindow _signatureChangeWindow;
 
         private List<Corelibs.BlazorViews.ViewModels.IdentityVM> _properties = new();
 
@@ -79,19 +79,14 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private Task AfterExpand(string id) => InvokeAsync(StateHasChanged);
 
-        private static TreeLayout.TreeNode.GetContentDelegate GetProperty(
+        private TreeLayout.TreeNode.GetContentDelegate GetProperty(
             PropertyVM propertyVM,
             string parentID,
             int propertyIndex,
             bool isLast,
             StyleOfRootProperty parentStyle,
             StyleOfChildProperty childStyle,
-            Style[] signatureOrPageStyles,
-            bool isEditMode,
-            Func<string, Task> onPropertyRemove,
-            Func<string, string, int, Task> onPropertyMoveUp,
-            Func<string, string, int, Task> onPropertyMoveDown,
-            Func<string, string, Task<bool>> onPropertyRename)
+            Style[] signatureOrPageStyles)
         {
             return GetContent;
             RenderFragment GetContent(TreeLayout.TreeNode node, ref int seq)
@@ -105,11 +100,13 @@ namespace PageTree.Client.Shared.Views.Pages
                     // override main by signature or page style
 
                     builder.AddAttribute(seqLocal++, "Model", vmModel);
-                    builder.AddAttribute(seqLocal++, "IsEditMode", isEditMode);
-                    builder.AddAttribute(seqLocal++, "OnRemove", onPropertyRemove);
-                    builder.AddAttribute(seqLocal++, "OnMoveUp", onPropertyMoveUp);
-                    builder.AddAttribute(seqLocal++, "OnMoveDown", onPropertyMoveDown);
-                    builder.AddAttribute(seqLocal++, "OnRename", onPropertyRename);
+                    builder.AddAttribute(seqLocal++, "IsEditMode", IsEditMode);
+                    builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemoveInternal);
+                    builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
+                    builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
+                    builder.AddAttribute(seqLocal++, "OnRename", OnPropertyRename);
+                    builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
+
                     builder.AddAttribute(seqLocal++, "Index", propertyIndex);
                     builder.AddAttribute(seqLocal++, "IsLast", isLast);
                 });
@@ -128,6 +125,11 @@ namespace PageTree.Client.Shared.Views.Pages
 
             vmModel.ID = propertyVM.Identity.ID;
             vmModel.ParentID = parentID;
+            vmModel.Signature = new()
+            {
+                ID = propertyVM?.SignatureIdentity?.ID,
+                Name = propertyVM?.SignatureIdentity?.Name,
+            };
 
             bool hasDefinedChildrenArtifacts = childStyle != null && !childStyle.Artifacts.IsNullOrEmpty();
 
@@ -325,11 +327,7 @@ namespace PageTree.Client.Shared.Views.Pages
                         parentID, 
                         propertyIndex: i, 
                         isLast: i == propertyVMs.Length - 1,
-                        parentStyle, childStyle, signatureOrPageStyles, IsEditMode,
-                        OnPropertyRemoveInternal,
-                        OnPropertyMoveUpInternal,
-                        OnPropertyMoveDownInternal,
-                        OnPropertyRename),
+                        parentStyle, childStyle, signatureOrPageStyles),
 
                     Data = new StyleData(Model.StylesOfChildren, parentStyle, childStyle)
                 });
@@ -363,6 +361,20 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private Task OnPropertyMoveDownInternal(string parentPropertyOrPageID, string propertyID, int currentIndex) =>
             OnPropertyMove(parentPropertyOrPageID, propertyID, currentIndex + 1);
+
+        private Task OnResignatureMenuButtonInternal(string propertyID)
+        {
+            _signatureChangeWindow.ID = propertyID;
+            _signatureChangeWindow.OuterClick.Enabled = true;
+            return Task.CompletedTask;
+        }
+
+        private Task OnResignatureInternal(string propertyID, string signatureID)
+        {
+            _signatureChangeWindow.OuterClick.Enabled = false;
+            OnPropertyResignature?.Invoke(propertyID, signatureID);
+            return Task.CompletedTask;
+        }
 
         private readonly static Color BackgroundColor = Color.FromArgb(255, 225, 228, 228);
     }
