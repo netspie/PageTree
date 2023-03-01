@@ -1,6 +1,6 @@
 # PageTree
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scrupulously organized knowledge base in tree-like fashion with highly interconnected and internavigatable data/pages for automatic, manually configured or based on spaced-repetition algorithm flashcards generation.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for knowledge organization as a form of pages structured in tree-like method with highly interconnected and internavigatable elements for automatic, manually configured or based on spaced-repetition algorithm flashcards generation.
 
 In the future could also contain features like paths, courses, lessons (a'ka Pluralsight), but of course with the previously mentioned tooling for material rehearsal it would make a great combo.
 
