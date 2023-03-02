@@ -1,5 +1,6 @@
 ﻿using PageTree.App.Entities.Styles;
 using PageTree.App.Pages.Queries;
+using PageTree.App.UseCases.Common;
 using System.Drawing;
 
 namespace PageTree.Client.Shared.Views.Pages

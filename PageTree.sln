@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.MongoDB", "..\Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corelibs.BlazorViews", "..\Corelibs.BlazorComponents\Corelibs.BlazorComponents\Corelibs.BlazorViews\Corelibs.BlazorViews.csproj", "{E1D514B8-0EC4-4A8D-9E54-B23812D934A6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.App.UseCases.Tests", "PageTree\PageTree.App.UseCases.Tests\PageTree.App.UseCases.Tests.csproj", "{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3303C09A-07B6-4599-B00B-BDBE1B339FA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,9 +159,20 @@ Global
 		{E1D514B8-0EC4-4A8D-9E54-B23812D934A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E1D514B8-0EC4-4A8D-9E54-B23812D934A6}.Release|x64.ActiveCfg = Release|Any CPU
 		{E1D514B8-0EC4-4A8D-9E54-B23812D934A6}.Release|x64.Build.0 = Release|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Debug|x64.Build.0 = Debug|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Release|x64.ActiveCfg = Release|Any CPU
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970} = {3303C09A-07B6-4599-B00B-BDBE1B339FA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F8E144BC-2BAA-4E11-BB4A-5E339A9A794D}

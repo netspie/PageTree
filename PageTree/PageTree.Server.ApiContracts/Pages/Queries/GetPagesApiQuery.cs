@@ -1,10 +1,7 @@
-﻿using Corelibs.Basic.Net;
-
-namespace PageTree.Server.ApiContracts
+﻿namespace PageTree.Server.ApiContracts
 {
-    public class GetPagesApiQuery
+    public class GetPagesSearchResultsApiQuery
     {
-        [FromRoute]
         public string Name { get; set; }
     }
 }

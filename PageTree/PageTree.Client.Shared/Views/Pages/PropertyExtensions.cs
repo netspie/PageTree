@@ -1,6 +1,7 @@
 ﻿using Common.Basic.Collections;
 using Common.Basic.Functional;
 using PageTree.App.Pages.Queries;
+using PageTree.App.UseCases.Common;
 
 namespace PageTree.Client.Shared.Views.Pages
 {

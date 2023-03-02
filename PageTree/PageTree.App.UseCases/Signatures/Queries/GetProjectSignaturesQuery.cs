@@ -4,6 +4,7 @@ using Mediator;
 using PageTree.App.Entities.Signatures;
 using PageTree.App.Entities.Styles;
 using PageTree.Domain.Projects;
+using PageTree.App.UseCases.Common;
 
 namespace PageTree.App.UseCases.Signatures.Queries;
 
@@ -85,10 +86,4 @@ public class SignatureVM
 {
     public IdentityVM Identity { get; set; } = new();
     public IdentityVM[] Styles { get; set; } = Array.Empty<IdentityVM>();
-}
-
-public class IdentityVM
-{
-    public string ID { get; set; } = "";
-    public string Name { get; set; } = "";
 }

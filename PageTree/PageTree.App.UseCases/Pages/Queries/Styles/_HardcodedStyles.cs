@@ -1,5 +1,6 @@
 ﻿using PageTree.App.Entities.Styles;
 using PageTree.App.Pages.Queries;
+using PageTree.App.UseCases.Common;
 
 namespace PageTree.App.UseCases.Pages.Queries.Styles
 {

@@ -9,6 +9,8 @@ using PageTree.Domain.Projects;
 using PageTree.App.Entities.Styles;
 using PageTree.App.UseCases.Pages.Queries.Styles;
 using Common.Basic.Collections;
+using PageTree.App.UseCases.Pages.Common;
+using PageTree.App.UseCases.Common;
 
 namespace PageTree.App.Pages.Queries;
 
@@ -62,18 +64,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
             new IdentityVM() { ID = page.ID, Name = page.Name },
             new IdentityVM() { ID = signature?.ID, Name = signature?.Name });
 
-        async Task GetParentPage(Page page, List<Page> pages)
-        {
-            if (string.IsNullOrEmpty(page.ParentID))
-                return;
-
-            var parentPage = await _pageRepository.Get(page.ParentID, res);
-            pages.Add(parentPage);
-            await GetParentPage(parentPage, pages);
-        }
-
         var parentPages = new List<Page>();
-        await GetParentPage(page, parentPages);
+        res += await _pageRepository.GetParentPages(page, parentPages);
         parentPages.Reverse();
 
         var properties = await GetProperties(page, mainStyle?.TreeExpandInfo);
@@ -144,8 +136,6 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
     }
 }
 
-public sealed record GetPagesQueryOut();
-
 public sealed record GetPageQuery(string ID) : IQuery<Result<GetPageQueryOut>>, IGetQuery;
 public sealed record GetPageQueryOut(PageVM PageVM);
 
@@ -173,19 +163,4 @@ public class PropertyVM
     public bool IsExpanded { get; init; } = true;
     public bool CanExpand { get; init; } = true;
     public bool HasChildren { get; init; }
-}
-
-public class IdentityVM
-{
-    public string ID { get; init; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
-
-    public IdentityVM() {}
-    public IdentityVM(string id, string name)
-    {
-        ID = id;
-        Name = name;
-    }
-
-    public static implicit operator IdentityVM((string id, string name) args) => new IdentityVM(args.id, args.name);
 }
