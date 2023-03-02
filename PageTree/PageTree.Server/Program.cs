@@ -7,6 +7,7 @@ using PageTree.Server.ApiContracts;
 using PageTree.Server.Data;
 using PageTree.Server.DataUpdates;
 using PageTree.Server.Middlewares;
+using PageTree.Server.Search;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,5 +62,6 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 await app.Services.UpdateData();
+await app.Services.IndexSearchEngine();
 
 app.Run();

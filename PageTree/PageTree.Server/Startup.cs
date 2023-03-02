@@ -1,13 +1,16 @@
 ﻿using Common.Basic.DDD;
 using Common.Basic.Repository;
 using Corelibs.AspNetApi.Authorization;
+using Corelibs.AspNetApi.Lucene;
 using Corelibs.Basic.Repository;
+using Corelibs.Basic.Searching;
 using Corelibs.BlazorShared;
 using Corelibs.MongoDB;
 using Corelibs.MongoDB.Logging;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PageTree.App.Entities.Styles;
 using PageTree.App.UseCases;
 using PageTree.App.UseCases.Styles.StyleDefinitions;
@@ -27,6 +30,7 @@ namespace PageTree.Server.Api
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(DbContextTransactionBehaviour<,>));
 
             services.AddRepositories();
+            services.AddSearchEngines();
             services.AddResourceAuthorizationHandlers();
         }
 
@@ -42,6 +46,11 @@ namespace PageTree.Server.Api
             services.AddJsonDbRepository<Domain.Practice.PracticeCategory, PageTree.Server.Data.PracticeCategory>(nameof(AppDbContext.PracticeCategories));
             services.AddJsonDbRepository<Domain.Practice.PracticeTactic, PageTree.Server.Data.PracticeTactic>(nameof(AppDbContext.PracticeTactics));
             services.AddScoped<IRepository<Style>>(sp => new StyleRepository());
+        }
+
+        private static void AddSearchEngines(this IServiceCollection services)
+        {
+            services.AddSingleton<ISearchEngine<Domain.Page>>(new LuceneInRamSearchEngine<Domain.Page>());
         }
 
         private static void AddResourceAuthorizationHandlers(this IServiceCollection services)

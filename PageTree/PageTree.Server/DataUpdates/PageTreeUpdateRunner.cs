@@ -1,5 +1,4 @@
 ﻿using Common.Basic.Blocks;
-using Mediator;
 using PageTree.Server.Data;
 
 namespace PageTree.Server.DataUpdates
@@ -15,7 +14,7 @@ namespace PageTree.Server.DataUpdates
                 .Where(p => !p.IsAbstract && !p.IsInterface)
                 .ToArray();
 
-            using (var scope = services.CreateScope()) 
+            using (var scope = services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 using (var transaction = await dbContext.Database.BeginTransactionAsync())
