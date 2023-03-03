@@ -10,7 +10,6 @@ using Corelibs.MongoDB.Logging;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using PageTree.App.Entities.Styles;
 using PageTree.App.UseCases;
 using PageTree.App.UseCases.Styles.StyleDefinitions;

@@ -39,7 +39,7 @@ public class GetPagesSearchResultsQueryHandler : IQueryHandler<GetPagesSearchRes
             return _searchEngine.Search(nameSplit[0], searchType);
         });
 
-        var resultsVMs = await searchResults.ToSearchedPageVMs(_pageRepository, _signatureRepository);
+        var resultsVMs = await searchResults.ToSearchedPageVMs(query.ProjectID, _pageRepository, _signatureRepository);
         var resultsVMsValue = resultsVMs.GetNestedValue<SearchedPageVM[]>();
 
         res += resultsVMs;
@@ -53,7 +53,7 @@ public class GetPagesSearchResultsQueryHandler : IQueryHandler<GetPagesSearchRes
     }
 }
 
-public sealed record GetPagesSearchResultsQuery(string Name) : IQuery<Result<GetPagesSearchResultsQueryOut>>;
+public sealed record GetPagesSearchResultsQuery(string ProjectID, string Name) : IQuery<Result<GetPagesSearchResultsQueryOut>>;
 public sealed record GetPagesSearchResultsQueryOut(SearchedPagesResultsVM PageVM);
 
 public class SearchedPagesResultsVM
@@ -92,6 +92,7 @@ public static class SearchIndexDataExtensions
 {
     public static async Task<Result<SearchedPageVM[]>> ToSearchedPageVMs(
         this IEnumerable<SearchIndexData> pageDatas,
+        string projectID,
         IRepository<Page> pageRepository,
         IRepository<Signature> signatureRepository)
     {
@@ -101,6 +102,9 @@ public static class SearchIndexDataExtensions
         foreach (var pageData in pageDatas)
         {
             var page = await pageRepository.Get(pageData.ID, res);
+            if (page.ProjectID != projectID)
+                continue;
+
             var signature = page.SignatureID != null ?
                 await signatureRepository.Get(page.SignatureID, res) :
                 null;
