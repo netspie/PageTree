@@ -1,5 +1,7 @@
-﻿using Common.Basic.DDD;
+﻿using Common.Basic.Blocks;
+using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
+using Corelibs.Basic.Collections;
 
 namespace PageTree.Domain.Projects
 {
@@ -15,5 +17,20 @@ namespace PageTree.Domain.Projects
         public List<string> ProjectsArchivedIDs { get; set; } = new();
 
         public string OwnerID { get; set; }
+
+        public bool ArchiveProject(string projectID)
+        {
+            if (!projectID.IsID())
+                return false;
+
+            if (!ProjectsCreatedIDs.Remove(projectID))
+                return false;
+
+            if (ProjectsArchivedIDs.Contains(projectID))
+                return true;
+
+            ProjectsArchivedIDs.Add(projectID);
+            return true;
+        }
     }
 }

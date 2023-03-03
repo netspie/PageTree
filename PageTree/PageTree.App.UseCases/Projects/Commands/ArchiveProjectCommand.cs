@@ -31,12 +31,9 @@ public class ArchiveProjectCommandHandler : BaseCommandHandler, ICommandHandler<
         if (!result.IsSuccess || project == null)
             return result.Fail();
 
-        if (!projectList.ProjectsCreatedIDs.Remove(project.ID))
+        if (!projectList.ArchiveProject(project.ID))
             return result.Fail();
 
-        projectList.ProjectsArchivedIDs.Add(project.ID);
-
-        await _projectRepository.Save(project, result);
         await _projectUserListRepository.Save(projectList, result);
 
         return result;
