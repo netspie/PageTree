@@ -118,6 +118,8 @@ public static class SearchIndexDataExtensions
                 Path = parentPages.ToIdentityVMs(),
                 Properties = childrenPages.ToIdentityVMs(),
             };
+
+            list.Add(vm);
         }
 
         return res.With(list.ToArray());
