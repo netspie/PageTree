@@ -32,6 +32,7 @@ public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<
 
     private static async Task DeleteThisAndNestedSubPages(IRepository<Page> repository, Page parentPage, string propertyID)
     {
+        parentPage.RemoveProperty(propertyID);
         if (!parentPage.IsSubPage(propertyID))
             return;
 
@@ -42,11 +43,7 @@ public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<
         foreach (var propertyPageSubPageID in subPages)
             await DeleteThisAndNestedSubPages(repository, propertyPage, propertyPageSubPageID);
 
-        if (parentPage.IsSubPage(propertyID))
-        {
-            parentPage.RemoveProperty(propertyID);
-            await repository.Delete(propertyID);
-        }
+        await repository.Delete(propertyID);
     }
 }
 

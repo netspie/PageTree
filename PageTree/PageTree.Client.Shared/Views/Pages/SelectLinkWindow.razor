@@ -7,7 +7,7 @@
 <OuterClickComponent @ref=@_outerClick>
     <div>
         <ToolWindow class=select-link-window>
-            <EditableText Placeholder="Enter a page name" OnInputChanged=OnInputChangedInternal Mode=EditableText.ModeType.InputOnly />
+            <EditableText @ref=_editableText Placeholder="Enter a page name" OnInputChanged=OnInputChangedInternal Mode=EditableText.ModeType.InputOnly />
             <VerticalLayout Gap=5 OverflowX=@("auto") class="item-list">
                 @foreach (var item in _vm.Values)
                 {
@@ -25,6 +25,7 @@
     private SearchedPagesResultsVM _vm = new();
 
     private OuterClickComponent? _outerClick;
+    private EditableText _editableText;
 
     private string _projectID { get; set; }
     private string _pageID { get; set; }
@@ -35,6 +36,11 @@
         _projectID = projectID;
         _pageID = pageID;
         _indexToCreateAt = indexToCreateAt;
+
+        _editableText.Text = "";
+        _vm = new();
+
+        _editableText.FocusInputIfShown();
 
         _outerClick.Enabled = true;
     }

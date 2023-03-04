@@ -18,6 +18,7 @@
         OnPropertyClick=OnPropertyClick 
         Model=_vm
 
+        OnAddSubPage=OnAddSubPage
         OnSelectLinkInputChanged=OnSelectLinkInputChanged
         OnSelectLinkSelected=OnSelectLinkSelected
         OnAddSubPageOnTop=OnAddSubPageOnTop
@@ -49,6 +50,12 @@
     {
         PageID = property.Identity.ID;
         _navigation.NavigateTo($"pageTree/learn/projects/{ProjectID}/pages/{property.Identity.ID}");
+    }
+
+    private async Task OnAddSubPage(string pageID, int index)
+    {
+        await _commands.Execute(new CreateSubPageCommand(pageID, index));
+        await RefreshView();
     }
 
     private async Task OnAddSubPageOnTop()

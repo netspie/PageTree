@@ -1,4 +1,6 @@
 ﻿using Common.Basic.Blocks;
+using Common.Basic.Collections;
+using Common.Basic.Functional;
 using Common.Basic.Repository;
 using Corelibs.Basic.Searching;
 using Mediator;
@@ -103,6 +105,9 @@ public static class SearchIndexDataExtensions
         {
             var page = await pageRepository.Get(pageData.ID, res);
             if (page.ProjectID != projectID)
+                continue;
+
+            if (page.ParentID.IsNullOrEmpty())
                 continue;
 
             var signature = page.SignatureID != null ?

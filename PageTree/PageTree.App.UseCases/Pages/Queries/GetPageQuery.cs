@@ -117,6 +117,9 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                 childExpandInfo = expandInfo.Children[i];
 
             var childPage = await _pageRepository.Get(childID, res);
+            if (childPage == null)
+                continue;
+
             var childSignature = !string.IsNullOrEmpty(childPage.SignatureID) ?
                 await _signatureRepository.Get(childPage.SignatureID, res) :
                 new Signature();

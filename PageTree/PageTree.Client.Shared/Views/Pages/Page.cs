@@ -394,7 +394,16 @@ namespace PageTree.Client.Shared.Views.Pages
             return Task.CompletedTask;
         }
 
-        public Task UpdateSelectLinkWindow(SearchedPagesResultsVM vm) => _selectLinkWindow.Update(vm);
+        public Task UpdateSelectLinkWindow(SearchedPagesResultsVM vm)
+        {
+            var values = vm.Values
+                .Where(v => 
+                    Model.Properties.FirstOrDefault(p => p.Identity.ID == v.Identity.ID) == null &&
+                    v.Identity.ID != Model.Identity.ID)
+                .ToArray();
+
+            return _selectLinkWindow.Update(new() { Values = values });
+        }
 
         private readonly static Color BackgroundColor = Color.FromArgb(255, 225, 228, 228);
     }
