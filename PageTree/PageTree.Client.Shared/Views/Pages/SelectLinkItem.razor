@@ -1,0 +1,53 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Layouts
+@using Corelibs.BlazorViews.Components
+@using PageTree.App.Pages.Queries;
+
+<div class="select-link-item" @onclick=@(() => OnSelected?.Invoke(Model.Identity.ID))>
+    <p class="path">
+        @for (int i = 0; i < Model.Path.Length; i++)
+        {
+            var pathItem = Model.Path[i];
+
+            if (i != 0)
+            {
+                <span>&nbsp;</span>
+            }
+
+            <span>
+                @pathItem.Name
+            </span>
+
+            if (i <= Model.Path.Length - 2)
+            {
+                <span> /</span>
+            }
+        }
+    </p>
+    <p>
+        @Model.Identity.Name
+    </p>
+    <p class="children">
+        @for (int i = 0; i < Model.Properties.Length; i++)
+        {
+            var property = Model.Properties[i];
+            <span>
+                @property.Name
+            </span>
+
+            if (i <= Model.Properties.Length - 2)
+            {
+                <span>, </span>
+            }
+        }
+    </p>
+</div>
+
+@code {
+    [Parameter] public SearchedPageVM? Model { get; set; } = new();
+    [Parameter] public OnSelectedDelegate? OnSelected { get; set; }
+
+    private SearchedPagesResultsVM _vm = new();
+
+    public delegate Task OnSelectedDelegate(string pageLinkID);
+}

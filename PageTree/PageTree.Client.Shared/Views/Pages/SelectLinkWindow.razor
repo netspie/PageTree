@@ -6,11 +6,11 @@
 <OuterClickComponent @ref=@_outerClick>
     <div>
         <ToolWindow class=select-link-window>
-            <EditableText Text="Enter input" OnInputChanged=OnInputChangedInternal Mode=EditableText.ModeType.InputOnly />
+            <EditableText Placeholder="Enter a page name" OnInputChanged=OnInputChangedInternal Mode=EditableText.ModeType.InputOnly />
             <VerticalLayout Gap=5 OverflowX=@("auto")>
-                @foreach (var opt in _vm.Values)
+                @foreach (var item in _vm.Values)
                 {
-
+                    <SelectLinkItem Model=item OnSelected=OnSelectedInternal />
                 }
             </VerticalLayout>
         </ToolWindow>
@@ -21,7 +21,7 @@
     [Parameter] public OnSelectedDelegate? OnSelected { get; set; }
     [Parameter] public OnInputChangedDelegate? OnInputChanged { get; set; }
 
-    private SearchedPagesResultsVM _vm = new();
+    private SearchedPagesResultsVM _vm = TestVM;
 
     private OuterClickComponent? _outerClick;
 
@@ -58,4 +58,91 @@
 
     public delegate Task OnSelectedDelegate(string pageID, int index, string pageLinkID);
     public delegate Task OnInputChangedDelegate(string projectID, string input);
+
+    private static SearchedPagesResultsVM TestVM = new()
+    {
+        Values = new SearchedPageVM[]
+        {
+            new()
+            {
+                Path = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                },
+                Identity = new("Misa", "Misa"),
+                Properties = new PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                }
+            },
+            new()
+            {
+                Path = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                },
+                Identity = new("Misa", "Misa"),
+                Properties = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                }
+            },
+            new()
+            {
+                Path = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                },
+                Identity = new("Misa", "Misa"),
+                Properties = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                }
+            },
+            new()
+            {
+                Path = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                },
+                Identity = new("Misa", "Misa"),
+                Properties = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                    new ("Authors", "Authors"),
+                    new ("Author 1", "Author 1"),
+                    new ("Projects", "Projects"),
+                }
+            },
+            new()
+            {
+                Path = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                        new ("Authors", "Authors"),
+                        new ("Author 1", "Author 1"),
+                        new ("Projects", "Projects"),
+                },
+                Identity = new("Misa", "Misa"),
+                Properties = new  PageTree.App.UseCases.Common.IdentityVM[]
+                {
+                        new ("Authors", "Authors"),
+                        new ("Author 1", "Author 1"),
+                        new ("Projects", "Projects"),
+                }
+            },
+        }
+    };
 }
