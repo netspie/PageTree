@@ -2,6 +2,19 @@
     max-width: 90%;
     width: 90%;
     height: fit-content;
+    max-height: 80%;
 
     top: 100px;
+}
+
+div ::deep .item-list::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+div ::deep .item-list::-webkit-scrollbar-track {
+    background: none;
+}
+
+div ::deep .item-list::-webkit-scrollbar-thumb {
+    background: #aaa;
 }

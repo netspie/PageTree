@@ -32,8 +32,8 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> Get([FromRouteAndQuery] GetPageApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetPageQuery, GetPageQueryOut>(query, _mapper);
 
-        [HttpGet, AllowAnonymous]
-        public Task<IActionResult> Get([FromRouteAndQuery] GetPagesSearchResultsApiQuery query) =>
+        [HttpGet, Route("search"), AllowAnonymous]
+        public Task<IActionResult> Search([FromRouteAndQuery] GetPagesSearchResultsApiQuery query) =>
             _mediator.MapSendAndGetResponse<GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(query, _mapper);
 
         [HttpDelete, Authorize_Edit]

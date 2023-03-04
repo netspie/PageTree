@@ -23,10 +23,14 @@ namespace PageTree.Client.Shared.Services
                 return GetResource<GetUserQueryOut, GetUserApiQuery>(q, $"{_baseRoute}/users/{q.ID}");
             });
 
+            // General Views
             Add<GetProjectUserListApiQuery, GetProjectUserListQuery, GetProjectUserListQueryOut>("projectUserLists");
             Add<GetProjectApiQuery, GetProjectQuery, GetProjectQueryOut>("projects");
             Add<GetPageApiQuery, GetPageQuery, GetPageQueryOut>("pages");
             Add<GetProjectSignaturesApiQuery, GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(q => $"projects/{q.ProjectID}/signatures");
+
+            // Search
+            Add<GetPagesSearchResultsApiQuery, GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(q => "pages/search");
         }
     }
 }
