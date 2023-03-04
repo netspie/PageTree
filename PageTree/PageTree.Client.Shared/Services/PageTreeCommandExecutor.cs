@@ -22,7 +22,8 @@ namespace PageTree.Client.Shared.Services
             AddPut<EditProjectCommand, EditProjectApiCommand>("projects");
 
             // Pages
-            AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{parentID}/subpages");
+            AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{pageID}/subpages");
+            AddPost<CreateLinkCommand, CreateLinkApiCommand>("pages/{pageID}/links");
             AddDelete<RemovePropertyCommand, RemovePropertyApiCommand>("pages");
             AddPatch<ChangeNameOfPageCommand, ChangeNameOfPageApiCommand>("pages/{pageID}/changeName");
             AddPatch<ChangeIndexOfPageCommand, ChangeIndexOfPageApiCommand>("pages/changeIndex");

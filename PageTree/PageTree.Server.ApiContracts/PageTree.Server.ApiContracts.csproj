@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="PagesSub\Queries\**" />
-    <EmbeddedResource Remove="PagesSub\Queries\**" />
-    <None Remove="PagesSub\Queries\**" />
+    <Compile Remove="Pages_SubPages\Queries\**" />
+    <EmbeddedResource Remove="Pages_SubPages\Queries\**" />
+    <None Remove="Pages_SubPages\Queries\**" />
   </ItemGroup>
 
   <ItemGroup>

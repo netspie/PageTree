@@ -20,7 +20,7 @@ public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<C
     {
         var result = Result.Success();
 
-        var parentPage = await _pageRepository.Get(command.ParentID, result);
+        var parentPage = await _pageRepository.Get(command.PageID, result);
         if (!result.IsSuccess || parentPage == null)
             return result.Fail();
 
@@ -38,4 +38,4 @@ public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<C
     }
 }
 
-public sealed record CreateSubPageCommand(string ParentID, int Index = int.MaxValue) : ICommand<Result>;
+public sealed record CreateSubPageCommand(string PageID, int Index = int.MaxValue) : ICommand<Result>;

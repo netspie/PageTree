@@ -6,29 +6,27 @@ using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Pages.Commands;
-using PageTree.App.Projects.Commands;
-using PageTree.Domain;
 using PageTree.Server.ApiContracts;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace PageTree.Server.Api.Controllers
 {
     [ApiController]
-    [Route("api/v1/pages/{parentID}/subPages")]
+    [Route("api/v1/pages/{pageID}/links")]
     [Authorize]
-    public class PagesSubController : ControllerBase
+    public class Pages_Links_Controller : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public PagesSubController(IMediator mediator, IMapper mapper)
+        public Pages_Links_Controller(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
         }
 
         [HttpPost, Authorize_Edit]
-        public Task<IActionResult> Create([FromRouteAndBody] CreateSubPageApiCommand command = null) =>
-            _mediator.MapSendAndGetPostResponse<CreateSubPageCommand>(command, _mapper);
+        public Task<IActionResult> Create([FromRouteAndBody] CreateLinkApiCommand command = null) =>
+            _mediator.MapSendAndGetPostResponse<CreateLinkCommand>(command, _mapper);
     }
 }

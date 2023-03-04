@@ -6,7 +6,7 @@ namespace PageTree.Server.ApiContracts
     public class CreateSubPageApiCommand
     {
         [FromRoute, AuthorizeResource(typeof(Page))]
-        public string ParentID { get; set; }
+        public string PageID { get; set; }
         public int Index { get; set; }
     }
 }

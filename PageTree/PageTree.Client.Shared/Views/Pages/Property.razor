@@ -114,13 +114,13 @@
     private Task OnCreateSubpageInternal(int index)
     {
         _menu.OuterClick.Enabled = false;
-        return OnCreateSubpage?.Invoke(Model.ParentID, index);
+        return OnCreateSubpage?.Invoke(Model.ID, index);
     }
 
     private Task OnCreateLinkInternal(int index)
     {
         _menu.OuterClick.Enabled = false;
-        return OnCreateLink?.Invoke(Model.ParentID, index);
+        return OnCreateLink?.Invoke(Model.ID, index);
     }
 
     private Task OnMoveDownInternal(string propertyID, int index)

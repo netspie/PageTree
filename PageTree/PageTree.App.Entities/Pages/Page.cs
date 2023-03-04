@@ -18,8 +18,27 @@ namespace PageTree.Domain
         public bool IsSubPage(string id) =>
             SubPages.FirstOrDefault(sID => sID == id) != null;
 
-        public bool CreateSubPage(string id, int index) =>
-            EditableItemOwnerFunctions_NoName.Create(id, index, ChildrenIDs, SubPages);
+        public bool CreateSubPage(string id, int index)
+        {
+            if (!id.IsID())
+                return false;
+
+            if (id == ID)
+                return false;
+
+            return EditableItemOwnerFunctions_NoName.Create(id, index, ChildrenIDs, SubPages);
+        }
+
+        public bool CreateLink(string id, int index)
+        {
+            if (!id.IsID())
+                return false;
+
+            if (id == ID)
+                return false;
+
+            return EditableItemOwnerFunctions_NoName.Create(id, index, ChildrenIDs, Links);
+        }
 
         public bool Rename(string newName) =>
            EditableItemFunctions.Rename(newName, () => Name = newName);

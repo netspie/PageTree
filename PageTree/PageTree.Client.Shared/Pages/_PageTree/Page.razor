@@ -96,16 +96,12 @@
 
         if (searchResultOut?.PageVM != null)
             await _view.UpdateSelectLinkWindow(searchResultOut.PageVM);
-
-        Console.WriteLine("OnInputChanged");
     }
 
-    private async Task OnSelectLinkSelected(string pageID, int index, string pageLinkID)
+    private async Task OnSelectLinkSelected(string pageID, int index, string linkID)
     {
-        //await _commands.Execute(new CreateLinkCommand(pageID, index, pageLinkID));
-        //await RefreshView();
-
-        Console.WriteLine("OnSelectedDelegate");
+        await _commands.Execute(new CreateLinkCommand(pageID, linkID, index));
+        await RefreshView();
     }
 
     protected override string QueryParameter => PageID;
