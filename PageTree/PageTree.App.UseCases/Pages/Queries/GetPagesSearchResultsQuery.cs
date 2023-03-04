@@ -58,21 +58,21 @@ public sealed record GetPagesSearchResultsQueryOut(SearchedPagesResultsVM PageVM
 
 public class SearchedPagesResultsVM
 {
-    public SearchedPageVM[] Values { get; set; }
+    public SearchedPageVM[] Values { get; set; } = Array.Empty<SearchedPageVM>();
 }
 
 public class SearchedPageVM
 {
-    public IdentityVM[] Path { get; init; }
-    public IdentityVM Identity { get; init; }
-    public IdentityVM SignatureIdentity { get; init; }
-    public IdentityVM[] Properties { get; init; }
+    public IdentityVM[] Path { get; init; } = Array.Empty<IdentityVM>();
+    public IdentityVM Identity { get; init; } = new();
+    public IdentityVM SignatureIdentity { get; init; } = new();
+    public IdentityVM[] Properties { get; init; } = Array.Empty<IdentityVM>();
 }
 
 public class SearchedPagePropertyVM
 {
-    public IdentityVM Identity { get; init; }
-    public IdentityVM SignatureIdentity { get; init; }
+    public IdentityVM Identity { get; init; } = new();
+    public IdentityVM SignatureIdentity { get; init; } = new();
 }
 
 public static class SearchTypeExtensions

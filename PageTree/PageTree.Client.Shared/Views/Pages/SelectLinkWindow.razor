@@ -1,0 +1,61 @@
+﻿@using Corelibs.BlazorViews.ViewModels
+@using Corelibs.BlazorViews.Layouts
+@using Corelibs.BlazorViews.Components
+@using PageTree.App.Pages.Queries;
+
+<OuterClickComponent @ref=@_outerClick>
+    <div>
+        <ToolWindow class=select-link-window>
+            <EditableText Text="Enter input" OnInputChanged=OnInputChangedInternal Mode=EditableText.ModeType.InputOnly />
+            <VerticalLayout Gap=5 OverflowX=@("auto")>
+                @foreach (var opt in _vm.Values)
+                {
+
+                }
+            </VerticalLayout>
+        </ToolWindow>
+    </div>
+</OuterClickComponent>
+
+@code {
+    [Parameter] public OnSelectedDelegate? OnSelected { get; set; }
+    [Parameter] public OnInputChangedDelegate? OnInputChanged { get; set; }
+
+    private SearchedPagesResultsVM _vm = new();
+
+    private OuterClickComponent? _outerClick;
+
+    private string _projectID { get; set; }
+    private string _pageID { get; set; }
+    private int _indexToCreateAt { get; set; }
+
+    public void Show(string projectID, string pageID, int indexToCreateAt)
+    {
+        _projectID = projectID;
+        _pageID = pageID;
+        _indexToCreateAt = indexToCreateAt;
+
+        _outerClick.Enabled = true;
+    }
+
+    private Task OnSelectedInternal(string pageLinkID)
+    {
+        _outerClick.Enabled = false;
+        return OnSelected?.Invoke(_pageID, _indexToCreateAt, pageLinkID);
+    }
+
+    private async Task<bool> OnInputChangedInternal(string input)
+    {
+        await OnInputChanged?.Invoke(_projectID, input);
+        return true;
+    }
+
+    public Task Update(SearchedPagesResultsVM vm)
+    {
+        _vm = vm;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    public delegate Task OnSelectedDelegate(string pageID, int index, string pageLinkID);
+    public delegate Task OnInputChangedDelegate(string projectID, string input);
+}

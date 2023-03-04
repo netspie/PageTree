@@ -74,6 +74,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         return res.With(new GetPageQueryOut(
             new PageVM()
             {
+                ProjectID = project.ID,
+
                 Path = parentPages
                     .Select(p => new IdentityVM()
                     {
@@ -141,6 +143,7 @@ public sealed record GetPageQueryOut(PageVM PageVM);
 
 public class PageVM
 {
+    public string ProjectID { get; init; }
     public IdentityVM[] Path { get; init; } = Array.Empty<IdentityVM>();
     public IdentityVM Identity { get; init; } = new IdentityVM();
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();

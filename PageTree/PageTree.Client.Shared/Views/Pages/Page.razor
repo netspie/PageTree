@@ -12,6 +12,7 @@
 
         var signaturesOptions = Model.Signatures.ToUIIdentityVM();
         <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureInternal />
+        <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectLinkInputChanged OnSelected=OnSelectLinkSelected />
     }
     <PageHeader Model=@GetPageHeader() />
     <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />

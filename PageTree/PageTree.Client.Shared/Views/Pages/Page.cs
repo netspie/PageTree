@@ -22,10 +22,14 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public Func<TreeLayout.TreeNode, Task> OnPropertyClick { get; set; }
         [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
         [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
+        [Parameter] public Func<string, int, Task> OnAddSubPage { get; set; }
+        [Parameter] public Func<string, int, Task> OnAddLink { get; set; }
         [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
         [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
         [Parameter] public Func<string, string, Task<bool>> OnPropertyRename { get; set; }
         [Parameter] public Func<string, string, Task> OnPropertyResignature { get; set; }
+        [Parameter] public SelectLinkWindow.OnInputChangedDelegate? OnSelectLinkInputChanged { get; set; }
+        [Parameter] public SelectLinkWindow.OnSelectedDelegate? OnSelectLinkSelected { get; set; }
 
         [Parameter] public bool IsEditMode { get; set; } = true;
 
@@ -37,6 +41,7 @@ namespace PageTree.Client.Shared.Views.Pages
         private Arrangements_AddNew? _arrangements_AddNew;
         private TreeLayout? _treeLayout;
         private ChooseFromListWindow _signatureChangeWindow;
+        private SelectLinkWindow _selectLinkWindow;
 
         private List<Corelibs.BlazorViews.ViewModels.IdentityVM> _properties = new();
 
@@ -101,6 +106,10 @@ namespace PageTree.Client.Shared.Views.Pages
 
                     builder.AddAttribute(seqLocal++, "Model", vmModel);
                     builder.AddAttribute(seqLocal++, "IsEditMode", IsEditMode);
+
+                    builder.AddAttribute(seqLocal++, "OnCreateSubpage", OnCreateSubPageAfterPropertyInternal);
+                    builder.AddAttribute(seqLocal++, "OnCreateLink", OnCreateLinkAfterPropertyInternal);
+
                     builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemoveInternal);
                     builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
                     builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
@@ -339,6 +348,15 @@ namespace PageTree.Client.Shared.Views.Pages
         private Task OnPropertyRemoveInternal(string propertyID) =>
             OnPropertyRemove?.Invoke(Model.Identity.ID, propertyID);
 
+        private Task OnCreateSubPageAfterPropertyInternal(string pageID, int index) =>
+            OnAddSubPage?.Invoke(pageID, index);
+
+        private Task OnCreateLinkAfterPropertyInternal(string pageID, int index)
+        {
+            _selectLinkWindow.Show(Model.ProjectID, pageID, index);
+            return Task.CompletedTask;
+        }
+
         private class StyleData
         {
             public StyleOfRootProperty? Parent { get; }
@@ -375,6 +393,8 @@ namespace PageTree.Client.Shared.Views.Pages
             OnPropertyResignature?.Invoke(propertyID, signatureID);
             return Task.CompletedTask;
         }
+
+        public Task UpdateSelectLinkWindow(SearchedPagesResultsVM vm) => _selectLinkWindow.Update(vm);
 
         private readonly static Color BackgroundColor = Color.FromArgb(255, 225, 228, 228);
     }

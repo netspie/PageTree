@@ -17,6 +17,9 @@
         Left=@context.Item1 Top=@context.Item2 
         OnPropertyClick=OnPropertyClick 
         Model=_vm
+
+        OnSelectLinkInputChanged=OnSelectLinkInputChanged
+        OnSelectLinkSelected=OnSelectLinkSelected
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom 
         OnPropertyRemove=OnPropertyRemove 
@@ -82,8 +85,27 @@
     {
         await _commands.Execute(new ChangeNameOfPageCommand(propertyID, name));
         await RefreshView();
-        
+
         return true;
+    }
+
+    private async Task OnSelectLinkInputChanged(string projectID, string input)
+    {
+        var searchResultOut = await _queries.Execute<GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(
+            new GetPagesSearchResultsQuery(projectID, input));
+
+        if (searchResultOut?.PageVM != null)
+            await _view.UpdateSelectLinkWindow(searchResultOut.PageVM);
+
+        Console.WriteLine("OnInputChanged");
+    }
+
+    private async Task OnSelectLinkSelected(string pageID, int index, string pageLinkID)
+    {
+        //await _commands.Execute(new CreateLinkCommand(pageID, index, pageLinkID));
+        //await RefreshView();
+
+        Console.WriteLine("OnSelectedDelegate");
     }
 
     protected override string QueryParameter => PageID;

@@ -1,0 +1,7 @@
+﻿div ::deep .select-link-window {
+    max-width: 90%;
+    width: 90%;
+    height: fit-content;
+
+    top: 100px;
+}
