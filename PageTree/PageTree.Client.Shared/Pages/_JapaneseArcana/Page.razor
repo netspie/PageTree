@@ -2,6 +2,7 @@
 
 @inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM, PageTree.Client.Shared.Views.Pages.Page>
 
+@using Corelibs.Basic.Collections;
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
@@ -11,13 +12,17 @@
     <PageTree.Client.Shared.Views.Pages.Page 
         @ref=_view
         Left=@context.Item1 
-        Top=@context.Item2 OnPropertyClick=OnPropertyClick 
+        Top=@context.Item2
         IsEditMode=false
-        Model=_vm/>
+        
+        Model=_vm
+
+        OnNavigateUp=OnNavigateUp
+        OnPropertyClick=OnPropertyClick />
 </BackgroundAndContent>
 
 @code {
-#if DEBUG
+    #if DEBUG
     public const string _pageID = "350b10d0-f72a-4f8f-92a6-5da3b80cac6a";
     public const string _projectID = "8e6458d5-ab4a-4dbd-b845-7727c5b87c9c";
 #else
@@ -34,13 +39,19 @@
         return base.OnInitializedAsync();
     }
 
-    private Task OnPropertyClick(TreeLayout.TreeNode property)
+    private Task NavigateTo(string pageID)
     {
-        PageID = property.Identity.ID;
-        _navigation.NavigateTo($"learn/pages/{property.Identity.ID}");
+        if (!pageID.IsID())
+            return Task.CompletedTask;
+
+        PageID = pageID;
+        _navigation.NavigateTo($"learn/pages/{pageID}");
 
         return Task.CompletedTask;
     }
+
+    private Task OnPropertyClick(TreeLayout.TreeNode property) => NavigateTo(property.Identity.ID);
+    private Task OnNavigateUp() => NavigateTo(_vm.Path.FirstOrDefault()?.ID);
 
     private async void OnLocationChanged(object sender, LocationChangedEventArgs args)
     {

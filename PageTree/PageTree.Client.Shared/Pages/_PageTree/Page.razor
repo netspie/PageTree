@@ -2,6 +2,7 @@
 
 @inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM, PageTree.Client.Shared.Views.Pages.Page>
 
+@using Corelibs.Basic.Collections;
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -18,6 +19,7 @@
         OnPropertyClick=OnPropertyClick 
         Model=_vm
 
+        OnNavigateUp=OnNavigateUp
         OnAddSubPage=OnAddSubPage
         OnSelectLinkInputChanged=OnSelectLinkInputChanged
         OnSelectLinkSelected=OnSelectLinkSelected
@@ -46,11 +48,20 @@
         await RefreshView();
     }
 
-    private async Task OnPropertyClick(TreeLayout.TreeNode property)
+    private Task NavigateTo(string pageID)
     {
-        PageID = property.Identity.ID;
-        _navigation.NavigateTo($"pageTree/learn/projects/{ProjectID}/pages/{property.Identity.ID}");
+        if (!pageID.IsID())
+            return Task.CompletedTask;
+
+        PageID = pageID;
+        _navigation.NavigateTo($"pageTree/learn/projects/{ProjectID}/pages/{pageID}");
+
+        return Task.CompletedTask;
     }
+
+    private Task OnPropertyClick(TreeLayout.TreeNode property) => NavigateTo(property.Identity.ID);
+
+    private Task OnNavigateUp() => NavigateTo(_vm.Path.FirstOrDefault()?.ID);
 
     private async Task OnAddSubPage(string pageID, int index)
     {

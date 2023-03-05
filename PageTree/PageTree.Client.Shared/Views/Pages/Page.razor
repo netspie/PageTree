@@ -3,13 +3,22 @@
 @using PageTree.Client.Shared.Extensions;
 
 <div class="page" style=@_mainStyle>
-    <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
-    @if (IsEditMode)
-    {
-        <PageEditMenu 
+    
+    @{
+        bool hasParent = Model.Path.Any();
+
+        <PageEditMenu
+            HasParent=hasParent
+            IsEditMode=IsEditMode
+            OnNavigateUp=OnNavigateUp
             OnAddSubPageOnTop=OnAddSubPageOnTop 
             OnAddSubPageOnBottom=OnAddSubPageOnBottom />
+    }
 
+    <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
+
+    @if (IsEditMode)
+    {
         var signaturesOptions = Model.Signatures.ToUIIdentityVM();
         <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureInternal />
         <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectLinkInputChanged OnSelected=OnSelectLinkSelected />

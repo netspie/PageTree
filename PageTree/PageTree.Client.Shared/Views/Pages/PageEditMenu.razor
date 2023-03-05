@@ -1,13 +1,28 @@
 ﻿@using PageTree.App.Pages.Queries;
 
 <div class="page-edit-menu">
-    <button class="button" @onclick=OnAddSubPageOnTop>+&lt;</button>
-    <button class="button" @onclick=OnAddSubPageOnBottom>+&gt;</button>
+    @if (HasParent)
+    {
+        <button class="button" @onclick=OnNavigateUp>^</button>
+    }
+
+    @if (IsEditMode)
+    {
+        @if (HasParent)
+        {
+            <div class="button space" />
+        }
+        <button class="button" @onclick=OnAddSubPageOnTop>+&lt;</button>
+        <button class="button" @onclick=OnAddSubPageOnBottom>+&gt;</button>
+    }
 </div>
 
 @code {
     [Parameter] public PageVM Model { get; set; }
+    [Parameter] public bool IsEditMode { get; set; }
+    [Parameter] public bool HasParent { get; set; }
 
+    [Parameter] public Func<Task> OnNavigateUp { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
 }

@@ -15,3 +15,8 @@
     width: 22px;
     color: black;
 }
+
+.space {
+    opacity: 0;
+    cursor: default;
+}

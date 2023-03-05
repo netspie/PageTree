@@ -20,6 +20,7 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public int Top { get; set; }
 
         [Parameter] public Func<TreeLayout.TreeNode, Task> OnPropertyClick { get; set; }
+        [Parameter] public Func<Task> OnNavigateUp { get; set; }
         [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
         [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
         [Parameter] public Func<string, int, Task> OnAddSubPage { get; set; }
