@@ -13,7 +13,7 @@ namespace PageTree.Client.Shared.Pages
         where TVM : new ()
         where TView : IView<TVM>
     {
-        [Inject] private IJSRuntime _jsRuntime { get; set; }
+        [Inject] protected IJSRuntime _jsRuntime { get; set; }
 
         protected IBgAndContent _backgroundOwner;
 

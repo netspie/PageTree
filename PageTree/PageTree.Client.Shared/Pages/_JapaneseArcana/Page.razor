@@ -2,6 +2,7 @@
 
 @inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM, PageTree.Client.Shared.Views.Pages.Page>
 
+@using Common.Basic.Collections;
 @using Corelibs.Basic.Collections;
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
@@ -31,12 +32,31 @@
 #endif
 
     [Parameter] public string PageID { get; set; }
+    private DotNetObjectReference<Page> _ref;
+    private string _previousUrl;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         _navigation.LocationChanged += OnLocationChanged;
+        _ref = DotNetObjectReference.Create(this);
+        
+        await _jsRuntime.AddKeyDownEventHandler(_ref, nameof(OnKeyDown));
+        await base.OnInitializedAsync();
+    }
 
-        return base.OnInitializedAsync();
+    [JSInvokableAttribute("OnKeyDown")]
+    public async Task OnKeyDown(bool isCtrl, bool altKey, string key)
+    {
+        if (key == "Escape")
+        {
+            if (!_previousUrl.IsNullOrEmpty())
+                await _jsRuntime.NavigateBack();
+        }
+
+        if (altKey && key == "ArrowUp")
+        {
+            await OnNavigateUp();
+        }
     }
 
     private Task NavigateTo(string pageID)
@@ -44,6 +64,7 @@
         if (!pageID.IsID())
             return Task.CompletedTask;
 
+        _previousUrl = _navigation.Uri;
         PageID = pageID;
         _navigation.NavigateTo($"learn/pages/{pageID}");
 

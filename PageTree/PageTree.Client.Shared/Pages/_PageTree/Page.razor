@@ -1,7 +1,9 @@
 ﻿@attribute [Route(Uris.Page)]
 
 @inherits BasePage<GetPageQuery, GetPageQueryOut, PageVM, PageTree.Client.Shared.Views.Pages.Page>
+@implements IDisposable
 
+@using Common.Basic.Collections;
 @using Corelibs.Basic.Collections;
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
@@ -36,11 +38,37 @@
     [Parameter] public string ProjectID { get; set; }
     [Parameter] public string PageID { get; set; }
 
-    protected override Task OnInitializedAsync()
+    private DotNetObjectReference<Page> _ref;
+    private string _previousUrl;
+
+    protected async override Task OnInitializedAsync()
     {
         _navigation.LocationChanged += OnLocationChanged;
 
-        return base.OnInitializedAsync();
+        _ref = DotNetObjectReference.Create(this);
+
+        await _jsRuntime.AddKeyDownEventHandler(_ref, nameof(OnKeyDown));
+        await base.OnInitializedAsync();
+    }
+
+    public void Dispose()
+    {
+        _ref.Dispose();
+    }
+
+    [JSInvokableAttribute("OnKeyDown")]
+    public async Task OnKeyDown(bool isCtrl, bool altKey, string key)
+    {
+        if (key == "Escape")
+        {
+            if (!_previousUrl.IsNullOrEmpty())
+                await _jsRuntime.NavigateBack();
+        }
+
+        if (altKey && key == "ArrowUp")
+        {
+            await OnNavigateUp();
+        }
     }
 
     private async void OnLocationChanged(object sender, LocationChangedEventArgs args)
@@ -53,6 +81,7 @@
         if (!pageID.IsID())
             return Task.CompletedTask;
 
+        _previousUrl = _navigation.Uri;
         PageID = pageID;
         _navigation.NavigateTo($"pageTree/learn/projects/{ProjectID}/pages/{pageID}");
 
