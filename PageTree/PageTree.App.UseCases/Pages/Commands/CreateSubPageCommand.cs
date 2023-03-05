@@ -1,5 +1,6 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
+using Corelibs.Basic.Searching;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
@@ -8,11 +9,14 @@ namespace PageTree.App.Pages.Commands;
 
 public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<CreateSubPageCommand, Result>
 {
+    private readonly ISearchEngine<Page> _searchEngine;
     private readonly IRepository<Page> _pageRepository;
 
     public CreateSubPageCommandHandler(
-         IRepository<Page> pageRepository)
+        ISearchEngine<Page> searchEngine,
+        IRepository<Page> pageRepository)
     {
+        _searchEngine = searchEngine;
         _pageRepository = pageRepository;
     }
 
@@ -33,6 +37,8 @@ public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<C
 
         await _pageRepository.Save(subPage, result);
         await _pageRepository.Save(parentPage, result);
+
+        _searchEngine.Add(subPage.ID, subPage.Name);
 
         return result;
     }

@@ -1,5 +1,6 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
+using Corelibs.Basic.Searching;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
@@ -8,11 +9,14 @@ namespace PageTree.App.Pages.Commands;
 
 public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<RemovePropertyCommand, Result>
 {
+    private readonly ISearchEngine<Page> _searchEngine;
     private readonly IRepository<Page> _pageRepository;
 
     public RemovePropertyCommandHandler(
-         IRepository<Page> pageRepository)
+        ISearchEngine<Page> searchEngine,
+        IRepository<Page> pageRepository)
     {
+        _searchEngine = searchEngine;
         _pageRepository = pageRepository;
     }
 
@@ -24,26 +28,46 @@ public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<
         if (!result.IsSuccess || parentPage == null)
             return result.Fail();
 
-        await DeleteThisAndNestedSubPages(_pageRepository, parentPage, command.PropertyID);
+        bool isSubPage = parentPage.IsSubPage(command.PropertyID);
+
+        var deletedPages = new List<IdentityVM>();
+        result += await DeleteThisAndNestedSubPages(_pageRepository, parentPage, command.PropertyID, deletedPages);
+        if (!result.IsSuccess)
+            return result;
+
         await _pageRepository.Save(parentPage, result);
+        if (isSubPage && result.IsSuccess)
+        {
+            foreach (var deletedPage in deletedPages)
+                _searchEngine.Delete(new(deletedPage.ID, deletedPage.Name));
+        }
 
         return result;
     }
 
-    private static async Task DeleteThisAndNestedSubPages(IRepository<Page> repository, Page parentPage, string propertyID)
+    private static async Task<Result> DeleteThisAndNestedSubPages(IRepository<Page> repository, Page parentPage, string propertyID, List<IdentityVM> deletedPages)
     {
-        parentPage.RemoveProperty(propertyID);
-        if (!parentPage.IsSubPage(propertyID))
-            return;
-
         var res = Result.Success();
+
+        bool isSubPage = parentPage.IsSubPage(propertyID);
+        parentPage.RemoveProperty(propertyID);
+        if (!isSubPage)
+            return res;
+
         var propertyPage = await repository.Get(propertyID, res);
 
         var subPages = propertyPage.SubPages.ToArray();
         foreach (var propertyPageSubPageID in subPages)
-            await DeleteThisAndNestedSubPages(repository, propertyPage, propertyPageSubPageID);
+            res += await DeleteThisAndNestedSubPages(repository, propertyPage, propertyPageSubPageID, deletedPages);
 
-        await repository.Delete(propertyID);
+        var deleteResult = await repository.Delete(propertyID);
+        if (!deleteResult.IsSuccess)
+            return res.Fail();
+
+        deletedPages.Add(new(propertyPage.ID, propertyPage.Name));
+        res += deleteResult;
+
+        return res;
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
+using Corelibs.Basic.Searching;
 using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
@@ -8,11 +9,14 @@ namespace PageTree.App.Pages.Commands;
 
 public class ChangeNameOfPageCommandHandler : BaseCommandHandler, ICommandHandler<ChangeNameOfPageCommand, Result>
 {
+    private readonly ISearchEngine<Page> _searchEngine;
     private readonly IRepository<Page> _pageRepository;
 
     public ChangeNameOfPageCommandHandler(
-         IRepository<Page> pageRepository)
+        ISearchEngine<Page> searchEngine,
+        IRepository<Page> pageRepository)
     {
+        _searchEngine = searchEngine;
         _pageRepository = pageRepository;
     }
 
@@ -28,6 +32,9 @@ public class ChangeNameOfPageCommandHandler : BaseCommandHandler, ICommandHandle
             return result.Fail();
 
         await _pageRepository.Save(page, result);
+
+        if (result.IsSuccess)
+            _searchEngine.Update(new(page.ID, page.Name), command.Name);
 
         return result;
     }
