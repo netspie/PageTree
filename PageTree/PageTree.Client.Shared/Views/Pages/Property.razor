@@ -4,6 +4,7 @@
 @using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorShared.UI.Css;
 @using Microsoft.JSInterop;
+@using PageTree.App.Entities.Styles;
 
 @inherits BaseElement
 
@@ -37,14 +38,26 @@
 
         @if (IsEditMode)
         {
-            @if (!Model.Signature.Name.IsNullOrEmpty())
-            {
-                <span class="signature">@Model.Signature.Name</span>
-            }
-            else
-            {
-                <p class="signature">---</p>
-            }
+            <div class="property-info-bar">
+
+                @if (Model.PropertyType == PropertyType.Link)
+                {
+                    <img class="property-info-bar-image" src="_content/PageTree.Client.Shared/images/icons/link-variant.png" />
+                }
+                else
+                {
+                    <div class="property-info-bar-image" />
+                }
+
+                @if (!Model.Signature.Name.IsNullOrEmpty())
+                {
+                    <span class="signature">@Model.Signature.Name</span>
+                }
+                else
+                {
+                    <p class="signature">---</p>
+                }
+            </div>
         }
     </div>
 </div>
@@ -158,6 +171,8 @@
         public string ID { get; set; }
         public string ParentID { get; set; }
         public IdentityVM Signature { get; set; }
+
+        public PropertyType PropertyType { get; set; }
 
         public Layout Layout { get; set; }
         public List<ArtifactVM> Artifacts { get; set; } = new();

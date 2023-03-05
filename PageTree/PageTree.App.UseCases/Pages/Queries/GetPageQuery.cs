@@ -133,7 +133,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
             {
                 Identity = (childPage.ID, childPage.Name),
                 SignatureIdentity = (childSignature.ID, childSignature.Name),
-                Properties = properties
+                Properties = properties,
+                PropertyType = currentPage.GetPropertyType(childPage.ID)
             });
         }
 

@@ -140,6 +140,8 @@ namespace PageTree.Client.Shared.Views.Pages
                 Name = propertyVM?.SignatureIdentity?.Name,
             };
 
+            vmModel.PropertyType = propertyType;
+
             bool hasDefinedChildrenArtifacts = childStyle != null && !childStyle.Artifacts.IsNullOrEmpty();
 
             // apply parent style

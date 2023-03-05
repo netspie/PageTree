@@ -50,11 +50,33 @@ div ::deep .property-menu-button {
 }
 
 .signature {
+    font-size: 12px;
+    color: crimson;
+}
+
+.property-info-bar-image {
+    height: 24px;
+    width: 24px;
+    opacity: 0.7;
+}
+
+.property-info-bar {
     position: absolute;
+    
     margin-right: 0;
     margin-top: 0;
-    transform: translateY(-90%);
-    width: 100%;
+    
+    transform: translateY(-100%);
+    
+    width: fit-content;
     height: 100%;
-    text-align: end;
+    
+    right: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+ 
+    align-items: center;
+
+    gap: 10px;
 }
