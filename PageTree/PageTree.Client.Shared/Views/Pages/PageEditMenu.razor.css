@@ -20,3 +20,7 @@
     opacity: 0;
     cursor: default;
 }
+
+.create-link-button {
+    width: 30px;
+}

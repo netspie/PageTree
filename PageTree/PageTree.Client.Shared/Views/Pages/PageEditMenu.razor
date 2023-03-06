@@ -14,6 +14,9 @@
         }
         <button class="button" @onclick=OnAddSubPageOnTop>+&lt;</button>
         <button class="button" @onclick=OnAddSubPageOnBottom>+&gt;</button>
+        <div class="button space" />
+        <button class="button create-link-button" @onclick=OnAddLinkOnTop>+&lt;L</button>
+        <button class="button create-link-button" @onclick=OnAddLinkOnBottom>+&gt;L</button>
     }
 </div>
 
@@ -25,4 +28,6 @@
     [Parameter] public Func<Task> OnNavigateUp { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
+    [Parameter] public Func<Task> OnAddLinkOnTop { get; set; }
+    [Parameter] public Func<Task> OnAddLinkOnBottom { get; set; }
 }

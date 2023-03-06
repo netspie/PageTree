@@ -377,6 +377,18 @@ namespace PageTree.Client.Shared.Views.Pages
             return Task.CompletedTask;
         }
 
+        private Task OnCreateLinkOnTopInternal()
+        {
+            _selectLinkWindow.Show(Model.ProjectID, Model.Identity.ID, 0);
+            return Task.CompletedTask;
+        }
+
+        private Task OnCreateLinkOnBottomInternal()
+        {
+            _selectLinkWindow.Show(Model.ProjectID, Model.Identity.ID, int.MaxValue);
+            return Task.CompletedTask;
+        }
+
         private class StyleData
         {
             public StyleOfRootProperty? Parent { get; }
