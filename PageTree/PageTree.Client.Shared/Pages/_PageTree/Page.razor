@@ -31,7 +31,8 @@
         OnPropertyMove=OnPropertyReorder
         OnPropertyMoveLevel=OnPropertyMoveLevel
         OnPropertyRename=OnPropertyRename
-        OnPropertyResignature=OnPropertyResignature />
+        OnPropertyResignature=OnPropertyResignature
+        OnPathElementClick=OnPathElementClick />
 
 </BackgroundAndContent>
 
@@ -157,6 +158,8 @@
         await _commands.Execute(new ChangeLevelOfPropertyCommand(parentPageID, propertyID, newParentPageID));
         await RefreshView();
     }
+
+    private Task OnPathElementClick(string id) => NavigateTo(id);
 
     protected override string QueryParameter => PageID;
 }

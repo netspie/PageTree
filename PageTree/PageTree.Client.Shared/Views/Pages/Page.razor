@@ -26,7 +26,7 @@
 
         <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectLinkInputChanged OnSelected=OnSelectLinkSelected />
     }
-    <PageHeader Model=@GetPageHeader() />
+    <PageHeader Model=@GetPageHeader() OnPathElementClick=OnPathElementClick />
     <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
     <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick IsEditMode=IsEditMode/>
 

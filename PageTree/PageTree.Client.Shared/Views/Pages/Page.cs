@@ -35,6 +35,7 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public Func<string, string, Task> OnPropertyResignature { get; set; }
         [Parameter] public SelectLinkWindow.OnInputChangedDelegate? OnSelectLinkInputChanged { get; set; }
         [Parameter] public SelectLinkWindow.OnSelectedDelegate? OnSelectLinkSelected { get; set; }
+        [Parameter] public Func<string, Task> OnPathElementClick { get; set; }
 
         [Parameter] public bool IsEditMode { get; set; } = true;
 
@@ -265,6 +266,8 @@ namespace PageTree.Client.Shared.Views.Pages
         private PageHeader.ViewModel GetPageHeader()
         {
             var vm = new PageHeader.ViewModel();
+
+            vm.Path = Model.Path.ToUIIdentityVM();
 
             if (Model!.SignatureIdentity != null && !Model!.SignatureIdentity.Name.IsNullOrEmpty())
                 vm.Artifacts.Add(

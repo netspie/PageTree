@@ -19,7 +19,8 @@
         Model=_vm
 
         OnNavigateUp=OnNavigateUp
-        OnPropertyClick=OnPropertyClick />
+        OnPropertyClick=OnPropertyClick
+        OnPathElementClick=OnPathElementClick />
 </BackgroundAndContent>
 
 @code {
@@ -73,6 +74,7 @@
 
     private Task OnPropertyClick(TreeLayout.TreeNode property) => NavigateTo(property.Identity.ID);
     private Task OnNavigateUp() => NavigateTo(_vm.Path.LastOrDefault()?.ID);
+    private Task OnPathElementClick(string id) => NavigateTo(id);
 
     private async void OnLocationChanged(object sender, LocationChangedEventArgs args)
     {
