@@ -3,7 +3,7 @@ using PageTree.Domain;
 
 namespace PageTree.Server.ApiContracts
 {
-    public class ChangeIndexOfPageApiCommand
+    public class ChangeLevelOfPropertyApiCommand
     {
         [AuthorizeResource(typeof(Page))]
         public string PageID { get; set; }
@@ -11,6 +11,7 @@ namespace PageTree.Server.ApiContracts
         [AuthorizeResource(typeof(Page))]
         public string PropertyID { get; set; }
 
-        public int Index { get; set; }
+        [AuthorizeResource(typeof(Page))]
+        public string NewPageID { get; set; }
     }
 }

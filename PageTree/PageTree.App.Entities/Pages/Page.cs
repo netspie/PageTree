@@ -1,8 +1,12 @@
-﻿using Common.Basic.Collections;
+﻿using Common.Basic.Blocks;
+using Common.Basic.Collections;
 using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
 using Corelibs.Basic.Collections;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Practicer.Domain.Pages.Common;
+using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PageTree.Domain
 {
@@ -65,6 +69,24 @@ namespace PageTree.Domain
                 return EditableItemOwnerFunctions.Remove(id, ChildrenIDs, SubPages);
 
             return false;
+        }
+
+        public bool MoveProperty(Page currentParentPage, Page propertyPage, out bool isSubPage)
+        {
+            isSubPage = currentParentPage.IsSubPage(propertyPage.ID);
+            if (ChildrenIDs.Contains(propertyPage.ID))
+                return false;
+
+            if (!currentParentPage.RemoveProperty(propertyPage.ID))
+                return false;
+
+            if (isSubPage)
+            {
+                propertyPage.ParentID = ID;
+                return CreateSubPage(propertyPage.ID, int.MaxValue);
+            }
+
+            return CreateLink(propertyPage.ID, int.MaxValue);
         }
 
         public string OwnerID { get; set; } = new("");

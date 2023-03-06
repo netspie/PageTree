@@ -1,4 +1,5 @@
 ﻿@using Common.Basic.Collections;
+@using Corelibs.Basic.Collections;
 @using Corelibs.BlazorViews.Components
 @using Corelibs.BlazorViews.Layouts
 @using Corelibs.BlazorShared.UI;
@@ -12,8 +13,10 @@
     <div class="property">
         @if (IsEditMode)
         {
+            bool hasGrandParent = Model.ParentIDs.Length >= 2;
             <PropertyMenu @ref=_menu 
                 ID=@Model.ID
+
                 OnRemove=OnRemove
                 OnCreateSubpage=OnCreateSubpageInternal
                 OnCreateLink=OnCreateLinkInternal
@@ -21,8 +24,13 @@
                 OnMoveUpButtonClick=OnMoveUpInternal 
                 OnRename=OnRenameButtonClick
                 OnResignature=OnResignatureInternal
+                OnMoveLevelUpButtonClick=OnMoveLevelUpInternal
+                OnMoveLevelDownButtonClick=OnMoveLevelDownInternal
+
                 Index=Index
-                IsLast=IsLast />
+                IsLast=IsLast 
+                HasGrandParent=hasGrandParent
+                HasSiblings=Model.HasSiblings />
         }
         @*<ul class="side-menu">
             <input type="checkbox" class="select-checkbox" />
@@ -82,6 +90,8 @@
     [Parameter] public Func<string, Task> OnRemove { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveUp { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveDown { get; set; }
+    [Parameter] public Func<string, string, string, Task> OnMoveLevelUp { get; set; } // parentPageID, propertyID, newParentPageID
+    [Parameter] public Func<string, string, Task> OnMoveLevelDown { get; set; } // parentPageID, propertyID
     [Parameter] public Func<string, string, Task<bool>> OnRename { get; set; }
     [Parameter] public Func<string, Task> OnResignature { get; set; }
 
@@ -127,28 +137,40 @@
     private Task OnCreateSubpageInternal(int index)
     {
         _menu.OuterClick.Enabled = false;
-        return OnCreateSubpage?.Invoke(Model.ParentID, index + 1);
+        return OnCreateSubpage?.Invoke(Model.ParentIDs.Last(), index + 1);
     }
 
     private Task OnCreateLinkInternal(int index)
     {
         _menu.OuterClick.Enabled = false;
-        return OnCreateLink?.Invoke(Model.ParentID, index + 1);
+        return OnCreateLink?.Invoke(Model.ParentIDs.Last(), index + 1);
     }
 
     private Task OnMoveDownInternal(string propertyID, int index)
     {
         _menu.OuterClick.Enabled = false;
-        return OnMoveDown?.Invoke(Model.ParentID, propertyID, index);
+        return OnMoveDown?.Invoke(Model.ParentIDs.Last(), propertyID, index);
     }
 
     private Task OnMoveUpInternal(string propertyID, int index)
     {
         _menu.OuterClick.Enabled = false;
-        return OnMoveUp?.Invoke(Model.ParentID, propertyID, index);
+        return OnMoveUp?.Invoke(Model.ParentIDs.Last(), propertyID, index);
     }
 
-    private Task OnResignatureInternal() 
+    private Task OnMoveLevelDownInternal(string propertyID)
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnMoveLevelDown?.Invoke(Model.ParentIDs.Last(), propertyID);
+    }
+
+    private Task OnMoveLevelUpInternal(string propertyID)
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnMoveLevelUp?.Invoke(Model.ParentIDs.Last(), propertyID, Model.ParentIDs.FirstBeforeLast());
+    }
+
+    private Task OnResignatureInternal()
     {
         _menu.OuterClick.Enabled = false;
         return OnResignature?.Invoke(Model.ID);
@@ -169,7 +191,8 @@
     public class ViewModel
     {
         public string ID { get; set; }
-        public string ParentID { get; set; }
+        public string[] ParentIDs { get; set; }
+        public bool HasSiblings { get; set; }
         public IdentityVM Signature { get; set; }
 
         public PropertyType PropertyType { get; set; }

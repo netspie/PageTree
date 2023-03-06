@@ -72,7 +72,7 @@
     }
 
     private Task OnPropertyClick(TreeLayout.TreeNode property) => NavigateTo(property.Identity.ID);
-    private Task OnNavigateUp() => NavigateTo(_vm.Path.FirstOrDefault()?.ID);
+    private Task OnNavigateUp() => NavigateTo(_vm.Path.LastOrDefault()?.ID);
 
     private async void OnLocationChanged(object sender, LocationChangedEventArgs args)
     {

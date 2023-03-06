@@ -26,7 +26,8 @@ namespace PageTree.Client.Shared.Services
             AddPost<CreateLinkCommand, CreateLinkApiCommand>("pages/{pageID}/links");
             AddDelete<RemovePropertyCommand, RemovePropertyApiCommand>("pages");
             AddPatch<ChangeNameOfPageCommand, ChangeNameOfPageApiCommand>("pages/{pageID}/changeName");
-            AddPatch<ChangeIndexOfPageCommand, ChangeIndexOfPageApiCommand>("pages/changeIndex");
+            AddPatch<ChangeIndexOfPropertyCommand, ChangeIndexOfPropertyApiCommand>("pages/changeIndex");
+            AddPatch<ChangeLevelOfPropertyCommand, ChangeLevelOfPropertyApiCommand>("pages/changeLevel");
             AddPatch<ChangeSignatureOfPageCommand, ChangeSignatureOfPageApiCommand>("pages/{pageID}/changeSignature");
 
             // Signatures

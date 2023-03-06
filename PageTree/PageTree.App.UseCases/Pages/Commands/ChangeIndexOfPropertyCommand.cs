@@ -6,17 +6,17 @@ using PageTree.Domain;
 
 namespace PageTree.App.Pages.Commands;
 
-public class ChangeIndexOfPageCommandHandler : BaseCommandHandler, ICommandHandler<ChangeIndexOfPageCommand, Result>
+public class ChangeIndexOfPropertyCommandHandler : BaseCommandHandler, ICommandHandler<ChangeIndexOfPropertyCommand, Result>
 {
     private readonly IRepository<Page> _pageRepository;
 
-    public ChangeIndexOfPageCommandHandler(
+    public ChangeIndexOfPropertyCommandHandler(
          IRepository<Page> pageRepository)
     {
         _pageRepository = pageRepository;
     }
 
-    public async ValueTask<Result> Handle(ChangeIndexOfPageCommand command, CancellationToken ct)
+    public async ValueTask<Result> Handle(ChangeIndexOfPropertyCommand command, CancellationToken ct)
     {
         var result = Result.Success();
 
@@ -33,4 +33,4 @@ public class ChangeIndexOfPageCommandHandler : BaseCommandHandler, ICommandHandl
     }
 }
 
-public sealed record ChangeIndexOfPageCommand(string PageID, string PropertyID, int Index) : ICommand<Result>;
+public sealed record ChangeIndexOfPropertyCommand(string PageID, string PropertyID, int Index) : ICommand<Result>;

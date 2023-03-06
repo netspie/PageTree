@@ -20,7 +20,10 @@
     @if (IsEditMode)
     {
         var signaturesOptions = Model.Signatures.ToUIIdentityVM();
-        <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureInternal />
+        <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureSignatureSelected />
+
+        <ChooseFromListWindow @ref=_movePropertyDownWindow OnSelected=OnMoveLevelDownOptionSelected />
+
         <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectLinkInputChanged OnSelected=OnSelectLinkSelected />
     }
     <PageHeader Model=@GetPageHeader() />

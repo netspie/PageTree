@@ -29,6 +29,7 @@
         OnAddSubPageOnBottom=OnAddSubPageOnBottom 
         OnPropertyRemove=OnPropertyRemove 
         OnPropertyMove=OnPropertyReorder
+        OnPropertyMoveLevel=OnPropertyMoveLevel
         OnPropertyRename=OnPropertyRename
         OnPropertyResignature=OnPropertyResignature />
 
@@ -90,7 +91,7 @@
 
     private Task OnPropertyClick(TreeLayout.TreeNode property) => NavigateTo(property.Identity.ID);
 
-    private Task OnNavigateUp() => NavigateTo(_vm.Path.FirstOrDefault()?.ID);
+    private Task OnNavigateUp() => NavigateTo(_vm.Path.LastOrDefault()?.ID);
 
     private async Task OnAddSubPage(string pageID, int index)
     {
@@ -118,7 +119,7 @@
 
     private async Task OnPropertyReorder(string pageID, string propertyID, int index)
     {
-        await _commands.Execute(new ChangeIndexOfPageCommand(pageID, propertyID, index));
+        await _commands.Execute(new ChangeIndexOfPropertyCommand(pageID, propertyID, index));
         await RefreshView();
     }
 
@@ -148,6 +149,12 @@
     private async Task OnSelectLinkSelected(string pageID, int index, string linkID)
     {
         await _commands.Execute(new CreateLinkCommand(pageID, linkID, index));
+        await RefreshView();
+    }
+
+    private async Task OnPropertyMoveLevel(string parentPageID, string propertyID, string newParentPageID)
+    {
+        await _commands.Execute(new ChangeLevelOfPropertyCommand(parentPageID, propertyID, newParentPageID));
         await RefreshView();
     }
 

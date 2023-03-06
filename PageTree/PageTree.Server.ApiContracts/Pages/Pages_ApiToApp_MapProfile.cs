@@ -10,7 +10,8 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<GetPageApiQuery, GetPageQuery>();
             CreateMapCirc<GetPagesSearchResultsApiQuery, GetPagesSearchResultsQuery>();
             CreateMapCirc<RemovePropertyApiCommand, RemovePropertyCommand>();
-            CreateMapCirc<ChangeIndexOfPageApiCommand, ChangeIndexOfPageCommand>();
+            CreateMapCirc<ChangeIndexOfPropertyApiCommand, ChangeIndexOfPropertyCommand>();
+            CreateMapCirc<ChangeLevelOfPropertyApiCommand, ChangeLevelOfPropertyCommand>();
             CreateMapCirc<ChangeNameOfPageApiCommand, ChangeNameOfPageCommand>();
             CreateMapCirc<ChangeSignatureOfPageApiCommand, ChangeSignatureOfPageCommand>();
         }

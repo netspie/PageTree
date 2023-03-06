@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using PageTree.App.Entities.Styles;
 using PageTree.App.Pages.Queries;
+using PageTree.Client.Shared.Extensions;
+using PageTree.Domain;
 using System.Drawing;
+using System.Linq;
 
 namespace PageTree.Client.Shared.Views.Pages
 {
@@ -27,6 +30,7 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public Func<string, int, Task> OnAddLink { get; set; }
         [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
         [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
+        [Parameter] public Func<string, string, string, Task> OnPropertyMoveLevel { get; set; }
         [Parameter] public Func<string, string, Task<bool>> OnPropertyRename { get; set; }
         [Parameter] public Func<string, string, Task> OnPropertyResignature { get; set; }
         [Parameter] public SelectLinkWindow.OnInputChangedDelegate? OnSelectLinkInputChanged { get; set; }
@@ -42,6 +46,7 @@ namespace PageTree.Client.Shared.Views.Pages
         private Arrangements_AddNew? _arrangements_AddNew;
         private TreeLayout? _treeLayout;
         private ChooseFromListWindow _signatureChangeWindow;
+        private ChooseFromListWindow _movePropertyDownWindow;
         private SelectLinkWindow _selectLinkWindow;
 
         private List<Corelibs.BlazorViews.ViewModels.IdentityVM> _properties = new();
@@ -87,7 +92,8 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private TreeLayout.TreeNode.GetContentDelegate GetProperty(
             PropertyVM propertyVM,
-            string parentID,
+            string[] parentIDs,
+            bool hasSiblings,
             int propertyIndex,
             bool isLast,
             StyleOfRootProperty parentStyle,
@@ -102,7 +108,7 @@ namespace PageTree.Client.Shared.Views.Pages
 
                 return RenderFragmentExtensions.CreateComponent<Property>(builder =>
                 {
-                    var vmModel = GetPropertyViewModel(propertyVM, parentID, parentStyle, childStyle, propertyIndex, propertyVM.PropertyType);
+                    var vmModel = GetPropertyViewModel(propertyVM, parentIDs, hasSiblings, parentStyle, childStyle, propertyIndex, propertyVM.PropertyType);
                     // override main by signature or page style
 
                     builder.AddAttribute(seqLocal++, "Model", vmModel);
@@ -116,6 +122,8 @@ namespace PageTree.Client.Shared.Views.Pages
                     builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
                     builder.AddAttribute(seqLocal++, "OnRename", OnPropertyRename);
                     builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
+                    builder.AddAttribute(seqLocal++, "OnMoveLevelUp", OnMoveLevelUpInternal);
+                    builder.AddAttribute(seqLocal++, "OnMoveLevelDown", OnMoveLevelDownInternal);
 
                     builder.AddAttribute(seqLocal++, "Index", propertyIndex);
                     builder.AddAttribute(seqLocal++, "IsLast", isLast);
@@ -125,7 +133,8 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private static Property.ViewModel GetPropertyViewModel(
             PropertyVM propertyVM,
-            string parentID,
+            string[] parentIDs,
+            bool hasSiblings,
             StyleOfRootProperty parentStyle,
             StyleOfChildProperty childStyle,
             int propertyIndex,
@@ -134,7 +143,7 @@ namespace PageTree.Client.Shared.Views.Pages
             var vmModel = new Property.ViewModel();
 
             vmModel.ID = propertyVM.Identity.ID;
-            vmModel.ParentID = parentID;
+            vmModel.ParentIDs = parentIDs;
             vmModel.Signature = new()
             {
                 ID = propertyVM?.SignatureIdentity?.ID,
@@ -142,6 +151,7 @@ namespace PageTree.Client.Shared.Views.Pages
             };
 
             vmModel.PropertyType = propertyType;
+            vmModel.HasSiblings = hasSiblings;
 
             bool hasDefinedChildrenArtifacts = childStyle != null && !childStyle.Artifacts.IsNullOrEmpty();
 
@@ -291,11 +301,12 @@ namespace PageTree.Client.Shared.Views.Pages
             if (layout != null && layout.Gap.HasValue)
                 layoutGap = layout.Gap.Value;
 
+            var parentIDs = Model.Path.Select(p => p.ID).Append(Model.Identity.ID).ToArray();
             return new()
             {
                 CanExpand = false,
                 IsExpanded = true,
-                Children = GetTreeNodes(Model.Properties, Model.Identity.ID, Model?.StyleOfPage?.RootProperty, Model?.StylesOfChildren),
+                Children = GetTreeNodes(Model.Properties, parentIDs, Model?.StyleOfPage?.RootProperty, Model?.StylesOfChildren),
                 Data = new StyleData(Model.StylesOfChildren, null, Model?.StyleOfPage?.RootProperty),
                 Layout = new()
                 {
@@ -306,7 +317,7 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private List<TreeLayout.TreeNode> GetTreeNodes(
             PropertyVM[] propertyVMs,
-            string parentID,
+            string[] parentIDs,
             StyleOfRootProperty parentStyle,
             Style[] signatureOrPageStyles)
         {
@@ -321,6 +332,8 @@ namespace PageTree.Client.Shared.Views.Pages
                 var layout = parentStyle?.Layout;
                 var layoutGap = layout != null && layout.Gap.HasValue ? layout.Gap.Value : 0;
 
+                var parentIDsOfChild = parentIDs.Append(propertyVM.Identity.ID).ToArray();
+
                 list.Add(new()
                 {
                     Identity = new() { ID = propertyVM.Identity.ID, Name = propertyVM.Identity.Name },
@@ -333,10 +346,11 @@ namespace PageTree.Client.Shared.Views.Pages
                         Gap = layoutGap
                     },
 
-                    Children = GetTreeNodes(propertyVM.Properties, propertyVM.Identity.ID, childStyle, signatureOrPageStyles),
+                    Children = GetTreeNodes(propertyVM.Properties, parentIDsOfChild, childStyle, signatureOrPageStyles),
                     GetContent = GetProperty(
                         propertyVM,
-                        parentID, 
+                        parentIDs,
+                        hasSiblings: propertyVMs.Length > 1,
                         propertyIndex: i, 
                         isLast: i == propertyVMs.Length - 1,
                         parentStyle, childStyle, signatureOrPageStyles),
@@ -385,17 +399,53 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private Task OnResignatureMenuButtonInternal(string propertyID)
         {
-            _signatureChangeWindow.ID = propertyID;
+            _signatureChangeWindow.Data = propertyID;
             _signatureChangeWindow.OuterClick.Enabled = true;
             return Task.CompletedTask;
         }
 
-        private Task OnResignatureInternal(string propertyID, string signatureID)
+        private Task OnResignatureSignatureSelected(object data, string signatureID)
         {
             _signatureChangeWindow.OuterClick.Enabled = false;
+
+            var propertyID = data as string;
             OnPropertyResignature?.Invoke(propertyID, signatureID);
             return Task.CompletedTask;
         }
+
+        private Task OnMoveLevelDownOptionSelected(object data, string newParentPageID)
+        {
+            var dataTuple = (ValueTuple<string, string>) data;
+
+            var parentPageID = dataTuple.Item1;
+            var propertyID = dataTuple.Item2;
+
+            _movePropertyDownWindow.OuterClick.Enabled = false;
+            return OnPropertyMoveLevel?.Invoke(parentPageID, propertyID, newParentPageID);
+        }
+
+        private Task OnMoveLevelDownInternal(string parentPageID, string propertyID)
+        {
+            _movePropertyDownWindow.Data = (parentPageID, propertyID);
+
+            if (parentPageID == Model.Identity.ID)
+            {
+                _movePropertyDownWindow.Options = Model.Properties.Select(p => p.Identity).Where(p => p.ID != propertyID).ToUIIdentityVM();
+            }
+            else
+            {
+                var propertiesFlattened = Model.Properties.Flatten(p => p.Properties).ToArray();
+                var parentPage = propertiesFlattened.FirstOrDefault(p => p.Identity.ID == parentPageID);
+                _movePropertyDownWindow.Options = parentPage.Properties.Select(p => p.Identity).Where(p => p.ID != propertyID).ToUIIdentityVM();
+            }
+            
+            _movePropertyDownWindow.OuterClick.Enabled = true;
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnMoveLevelUpInternal(string parentPageID, string propertyID, string newParentPageID) =>
+            OnPropertyMoveLevel?.Invoke(parentPageID, propertyID, newParentPageID);
 
         public Task UpdateSelectLinkWindow(SearchedPagesResultsVM vm)
         {
