@@ -27,15 +27,24 @@
 
     @foreach (var artifact in Model.Artifacts)
     {
-        <CText
-            Text=@artifact.Text
-            FontSize=artifact.Font.FontSize />
+        @if (artifact.Type == ViewModel.ArtifactType.Name && IsEditMode)
+        {
+            <EditableText Text=@artifact.Text OnSubmit=@((name => OnNameChanged?.Invoke(name))) Mode=EditableText.ModeType.EditOnClick
+                FontSize=artifact.Font.FontSize />
+        }
+        else
+        {
+            <CText Text=@artifact.Text
+                FontSize=artifact.Font.FontSize />
+        }
     }
 </div>
 
 @code {
     [Parameter] public ViewModel? Model { get; set; } = new();
     [Parameter] public Func<string, Task> OnPathElementClick { get; set; }
+    [Parameter] public Func<string, Task<bool>> OnNameChanged { get; set; }
+    [Parameter] public bool IsEditMode { get; set; }
 
     private string _noPaddingTopCssClass => Model.Path.Length > 0 ? "" : "no-padding-top";
 
@@ -46,6 +55,7 @@
 
         public class Artifact
         {
+            public ArtifactType Type { get; set; }
             public string Text { get; set; } = "";
             public Font Font { get; set; } = new();
         }
@@ -69,6 +79,13 @@
             SemiBold,
             Bold,
             ExtraBold
+        }
+
+        public enum ArtifactType
+        {
+            Name,
+            Signature,
+            Metadata
         }
     }
 }

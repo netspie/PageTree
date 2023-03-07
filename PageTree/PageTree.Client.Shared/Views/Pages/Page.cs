@@ -9,9 +9,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 using PageTree.App.Entities.Styles;
 using PageTree.App.Pages.Queries;
 using PageTree.Client.Shared.Extensions;
-using PageTree.Domain;
 using System.Drawing;
-using System.Linq;
 
 namespace PageTree.Client.Shared.Views.Pages
 {
@@ -32,6 +30,7 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
         [Parameter] public Func<string, string, string, Task> OnPropertyMoveLevel { get; set; }
         [Parameter] public Func<string, string, Task<bool>> OnPropertyRename { get; set; }
+        [Parameter] public Func<string, string, Task<bool>> OnPageNameChanged { get; set; }
         [Parameter] public Func<string, string, Task> OnPropertyResignature { get; set; }
         [Parameter] public SelectLinkWindow.OnInputChangedDelegate? OnSelectLinkInputChanged { get; set; }
         [Parameter] public SelectLinkWindow.OnSelectedDelegate? OnSelectLinkSelected { get; set; }
@@ -273,6 +272,7 @@ namespace PageTree.Client.Shared.Views.Pages
                 vm.Artifacts.Add(
                     new()
                     {
+                        Type = PageHeader.ViewModel.ArtifactType.Signature,
                         Text = Model.SignatureIdentity.Name,
                         Font = new() { FontSize = 16 }
                     });
@@ -287,6 +287,7 @@ namespace PageTree.Client.Shared.Views.Pages
             vm.Artifacts.Add(
                 new()
                 {
+                    Type = PageHeader.ViewModel.ArtifactType.Name,
                     Text = Model.Identity.Name,
                     Font = new() { FontSize = 24 }
                 });

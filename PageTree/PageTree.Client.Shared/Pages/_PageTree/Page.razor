@@ -23,14 +23,20 @@
 
         OnNavigateUp=OnNavigateUp
         OnAddSubPage=OnAddSubPage
+        
         OnSelectLinkInputChanged=OnSelectLinkInputChanged
         OnSelectLinkSelected=OnSelectLinkSelected
+       
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom 
         OnPropertyRemove=OnPropertyRemove 
+        
         OnPropertyMove=OnPropertyReorder
         OnPropertyMoveLevel=OnPropertyMoveLevel
-        OnPropertyRename=OnPropertyRename
+
+        OnPropertyRename=OnPageRename
+        OnPageNameChanged=OnPageRename
+
         OnPropertyResignature=OnPropertyResignature
         OnPathElementClick=OnPathElementClick />
 
@@ -130,9 +136,9 @@
         await RefreshView();
     }
 
-    private async Task<bool> OnPropertyRename(string propertyID, string name)
+    private async Task<bool> OnPageRename(string pageID, string name)
     {
-        await _commands.Execute(new ChangeNameOfPageCommand(propertyID, name));
+        await _commands.Execute(new ChangeNameOfPageCommand(pageID, name));
         await RefreshView();
 
         return true;
