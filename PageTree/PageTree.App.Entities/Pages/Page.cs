@@ -1,12 +1,7 @@
-﻿using Common.Basic.Blocks;
-using Common.Basic.Collections;
-using Common.Basic.DDD;
+﻿using Common.Basic.DDD;
 using Corelibs.Basic.Architecture.DDD;
 using Corelibs.Basic.Collections;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Practicer.Domain.Pages.Common;
-using System.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PageTree.Domain
 {
