@@ -34,8 +34,8 @@ namespace PageTree.Client.Shared.Services
             // Page Templates
             AddPost<CreateSubPageTemplateCommand, CreateSubPageApiCommand>("pageTemplates/{templatePageID}/subpages");
             AddDelete<RemovePropertyTemplateCommand, RemovePropertyTemplateApiCommand>("pageTemplates");
-            AddPatch<ChangePageTemplateNameCommand, ChangeNameOfPageTemplateApiCommand>("pageTemplates/{templatePageID}/changeName");
-            AddPatch<ChangeNameOfPageTemplatePageApiCommand, ChangePageTemplatePageNameCommand>("pageTemplates/{templatePageID}/changePageName");
+            AddPatch<ChangeNameOfPageTemplateCommand, ChangeNameOfPageTemplateApiCommand>("pageTemplates/{templatePageID}/changeName");
+            AddPatch<ChangeNameOfPageTemplatePageCommand, ChangeNameOfPageTemplatePageApiCommand> ("pageTemplates/{templatePageID}/changePageName");
             AddPatch<ChangeIndexOfPropertyTemplateCommand, ChangeIndexOfPropertyTemplateApiCommand>("pageTemplates/changeIndex");
             AddPatch<ChangeLevelOfPropertyTemplateCommand, ChangeLevelOfPropertyTemplateApiCommand>("pageTemplates/changeLevel");
             AddPatch<ChangeSignatureOfPageTemplateCommand, ChangeSignatureOfPageTemplateApiCommand>("pageTemplates/{templatePageID}/changeSignature");

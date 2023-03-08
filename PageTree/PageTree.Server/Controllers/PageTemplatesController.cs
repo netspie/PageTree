@@ -36,11 +36,11 @@ namespace PageTree.Server.Api.Controllers
 
         [HttpPatch, Route("{templatePageID}/changeName"), Authorize_Edit]
         public Task<IActionResult> ChangePageTemplateName([FromRouteAndBody] ChangeNameOfPageTemplateApiCommand command) =>
-            _mediator.MapSendAndGetPatchResponse<ChangePageTemplateNameCommand>(command, _mapper);
+            _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageTemplateCommand>(command, _mapper);
         
         [HttpPatch, Route("{templatePageID}/changePageName"), Authorize_Edit]
         public Task<IActionResult> ChangePageName([FromRouteAndBody] ChangeNameOfPageTemplatePageApiCommand command) =>
-            _mediator.MapSendAndGetPatchResponse<ChangePageTemplatePageNameCommand>(command, _mapper);
+            _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageTemplatePageCommand>(command, _mapper);
 
         [HttpPatch, Route("changeIndex"), Authorize_Edit]
         public Task<IActionResult> ChangeIndex([FromRouteAndBody] ChangeIndexOfPropertyTemplateApiCommand command) =>

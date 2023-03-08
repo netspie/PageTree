@@ -6,17 +6,17 @@ using PageTree.App.UseCases.Common;
 
 namespace PageTree.App.PageTemplates.Commands;
 
-public class ChangePageTemplateNameCommandHandler : BaseCommandHandler, ICommandHandler<ChangePageTemplateNameCommand, Result>
+public class ChangeNameOfPageTemplateCommandHandler : BaseCommandHandler, ICommandHandler<ChangeNameOfPageTemplateCommand, Result>
 {
     private readonly IRepository<PageTemplate> _pageTemplateRepository;
 
-    public ChangePageTemplateNameCommandHandler(
+    public ChangeNameOfPageTemplateCommandHandler(
         IRepository<PageTemplate> pageTemplateRepository)
     {
         _pageTemplateRepository = pageTemplateRepository;
     }
 
-    public async ValueTask<Result> Handle(ChangePageTemplateNameCommand command, CancellationToken ct)
+    public async ValueTask<Result> Handle(ChangeNameOfPageTemplateCommand command, CancellationToken ct)
     {
         var result = Result.Success();
 
@@ -33,4 +33,4 @@ public class ChangePageTemplateNameCommandHandler : BaseCommandHandler, ICommand
     }
 }
 
-public sealed record ChangePageTemplateNameCommand(string PageTemplateID, string Name) : ICommand<Result>;
+public sealed record ChangeNameOfPageTemplateCommand(string PageTemplateID, string Name) : ICommand<Result>;

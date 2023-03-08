@@ -10,8 +10,8 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<RemovePropertyTemplateApiCommand, RemovePropertyTemplateCommand>();
             CreateMapCirc<ChangeIndexOfPropertyTemplateApiCommand, ChangeIndexOfPropertyTemplateCommand>();
             CreateMapCirc<ChangeLevelOfPropertyTemplateApiCommand, ChangeLevelOfPropertyTemplateCommand>();
-            CreateMapCirc<ChangeNameOfPageTemplateApiCommand, ChangePageTemplateNameCommand>();
-            CreateMapCirc<ChangeNameOfPageTemplatePageApiCommand, ChangePageTemplatePageNameCommand>();
+            CreateMapCirc<ChangeNameOfPageTemplateApiCommand, ChangeNameOfPageTemplateCommand>();
+            CreateMapCirc<ChangeNameOfPageTemplatePageApiCommand, ChangeNameOfPageTemplatePageCommand>();
             CreateMapCirc<ChangeSignatureOfPageTemplateApiCommand, ChangeSignatureOfPageTemplateCommand>();
         }
     }
