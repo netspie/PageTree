@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Corelibs.BlazorShared;
 using PageTree.App.Pages.Commands;
+using PageTree.App.PageTemplates.Commands;
 using PageTree.App.Projects.Commands;
 using PageTree.App.UseCases.Signatures.Commands;
 using PageTree.App.UseCases.Users.Commands;
@@ -29,6 +30,15 @@ namespace PageTree.Client.Shared.Services
             AddPatch<ChangeIndexOfPropertyCommand, ChangeIndexOfPropertyApiCommand>("pages/changeIndex");
             AddPatch<ChangeLevelOfPropertyCommand, ChangeLevelOfPropertyApiCommand>("pages/changeLevel");
             AddPatch<ChangeSignatureOfPageCommand, ChangeSignatureOfPageApiCommand>("pages/{pageID}/changeSignature");
+
+            // Page Templates
+            AddPost<CreateSubPageTemplateCommand, CreateSubPageApiCommand>("pageTemplates/{templatePageID}/subpages");
+            AddDelete<RemovePropertyTemplateCommand, RemovePropertyTemplateApiCommand>("pageTemplates");
+            AddPatch<ChangePageTemplateNameCommand, ChangeNameOfPageTemplateApiCommand>("pageTemplates/{templatePageID}/changeName");
+            AddPatch<ChangeNameOfPageTemplatePageApiCommand, ChangePageTemplatePageNameCommand>("pageTemplates/{templatePageID}/changePageName");
+            AddPatch<ChangeIndexOfPropertyTemplateCommand, ChangeIndexOfPropertyTemplateApiCommand>("pageTemplates/changeIndex");
+            AddPatch<ChangeLevelOfPropertyTemplateCommand, ChangeLevelOfPropertyTemplateApiCommand>("pageTemplates/changeLevel");
+            AddPatch<ChangeSignatureOfPageTemplateCommand, ChangeSignatureOfPageTemplateApiCommand>("pageTemplates/{templatePageID}/changeSignature");
 
             // Signatures
             AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("signatures");
