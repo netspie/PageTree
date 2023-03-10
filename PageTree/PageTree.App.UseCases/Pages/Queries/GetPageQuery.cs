@@ -11,6 +11,7 @@ using PageTree.App.UseCases.Pages.Queries.Styles;
 using Common.Basic.Collections;
 using PageTree.App.UseCases.Pages.Common;
 using PageTree.App.UseCases.Common;
+using PageTree.App.Common;
 
 namespace PageTree.App.Pages.Queries;
 
@@ -65,7 +66,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
             new IdentityVM() { ID = signature?.ID, Name = signature?.Name });
 
         var parentPages = new List<Page>();
-        res += await _pageRepository.GetParentPages(page, parentPages);
+        res += await _pageRepository.GetParents(page, p => p.ParentID, parentPages);
         parentPages.Reverse();
 
         var properties = await GetProperties(page, mainStyle?.TreeExpandInfo);

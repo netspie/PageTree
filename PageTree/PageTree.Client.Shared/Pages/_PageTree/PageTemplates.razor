@@ -1,0 +1,11 @@
+﻿@using PageTree.App.PageTemplates.Queries;
+
+@attribute [Route(Uris.Templates)]
+
+@inherits BasePage<GetPageTemplatesQuery, GetPageTemplatesQueryOut, PageTemplatesVM, PageTree.Client.Shared.Views.PageTemplates.PageTemplates>
+
+@code {
+    [Parameter] public string PageTemplateID { get; set; }
+
+    protected override string QueryParameter => PageTemplateID;
+}

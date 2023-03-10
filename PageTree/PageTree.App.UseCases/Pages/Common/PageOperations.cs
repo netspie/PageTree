@@ -8,20 +8,6 @@ namespace PageTree.App.UseCases.Pages.Common
 {
     public static class PageExtensions
     {
-        public static async Task<Result> GetParentPages(
-            this IRepository<Page> pageRepository, Page page, List<Page> pages)
-        {
-            var result = Result.Success();
-            if (string.IsNullOrEmpty(page.ParentID))
-                return result;
-
-            var parentPage = await pageRepository.Get(page.ParentID, result);
-            pages.Add(parentPage);
-            await GetParentPages(pageRepository, parentPage, pages);
-
-            return result;
-        }
-
         public static IdentityVM ToIdentityVM(this Page page) =>
             new(page.ID, page.Name);
 

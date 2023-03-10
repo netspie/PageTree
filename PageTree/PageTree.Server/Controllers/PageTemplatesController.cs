@@ -1,11 +1,13 @@
 using AutoMapper;
 using Corelibs.AspNetApi.Authorization;
+using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.PageTemplates.Commands;
+using PageTree.App.PageTemplates.Queries;
 using PageTree.Server.ApiContracts;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
@@ -26,9 +28,9 @@ namespace PageTree.Server.Api.Controllers
             _mapper = mapper;
         }
 
-        //[HttpGet, Route_ID, AllowAnonymous]
-        //public Task<IActionResult> Get([FromRouteAndQuery] GetPageApiQuery query) =>
-        //    _mediator.MapSendAndGetResponse<GetPageQuery, GetPageQueryOut>(query, _mapper);
+        [HttpGet, Route_ID, AllowAnonymous]
+        public Task<IActionResult> Get([FromRouteAndQuery] GetPageTemplatesApiQuery query) =>
+            _mediator.MapSendAndGetResponse<GetPageTemplatesQuery, GetPageTemplatesQueryOut>(query, _mapper);
 
         [HttpDelete, Authorize_Edit]
         public Task<IActionResult> RemoveProperty([FromRouteAndBody] RemovePropertyTemplateApiCommand command) =>

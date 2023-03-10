@@ -1,4 +1,5 @@
-﻿using Common.Basic.Collections;
+﻿using Common.Basic.Blocks;
+using Common.Basic.Collections;
 using Common.Basic.Repository;
 using Common.Basic.Threading;
 using PageTree.Domain;
@@ -7,6 +8,22 @@ namespace PageTree.App.Common;
 
 public static class CommonExtensions
 {
+    public static async Task<Result> GetParents<T>(
+        this IRepository<T> pageRepository, T page, Func<T, string> getParentID, List<T> parents)
+    {
+        var result = Result.Success();
+
+        var parentID = getParentID(page);
+        if (string.IsNullOrEmpty(parentID))
+            return result;
+
+        var parentEntity = await pageRepository.Get(parentID, result);
+        parents.Add(parentEntity);
+        await GetParents(pageRepository, parentEntity, getParentID, parents);
+
+        return result;
+    }
+
     public static bool IsOfParentOfName(this Page page, IRepository<Page> pageRepo, string name)
     {
         if (page.ParentID.IsNullOrEmpty())
