@@ -20,7 +20,7 @@ public class ChangeSignatureOfPageTemplateCommandHandler : BaseCommandHandler, I
     {
         var result = Result.Success();
 
-        var page = await _pageTemplateRepository.Get(command.PageID, result);
+        var page = await _pageTemplateRepository.Get(command.PageTemplateID, result);
         if (!result.ValidateSuccessAndValues() || page == null)
             return result.Fail();
 

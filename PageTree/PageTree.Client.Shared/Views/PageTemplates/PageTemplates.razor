@@ -1,5 +1,19 @@
-﻿<h3>PageTemplates</h3>
+﻿@using Corelibs.BlazorViews.Layouts;
+@using PageTree.App.PageTemplates.Queries;
+
+@implements IView<PageTemplatesVM>
 
 @code {
+    [Parameter] public PageTemplatesVM Model { get; set; } = new();
 
+    public async Task RefreshView()
+    {
+        await RefreshViewModel();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public Task RefreshViewModel()
+    {
+        return Task.CompletedTask;
+    }
 }

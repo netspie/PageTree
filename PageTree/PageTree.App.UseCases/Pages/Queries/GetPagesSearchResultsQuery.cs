@@ -4,6 +4,7 @@ using Common.Basic.Repository;
 using Corelibs.Basic.Collections;
 using Corelibs.Basic.Searching;
 using Mediator;
+using PageTree.App.Common;
 using PageTree.App.Entities.Signatures;
 using PageTree.App.UseCases.Common;
 using PageTree.App.UseCases.Pages.Common;
@@ -118,7 +119,7 @@ public static class SearchIndexDataExtensions
                 null;
 
             var parentPages = new List<Page>();
-            res += await pageRepository.GetParentPages(page, parentPages);
+            res += await pageRepository.GetParents(page, p => p.ParentID, parentPages);
             parentPages.Reverse();
 
             var childrenPages = await pageRepository.Get(page.ChildrenIDs, res);
