@@ -1,11 +1,23 @@
 ﻿@using PageTree.App.PageTemplates.Queries;
+@using PageTree.Client.Shared.Views.PageTemplates;
 
 @attribute [Route(Uris.Templates)]
 
 @inherits BasePage<GetPageTemplatesQuery, GetPageTemplatesQueryOut, PageTemplatesVM, PageTree.Client.Shared.Views.PageTemplates.PageTemplates>
 
+<BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
+
+    <PageTree.Client.Shared.Views.PageTemplates.PageTemplates
+        @ref=_view
+        Model=_vm
+
+        />
+
+</BackgroundAndContent>
+
 @code {
     [Parameter] public string PageTemplateID { get; set; }
+    [Parameter] public string ProjectID { get; set; }
 
     protected override string QueryParameter => PageTemplateID;
 }

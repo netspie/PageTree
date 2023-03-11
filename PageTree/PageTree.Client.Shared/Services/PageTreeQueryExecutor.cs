@@ -27,7 +27,7 @@ namespace PageTree.Client.Shared.Services
             // General Views
             Add<GetProjectUserListApiQuery, GetProjectUserListQuery, GetProjectUserListQueryOut>("projectUserLists");
             Add<GetProjectApiQuery, GetProjectQuery, GetProjectQueryOut>("projects");
-            Add<GetPageTemplatesApiQuery, GetPageTemplatesQuery, GetPageTemplatesQueryOut>("templatePages");
+            Add<GetPageTemplatesApiQuery, GetPageTemplatesQuery, GetPageTemplatesQueryOut>("pageTemplates");
             Add<GetPageApiQuery, GetPageQuery, GetPageQueryOut>("pages");
             Add<GetProjectSignaturesApiQuery, GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(q => $"projects/{q.ProjectID}/signatures");
 
