@@ -1,8 +1,8 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
 using Mediator;
-using PageTree.App.Entities.PageTemplates;
 using PageTree.App.UseCases.Common;
+using PageTree.Domain.PageTemplates;
 
 namespace PageTree.App.PageTemplates.Commands;
 

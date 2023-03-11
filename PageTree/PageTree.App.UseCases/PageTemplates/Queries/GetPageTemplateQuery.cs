@@ -3,9 +3,9 @@ using Common.Basic.Repository;
 using Corelibs.Basic.Architecture.CQRS.Query.Types;
 using Mediator;
 using PageTree.App.Common;
-using PageTree.App.Entities.PageTemplates;
 using PageTree.App.Entities.Signatures;
 using PageTree.App.UseCases.Common;
+using PageTree.Domain.PageTemplates;
 using PageTree.Domain.Projects;
 
 namespace PageTree.App.PageTemplates.Queries;

@@ -1,7 +1,7 @@
 ﻿using PageTree.Domain;
 using Practicer.Domain.Pages.Common;
 
-namespace PageTree.App.Entities.PageTemplates
+namespace PageTree.Domain.PageTemplates
 {
     public class PageTemplate : Page
     {
