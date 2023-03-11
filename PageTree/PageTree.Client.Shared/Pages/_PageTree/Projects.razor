@@ -43,9 +43,9 @@
                     <div class="card-footer-item">Signatures</div>
                 </NavLink>
 
-                @{var templatePagesUri = $"{projectEditUri}/templatePages/{@project.TemplatePageRootID}"; }
+                @{var templatePagesUri = $"{projectEditUri}/templates/{@project.TemplatePageRootID}"; }
                 <NavLink href="@templatePagesUri" class="card-footer-item">
-                    <div class="card-footer-item">Template Pages</div>
+                    <div class="card-footer-item">Page Templates</div>
                 </NavLink>
 
                 @{var practiceCategoriesUri = $"{projectEditUri}/practiceCategories/{@project.PracticeCategoriesID}"; }

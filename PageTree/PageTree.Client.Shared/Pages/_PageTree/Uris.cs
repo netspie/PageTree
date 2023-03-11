@@ -10,6 +10,6 @@
         public const string Pages = Project + "/pages";
         public const string Page = Pages + "/{pageID}";
         public const string Signatures = Project + "/signatures";
-        public const string Templates = Project + "/templates";
+        public const string Templates = Project + "/templates/{pageTemplateID}";
     }
 }
