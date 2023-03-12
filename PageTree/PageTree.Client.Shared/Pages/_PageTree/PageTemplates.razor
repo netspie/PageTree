@@ -1,4 +1,5 @@
-﻿@using PageTree.App.PageTemplates.Queries;
+﻿@using PageTree.App.PageTemplates.Commands;
+@using PageTree.App.PageTemplates.Queries;
 @using PageTree.Client.Shared.Views.PageTemplates;
 
 @attribute [Route(Uris.Templates)]
@@ -10,7 +11,10 @@
     <PageTree.Client.Shared.Views.PageTemplates.PageTemplates
         @ref=_view
         Model=_vm
-        Left=@context.Item1 Top=@context.Item2 
+        Left=@context.Item1 Top=@context.Item2
+        
+        OnAddSubPageOnTop=OnAddSubPageOnTop
+        OnAddSubPageOnBottom=OnAddSubPageOnBottom
 
         />
 
@@ -19,6 +23,18 @@
 @code {
     [Parameter] public string PageTemplateID { get; set; }
     [Parameter] public string ProjectID { get; set; }
+
+    private async Task OnAddSubPageOnTop()
+    {
+        await _commands.Execute(new CreateSubPageTemplateCommand(PageTemplateID, 0));
+        await RefreshView();
+    }
+
+    private async Task OnAddSubPageOnBottom()
+    {
+        await _commands.Execute(new CreateSubPageTemplateCommand(PageTemplateID, int.MaxValue));
+        await RefreshView();
+    }
 
     protected override string QueryParameter => PageTemplateID;
 }

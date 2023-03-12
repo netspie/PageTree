@@ -1,0 +1,26 @@
+﻿.page-edit-menu {
+    display: flex;
+    height: fit-content;
+    width: fit-content;
+    gap: 5px;
+}
+
+.button {
+    box-sizing: border-box;
+    background: rgb(0, 0, 0, 0.3);
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    height: 22px;
+    width: 22px;
+    color: black;
+}
+
+.space {
+    opacity: 0;
+    cursor: default;
+}
+
+.create-link-button {
+    width: 30px;
+}

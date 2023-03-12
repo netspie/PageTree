@@ -12,7 +12,7 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 namespace PageTree.Server.Api.Controllers
 {
     [ApiController]
-    [Route("api/v1/pageTemplates/{templatePageID}/subPages")]
+    [Route("api/v1/pageTemplates/{pageTemplateID}/subPages")]
     [Authorize]
     public class PageTemplates_SubPages_Controller : ControllerBase
     {

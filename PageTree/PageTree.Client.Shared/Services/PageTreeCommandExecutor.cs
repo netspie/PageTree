@@ -32,13 +32,13 @@ namespace PageTree.Client.Shared.Services
             AddPatch<ChangeSignatureOfPageCommand, ChangeSignatureOfPageApiCommand>("pages/{pageID}/changeSignature");
 
             // Page Templates
-            AddPost<CreateSubPageTemplateCommand, CreateSubPageApiCommand>("pageTemplates/{templatePageID}/subpages");
+            AddPost<CreateSubPageTemplateCommand, CreateSubPageTemplateApiCommand>("pageTemplates/{pageTemplateID}/subpages");
             AddDelete<RemovePropertyTemplateCommand, RemovePropertyTemplateApiCommand>("pageTemplates");
-            AddPatch<ChangeNameOfPageTemplateCommand, ChangeNameOfPageTemplateApiCommand>("pageTemplates/{templatePageID}/changeName");
-            AddPatch<ChangeNameOfPageTemplatePageCommand, ChangeNameOfPageTemplatePageApiCommand> ("pageTemplates/{templatePageID}/changePageName");
+            AddPatch<ChangeNameOfPageTemplateCommand, ChangeNameOfPageTemplateApiCommand>("pageTemplates/{pageTemplateID}/changeName");
+            AddPatch<ChangeNameOfPageTemplatePageCommand, ChangeNameOfPageTemplatePageApiCommand> ("pageTemplates/{pageTemplateID}/changePageName");
             AddPatch<ChangeIndexOfPropertyTemplateCommand, ChangeIndexOfPropertyTemplateApiCommand>("pageTemplates/changeIndex");
             AddPatch<ChangeLevelOfPropertyTemplateCommand, ChangeLevelOfPropertyTemplateApiCommand>("pageTemplates/changeLevel");
-            AddPatch<ChangeSignatureOfPageTemplateCommand, ChangeSignatureOfPageTemplateApiCommand>("pageTemplates/{templatePageID}/changeSignature");
+            AddPatch<ChangeSignatureOfPageTemplateCommand, ChangeSignatureOfPageTemplateApiCommand>("pageTemplates/{pageTemplateID}/changeSignature");
 
             // Signatures
             AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("signatures");

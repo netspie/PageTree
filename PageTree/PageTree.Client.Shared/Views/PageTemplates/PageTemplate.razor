@@ -31,7 +31,8 @@
         {
             var fontWeight = new CssAttribute((double) artifact.VisualInfo.Font.FontWeight, Unit.None);
 
-            <EditableText Text=@artifact.Identity.Name OnSubmit=OnNameChangedInternal class="no-select" @ref=_nameRef
+            var name = !@artifact.Identity.Name.IsNullOrEmpty() ? @artifact.Identity.Name : "New Template";
+            <EditableText Text=@name OnSubmit=OnNameChangedInternal class="no-select" @ref=_nameRef
                           FontWeight=@fontWeight
                           FontSize=@artifact.VisualInfo.Font.FontSize />
         }

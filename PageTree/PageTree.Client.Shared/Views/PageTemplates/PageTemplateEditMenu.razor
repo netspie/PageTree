@@ -1,0 +1,11 @@
+﻿@using PageTree.App.Pages.Queries;
+
+<div class="page-edit-menu">
+    <button class="button" @onclick=OnAddSubPageOnTop>+&lt;</button>
+    <button class="button" @onclick=OnAddSubPageOnBottom>+&gt;</button>
+</div>
+
+@code {
+    [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
+    [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
+}

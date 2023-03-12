@@ -1,6 +1,4 @@
-﻿@using PageTree.App.Pages.Queries;
-
-<div class="page-edit-menu">
+﻿<div class="page-edit-menu">
     @if (HasParent)
     {
         <button class="button" @onclick=OnNavigateUp>^</button>
@@ -21,7 +19,6 @@
 </div>
 
 @code {
-    [Parameter] public PageVM Model { get; set; }
     [Parameter] public bool IsEditMode { get; set; }
     [Parameter] public bool HasParent { get; set; }
 

@@ -20,11 +20,11 @@ public class CreateSubPageTemplateCommandHandler : BaseCommandHandler, ICommandH
     {
         var result = Result.Success();
 
-        var parentPage = await _pageTemplateRepository.Get(command.TemplatePageID, result);
+        var parentPage = await _pageTemplateRepository.Get(command.PageTemplateID, result);
         if (!result.IsSuccess || parentPage == null)
             return result.Fail();
 
-        var subPage = new PageTemplate(NewID, "New Template Page", parentPage.OwnerID, parentPage.ProjectID)
+        var subPage = new PageTemplate(NewID, "New Template Page", "", parentPage.OwnerID, parentPage.ProjectID)
         {
             ParentID = parentPage.ID,
         };
@@ -38,4 +38,4 @@ public class CreateSubPageTemplateCommandHandler : BaseCommandHandler, ICommandH
     }
 }
 
-public sealed record CreateSubPageTemplateCommand(string TemplatePageID, int Index = int.MaxValue) : ICommand<Result>;
+public sealed record CreateSubPageTemplateCommand(string PageTemplateID, int Index = int.MaxValue) : ICommand<Result>;

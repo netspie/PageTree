@@ -10,11 +10,19 @@
 @implements IView<PageTemplatesVM>
 
 <div class="page-templates" style=@_mainStyle>
+    <PageTemplateEditMenu 
+        OnAddSubPageOnTop=OnAddSubPageOnTop
+        OnAddSubPageOnBottom=OnAddSubPageOnBottom
+        />
+
     <TreeLayout Tree=_treeNode AfterExpand=AfterExpand ModifyNode=ModifyNode />
 </div>
 
 @code {
     [Parameter] public PageTemplatesVM Model { get; set; }
+
+    [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
+    [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
 
     private readonly static PageTemplatesVM TestPageTemplatesModel = new()
     {
@@ -73,7 +81,6 @@
 
     public Task RefreshViewModel()
     {
-        Model = TestPageTemplatesModel;
         _treeNode = GetTreeNode();
 
         return Task.CompletedTask;
@@ -81,7 +88,7 @@
 
     private TreeLayout.TreeNode GetTreeNode()
     {
-        return new()
+         return new()
         {
             CanExpand = false,
             IsExpanded = true,

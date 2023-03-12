@@ -1,14 +1,14 @@
 ﻿using Corelibs.Basic.Net;
-using PageTree.Domain;
+using PageTree.Domain.PageTemplates;
 
 namespace PageTree.Server.ApiContracts
 {
     public class RemovePropertyTemplateApiCommand
     {
-        [AuthorizeResource(typeof(Page))]
+        [AuthorizeResource(typeof(PageTemplate))]
         public string PageTemplateID { get; set; }
 
-        [AuthorizeResource(typeof(Page))]
+        [AuthorizeResource(typeof(PageTemplate))]
         public string PropertyID { get; set; }
     }
 }

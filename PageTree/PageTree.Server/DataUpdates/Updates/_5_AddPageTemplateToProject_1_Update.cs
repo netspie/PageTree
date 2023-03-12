@@ -42,29 +42,30 @@ namespace PageTree.Server.DataUpdates
                     user.ProjectUserListID, res);
 
                 foreach (var projectID in projectUserList.ProjectsCreatedIDs)
-                {
-                    var project = await _projectRepository.Get(projectID, res);
-                    if (!project.TemplatePageRootID.IsNullOrEmpty())
-                        continue;
-
-                    var pageTemplate = new PageTemplate(NewID, "Root Page Template", "", project.OwnerID, projectID);
-                    project.TemplatePageRootID = pageTemplate.ID;
-
-                    await _pageTemplateRepository.Save(pageTemplate, res);
-                    await _projectRepository.Save(project, res);
-                }
+                    await Do(projectID);
 
                 foreach (var projectID in projectUserList.ProjectsArchivedIDs)
+                    await Do(projectID);
+
+                async Task Do(string projectID)
                 {
                     var project = await _projectRepository.Get(projectID, res);
+
+                    PageTemplate pageTemplate = null;
                     if (!project.TemplatePageRootID.IsNullOrEmpty())
-                        continue;
+                    {
+                        pageTemplate = await _pageTemplateRepository.Get(project.TemplatePageRootID, res);
+                        pageTemplate.OwnerID = project.OwnerID;
+                        await _pageTemplateRepository.Save(pageTemplate, res);
+                    }
+                    else
+                    {
+                        pageTemplate = new PageTemplate(NewID, "Root Page Template", "", project.OwnerID, projectID);
+                        project.TemplatePageRootID = pageTemplate.ID;
+                        await _pageTemplateRepository.Save(pageTemplate, res);
+                        await _projectRepository.Save(project, res);
+                    }
 
-                    var pageTemplate = new PageTemplate(NewID, "Root Page Template", "", project.OwnerID, projectID);
-                    project.TemplatePageRootID = pageTemplate.ID;
-
-                    await _pageTemplateRepository.Save(pageTemplate, res);
-                    await _projectRepository.Save(project, res);
                 }
             }
 
