@@ -15,6 +15,7 @@
         
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom
+        OnPropertyRename=OnPageRename
 
         />
 
@@ -34,6 +35,14 @@
     {
         await _commands.Execute(new CreateSubPageTemplateCommand(PageTemplateID, int.MaxValue));
         await RefreshView();
+    }
+
+    private async Task<bool> OnPageRename(string pageID, string name)
+    {
+        await _commands.Execute(new ChangeNameOfPageTemplatePageCommand(pageID, name));
+        await RefreshView();
+
+        return true;
     }
 
     protected override string QueryParameter => PageTemplateID;

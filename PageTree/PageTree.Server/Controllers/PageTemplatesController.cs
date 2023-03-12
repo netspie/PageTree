@@ -36,11 +36,11 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> RemoveProperty([FromRouteAndBody] RemovePropertyTemplateApiCommand command) =>
             _mediator.MapSendAndGetDeleteResponse<RemovePropertyTemplateCommand>(command, _mapper);
 
-        [HttpPatch, Route("{templatePageID}/changeName"), Authorize_Edit]
+        [HttpPatch, Route("{pageTemplateID}/changeName"), Authorize_Edit]
         public Task<IActionResult> ChangePageTemplateName([FromRouteAndBody] ChangeNameOfPageTemplateApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageTemplateCommand>(command, _mapper);
         
-        [HttpPatch, Route("{templatePageID}/changePageName"), Authorize_Edit]
+        [HttpPatch, Route("{pageTemplateID}/changePageName"), Authorize_Edit]
         public Task<IActionResult> ChangePageName([FromRouteAndBody] ChangeNameOfPageTemplatePageApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeNameOfPageTemplatePageCommand>(command, _mapper);
 
@@ -52,7 +52,7 @@ namespace PageTree.Server.Api.Controllers
         public Task<IActionResult> ChangeLevel([FromRouteAndBody] ChangeLevelOfPropertyTemplateApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeLevelOfPropertyTemplateCommand>(command, _mapper);
 
-        [HttpPatch, Route("{templatePageID}/changeSignature"), Authorize_Edit]
+        [HttpPatch, Route("{pageTemplateID}/changeSignature"), Authorize_Edit]
         public Task<IActionResult> ChangeSignature([FromRouteAndBody] ChangeSignatureOfPageTemplateApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeSignatureOfPageTemplateCommand>(command, _mapper);
     }
