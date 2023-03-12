@@ -97,18 +97,18 @@
 
     [Inject] private IJSRuntime _jsRuntime { get; set; }
 
-    private PropertyMenu? _menu;
-    private EditableText _nameRef;
+    protected PropertyMenu? _menu;
+    protected EditableText _nameRef;
 
-    private Task OnRenameButtonClick()
+    protected Task OnRenameButtonClick()
     {
         _menu.OuterClick.Enabled = false;
         return _nameRef.SetIsEdit(true);
     }
 
-    private Task<bool> OnNameChangedInternal(string name) => OnRename?.Invoke(Model.ID, name);
+    protected Task<bool> OnNameChangedInternal(string name) => OnRename?.Invoke(Model.ID, name);
 
-    private async Task HandleRightClick(MouseEventArgs args)
+    protected async Task HandleRightClick(MouseEventArgs args)
     {
         if (!IsEditMode)
             return;
@@ -134,43 +134,43 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private Task OnCreateSubpageInternal(int index)
+    protected Task OnCreateSubpageInternal(int index)
     {
         _menu.OuterClick.Enabled = false;
         return OnCreateSubpage?.Invoke(Model.ParentIDs.Last(), index + 1);
     }
 
-    private Task OnCreateLinkInternal(int index)
+    protected Task OnCreateLinkInternal(int index)
     {
         _menu.OuterClick.Enabled = false;
         return OnCreateLink?.Invoke(Model.ParentIDs.Last(), index + 1);
     }
 
-    private Task OnMoveDownInternal(string propertyID, int index)
+    protected Task OnMoveDownInternal(string propertyID, int index)
     {
         _menu.OuterClick.Enabled = false;
         return OnMoveDown?.Invoke(Model.ParentIDs.Last(), propertyID, index);
     }
 
-    private Task OnMoveUpInternal(string propertyID, int index)
+    protected Task OnMoveUpInternal(string propertyID, int index)
     {
         _menu.OuterClick.Enabled = false;
         return OnMoveUp?.Invoke(Model.ParentIDs.Last(), propertyID, index);
     }
 
-    private Task OnMoveLevelDownInternal(string propertyID)
+    protected Task OnMoveLevelDownInternal(string propertyID)
     {
         _menu.OuterClick.Enabled = false;
         return OnMoveLevelDown?.Invoke(Model.ParentIDs.Last(), propertyID);
     }
 
-    private Task OnMoveLevelUpInternal(string propertyID)
+    protected Task OnMoveLevelUpInternal(string propertyID)
     {
         _menu.OuterClick.Enabled = false;
         return OnMoveLevelUp?.Invoke(Model.ParentIDs.Last(), propertyID, Model.ParentIDs.FirstBeforeLast());
     }
 
-    private Task OnResignatureInternal()
+    protected Task OnResignatureInternal()
     {
         _menu.OuterClick.Enabled = false;
         return OnResignature?.Invoke(Model.ID);

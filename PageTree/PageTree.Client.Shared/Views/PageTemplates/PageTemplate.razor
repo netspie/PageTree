@@ -1,4 +1,57 @@
-﻿<h3>PageTemplate</h3>
+﻿@using Common.Basic.Collections;
+@using Corelibs.BlazorShared.UI.Css;
+@using PageTree.Client.Shared.Views.Pages;
+@using Corelibs.BlazorViews.Components
+
+@inherits Property
+
+<div class="property-container" style=@Style @oncontextmenu="HandleRightClick" @oncontextmenu:preventDefault="true">
+    <div class="property">
+
+        @{
+            bool hasGrandParent = Model.ParentIDs.Length >= 2;
+            <PropertyMenu @ref=_menu
+                ID=@Model.ID
+                OnRemove=OnRemove
+                OnCreateSubpage=OnCreateSubpageInternal
+                OnCreateLink=OnCreateLinkInternal
+                OnMoveDownButtonClick=OnMoveDownInternal
+                OnMoveUpButtonClick=OnMoveUpInternal
+                OnRename=OnRenameButtonClick
+                OnResignature=OnResignatureInternal
+                OnMoveLevelUpButtonClick=OnMoveLevelUpInternal
+                OnMoveLevelDownButtonClick=OnMoveLevelDownInternal
+                Index=Index
+                IsLast=IsLast
+                HasGrandParent=hasGrandParent
+                HasSiblings=Model.HasSiblings />
+        }
+
+        @foreach (var artifact in Model.Artifacts)
+        {
+            var fontWeight = new CssAttribute((double) artifact.VisualInfo.Font.FontWeight, Unit.None);
+
+            <EditableText Text=@artifact.Identity.Name OnSubmit=OnNameChangedInternal class="no-select" @ref=_nameRef
+                          FontWeight=@fontWeight
+                          FontSize=@artifact.VisualInfo.Font.FontSize />
+        }
+
+        @if (IsEditMode)
+        {
+            <div class="property-info-bar">
+
+                @if (!Model.Signature.Name.IsNullOrEmpty())
+                {
+                    <span class="signature">@Model.Signature.Name</span>
+                }
+                else
+                {
+                    <p class="signature">---</p>
+                }
+            </div>
+        }
+    </div>
+</div>
 
 @code {
 

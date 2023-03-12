@@ -1,0 +1,75 @@
+﻿.property-container {
+}
+
+.property {
+    position: relative;
+}
+
+    .property:hover ::deep .property-menu-button {
+        display: block;
+    }
+
+div ::deep .property-menu-button {
+    display: none;
+}
+
+.property:hover .side-menu {
+    display: flex;
+}
+
+.side-menu {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    display: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: contain;
+    left: 0;
+    transform: translateY(-100%);
+    list-style-type: none;
+    z-index: 1;
+}
+
+.select-checkbox {
+    transform: translate(-130%, -21%);
+}
+
+.artifact-text {
+}
+
+.property ::deep .no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                          supported by Chrome, Edge, Opera and Firefox */
+}
+
+.signature {
+    font-size: 12px;
+    color: crimson;
+}
+
+.property-info-bar-image {
+    height: 24px;
+    width: 24px;
+    opacity: 0.7;
+}
+
+.property-info-bar {
+    position: absolute;
+    margin-right: 0;
+    margin-top: 0;
+    transform: translateY(-100%);
+    width: fit-content;
+    height: 100%;
+    right: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 10px;
+}

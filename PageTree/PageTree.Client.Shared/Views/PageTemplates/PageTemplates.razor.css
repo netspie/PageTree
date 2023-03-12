@@ -1,0 +1,25 @@
+﻿.page-templates {
+    height: calc(100% - 100px);
+    margin: 30px;
+    min-width: 0;
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: auto;
+    box-sizing: border-box;
+    padding-left: 25px;
+    padding-right: 10px;
+}
+
+.page-templates::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+.page-templates::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+.page-templates::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 10px;
+}

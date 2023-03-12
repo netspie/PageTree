@@ -1,12 +1,52 @@
-﻿@using Corelibs.BlazorViews.Layouts;
+﻿@using Common.Basic.Collections;
+@using Corelibs.Basic.Colors;
+@using Corelibs.BlazorShared.UI;
+@using Corelibs.BlazorViews.Layouts;
+@using Microsoft.AspNetCore.Components.Rendering;
 @using PageTree.App.PageTemplates.Queries;
-
-<p>Page Templates</p>
+@using System.Drawing;
+@using PageTree.Client.Shared.Views.Pages;
 
 @implements IView<PageTemplatesVM>
 
+<div class="page-templates" style=@_mainStyle>
+    <TreeLayout Tree=_treeNode AfterExpand=AfterExpand ModifyNode=ModifyNode />
+</div>
+
 @code {
-    [Parameter] public PageTemplatesVM Model { get; set; } = new();
+    [Parameter] public PageTemplatesVM Model { get; set; }
+
+    private readonly static PageTemplatesVM TestPageTemplatesModel = new()
+    {
+        Values = new PageTemplateVM[]
+        {
+            new()
+            {
+                HasChildren = true,
+                CanExpand = true,
+                Identity = new("Word", "Word"),
+                IsExpanded = true,
+            },
+            new()
+            {
+                HasChildren = true,
+                CanExpand = true,
+                Identity = new("Phrase", "Phrase"),
+                IsExpanded = true,
+            }
+        }
+    };
+
+    [Parameter] public int Left { get; set; }
+    [Parameter] public int Top { get; set; }
+    private string _mainStyle => $"width: calc(100% - {Left}px); ";
+
+    private TreeLayout.TreeNode? _treeNode;
+
+    protected override void OnInitialized()
+    {
+        RefreshViewModel();
+    }
 
     public async Task RefreshView()
     {
@@ -16,6 +56,117 @@
 
     public Task RefreshViewModel()
     {
+        Model = TestPageTemplatesModel;
+        _treeNode = GetTreeNode();
+
         return Task.CompletedTask;
+    }
+
+    private TreeLayout.TreeNode GetTreeNode()
+    {
+        return new()
+        {
+            CanExpand = false,
+            IsExpanded = true,
+            Children = GetTreeNodes(Model.Values, parentIDs: Array.Empty<string>())
+        };
+    }
+
+    private List<TreeLayout.TreeNode> GetTreeNodes(
+        PageTemplateVM[] propertyVMs,
+        string[] parentIDs)
+    {
+        var list = new List<TreeLayout.TreeNode>();
+
+        propertyVMs.ForEach((propertyVM, i) =>
+        {
+            var parentIDsOfChild = parentIDs.Append(propertyVM.Identity.ID).ToArray();
+
+            list.Add(new()
+            {
+                Identity = new() { ID = propertyVM.Identity.ID, Name = propertyVM.Identity.Name },
+                // HasChildren = propertyVM.HasChildren,
+                IsExpanded = propertyVM.IsExpanded,
+                Layout = new()
+                {
+                    Gap = 10
+                },
+
+                Children = GetTreeNodes(propertyVM.Properties, parentIDsOfChild),
+                GetContent = GetProperty(
+                    propertyVM,
+                    parentIDs,
+                    hasSiblings: propertyVMs.Length > 1,
+                    propertyIndex: i, 
+                    isLast: i == propertyVMs.Length - 1)
+            });
+        });
+
+        return list;
+    }
+
+    private TreeLayout.TreeNode.GetContentDelegate GetProperty(
+        PageTemplateVM propertyVM,
+        string[] parentIDs,
+        bool hasSiblings,
+        int propertyIndex,
+        bool isLast)
+    {
+        return GetContent;
+        RenderFragment GetContent(TreeLayout.TreeNode node, ref int seq)
+        {
+            int seqLocal = seq;
+            seq += 4;
+
+            return RenderFragmentExtensions.CreateComponent<PageTemplate>(builder =>
+            {
+                var vmModel = new Property.ViewModel();
+
+                vmModel.ID = propertyVM.Identity.ID;
+                vmModel.ParentIDs = parentIDs;
+                vmModel.Signature = new()
+                {
+                    ID = propertyVM?.SignatureIdentity?.ID,
+                    Name = propertyVM?.SignatureIdentity?.Name,
+                };
+
+                vmModel.HasSiblings = hasSiblings;
+
+                vmModel.Artifacts.Add(new()
+                {
+                    Identity = propertyVM.Identity.ToPropertyIdentityVM(),
+                    Type = Property.ArtifactType.Name,
+                });
+
+                builder.AddAttribute(seqLocal++, "Model", vmModel);
+                builder.AddAttribute(seqLocal++, "IsEditMode", true);
+                builder.AddAttribute(seqLocal++, "Index", propertyIndex);
+                builder.AddAttribute(seqLocal++, "IsLast", isLast);
+
+                //builder.AddAttribute(seqLocal++, "OnCreateSubpage", OnCreateSubPageAfterPropertyInternal);
+                //builder.AddAttribute(seqLocal++, "OnCreateLink", OnCreateLinkAfterPropertyInternal);
+
+                //builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemoveInternal);
+                //builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
+                //builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
+                //builder.AddAttribute(seqLocal++, "OnRename", OnPropertyRename);
+                //builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
+                //builder.AddAttribute(seqLocal++, "OnMoveLevelUp", OnMoveLevelUpInternal);
+                //builder.AddAttribute(seqLocal++, "OnMoveLevelDown", OnMoveLevelDownInternal);
+
+            });
+        };
+    }
+
+    private Task AfterExpand(string id) => InvokeAsync(StateHasChanged);
+
+    private void ModifyNode(RenderTreeBuilder builder, TreeLayout.TreeNode node, ref int sequence)
+    {
+        builder.AddCssAttribute(ref sequence, "Background", Color.DarkSlateGray.ToHexString());
+        builder.AddCssAttribute(ref sequence, "Padding", 10);
+        //builder.AddCssAttribute(ref sequence, "PaddingLeft", 10);
+        //builder.AddCssAttribute(ref sequence, "PaddingRight", 10);
+        //builder.AddCssAttribute(ref sequence, "PaddingTop", 10);
+        //builder.AddCssAttribute(ref sequence, "PaddingBottom", 10);
     }
 }
