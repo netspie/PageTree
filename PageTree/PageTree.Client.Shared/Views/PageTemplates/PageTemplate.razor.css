@@ -5,9 +5,9 @@
     position: relative;
 }
 
-    .property:hover ::deep .property-menu-button {
-        display: block;
-    }
+.property:hover ::deep .property-menu-button {
+    display: block;
+}
 
 div ::deep .property-menu-button {
     display: none;

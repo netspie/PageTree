@@ -26,6 +26,23 @@
                 CanExpand = true,
                 Identity = new("Word", "Word"),
                 IsExpanded = true,
+                Properties = new PageTemplateVM[]
+                {
+                    new()
+                    {
+                        HasChildren = true,
+                        CanExpand = true,
+                        Identity = new("Word", "Word"),
+                        IsExpanded = true,
+                    },
+                    new()
+                    {
+                        HasChildren = true,
+                        CanExpand = true,
+                        Identity = new("Phrase", "Phrase"),
+                        IsExpanded = true,
+                    }
+                }
             },
             new()
             {
@@ -68,7 +85,8 @@
         {
             CanExpand = false,
             IsExpanded = true,
-            Children = GetTreeNodes(Model.Values, parentIDs: Array.Empty<string>())
+            Children = GetTreeNodes(Model.Values, parentIDs: Array.Empty<string>()),
+            Layout = new() { Gap = 10 }
         };
     }
 
@@ -162,7 +180,9 @@
 
     private void ModifyNode(RenderTreeBuilder builder, TreeLayout.TreeNode node, ref int sequence)
     {
-        builder.AddCssAttribute(ref sequence, "Background", Color.DarkSlateGray.ToHexString());
+        if (node.Parent is not null)
+            builder.AddCssAttribute(ref sequence, "Background", Color.FromArgb(255, 225, 225, 225).ToHexString());
+
         builder.AddCssAttribute(ref sequence, "Padding", 10);
         //builder.AddCssAttribute(ref sequence, "PaddingLeft", 10);
         //builder.AddCssAttribute(ref sequence, "PaddingRight", 10);
