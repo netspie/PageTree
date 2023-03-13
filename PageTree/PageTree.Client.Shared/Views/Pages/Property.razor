@@ -140,6 +140,12 @@
         return OnCreateSubpage?.Invoke(Model.ParentIDs.Last(), index + 1);
     }
 
+    protected Task OnCreateSubpageChildInternal()
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnCreateSubpage?.Invoke(Model.ID, int.MaxValue);
+    }
+
     protected Task OnCreateLinkInternal(int index)
     {
         _menu.OuterClick.Enabled = false;

@@ -8,6 +8,10 @@
             {
                 <button class="button" @onclick=@(() => OnCreateSubpage?.Invoke(Index))>Create Subpage</button>
             }
+            @if (OnCreateSubpageChild != null)
+            {
+                <button class="button" @onclick=@OnCreateSubpageChild>Create Subpage Child</button>
+            }
             @if (OnCreateLink != null)
             {
                 <button class="button" @onclick=@(() => OnCreateLink?.Invoke(Index))>Create Link</button>
@@ -55,6 +59,7 @@
     [Parameter] public bool HasSiblings { get; set; }
 
     [Parameter] public Func<int, Task> OnCreateSubpage { get; set; }
+    [Parameter] public Func<Task> OnCreateSubpageChild { get; set; }
     [Parameter] public Func<int, Task> OnCreateLink { get; set; }
     [Parameter] public Func<string, Task> OnRemove { get; set; }
     [Parameter] public Func<string, int, Task> OnMoveUpButtonClick { get; set; }

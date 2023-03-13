@@ -24,7 +24,7 @@ public class CreateSubPageTemplateCommandHandler : BaseCommandHandler, ICommandH
         if (!result.IsSuccess || parentPage == null)
             return result.Fail();
 
-        var subPage = new PageTemplate(NewID, "New Template Page", "", parentPage.OwnerID, parentPage.ProjectID)
+        var subPage = new PageTemplate(NewID, "New Template", "New Template Page", parentPage.OwnerID, parentPage.ProjectID)
         {
             ParentID = parentPage.ID,
         };
