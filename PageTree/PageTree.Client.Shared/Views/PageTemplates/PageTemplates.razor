@@ -13,7 +13,7 @@
     <PageTemplateEditMenu 
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom
-
+        
         />
 
     <TreeLayout Tree=_treeNode AfterExpand=AfterExpand ModifyNode=ModifyNode />
@@ -24,6 +24,7 @@
 
     [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
+    [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
 
     [Parameter] public Func<string, string, Task<bool>> OnPageRename { get; set; }
     [Parameter] public Func<string, string, Task<bool>> OnTemplateRename { get; set; }
@@ -175,7 +176,7 @@
                 //builder.AddAttribute(seqLocal++, "OnCreateSubpage", OnCreateSubPageAfterPropertyInternal);
                 //builder.AddAttribute(seqLocal++, "OnCreateLink", OnCreateLinkAfterPropertyInternal);
 
-                //builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemoveInternal);
+                builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemoveInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
                 builder.AddAttribute(seqLocal++, "TemplateName", propertyVM.TemplateName);
@@ -203,4 +204,7 @@
         //builder.AddCssAttribute(ref sequence, "PaddingTop", 10);
         //builder.AddCssAttribute(ref sequence, "PaddingBottom", 10);
     }
+
+    private Task OnPropertyRemoveInternal(string propertyID) =>
+        OnPropertyRemove?.Invoke(Model.ProjectID, propertyID);
 }

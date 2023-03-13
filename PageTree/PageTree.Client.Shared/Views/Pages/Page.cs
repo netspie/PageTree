@@ -366,8 +366,8 @@ namespace PageTree.Client.Shared.Views.Pages
             return list;
         }
 
-        private Task OnPropertyRemoveInternal(string propertyID) =>
-            OnPropertyRemove?.Invoke(Model.Identity.ID, propertyID);
+        private Task OnPropertyRemoveInternal(string pageID, string propertyID) =>
+            OnPropertyRemove?.Invoke(pageID, propertyID);
 
         private Task OnCreateSubPageAfterPropertyInternal(string pageID, int index) =>
             OnAddSubPage?.Invoke(pageID, index);

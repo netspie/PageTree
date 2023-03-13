@@ -17,7 +17,7 @@
             <PropertyMenu @ref=_menu 
                 ID=@Model.ID
 
-                OnRemove=OnRemove
+                OnRemove=OnRemoveInternal
                 OnCreateSubpage=OnCreateSubpageInternal
                 OnCreateLink=OnCreateLinkInternal
                 OnMoveDownButtonClick=OnMoveDownInternal
@@ -87,7 +87,7 @@
 
     [Parameter] public Func<string, int, Task> OnCreateSubpage { get; set; }
     [Parameter] public Func<string, int, Task> OnCreateLink { get; set; }
-    [Parameter] public Func<string, Task> OnRemove { get; set; }
+    [Parameter] public Func<string, string, Task> OnRemove { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveUp { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveDown { get; set; }
     [Parameter] public Func<string, string, string, Task> OnMoveLevelUp { get; set; } // parentPageID, propertyID, newParentPageID
@@ -144,6 +144,12 @@
     {
         _menu.OuterClick.Enabled = false;
         return OnCreateLink?.Invoke(Model.ParentIDs.Last(), index + 1);
+    }
+
+    protected Task OnRemoveInternal(string propertyID)
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnRemove?.Invoke(Model.ParentIDs.Last(), propertyID);
     }
 
     protected Task OnMoveDownInternal(string propertyID, int index)

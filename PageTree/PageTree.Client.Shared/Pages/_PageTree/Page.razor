@@ -120,7 +120,7 @@
 
     private async Task OnPropertyRemove(string pageID, string propertyID)
     {
-        await _commands.Execute(new RemovePropertyCommand(PageID, propertyID));
+        await _commands.Execute(new RemovePropertyCommand(pageID, propertyID));
         await RefreshView();
     }
 

@@ -12,7 +12,7 @@
             bool hasGrandParent = Model.ParentIDs.Length >= 2;
             <PropertyMenu @ref=_menu
                 ID=@Model.ID
-                OnRemove=OnRemove
+                OnRemove=OnRemoveInternal
                 OnCreateSubpage=OnCreateSubpageInternal
                 OnCreateLink=OnCreateLinkInternal
                 OnMoveDownButtonClick=OnMoveDownInternal
