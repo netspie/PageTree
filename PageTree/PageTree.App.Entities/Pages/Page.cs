@@ -103,9 +103,14 @@ namespace PageTree.Domain
         public List<string> SubPages { get; private set; } = new();
 
         /// <summary>
-        /// Part of children ids. Link to another page.
+        /// Links to other pages. Part of children ids. 
         /// </summary>
         public List<string> Links { get; private set; } = new();
+
+        /// <summary>
+        /// Ids of pages which are linking to this page.
+        /// </summary>
+        public List<string> LinkedByIDs { get; private set; } = new();
 
         /// <summary>
         /// Should be independent of styling? I don't think so... at least partially

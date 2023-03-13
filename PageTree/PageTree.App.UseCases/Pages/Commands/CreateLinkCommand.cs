@@ -20,14 +20,18 @@ public class CreateLinkCommandHandler : BaseCommandHandler, ICommandHandler<Crea
     {
         var result = Result.Success();
 
-        var page = await _pageRepository.Get(command.PageID, result);
-        if (!result.IsSuccess || page == null)
+        var pageLinking = await _pageRepository.Get(command.PageID, result);
+        var pageToLink = await _pageRepository.Get(command.LinkID, result);
+        if (!result.ValidateSuccessAndValues() || pageLinking == null || pageToLink == null)
             return result.Fail();
 
-        if (!page.CreateLink(command.LinkID, command.Index))
+        if (!pageLinking.CreateLink(command.LinkID, command.Index))
             return result.Fail();
 
-        await _pageRepository.Save(page, result);
+        pageToLink.LinkedByIDs.Add(command.PageID);
+
+        await _pageRepository.Save(pageLinking, result);
+        await _pageRepository.Save(pageToLink, result);
 
         return result;
     }

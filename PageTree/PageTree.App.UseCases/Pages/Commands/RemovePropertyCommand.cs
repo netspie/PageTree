@@ -31,34 +31,56 @@ public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<
         bool isSubPage = parentPage.IsSubPage(command.PropertyID);
 
         var deletedPages = new List<IdentityVM>();
-        result += await DeleteThisAndNestedSubPages(_pageRepository, parentPage, command.PropertyID, deletedPages);
+        var pagesToSaveIfNotDeleted = new List<Page>();
+        result += await DeleteThisAndNestedSubPages(_pageRepository, parentPage, command.PropertyID, deletedPages, pagesToSaveIfNotDeleted);
         if (!result.IsSuccess)
             return result;
-
+        
         await _pageRepository.Save(parentPage, result);
+
+        var pagesToSave = pagesToSaveIfNotDeleted
+            .Where(p => deletedPages.FirstOrDefault(dp => dp.ID == p.ID) == null)
+            .ToArray();
+
+        result += await _pageRepository.Save(pagesToSave);
+
         if (isSubPage && result.IsSuccess)
         {
             foreach (var deletedPage in deletedPages)
                 _searchEngine.Delete(new(deletedPage.ID, deletedPage.Name));
         }
 
+
         return result;
     }
 
-    private static async Task<Result> DeleteThisAndNestedSubPages(IRepository<Page> repository, Page parentPage, string propertyID, List<IdentityVM> deletedPages)
+    private static async Task<Result> DeleteThisAndNestedSubPages(IRepository<Page> repository, Page parentPage, string propertyID, 
+        List<IdentityVM> deletedPages,
+        List<Page> pagesToSaveIfNotDeleted)
     {
         var res = Result.Success();
 
         bool isSubPage = parentPage.IsSubPage(propertyID);
         parentPage.RemoveProperty(propertyID);
-        if (!isSubPage)
-            return res;
 
         var propertyPage = await repository.Get(propertyID, res);
+        if (!isSubPage)
+        {
+            propertyPage.LinkedByIDs.Remove(parentPage.ID);
+            return res;
+        }
+
+        propertyPage.LinkedByIDs.Remove(parentPage.ID);
+        foreach (var linkedByID in propertyPage.LinkedByIDs)
+        {
+            var linkedByPage = await repository.Get(linkedByID, res);
+            linkedByPage.RemoveProperty(propertyID);
+            pagesToSaveIfNotDeleted.Add(linkedByPage);
+        }
 
         var subPages = propertyPage.SubPages.ToArray();
         foreach (var propertyPageSubPageID in subPages)
-            res += await DeleteThisAndNestedSubPages(repository, propertyPage, propertyPageSubPageID, deletedPages);
+            res += await DeleteThisAndNestedSubPages(repository, propertyPage, propertyPageSubPageID, deletedPages, pagesToSaveIfNotDeleted);
 
         var deleteResult = await repository.Delete(propertyID);
         if (!deleteResult.IsSuccess)
