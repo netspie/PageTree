@@ -9,22 +9,28 @@ using PageTree.App.Entities.Signatures;
 using PageTree.App.UseCases.Common;
 using PageTree.App.UseCases.Pages.Common;
 using PageTree.Domain;
+using PageTree.Domain.Projects;
+using System.Linq;
 
 namespace PageTree.App.Pages.Queries;
 
 public class GetPagesSearchResultsQueryHandler : IQueryHandler<GetPagesSearchResultsQuery, Result<GetPagesSearchResultsQueryOut>>
 {
     private readonly ISearchEngine<Page> _searchEngine;
+
     private readonly IRepository<Page> _pageRepository;
+    private readonly IRepository<Project> _projectRepository;
     private readonly IRepository<Signature> _signatureRepository;
 
     public GetPagesSearchResultsQueryHandler(
         ISearchEngine<Page> searchEngine,
         IRepository<Page> pageRepository,
+        IRepository<Project> projectRepository,
         IRepository<Signature> signatureRepository)
     {
         _searchEngine = searchEngine;
         _pageRepository = pageRepository;
+        _projectRepository = projectRepository;
         _signatureRepository = signatureRepository;
     }
 
@@ -42,7 +48,9 @@ public class GetPagesSearchResultsQueryHandler : IQueryHandler<GetPagesSearchRes
             return _searchEngine.Search(nameSplit[0], searchType);
         });
 
-        var resultsVMs = await searchResults.ToSearchedPageVMs(query.ProjectID, _pageRepository, _signatureRepository);
+        var project = await _projectRepository.Get(query.ProjectID, res);
+
+        var resultsVMs = await searchResults.ToSearchedPageVMs(project, _pageRepository, _signatureRepository);
         var resultsVMsValue = resultsVMs.GetNestedValue<SearchedPageVM[]>();
 
         res += resultsVMs;
@@ -95,7 +103,7 @@ public static class SearchIndexDataExtensions
 {
     public static async Task<Result<SearchedPageVM[]>> ToSearchedPageVMs(
         this IEnumerable<SearchIndexData> pageDatas,
-        string projectID,
+        Project project,
         IRepository<Page> pageRepository,
         IRepository<Signature> signatureRepository)
     {
@@ -108,10 +116,10 @@ public static class SearchIndexDataExtensions
             if (page == null || !page.ID.IsID())
                 continue;
 
-            if (page.ProjectID != projectID)
+            if (page.ProjectID != project.ID)
                 continue;
 
-            if (page.ParentID.IsNullOrEmpty())
+            if (page.ParentID.IsNullOrEmpty() && project.RootPageID != page.ID)
                 continue;
 
             var signature = page.SignatureID != null ?
