@@ -74,8 +74,11 @@ public class RemovePropertyCommandHandler : BaseCommandHandler, ICommandHandler<
         foreach (var linkedByID in propertyPage.LinkedByIDs)
         {
             var linkedByPage = await repository.Get(linkedByID, res);
-            linkedByPage.RemoveProperty(propertyID);
-            pagesToSaveIfNotDeleted.Add(linkedByPage);
+            if (linkedByPage != null)
+            {
+                linkedByPage.RemoveProperty(propertyID);
+                pagesToSaveIfNotDeleted.Add(linkedByPage);
+            }
         }
 
         var subPages = propertyPage.SubPages.ToArray();
