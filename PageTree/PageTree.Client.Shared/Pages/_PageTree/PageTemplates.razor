@@ -16,7 +16,7 @@
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom
         OnTemplateRename=OnPageTemplateRename
-        
+        OnPropertyRemove=OnPropertyRemove
         />
 
 </BackgroundAndContent>
@@ -51,6 +51,12 @@
         await RefreshView();
 
         return true;
+    }
+
+    private async Task OnPropertyRemove(string pageID, string propertyID)
+    {
+        await _commands.Execute(new RemovePropertyTemplateCommand(pageID, propertyID));
+        await RefreshView();
     }
 
     protected override string QueryParameter => PageTemplateID;

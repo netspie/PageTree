@@ -46,6 +46,8 @@ public class GetPageTemplatesQueryHandler : IQueryHandler<GetPageTemplatesQuery,
         return res.With(new GetPageTemplatesQueryOut(
             new PageTemplatesVM()
             {
+                ID = pageTemplate.ID,
+
                 ProjectID = project.ID,
 
                 Values = values,
@@ -95,6 +97,7 @@ public sealed record GetPageTemplatesQueryOut(PageTemplatesVM PageTemplates);
 
 public class PageTemplatesVM
 {
+    public string ID { get; set; }
     public string ProjectID { get; init; }
     public PageTemplateVM[] Values { get; init; } = Array.Empty<PageTemplateVM>();
     public IdentityVM[] Signatures { get; init; } = Array.Empty<IdentityVM>();

@@ -25,7 +25,7 @@ public class RemovePropertyTemplateCommandHandler : BaseCommandHandler, ICommand
             return result.Fail();
 
         var deletedPages = new List<IdentityVM>();
-        result += await DeleteThisAndNestedSubPages(_pageTemplateRepository, parentPage, command.PropertyTemplateID, deletedPages);
+        result += await DeleteThisAndNestedSubPages(_pageTemplateRepository, parentPage, command.PropertyID, deletedPages);
         if (!result.IsSuccess)
             return result;
 
@@ -60,4 +60,4 @@ public class RemovePropertyTemplateCommandHandler : BaseCommandHandler, ICommand
     }
 }
 
-public sealed record RemovePropertyTemplateCommand(string PageTemplateID, string PropertyTemplateID) : ICommand<Result>;
+public sealed record RemovePropertyTemplateCommand(string PageTemplateID, string PropertyID) : ICommand<Result>;
