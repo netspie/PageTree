@@ -79,6 +79,7 @@ public class GetPageTemplatesQueryHandler : IQueryHandler<GetPageTemplatesQuery,
 
             result.Add(new PageTemplateVM()
             {
+                TemplateName = childPage.TemplateName,
                 Identity = (childPage.ID, childPage.Name),
                 SignatureIdentity = (childSignature.ID, childSignature.Name),
                 Properties = properties,
@@ -101,6 +102,7 @@ public class PageTemplatesVM
 
 public class PageTemplateVM
 {
+    public string TemplateName { get; init; }
     public IdentityVM Identity { get; init; } = new IdentityVM();
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
     public PageTemplateVM[] Properties { get; init; } = Array.Empty<PageTemplateVM>();

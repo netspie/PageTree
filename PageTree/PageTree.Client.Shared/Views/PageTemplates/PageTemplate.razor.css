@@ -73,3 +73,8 @@ div ::deep .property-menu-button {
     align-items: center;
     gap: 10px;
 }
+
+div ::deep .template-name {
+    font-size: 11px;
+    color: maroon;
+}

@@ -25,7 +25,8 @@
     [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
 
-    [Parameter] public Func<string, string, Task<bool>> OnPropertyRename { get; set; }
+    [Parameter] public Func<string, string, Task<bool>> OnPageRename { get; set; }
+    [Parameter] public Func<string, string, Task<bool>> OnTemplateRename { get; set; }
 
     private readonly static PageTemplatesVM TestPageTemplatesModel = new()
     {
@@ -177,7 +178,10 @@
                 //builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemoveInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
-                builder.AddAttribute(seqLocal++, "OnRename", OnPropertyRename);
+                builder.AddAttribute(seqLocal++, "TemplateName", propertyVM.TemplateName);
+                builder.AddAttribute(seqLocal++, "OnRename", OnPageRename);
+                builder.AddAttribute(seqLocal++, "OnTemplateRename", OnTemplateRename);
+                
                 //builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveLevelUp", OnMoveLevelUpInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveLevelDown", OnMoveLevelDownInternal);
