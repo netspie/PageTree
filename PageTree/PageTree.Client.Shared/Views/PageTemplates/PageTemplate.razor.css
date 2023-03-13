@@ -3,6 +3,8 @@
 
 .property {
     position: relative;
+    display: flex;
+    flex-direction: row;
 }
 
 .property:hover ::deep .property-menu-button {
@@ -51,6 +53,7 @@ div ::deep .property-menu-button {
 .signature {
     font-size: 12px;
     color: crimson;
+    white-space: nowrap;
 }
 
 .property-info-bar-image {
@@ -60,21 +63,27 @@ div ::deep .property-menu-button {
 }
 
 .property-info-bar {
-    position: absolute;
     margin-right: 0;
     margin-top: 0;
-    transform: translateY(-100%);
     width: fit-content;
     height: 100%;
     right: 0;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row-reverse;
-    align-items: center;
+    top: 0;
     gap: 10px;
+    flex-wrap: nowrap;
 }
 
 div ::deep .template-name {
     font-size: 11px;
     color: maroon;
+    white-space: nowrap;
+}
+
+div ::deep .property-name-container {
+    max-width: 100%;
+    width: 100%;
+    flex-shrink: 1;
 }

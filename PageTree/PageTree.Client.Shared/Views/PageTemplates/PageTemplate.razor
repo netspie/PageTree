@@ -32,12 +32,12 @@
             var fontWeight = new CssAttribute((double) artifact.VisualInfo.Font.FontWeight, Unit.None);
 
             var name = !@artifact.Identity.Name.IsNullOrEmpty() ? @artifact.Identity.Name : "New Template";
-            <EditableText Text=@name OnSubmit=OnNameChangedInternal @ref=_nameRef Mode=EditableText.ModeType.EditOnClick
-                          FontWeight=@fontWeight
-                          FontSize=@artifact.VisualInfo.Font.FontSize />
+            <EditableText Text=@name OnSubmit=OnNameChangedInternal @ref=_nameRef Mode=EditableText.ModeType.EditOnClick class_topmost="property-name-container"
+                FontWeight=@fontWeight
+                FontSize=@artifact.VisualInfo.Font.FontSize />
         }
 
-        <div class="property-info-bar">
+        @*<div class="property-info-bar">
 
             @if (!Model.Signature.Name.IsNullOrEmpty())
             {
@@ -50,7 +50,7 @@
 
             <EditableText Text=@TemplateName OnSubmit=OnTemplateRenameInternal class="template-name" Mode=EditableText.ModeType.EditOnClick />
 
-        </div>
+        </div>*@
     </div>
 </div>
 
