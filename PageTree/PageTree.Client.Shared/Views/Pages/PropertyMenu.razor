@@ -4,27 +4,42 @@
 <OuterClickComponent @ref=OuterClick class="property-menu-outer">
     <ContextMenu @ref=ContextMenu class="property-context-menu">
         <VerticalLayout>
-            <button class="button" @onclick=@(() => OnCreateSubpage?.Invoke(Index))>Create Subpage</button>
-            <button class="button" @onclick=@(() => OnCreateLink?.Invoke(Index))>Create Link</button>
-            @if (Index != 0)
+            @if (OnCreateSubpage != null)
+            {
+                <button class="button" @onclick=@(() => OnCreateSubpage?.Invoke(Index))>Create Subpage</button>
+            }
+            @if (OnCreateLink != null)
+            {
+                <button class="button" @onclick=@(() => OnCreateLink?.Invoke(Index))>Create Link</button>
+            }
+            @if (OnMoveUpButtonClick != null && Index != 0)
             {
                 <button class="button" @onclick=@(() => OnMoveUpButtonClick?.Invoke(ID, Index))>Move Up</button>
             }
-            @if (!IsLast)
+            @if (OnMoveDownButtonClick != null && !IsLast)
             {
                 <button class="button" @onclick=@(() => OnMoveDownButtonClick?.Invoke(ID, Index))>Move Down</button>
             }
-            @if (HasGrandParent)
+            @if (OnMoveLevelUpButtonClick != null && HasGrandParent)
             {
                 <button class="button" @onclick=@(() => OnMoveLevelUpButtonClick?.Invoke(ID))>Move Level Up</button>
             }
-            @if (HasSiblings)
+            @if (OnMoveLevelDownButtonClick != null && HasSiblings)
             {
                 <button class="button" @onclick=@(() => OnMoveLevelDownButtonClick?.Invoke(ID))>Move Level Down</button>
             }
-            <button class="button" @onclick=OnRename>Rename</button>
-            <button class="button" @onclick=OnResignature>Resignature</button>
-            <button class="button" @onclick=@(() => OnRemove?.Invoke(ID))>Remove</button>
+            @if (OnRename != null)
+            {
+                <button class="button" @onclick=OnRename>Rename</button>
+            }
+            @if (OnResignature != null)
+            {
+                <button class="button" @onclick=OnResignature>Resignature</button>
+            }
+            @if (OnRemove != null)
+            {
+                <button class="button" @onclick=@(() => OnRemove?.Invoke(ID))>Remove</button>
+            }
         </VerticalLayout>
     </ContextMenu>
 </OuterClickComponent>

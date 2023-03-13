@@ -13,8 +13,11 @@
         Model=_vm
         Left=@context.Item1 Top=@context.Item2
         
+        OnAddSubPage=OnAddSubPage
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom
+
+        OnPageRename=OnPageRename
         OnTemplateRename=OnPageTemplateRename
         OnPropertyRemove=OnPropertyRemove
         />
@@ -24,6 +27,12 @@
 @code {
     [Parameter] public string PageTemplateID { get; set; }
     [Parameter] public string ProjectID { get; set; }
+
+    private async Task OnAddSubPage(string pageID, int index)
+    {
+        await _commands.Execute(new CreateSubPageTemplateCommand(pageID, index));
+        await RefreshView();
+    }
 
     private async Task OnAddSubPageOnTop()
     {
