@@ -48,7 +48,10 @@
                 <p class="signature">---</p>
             }
 
-            <EditableText Text=@TemplateName OnSubmit=OnTemplateRenameInternal class="template-name" Mode=EditableText.ModeType.EditOnClick />
+            @if (Model.ParentIDs.Length <= 1)
+            {
+                <EditableText Text=@TemplateName OnSubmit=OnTemplateRenameInternal class="template-name" Mode=EditableText.ModeType.EditOnClick />
+            }
 
         </div>
     </div>
