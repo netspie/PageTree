@@ -1,5 +1,4 @@
-﻿using PageTree.Domain;
-using Practicer.Domain.Pages.Common;
+﻿using Practicer.Domain.Pages.Common;
 
 namespace PageTree.Domain.PageTemplates
 {
@@ -12,7 +11,7 @@ namespace PageTree.Domain.PageTemplates
         public PageTemplate(string id, string templateName, string pageName, string ownerID, string projectID) : this(id, templateName, pageName, ownerID) =>
             ProjectID = projectID;
 
-        public string TemplateName { get; private set; } = "New Template";
+        public string TemplateName { get; set; } = "New Template";
 
         public bool RenameTemplate(string newName) =>
           EditableItemFunctions.Rename(newName, () => TemplateName = newName);
