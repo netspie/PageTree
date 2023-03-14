@@ -18,6 +18,7 @@
         OnAddSubPageOnBottom=OnAddSubPageOnBottom
 
         OnPropertyMove=OnPropertyReorder
+        OnPropertyMoveLevel=OnPropertyMoveLevel
 
         OnChangeExpand=OnChangeExpand
 
@@ -59,6 +60,12 @@
     private async Task OnPropertyReorder(string pageID, string propertyID, int index)
     {
         await _commands.Execute(new ChangeIndexOfPropertyTemplateCommand(pageID, propertyID, index));
+        await RefreshView();
+    }
+
+    private async Task OnPropertyMoveLevel(string parentPageID, string propertyID, string newParentPageID)
+    {
+        await _commands.Execute(new ChangeLevelOfPropertyTemplateCommand(parentPageID, propertyID, newParentPageID));
         await RefreshView();
     }
 

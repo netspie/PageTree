@@ -13,6 +13,6 @@ namespace PageTree.Server.ApiContracts
         public string PropertyTemplateID { get; set; }
 
         [AuthorizeResource(typeof(PageTemplate))]
-        public string NewPageID { get; set; }
+        public string NewPageTemplateID { get; set; }
     }
 }
