@@ -1,10 +1,12 @@
 ﻿@using Common.Basic.Collections;
 @using Corelibs.Basic.Colors;
 @using Corelibs.BlazorShared.UI;
+@using Corelibs.BlazorViews.Components;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.AspNetCore.Components.Rendering;
 @using PageTree.App.PageTemplates.Queries;
 @using System.Drawing;
+@using PageTree.Client.Shared.Extensions;
 @using PageTree.Client.Shared.Views.Pages;
 
 @implements IView<PageTemplatesVM>
@@ -16,6 +18,8 @@
         />
 
     <TreeLayout Tree=_treeNode AfterExpand=AfterExpand ModifyNode=ModifyNode />
+
+    <ChooseFromListWindow @ref=_movePropertyDownWindow OnSelected=OnMoveLevelDownOptionSelected />
 </div>
 
 @code {
@@ -40,6 +44,7 @@
     private string _mainStyle => $"width: calc(100% - {Left}px); ";
 
     private TreeLayout.TreeNode? _treeNode;
+    private ChooseFromListWindow _movePropertyDownWindow;
 
     protected override void OnInitialized()
     {
@@ -153,7 +158,7 @@
 
                 //builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
                 builder.AddAttribute(seqLocal++, "OnMoveLevelUp", OnMoveLevelUpInternal);
-                //builder.AddAttribute(seqLocal++, "OnMoveLevelDown", OnMoveLevelDownInternal);
+                builder.AddAttribute(seqLocal++, "OnMoveLevelDown", OnMoveLevelDownInternal);
 
             });
         };
@@ -173,6 +178,37 @@
 
     private Task OnMoveLevelUpInternal(string parentPageID, string propertyID, string newParentPageID) =>
         OnPropertyMoveLevel?.Invoke(parentPageID, propertyID, newParentPageID);
+
+    private Task OnMoveLevelDownInternal(string parentPageID, string propertyID)
+    {
+        _movePropertyDownWindow.Data = (parentPageID, propertyID);
+
+        if (parentPageID == Model.ID)
+        {
+            _movePropertyDownWindow.Options = Model.Values.Select(p => p.Identity).Where(p => p.ID != propertyID).ToUIIdentityVM();
+        }
+        else
+        {
+            var propertiesFlattened = Model.Values.Flatten(p => p.Properties).ToArray();
+            var parentPage = propertiesFlattened.FirstOrDefault(p => p.Identity.ID == parentPageID);
+            _movePropertyDownWindow.Options = parentPage.Properties.Select(p => p.Identity).Where(p => p.ID != propertyID).ToUIIdentityVM();
+        }
+
+        _movePropertyDownWindow.OuterClick.Enabled = true;
+
+        return Task.CompletedTask;
+    }
+
+    private Task OnMoveLevelDownOptionSelected(object data, string newParentPageID)
+    {
+        var dataTuple = (ValueTuple<string, string>) data;
+
+        var parentPageID = dataTuple.Item1;
+        var propertyID = dataTuple.Item2;
+
+        _movePropertyDownWindow.OuterClick.Enabled = false;
+        return OnPropertyMoveLevel?.Invoke(parentPageID, propertyID, newParentPageID);
+    }
 
     private void ModifyNode(RenderTreeBuilder builder, TreeLayout.TreeNode node, ref int sequence)
     {
