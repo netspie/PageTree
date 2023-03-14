@@ -17,6 +17,8 @@
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom
 
+        OnChangeExpand=OnChangeExpand
+
         OnPageRename=OnPageRename
         OnTemplateRename=OnPageTemplateRename
         OnPropertyRemove=OnPropertyRemove
@@ -27,6 +29,12 @@
 @code {
     [Parameter] public string PageTemplateID { get; set; }
     [Parameter] public string ProjectID { get; set; }
+
+    private async Task OnChangeExpand(string pageID, bool isExpanded)
+    {
+        await _commands.Execute(new ChangeExpandOfPageTemplateCommand(pageID, isExpanded));
+        await RefreshView();
+    }
 
     private async Task OnAddSubPage(string pageID, int index)
     {

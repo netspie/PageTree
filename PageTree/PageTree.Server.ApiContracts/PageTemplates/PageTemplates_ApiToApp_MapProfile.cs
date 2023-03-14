@@ -14,6 +14,7 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<ChangeNameOfPageTemplateApiCommand, ChangeNameOfPageTemplateCommand>();
             CreateMapCirc<ChangeNameOfPageTemplatePageApiCommand, ChangeNameOfPageTemplatePageCommand>();
             CreateMapCirc<ChangeSignatureOfPageTemplateApiCommand, ChangeSignatureOfPageTemplateCommand>();
+            CreateMapCirc<ChangeExpandOfPageTemplateApiCommand, ChangeExpandOfPageTemplateCommand>();
         }
     }
 }

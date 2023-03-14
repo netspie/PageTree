@@ -21,6 +21,7 @@
 @code {
     [Parameter] public PageTemplatesVM Model { get; set; }
 
+    [Parameter] public Func<string, bool, Task> OnChangeExpand { get; set; }
     [Parameter] public Func<string, int, Task> OnAddSubPage { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
@@ -28,44 +29,6 @@
 
     [Parameter] public Func<string, string, Task<bool>> OnPageRename { get; set; }
     [Parameter] public Func<string, string, Task<bool>> OnTemplateRename { get; set; }
-
-    private readonly static PageTemplatesVM TestPageTemplatesModel = new()
-    {
-        Values = new PageTemplateVM[]
-    {
-            new()
-            {
-                HasChildren = true,
-                CanExpand = true,
-                Identity = new("Word", "Word"),
-                IsExpanded = true,
-                Properties = new PageTemplateVM[]
-            {
-                    new()
-                    {
-                        HasChildren = true,
-                        CanExpand = true,
-                        Identity = new("Word", "Word"),
-                        IsExpanded = true,
-                    },
-                    new()
-                    {
-                        HasChildren = true,
-                        CanExpand = true,
-                        Identity = new("Phrase", "Phrase"),
-                        IsExpanded = true,
-                    }
-            }
-            },
-            new()
-            {
-                HasChildren = true,
-                CanExpand = true,
-                Identity = new("Phrase", "Phrase"),
-                IsExpanded = true,
-            }
-    }
-    };
 
     [Parameter] public int Left { get; set; }
     [Parameter] public int Top { get; set; }
@@ -115,8 +78,9 @@
             list.Add(new()
             {
                 Identity = new() { ID = propertyVM.Identity.ID, Name = propertyVM.Identity.Name },
-                // HasChildren = propertyVM.HasChildren,
+                HasChildren = propertyVM.HasChildren,
                 IsExpanded = propertyVM.IsExpanded,
+                CanExpand = true,
                 Layout = new()
                 {
                     Gap = 10
@@ -181,7 +145,7 @@
                 builder.AddAttribute(seqLocal++, "TemplateName", propertyVM.TemplateName);
                 builder.AddAttribute(seqLocal++, "OnRename", OnPageRename);
                 builder.AddAttribute(seqLocal++, "OnTemplateRename", OnTemplateRename);
-                
+
                 //builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveLevelUp", OnMoveLevelUpInternal);
                 //builder.AddAttribute(seqLocal++, "OnMoveLevelDown", OnMoveLevelDownInternal);
@@ -190,7 +154,11 @@
         };
     }
 
-    private Task AfterExpand(string id) => InvokeAsync(StateHasChanged);
+    private async Task AfterExpand(TreeLayout.TreeNode node)
+    {
+        await OnChangeExpand?.Invoke(node.Identity.ID, node.IsExpanded);
+        await InvokeAsync(StateHasChanged);
+    }
 
     private void ModifyNode(RenderTreeBuilder builder, TreeLayout.TreeNode node, ref int sequence)
     {
@@ -198,8 +166,8 @@
             builder.AddCssAttribute(ref sequence, "Background", Color.FromArgb(255, 225, 225, 225).ToHexString());
 
         builder.AddCssAttribute(ref sequence, "Padding", 10);
-        //builder.AddCssAttribute(ref sequence, "PaddingLeft", 10);
-        //builder.AddCssAttribute(ref sequence, "PaddingRight", 10);
+        builder.AddCssAttribute(ref sequence, "PaddingLeft", 20);
+        builder.AddCssAttribute(ref sequence, "PaddingRight", 20);
         //builder.AddCssAttribute(ref sequence, "PaddingTop", 10);
         //builder.AddCssAttribute(ref sequence, "PaddingBottom", 10);
     }

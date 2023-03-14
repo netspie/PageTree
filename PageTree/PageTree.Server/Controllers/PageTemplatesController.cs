@@ -55,5 +55,9 @@ namespace PageTree.Server.Api.Controllers
         [HttpPatch, Route("{pageTemplateID}/changeSignature"), Authorize_Edit]
         public Task<IActionResult> ChangeSignature([FromRouteAndBody] ChangeSignatureOfPageTemplateApiCommand command) =>
             _mediator.MapSendAndGetPatchResponse<ChangeSignatureOfPageTemplateCommand>(command, _mapper);
+
+        [HttpPatch, Route("{pageTemplateID}/changeExpand"), Authorize_Edit]
+        public Task<IActionResult> ChangeExpand([FromRouteAndBody] ChangeExpandOfPageTemplateApiCommand command) =>
+            _mediator.MapSendAndGetPatchResponse<ChangeExpandOfPageTemplateCommand>(command, _mapper);
     }
 }

@@ -17,6 +17,6 @@ namespace PageTree.Domain.PageTemplates
         public bool RenameTemplate(string newName) =>
           EditableItemFunctions.Rename(newName, () => TemplateName = newName);
 
-        public bool IsExpanded { get; set; }
+        public bool IsExpanded { get; set; } = true;
     }
 }

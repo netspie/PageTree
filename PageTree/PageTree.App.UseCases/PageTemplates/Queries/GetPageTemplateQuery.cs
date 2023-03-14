@@ -76,7 +76,7 @@ public class GetPageTemplatesQueryHandler : IQueryHandler<GetPageTemplatesQuery,
                 new Signature();
 
             var properties = Array.Empty<PageTemplateVM>();
-            if (currentPage.IsExpanded)
+            if (childPage.IsExpanded)
                 properties = await GetProperties(childPage);
 
             result.Add(new PageTemplateVM()
@@ -85,6 +85,8 @@ public class GetPageTemplatesQueryHandler : IQueryHandler<GetPageTemplatesQuery,
                 Identity = (childPage.ID, childPage.Name),
                 SignatureIdentity = (childSignature.ID, childSignature.Name),
                 Properties = properties,
+                HasChildren = childPage.ChildrenIDs.Count > 0,
+                IsExpanded = childPage.IsExpanded
             });
         }
 

@@ -83,12 +83,12 @@ namespace PageTree.Client.Shared.Views.Pages
             _arrangements_AddNew.OuterClick.Enabled = !_arrangements_AddNew.OuterClick.Enabled;
         }
 
-        private Task<bool> BeforeExpand(string id)
+        private Task<bool> BeforeExpand(TreeLayout.TreeNode node)
         {
             return Task.FromResult(true);
         }
 
-        private Task AfterExpand(string id) => InvokeAsync(StateHasChanged);
+        private Task AfterExpand(TreeLayout.TreeNode node) => InvokeAsync(StateHasChanged);
 
         private TreeLayout.TreeNode.GetContentDelegate GetProperty(
             PropertyVM propertyVM,

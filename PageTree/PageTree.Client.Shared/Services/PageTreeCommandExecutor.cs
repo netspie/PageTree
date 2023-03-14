@@ -39,6 +39,7 @@ namespace PageTree.Client.Shared.Services
             AddPatch<ChangeIndexOfPropertyTemplateCommand, ChangeIndexOfPropertyTemplateApiCommand>("pageTemplates/changeIndex");
             AddPatch<ChangeLevelOfPropertyTemplateCommand, ChangeLevelOfPropertyTemplateApiCommand>("pageTemplates/changeLevel");
             AddPatch<ChangeSignatureOfPageTemplateCommand, ChangeSignatureOfPageTemplateApiCommand>("pageTemplates/{pageTemplateID}/changeSignature");
+            AddPatch<ChangeExpandOfPageTemplateCommand, ChangeExpandOfPageTemplateApiCommand>("pageTemplates/{pageTemplateID}/changeExpand");
 
             // Signatures
             AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("signatures");
