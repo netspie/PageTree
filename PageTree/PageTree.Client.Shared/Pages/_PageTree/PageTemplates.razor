@@ -17,6 +17,8 @@
         OnAddSubPageOnTop=OnAddSubPageOnTop
         OnAddSubPageOnBottom=OnAddSubPageOnBottom
 
+        OnPropertyMove=OnPropertyReorder
+
         OnChangeExpand=OnChangeExpand
 
         OnPageRename=OnPageRename
@@ -51,6 +53,12 @@
     private async Task OnAddSubPageOnBottom()
     {
         await _commands.Execute(new CreateSubPageTemplateCommand(PageTemplateID, int.MaxValue));
+        await RefreshView();
+    }
+
+    private async Task OnPropertyReorder(string pageID, string propertyID, int index)
+    {
+        await _commands.Execute(new ChangeIndexOfPropertyTemplateCommand(pageID, propertyID, index));
         await RefreshView();
     }
 

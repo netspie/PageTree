@@ -22,10 +22,14 @@
     [Parameter] public PageTemplatesVM Model { get; set; }
 
     [Parameter] public Func<string, bool, Task> OnChangeExpand { get; set; }
+    
     [Parameter] public Func<string, int, Task> OnAddSubPage { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
     [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
+
     [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
+
+    [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
 
     [Parameter] public Func<string, string, Task<bool>> OnPageRename { get; set; }
     [Parameter] public Func<string, string, Task<bool>> OnTemplateRename { get; set; }
@@ -140,8 +144,8 @@
                 builder.AddAttribute(seqLocal++, "OnCreateSubpage", OnAddSubPage);
 
                 builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemove);
-                //builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
-                //builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
+                builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
+                builder.AddAttribute(seqLocal++, "OnMoveDown", OnPropertyMoveDownInternal);
                 builder.AddAttribute(seqLocal++, "TemplateName", propertyVM.TemplateName);
                 builder.AddAttribute(seqLocal++, "OnRename", OnPageRename);
                 builder.AddAttribute(seqLocal++, "OnTemplateRename", OnTemplateRename);
@@ -159,6 +163,12 @@
         await OnChangeExpand?.Invoke(node.Identity.ID, node.IsExpanded);
         await InvokeAsync(StateHasChanged);
     }
+
+    private Task OnPropertyMoveUpInternal(string parentPropertyOrPageID, string propertyID, int currentIndex) =>
+        OnPropertyMove(parentPropertyOrPageID, propertyID, currentIndex - 1);
+
+    private Task OnPropertyMoveDownInternal(string parentPropertyOrPageID, string propertyID, int currentIndex) =>
+        OnPropertyMove(parentPropertyOrPageID, propertyID, currentIndex + 1);
 
     private void ModifyNode(RenderTreeBuilder builder, TreeLayout.TreeNode node, ref int sequence)
     {
