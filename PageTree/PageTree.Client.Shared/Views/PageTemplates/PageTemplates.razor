@@ -167,7 +167,12 @@
 
         builder.AddCssAttribute(ref sequence, "Padding", 10);
         builder.AddCssAttribute(ref sequence, "PaddingLeft", 20);
-        builder.AddCssAttribute(ref sequence, "PaddingRight", 2);
+
+        if (node.Parent?.Parent is null)
+            builder.AddCssAttribute(ref sequence, "PaddingRight", 10);
+        else
+            builder.AddCssAttribute(ref sequence, "PaddingRight", 0);
+
         //builder.AddCssAttribute(ref sequence, "PaddingTop", 10);
         //builder.AddCssAttribute(ref sequence, "PaddingBottom", 10);
     }
