@@ -12,6 +12,7 @@ using Common.Basic.Collections;
 using PageTree.App.UseCases.Pages.Common;
 using PageTree.App.UseCases.Common;
 using PageTree.App.Common;
+using PageTree.Domain.PageTemplates;
 
 namespace PageTree.App.Pages.Queries;
 
@@ -21,6 +22,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
     private readonly IRepository<Page> _pageRepository;
     private readonly IRepository<Style> _styleRepository;
     private readonly IRepository<Signature> _signatureRepository;
+    private readonly IRepository<PageTemplate> _templateRepository;
     private readonly IRepository<PracticeCategory> _practiceCategoryRepository;
     private readonly IRepository<PracticeTactic> _practiceTacticRepository;
 
@@ -29,6 +31,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         IRepository<Page> pageRepository,
         IRepository<Style> styleRepository,
         IRepository<Signature> signatureRepository,
+        IRepository<PageTemplate> templateRepository,
         IRepository<PracticeCategory> practiceCategoryRepository,
         IRepository<PracticeTactic> practiceTacticRepository)
     {
@@ -36,6 +39,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         _pageRepository = pageRepository;
         _styleRepository = styleRepository;
         _signatureRepository = signatureRepository;
+        _templateRepository = templateRepository;
         _practiceCategoryRepository = practiceCategoryRepository;
         _practiceTacticRepository = practiceTacticRepository;
     }
@@ -72,6 +76,14 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var properties = await GetProperties(page, mainStyle?.TreeExpandInfo);
         var signatures = await _signatureRepository.Get(signaturesRoot.ChildrenIDs, res);
 
+        IdentityVM[] templatesVM = null;
+        if (query.IsEditMode)
+        {
+            var templatesRoot = await _templateRepository.Get(project.TemplatePageRootID, res);
+            var templates = await _templateRepository.Get(templatesRoot.ChildrenIDs, res);
+            templatesVM = templates.Select(s => new IdentityVM(s.ID, s.TemplateName)).ToArray();
+        }
+
         return res.With(new GetPageQueryOut(
             new PageVM()
             {
@@ -95,6 +107,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
                 Properties = properties,
 
                 Signatures = signatures.Select(s => new IdentityVM(s.ID, s.Name)).ToArray(),
+                Templates = templatesVM,
 
                 PracticeTactics = practiceTactics.Select(p => new IdentityVM(p.ID, p.Name)).ToArray(),
 
@@ -143,7 +156,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
     }
 }
 
-public sealed record GetPageQuery(string ID) : IQuery<Result<GetPageQueryOut>>, IGetQuery;
+public sealed record GetPageQuery(string ID, bool IsEditMode = false) : IQuery<Result<GetPageQueryOut>>, IGetQuery;
 public sealed record GetPageQueryOut(PageVM PageVM);
 
 public class PageVM
@@ -154,6 +167,7 @@ public class PageVM
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
     public PropertyVM[] Properties { get; init; } = Array.Empty<PropertyVM>();
     public IdentityVM[] Signatures { get; init; } = Array.Empty<IdentityVM>();
+    public IdentityVM[] Templates { get; init; } = Array.Empty<IdentityVM>();
     public IdentityVM[] PracticeTactics { get; init; } = Array.Empty<IdentityVM>();
     public Style StyleOfPage { get; init; } = new();
     public Style[] StylesOfChildren { get; init; } = Array.Empty<Style>();

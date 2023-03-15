@@ -24,7 +24,7 @@ namespace PageTree.Client.Shared.Services
 
             // Pages
             AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{pageID}/subpages");
-            AddPost<CreateSubPagesFromTemplateCommand, CreateSubPagesFromTemplateApiCommand>("pages/{pageID}/createFromTemplate");
+            AddPost<CreateSubPagesFromTemplateCommand, CreateSubPagesFromTemplateApiCommand>("pages/{pageID}/subpages/createFromTemplate");
             AddPost<CreateLinkCommand, CreateLinkApiCommand>("pages/{pageID}/links");
             AddDelete<RemovePropertyCommand, RemovePropertyApiCommand>("pages");
             AddPatch<ChangeNameOfPageCommand, ChangeNameOfPageApiCommand>("pages/{pageID}/changeName");

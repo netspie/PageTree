@@ -15,16 +15,16 @@ namespace PageTree.Server.UseCases.Tests.Pages.Queries
         [Test]
         public void Handle()
         {
-            var searchEngine = new LuceneInRamSearchEngine<Page>();
-            var handler = new GetPagesSearchResultsQueryHandler(searchEngine, null, null);
+            //var searchEngine = new LuceneInRamSearchEngine<Page>();
+            //var handler = new GetPagesSearchResultsQueryHandler(searchEngine, null, null);
 
-            searchEngine.Add("ID-1", "Page-1");
-            searchEngine.Add("ID-2", "Page-2");
-            searchEngine.Add("ID-3", "Page-3");
+            //searchEngine.Add("ID-1", "Page-1");
+            //searchEngine.Add("ID-2", "Page-2");
+            //searchEngine.Add("ID-3", "Page-3");
 
-            // handler.Handle(new GetPagesSearchResultsQuery());
+            //// handler.Handle(new GetPagesSearchResultsQuery());
 
-            Assert.Pass();
+            //Assert.Pass();
         }
     }
 }

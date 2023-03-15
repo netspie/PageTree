@@ -19,6 +19,7 @@
 
                 OnRemove=OnRemoveInternal
                 OnCreateSubpage=OnCreateSubpageInternal
+                OnCreateSubpageFromTemplate=OnCreateSubpagesFromTemplateInternal
                 OnCreateLink=OnCreateLinkInternal
                 OnMoveDownButtonClick=OnMoveDownInternal
                 OnMoveUpButtonClick=OnMoveUpInternal 
@@ -86,6 +87,7 @@
     [Parameter] public bool IsLast { get; set; }
 
     [Parameter] public Func<string, int, Task> OnCreateSubpage { get; set; }
+    [Parameter] public Func<string, int, Task> OnCreateSubpageFromTemplate { get; set; }
     [Parameter] public Func<string, int, Task> OnCreateLink { get; set; }
     [Parameter] public Func<string, string, Task> OnRemove { get; set; }
     [Parameter] public Func<string, string, int, Task> OnMoveUp { get; set; }
@@ -138,6 +140,12 @@
     {
         _menu.OuterClick.Enabled = false;
         return OnCreateSubpage?.Invoke(Model.ParentIDs.Last(), index + 1);
+    }
+
+    protected Task OnCreateSubpagesFromTemplateInternal(int index)
+    {
+        _menu.OuterClick.Enabled = false;
+        return OnCreateSubpageFromTemplate?.Invoke(Model.ParentIDs.Last(), index + 1);
     }
 
     protected Task OnCreateSubpageChildInternal()

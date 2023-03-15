@@ -7,6 +7,7 @@ namespace PageTree.Server.ApiContracts
         public PagesSub_ApiToApp_MapProfile()
         {
             CreateMapCirc<CreateSubPageApiCommand, CreateSubPageCommand>();
+            CreateMapCirc<CreateSubPagesFromTemplateApiCommand, CreateSubPagesFromTemplateCommand>();
         }
     }
 }

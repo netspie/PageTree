@@ -38,7 +38,8 @@ public class CreateSubPageCommandHandler : BaseCommandHandler, ICommandHandler<C
         await _pageRepository.Save(subPage, result);
         await _pageRepository.Save(parentPage, result);
 
-        _searchEngine.Add(subPage.ID, subPage.Name);
+        if (!_searchEngine.Add(subPage.ID, subPage.Name))
+            return result.Fail();
 
         return result;
     }

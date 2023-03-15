@@ -7,5 +7,7 @@ namespace PageTree.Server.ApiContracts
     {
         [FromRoute]
         public string ID { get; set; }
+
+        public bool IsEditMode { get; set; } = false;
     }
 }

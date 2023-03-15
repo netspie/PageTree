@@ -23,7 +23,8 @@
 
         OnNavigateUp=OnNavigateUp
         OnAddSubPage=OnAddSubPage
-        
+        OnAddSubPageFromTemplate=OnAddSubPageFromTemplate
+
         OnSelectLinkInputChanged=OnSelectLinkInputChanged
         OnSelectLinkSelected=OnSelectLinkSelected
        
@@ -106,6 +107,12 @@
         await RefreshView();
     }
 
+    private async Task OnAddSubPageFromTemplate(string pageID, int index, string templateID)
+    {
+        await _commands.Execute(new CreateSubPagesFromTemplateCommand(pageID, templateID, index));
+        await RefreshView();
+    }
+
     private async Task OnAddSubPageOnTop()
     {
         await _commands.Execute(new CreateSubPageCommand(PageID, 0));
@@ -168,4 +175,6 @@
     private Task OnPathElementClick(string id) => NavigateTo(id);
 
     protected override string QueryParameter => PageID;
+
+    protected override GetPageQuery CreateQuery() => new GetPageQuery(QueryParameter, IsEditMode: true);
 }

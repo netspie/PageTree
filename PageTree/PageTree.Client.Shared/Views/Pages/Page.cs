@@ -25,6 +25,7 @@ namespace PageTree.Client.Shared.Views.Pages
         [Parameter] public Func<Task> OnAddSubPageOnTop { get; set; }
         [Parameter] public Func<Task> OnAddSubPageOnBottom { get; set; }
         [Parameter] public Func<string, int, Task> OnAddSubPage { get; set; }
+        [Parameter] public Func<string, int, string, Task> OnAddSubPageFromTemplate { get; set; }
         [Parameter] public Func<string, int, Task> OnAddLink { get; set; }
         [Parameter] public Func<string, string, Task> OnPropertyRemove { get; set; }
         [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
@@ -47,6 +48,7 @@ namespace PageTree.Client.Shared.Views.Pages
         private TreeLayout? _treeLayout;
         private ChooseFromListWindow _signatureChangeWindow;
         private ChooseFromListWindow _movePropertyDownWindow;
+        private ChooseFromListWindow _chooseTemplateWindow;
         private SelectLinkWindow _selectLinkWindow;
 
         private List<Corelibs.BlazorViews.ViewModels.IdentityVM> _properties = new();
@@ -116,6 +118,7 @@ namespace PageTree.Client.Shared.Views.Pages
 
                     builder.AddAttribute(seqLocal++, "OnCreateSubpage", OnCreateSubPageAfterPropertyInternal);
                     builder.AddAttribute(seqLocal++, "OnCreateLink", OnCreateLinkAfterPropertyInternal);
+                    builder.AddAttribute(seqLocal++, "OnCreateSubpageFromTemplate", OnCreateSubpageFromTemplateMenuButtonInternal);
 
                     builder.AddAttribute(seqLocal++, "OnRemove", OnPropertyRemoveInternal);
                     builder.AddAttribute(seqLocal++, "OnMoveUp", OnPropertyMoveUpInternal);
@@ -420,13 +423,19 @@ namespace PageTree.Client.Shared.Views.Pages
             return Task.CompletedTask;
         }
 
+        private Task OnCreateSubpageFromTemplateMenuButtonInternal(string propertyID, int currentIndex)
+        {
+            _chooseTemplateWindow.Data = (propertyID, currentIndex);
+            _chooseTemplateWindow.OuterClick.Enabled = true;
+            return Task.CompletedTask;
+        }
+
         private Task OnResignatureSignatureSelected(object data, string signatureID)
         {
             _signatureChangeWindow.OuterClick.Enabled = false;
 
             var propertyID = data as string;
-            OnPropertyResignature?.Invoke(propertyID, signatureID);
-            return Task.CompletedTask;
+            return OnPropertyResignature?.Invoke(propertyID, signatureID);
         }
 
         private Task OnMoveLevelDownOptionSelected(object data, string newParentPageID)
@@ -438,6 +447,18 @@ namespace PageTree.Client.Shared.Views.Pages
 
             _movePropertyDownWindow.OuterClick.Enabled = false;
             return OnPropertyMoveLevel?.Invoke(parentPageID, propertyID, newParentPageID);
+        }
+
+        private Task OnChooseTemplateOptionSelected(object data, string templateID)
+        {
+            var dataTuple = (ValueTuple<string, int>) data;
+
+            var propertyID = dataTuple.Item1;
+            var currentIndex = dataTuple.Item2;
+
+            _chooseTemplateWindow.OuterClick.Enabled = false;
+
+            return OnAddSubPageFromTemplate?.Invoke(propertyID, currentIndex, templateID);
         }
 
         private Task OnMoveLevelDownInternal(string parentPageID, string propertyID)

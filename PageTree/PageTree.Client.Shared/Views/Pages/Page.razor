@@ -26,6 +26,9 @@
 
         <ChooseFromListWindow @ref=_movePropertyDownWindow OnSelected=OnMoveLevelDownOptionSelected />
 
+        var templatesOptions = Model.Templates.ToUIIdentityVM();
+        <ChooseFromListWindow Options=templatesOptions @ref=_chooseTemplateWindow OnSelected=OnChooseTemplateOptionSelected />
+
         <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectLinkInputChanged OnSelected=OnSelectLinkSelected />
     }
     <PageHeader Model=@GetPageHeader() OnPathElementClick=OnPathElementClick IsEditMode=IsEditMode OnNameChanged=@(name => OnPageNameChanged?.Invoke(Model.Identity.ID, name)) />
