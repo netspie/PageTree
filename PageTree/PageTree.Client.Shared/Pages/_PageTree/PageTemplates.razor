@@ -22,6 +22,8 @@
 
         OnChangeExpand=OnChangeExpand
 
+        OnPropertyResignature=OnPropertyResignature
+
         OnPageRename=OnPageRename
         OnTemplateRename=OnPageTemplateRename
         OnPropertyRemove=OnPropertyRemove
@@ -88,6 +90,12 @@
     private async Task OnPropertyRemove(string pageID, string propertyID)
     {
         await _commands.Execute(new RemovePropertyTemplateCommand(pageID, propertyID));
+        await RefreshView();
+    }
+
+    private async Task OnPropertyResignature(string propertyID, string signatureID)
+    {
+        await _commands.Execute(new ChangeSignatureOfPageTemplateCommand(propertyID, signatureID));
         await RefreshView();
     }
 

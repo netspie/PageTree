@@ -20,6 +20,11 @@
     <TreeLayout Tree=_treeNode AfterExpand=AfterExpand ModifyNode=ModifyNode />
 
     <ChooseFromListWindow @ref=_movePropertyDownWindow OnSelected=OnMoveLevelDownOptionSelected />
+
+    @{
+        var signaturesOptions = Model.Signatures.ToUIIdentityVM();
+        <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureSignatureSelected />
+    }
 </div>
 
 @code {
@@ -36,6 +41,8 @@
     [Parameter] public Func<string, string, int, Task> OnPropertyMove { get; set; }
     [Parameter] public Func<string, string, string, Task> OnPropertyMoveLevel { get; set; }
 
+    [Parameter] public Func<string, string, Task> OnPropertyResignature { get; set; }
+
     [Parameter] public Func<string, string, Task<bool>> OnPageRename { get; set; }
     [Parameter] public Func<string, string, Task<bool>> OnTemplateRename { get; set; }
 
@@ -45,6 +52,7 @@
 
     private TreeLayout.TreeNode? _treeNode;
     private ChooseFromListWindow _movePropertyDownWindow;
+    private ChooseFromListWindow _signatureChangeWindow;
 
     protected override void OnInitialized()
     {
@@ -156,7 +164,7 @@
                 builder.AddAttribute(seqLocal++, "OnRename", OnPageRename);
                 builder.AddAttribute(seqLocal++, "OnTemplateRename", OnTemplateRename);
 
-                //builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
+                builder.AddAttribute(seqLocal++, "OnResignature", OnResignatureMenuButtonInternal);
                 builder.AddAttribute(seqLocal++, "OnMoveLevelUp", OnMoveLevelUpInternal);
                 builder.AddAttribute(seqLocal++, "OnMoveLevelDown", OnMoveLevelDownInternal);
 
@@ -208,6 +216,22 @@
 
         _movePropertyDownWindow.OuterClick.Enabled = false;
         return OnPropertyMoveLevel?.Invoke(parentPageID, propertyID, newParentPageID);
+    }
+
+    private Task OnResignatureMenuButtonInternal(string propertyID)
+    {
+        _signatureChangeWindow.Data = propertyID;
+        _signatureChangeWindow.OuterClick.Enabled = true;
+        return Task.CompletedTask;
+    }
+
+    private Task OnResignatureSignatureSelected(object data, string signatureID)
+    {
+        _signatureChangeWindow.OuterClick.Enabled = false;
+
+        var propertyID = data as string;
+        OnPropertyResignature?.Invoke(propertyID, signatureID);
+        return Task.CompletedTask;
     }
 
     private void ModifyNode(RenderTreeBuilder builder, TreeLayout.TreeNode node, ref int sequence)
