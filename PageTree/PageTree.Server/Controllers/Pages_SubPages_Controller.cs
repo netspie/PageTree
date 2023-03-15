@@ -28,5 +28,9 @@ namespace PageTree.Server.Api.Controllers
         [HttpPost, Authorize_Edit]
         public Task<IActionResult> Create([FromRouteAndBody] CreateSubPageApiCommand command = null) =>
             _mediator.MapSendAndGetPostResponse<CreateSubPageCommand>(command, _mapper);
+
+        [HttpPost, Route("createFromTemplate"), Authorize_Edit]
+        public Task<IActionResult> CreateSubpagesFromTemplates([FromRouteAndBody] CreateSubPagesFromTemplateApiCommand command = null) =>
+            _mediator.MapSendAndGetPostResponse<CreateSubPagesFromTemplateCommand>(command, _mapper);
     }
 }
