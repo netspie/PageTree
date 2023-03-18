@@ -17,17 +17,6 @@ namespace PageTree.Server.Data
         public DbSet<PracticeTactic> PracticeTactics { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
-        protected override void OnModelCreating(ModelBuilder mb)
-        {
-            base.OnModelCreating(mb);
-
-            //mb.SetPrimaryKey<User>();
-            //mb.SetPrimaryKey<ProjectUserList>();
-            //mb.SetPrimaryKey<Project>();
-            //mb.SetPrimaryKey<Page>();
-            //mb.SetPrimaryKey<Signature>();
-        }
     }
 
     public class User : JsonEntity {}
@@ -38,14 +27,4 @@ namespace PageTree.Server.Data
     public class Signature : JsonEntity {}
     public class PracticeCategory : JsonEntity {}
     public class PracticeTactic : JsonEntity {}
-
-    static class ModelBuilderExtensions
-    {
-        public static void SetPrimaryKey<TEntity>(this ModelBuilder modelBuilder) where TEntity : JsonEntity
-        {
-            modelBuilder.Entity<User>()
-                .HasKey(k => new { k.ID })
-                .HasName("PK_Guid");
-        }
-    }
 }

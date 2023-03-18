@@ -7,7 +7,6 @@ internal class Migrator
     public required LegacyDataAccessor _legacyDataAccessor { private get; init; }
     public required DataTransformer _dataTransformer { private get; init; }
     public required DataStorage _dataStorage { private get; init; }
-    public required Printer _printer { private get; init; }
 
     public async Task<Result> Perform(DataType dataTypes = DataType.None)
     {

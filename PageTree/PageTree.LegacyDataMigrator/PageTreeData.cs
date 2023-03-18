@@ -1,6 +1,8 @@
-﻿namespace PageTree.LegacyDataMigrator;
+﻿using PageTree.App.Entities.Signatures;
+using PageTree.Domain;
 
-public class PageTreeData
-{
+namespace PageTree.LegacyDataMigrator;
 
-}
+public record PageTreeData(
+    Page[] Pages = null,
+    Signature[] Signatures = null);
