@@ -1,5 +1,6 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Repository;
+using PageTree.App.Entities.Signatures;
 using PageTree.Domain;
 
 namespace PageTree.LegacyDataMigrator;
@@ -11,12 +12,17 @@ public class DataTransformer
     public required string RootPageID { private get; set; }
     public required string LegacyRootPageID { private get; set; }
     public required string LegacyRootPageParentID { private get; set; }
+    public required string SignatureRootID { private get; set; }
+    public required string LegacySignatureRootID { private get; set; }
+
     public required IRepository<Page> _pageRepository { private get; set; }
+    public required IRepository<Signature> _signatureRepository { private get; set; }
 
     public async Task<Result<PageTreeData>> Transform(LegacyData legacyData)
     {
         var result = Result<PageTreeData>.Success();
 
+        // Pages
         var pagesDict = new Dictionary<string, Page>();
         var pages = await Task.WhenAll(legacyData.Pages.Select(async p =>
         {
@@ -73,6 +79,23 @@ public class DataTransformer
             return page;
         }).ToArray());
 
-        return Result<PageTreeData>.Success();
+        var legacyRootSignature = legacyData.Signatures.First(s => s.ID == LegacySignatureRootID);
+        var signatureRootResult = await _signatureRepository.GetBy(SignatureRootID);
+        var signatureRoot = signatureRootResult.Get();
+        signatureRoot.ChildrenIDs.Clear();
+        legacyRootSignature.OrderedItemsIDs.ForEach(id => signatureRoot.CreateSignature(id, int.MaxValue));
+
+        var signatures = legacyData.Signatures.Select(p =>
+        {
+            if (legacyRootSignature.ID == legacyRootSignature.ID)
+                return signatureRoot;
+
+            return new Signature(p.ID, p.Name, OwnerID, ProjectID, SignatureRootID);
+        }).ToArray();
+
+        return new PageTreeData(
+            pages,
+            signatures)
+            .ToResult();
     }
 }
