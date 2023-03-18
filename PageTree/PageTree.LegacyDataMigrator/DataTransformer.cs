@@ -85,12 +85,12 @@ public class DataTransformer
         signatureRoot.ChildrenIDs.Clear();
         legacyRootSignature.OrderedItemsIDs.ForEach(id => signatureRoot.CreateSignature(id, int.MaxValue));
 
-        var signatures = legacyData.Signatures.Select(p =>
+        var signatures = legacyData.Signatures.Select(s =>
         {
-            if (legacyRootSignature.ID == legacyRootSignature.ID)
+            if (s.ID == LegacySignatureRootID)
                 return signatureRoot;
 
-            return new Signature(p.ID, p.Name, OwnerID, ProjectID, SignatureRootID);
+            return new Signature(s.ID, s.Name, OwnerID, ProjectID, SignatureRootID);
         }).ToArray();
 
         return new PageTreeData(
