@@ -9,6 +9,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Corelibs.Basic\Corelibs.Basic\Corelibs.Basic\Corelibs.Basic.csproj" />
+    <ProjectReference Include="..\PageTree.App.Entities\PageTree.App.Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Common.Basic">
+      <HintPath>..\..\..\Practice.Domain.Tests\Practice.Domain\Practice.Domain\bin\Debug\net6.0\Common.Basic.dll</HintPath>
+      <Aliases>CommonLegacy</Aliases>
+    </Reference>
+    <Reference Include="Practice.Domain">
+      <HintPath>..\..\..\Practice.Domain.Tests\Practice.Domain\Practice.Domain\bin\Debug\net6.0\Practice.Domain.dll</HintPath>
+      <Aliases>PracticerLegacy</Aliases>
+    </Reference>
   </ItemGroup>
 
 </Project>

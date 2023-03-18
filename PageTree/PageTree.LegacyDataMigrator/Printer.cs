@@ -3,7 +3,7 @@ using Common.Basic.DDD;
 
 namespace PageTree.LegacyDataMigrator;
 
-public class ResultPrinter
+public class Printer
 {
     public void Print(Entity entity, Result result)
     {

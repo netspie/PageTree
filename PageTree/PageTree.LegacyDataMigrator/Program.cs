@@ -1,6 +1,6 @@
 ﻿using PageTree.LegacyDataMigrator;
 
-var resultPrinter = new ResultPrinter();
+var printer = new Printer();
 
 var migrator = new Migrator()
 {
@@ -8,13 +8,15 @@ var migrator = new Migrator()
 
     _dataTransformer = new DataTransformer()
     {
-        _resultPrinter = resultPrinter,
+        _printer = printer,
     },
 
     _dataStorage = new DataStorage()
     {
-        _resultPrinter = resultPrinter,
+        _printer = printer,
     },
+
+    _printer = printer,
 };
 
-await migrator.Perform();
+await migrator.Perform(DataType.Page | DataType.Signature);
