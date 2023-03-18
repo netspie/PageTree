@@ -23,7 +23,13 @@ var migrator = new Migrator()
         LegacySignatureRootID = "TemplateSignatureRootID",
         _signatureRepository = signatureRepository,
     },
-    _dataStorage = new DataStorage(),
+    _dataStorage = new DataStorage()
+    {
+        _dbContext = dbContext,
+        _pageRepository = pageRepository,
+        _signatureRepository = signatureRepository,
+        RootPageID = "350b10d0-f72a-4f8f-92a6-5da3b80cac6a",
+    },
 };
 
 await migrator.Perform(DataType.Page | DataType.Signature);

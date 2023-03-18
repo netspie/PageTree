@@ -35,6 +35,9 @@ public class DataTransformer
             if (p.ID == LegacyRootPageID)
             {
                 page = await _pageRepository.Get(RootPageID, result);
+                if (!page)
+                    page = new Page(RootPageID, "JP Language Root Page");
+
                 var childrenIDs = page.ChildrenIDs.ToList();
                 childrenIDs.ForEach(childID =>
                 {
@@ -51,7 +54,11 @@ public class DataTransformer
             {
                 page.ParentID = RootPageID;
             }
-            if (p.ParentID == RootPageID)
+            if (p.ID == RootPageID)
+            {
+                page.ParentID = string.Empty;
+            }
+            if (page.ParentID == LegacyRootPageID)
             {
                 page.ParentID = string.Empty;
             }
@@ -82,6 +89,9 @@ public class DataTransformer
         var legacyRootSignature = legacyData.Signatures.First(s => s.ID == LegacySignatureRootID);
         var signatureRootResult = await _signatureRepository.GetBy(SignatureRootID);
         var signatureRoot = signatureRootResult.Get();
+        if (!signatureRoot)
+            signatureRoot = new Signature() { ID = SignatureRootID, Name = "JP Language Root Signature" };
+
         signatureRoot.ChildrenIDs.Clear();
         legacyRootSignature.OrderedItemsIDs.ForEach(id => signatureRoot.CreateSignature(id, int.MaxValue));
 
