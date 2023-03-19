@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.App.UseCases.Tests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3303C09A-07B6-4599-B00B-BDBE1B339FA0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PageTree.LegacyDataMigrator", "PageTree\PageTree.LegacyDataMigrator\PageTree.LegacyDataMigrator.csproj", "{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +169,14 @@ Global
 		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Release|x64.ActiveCfg = Release|Any CPU
 		{D5DBE10C-3CAE-4B80-B1BF-045FFD8B6970}.Release|x64.Build.0 = Release|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Debug|x64.Build.0 = Debug|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Release|x64.ActiveCfg = Release|Any CPU
+		{1D665BAD-584F-4DE8-9B0B-E2A4194FD48B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

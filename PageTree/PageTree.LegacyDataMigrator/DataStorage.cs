@@ -16,24 +16,24 @@ public class DataStorage
     {
         var result = Result.Success();
 
-        foreach (var signature in data.Signatures)
-        {
-            if (!signature)
-                continue;
+        //foreach (var signature in data.Signatures)
+        //{
+        //    if (!signature)
+        //        continue;
 
-            await _signatureRepository.Delete(signature.ID);
-        }
+        //    await _signatureRepository.Delete(signature.ID);
+        //}
 
-        foreach (var page in data.Pages)
-        {
-            if (!page)
-                continue;
+        //foreach (var page in data.Pages)
+        //{
+        //    if (!page)
+        //        continue;
 
-            if (page.ID == RootPageID)
-                continue;
+        //    if (page.ID == RootPageID)
+        //        continue;
 
-            await _pageRepository.Delete(page.ID);
-        }
+        //    await _pageRepository.Delete(page.ID);
+        //}
 
         using (var transaction = await _dbContext.Database.BeginTransactionAsync())
         {
