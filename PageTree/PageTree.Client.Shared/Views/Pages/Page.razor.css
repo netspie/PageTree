@@ -16,10 +16,10 @@
 }
 
 .page::-webkit-scrollbar-track {
-    background: #eee;
+    background: #F4FAFF;
 }
 
 .page::-webkit-scrollbar-thumb {
-    background: #bbb;
+    background: rgb(255, 124, 154);
     border-radius: 10px;
 }

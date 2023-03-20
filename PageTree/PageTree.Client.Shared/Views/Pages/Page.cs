@@ -174,8 +174,8 @@ namespace PageTree.Client.Shared.Views.Pages
             }
             else if (!hasDefinedChildrenArtifacts)
             {
-                if (propertyVM.SignatureIdentity != null)
-                    vmModel.Artifacts.Add(propertyVM.ToSignatureArtifactVM());
+                //if (propertyVM.SignatureIdentity != null)
+                    //vmModel.Artifacts.Add(propertyVM.ToSignatureArtifactVM());
 
                 vmModel.Artifacts.Add(propertyVM.ToNameArtifactVM());
             }

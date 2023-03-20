@@ -1,5 +1,4 @@
 ﻿using PageTree.App.Entities.Styles;
-using PageTree.App.Pages.Queries;
 using PageTree.App.UseCases.Common;
 
 namespace PageTree.App.UseCases.Pages.Queries.Styles
@@ -10,15 +9,18 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
         {
             Style result = null;
 
+            // By Page
             result = page.Name switch
             {
                 "Japanese Language" => DefaultStyle,
+                "Radicals" => RadicalsStyle,
                 _ => null
             };
 
             if (result != null)
                 return result;
 
+            // By Signature
             result = signature.Name switch
             {
                 "Author" => DefaultStyle,

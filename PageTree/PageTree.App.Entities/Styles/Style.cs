@@ -436,16 +436,16 @@ namespace PageTree.App.Entities.Styles
 
     public enum FontWeight
     {
-        Thin,
-        ExtraLight,
-        Light,
+        Thin = 100,
+        ExtraLight = 200,
+        Light = 300,
 
-        Normal,
+        Normal = 400,
 
-        Medium,
-        SemiBold,
-        Bold,
-        ExtraBold
+        Medium = 500,
+        SemiBold = 600,
+        Bold = 700,
+        ExtraBold = 800
     }
 
     public class ColorInfo
