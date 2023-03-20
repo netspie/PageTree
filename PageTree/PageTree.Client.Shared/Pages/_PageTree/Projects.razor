@@ -33,7 +33,10 @@
                     <div class="card-footer-item">Archive</div>
                 </NavLink>
 
-                @{var pageUri = $"{projectEditUri}/pages/{@project.RootPageID}"; }
+                @{
+                    var rootPageID = project.RootPageID;
+                    var pageUri = $"{projectEditUri}/pages/{rootPageID}";
+                }
                 <NavLink href="@pageUri" class="card-footer-item">
                     <div class="card-footer-item">Pages</div>
                 </NavLink>

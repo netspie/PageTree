@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PageTree.App.Projects.Commands;
 using PageTree.App.Projects.Queries;
-using PageTree.Domain.Projects;
 using PageTree.Server.ApiContracts;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 

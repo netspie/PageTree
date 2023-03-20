@@ -13,6 +13,7 @@ using PageTree.App.UseCases.Pages.Common;
 using PageTree.App.UseCases.Common;
 using PageTree.App.Common;
 using PageTree.Domain.PageTemplates;
+using Corelibs.Basic.Collections;
 
 namespace PageTree.App.Pages.Queries;
 
@@ -60,6 +61,41 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoryRoot.Items, res);
         var practiceTactics = await _practiceTacticRepository.Get(practiceTacticRoot.Items, res);
 
+        var parentPages = new List<Page>();
+        res += await _pageRepository.GetParents(page, p => p.ParentID, parentPages);
+        parentPages.Reverse();
+
+        IdentityVM[] templatesVM = null;
+        if (query.IsEditMode)
+        {
+            var templatesRoot = await _templateRepository.Get(project.TemplatePageRootID, res);
+            var templates = await _templateRepository.Get(templatesRoot.ChildrenIDs, res);
+            templatesVM = templates.Select(s => new IdentityVM(s.ID, s.TemplateName)).ToArray();
+        }
+        else
+        {
+            bool isPublicRootSet = project.PublicRootPageID.IsID();
+            if (isPublicRootSet)
+            {
+                bool doesPathContainPublicRoot = parentPages.FirstOrDefault(p => p.ID == project.PublicRootPageID) != null;
+                if (!doesPathContainPublicRoot)
+                {
+                    page = await _pageRepository.Get(project.PublicRootPageID, res);
+                    signature = await _signatureRepository.Get(page.SignatureID, res);
+
+                    parentPages.Clear();
+                    res += await _pageRepository.GetParents(page, p => p.ParentID, parentPages);
+                    parentPages.Reverse();
+                }
+
+                var d = parentPages.Select((p, i) => new { p, i }).FirstOrDefault(d => d.p.ID == project.PublicRootPageID);
+                if (d != null)
+                    parentPages = parentPages.Skip(d.i).ToList();
+                else
+                    parentPages.Clear();
+            }
+        }
+
         //var projectStyle = await _styleRepository.Get(project?.StyleID, res);
         //var signatureStyles = await _styleRepository.Get(signature?.StyleIDs, res);
         //var pageStyle = await _styleRepository.Get(page?.StyleID, res);
@@ -69,20 +105,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
             new IdentityVM() { ID = page.ID, Name = page.Name },
             new IdentityVM() { ID = signature?.ID, Name = signature?.Name });
 
-        var parentPages = new List<Page>();
-        res += await _pageRepository.GetParents(page, p => p.ParentID, parentPages);
-        parentPages.Reverse();
-
         var properties = await GetProperties(page, mainStyle?.TreeExpandInfo);
         var signatures = await _signatureRepository.Get(signaturesRoot.ChildrenIDs, res);
-
-        IdentityVM[] templatesVM = null;
-        if (query.IsEditMode)
-        {
-            var templatesRoot = await _templateRepository.Get(project.TemplatePageRootID, res);
-            var templates = await _templateRepository.Get(templatesRoot.ChildrenIDs, res);
-            templatesVM = templates.Select(s => new IdentityVM(s.ID, s.TemplateName)).ToArray();
-        }
 
         return res.With(new GetPageQueryOut(
             new PageVM()

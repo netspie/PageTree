@@ -1,7 +1,10 @@
 ﻿@inherits ComponentBase
 @attribute [Route(Uris.ProjectEdit)]
+@using Common.Basic.Collections;
+@using PageTree.App.Pages.Queries;
 @using PageTree.App.Projects.Commands;
 @using PageTree.App.Projects.Queries;
+@using PageTree.Client.Shared.Views.Pages;
 
 <PageTitle>PageTree</PageTitle>
 
@@ -37,6 +40,26 @@
         </div>
     </div>
 
+    @{
+        var name = _projectVM.PublicRootPage.Name.IsNullOrEmpty() ? "Default" : _projectVM.PublicRootPage.Name;
+    }
+
+    <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectPublicRootPageInputChanged OnSelected=OnSelectedPublicRootPage />
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Public Root Page</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <button class="button is-secondary" @onclick=OnPublicRootPageButtonClick>
+                        @name
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="field is-horizontal">
         <div class="field-label">
             <!-- Left empty for spacing -->
@@ -54,7 +77,6 @@
 </div>
 
 @code {
-
     [Parameter]
     public string? ProjectID { get; set; }
 
@@ -62,9 +84,11 @@
     [Inject] private IQueryExecutor _queries { get; set; }
     [Inject] private ICommandExecutor _commands { get; set; }
 
-    private ProjectVM _projectVM = new ProjectVM("", "", "");
+    private ProjectVM _projectVM = new ProjectVM("", "", "", new());
 
     private string CssClass_IsStatic => _hasEdit ? null : "is-static";
+
+    private SelectLinkWindow _selectLinkWindow;
 
     protected override async Task OnInitializedAsync()
     {
@@ -113,14 +137,16 @@
     private void UpdateEditIfAny()
     {
         _hasEdit = false;
-        
-        _description.Trim();
 
+        _description.Trim();
 
         if (_name != _projectVM.Name)
             _hasEdit = true;
 
         if (_description != _projectVM.Description)
+            _hasEdit = true;
+
+        if (_publicRootPageID != _projectVM.PublicRootPage.ID)
             _hasEdit = true;
     }
 
@@ -129,8 +155,31 @@
         if (!_hasEdit)
             return;
 
-        await _commands.Execute(new EditProjectCommand(_projectVM.ID, _name, _description));
+        await _commands.Execute(new EditProjectCommand(_projectVM.ID, _name, _description, _publicRootPageID ?? _projectVM.PublicRootPage.ID));
         await RefreshVMAndView();
         _navigation.NavigateTo(Uris.Projects);
+    }
+
+    private void OnPublicRootPageButtonClick()
+    {
+        _selectLinkWindow.Show(ProjectID, "", 0);
+    }
+
+    private async Task OnSelectPublicRootPageInputChanged(string projectID, string input)
+    {
+        var searchResultOut = await _queries.Execute<GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(
+           new GetPagesSearchResultsQuery(projectID, input));
+
+        if (searchResultOut?.PageVM != null)
+            await _selectLinkWindow.Update(new() { Values = searchResultOut?.PageVM?.Values });
+    }
+
+    private string _publicRootPageID;
+    private async Task OnSelectedPublicRootPage(string pageID, int index, string publicRootPageID)
+    {
+        _publicRootPageID = publicRootPageID;
+        UpdateEditIfAny();
+
+        await InvokeAsync(StateHasChanged);
     }
 }

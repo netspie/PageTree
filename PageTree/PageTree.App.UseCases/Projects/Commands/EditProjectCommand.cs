@@ -27,6 +27,7 @@ public class EditProjectCommandHandler : BaseCommandHandler, ICommandHandler<Edi
 
         project.Name = command.Name;
         project.Description = command.Description;
+        project.PublicRootPageID = command.PublicRootPageID;
 
         await _projectRepository.Save(project, result);
 
@@ -34,4 +35,8 @@ public class EditProjectCommandHandler : BaseCommandHandler, ICommandHandler<Edi
     }
 }
 
-public sealed record EditProjectCommand(string ID, string Name, string Description) : ICommand<Result>, IReplaceCommand;
+public sealed record EditProjectCommand(
+    string ID, 
+    string Name, 
+    string Description,
+    string PublicRootPageID) : ICommand<Result>, IReplaceCommand;

@@ -8,6 +8,7 @@
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
 @using PageTree.App.Pages.Queries;
+@using PageTree.App.Projects.Queries;
 
 <BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
     <PageTree.Client.Shared.Views.Pages.Page
@@ -24,13 +25,15 @@
 </BackgroundAndContent>
 
 @code {
-#if DEBUG
+    #if DEBUG
     public const string _pageID = "350b10d0-f72a-4f8f-92a6-5da3b80cac6a";
     public const string _projectID = "8e6458d5-ab4a-4dbd-b845-7727c5b87c9c";
 #else
     public const string _pageID = "350b10d0-f72a-4f8f-92a6-5da3b80cac6a";
-    public const string _projectID = "---";
+    public const string _projectID = "8e6458d5-ab4a-4dbd-b845-7727c5b87c9c";
 #endif
+
+    private bool _navigateUpAllowed = true;
 
     [Parameter] public string PageID { get; set; }
     private DotNetObjectReference<Page> _ref;
@@ -40,7 +43,7 @@
     {
         _navigation.LocationChanged += OnLocationChanged;
         _ref = DotNetObjectReference.Create(this);
-        
+
         await _jsRuntime.AddKeyDownEventHandler(_ref, nameof(OnKeyDown));
         await base.OnInitializedAsync();
     }

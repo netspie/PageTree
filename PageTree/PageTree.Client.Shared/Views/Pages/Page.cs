@@ -17,6 +17,7 @@ namespace PageTree.Client.Shared.Views.Pages
     {
         [Parameter] public PageVM Model { get; set; }
 
+        [Parameter] public bool NavigateUpAllowed { get; set; } = true;
         [Parameter] public int Left { get; set; }
         [Parameter] public int Top { get; set; }
 

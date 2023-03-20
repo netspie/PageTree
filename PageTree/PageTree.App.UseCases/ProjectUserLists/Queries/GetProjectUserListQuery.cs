@@ -29,7 +29,8 @@ public class GetProjectUserListQueryHandler : Mediator.IQueryHandler<GetProjectU
             new ProjectUserListVM(
                 projectUserList.ID, projects.Select(p =>
                     new ProjectVM(
-                        p.ID, p.Name, p.Description, p.RootPageID,
+                        p.ID, p.Name, p.Description,
+                        p.RootPageID, p.PublicRootPageID,
                         p.TemplatePageRootID, p.SignatureRootID, 
                         p.PracticeCategoryRootID, p.PracticeTacticRootID)).ToArray()));
 
@@ -43,5 +44,6 @@ public sealed record GetProjectUserListQueryOut(ProjectUserListVM ProjectUserLis
 public sealed record ProjectUserListVM(string ID, ProjectVM[] Projects);
 public sealed record ProjectVM(
     string ID, string Name, string Description, 
-    string RootPageID, string TemplatePageRootID, string SignatureRootID, 
+    string RootPageID, string PublicRootPageID,
+    string TemplatePageRootID, string SignatureRootID, 
     string PracticeCategoriesID, string PracticeTacticsID) : QueryOut;
