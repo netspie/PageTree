@@ -29,7 +29,7 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                 {
                     BackgroundColor = new()
                     {
-                        Default = Color.FromArgb(255, 255, 224, 234).ToArgb()
+                        Default = Color.FromArgb(255, 253, 253, 253).ToArgb()
                     },
                     Padding = new()
                     {
@@ -71,10 +71,34 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                         },
                         VisualInfoOfChildren = new()
                         {
-                            BackgroundColor = new()
+                            Padding = new()
                             {
-                                Default = Color.FromArgb(255, 255, 176, 193).ToArgb()
-                            },
+                                All = 20
+                            }
+                        },
+                        LayoutOfChildren = new()
+                        {
+                            Type = LayoutType.Grid,
+                            Gap = 20
+                        },
+                    },
+                    new()
+                    {
+                        StyleType = ApplyStyleBy.Index,
+                        ChildIndex = 1,
+                        Artifacts = new()
+                        {
+                            new()
+                            {
+                                Type = StyleArtifactType.Name
+                            }
+                        },
+                        VisualInfo = new()
+                        {
+                            
+                        },
+                        VisualInfoOfChildren = new()
+                        {
                             Padding = new()
                             {
                                 All = 20

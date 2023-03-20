@@ -318,7 +318,8 @@ namespace PageTree.Client.Shared.Views.Pages
                 Data = new StyleData(Model.StylesOfChildren, null, Model?.StyleOfPage?.RootProperty),
                 Layout = new()
                 {
-                    Gap = layoutGap
+                    Gap = layoutGap,
+                    Type = layout != null ? (TreeLayout.LayoutType) layout?.Type : TreeLayout.LayoutType.Vertical,
                 },
             };
         }

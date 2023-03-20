@@ -12,7 +12,7 @@
 }
 
 .page::-webkit-scrollbar {
-    width: 0.25rem;
+    width: 0rem;
 }
 
 .page::-webkit-scrollbar-track {
