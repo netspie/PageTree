@@ -10,6 +10,7 @@ using PageTree.App.Entities.Styles;
 using PageTree.App.Pages.Queries;
 using PageTree.Client.Shared.Extensions;
 using System.Drawing;
+using static PageTree.Client.Shared.Views.Pages.Property;
 
 namespace PageTree.Client.Shared.Views.Pages
 {
@@ -157,7 +158,17 @@ namespace PageTree.Client.Shared.Views.Pages
             vmModel.PropertyType = propertyType;
             vmModel.HasSiblings = hasSiblings;
 
+            vmModel.ParentLayoutType = parentStyle?.LayoutOfChildren != null ? (Property.LayoutType) parentStyle?.LayoutOfChildren.Type : Property.LayoutType.Vertical;
+
             bool hasDefinedChildrenArtifacts = childStyle != null && !childStyle.Artifacts.IsNullOrEmpty();
+
+            // apply child signature filter
+            //if (childStyle != null &&
+            //    childStyle.SignatureFilter != null &&
+            //    childStyle.SignatureFilter.SignatureIDs != null)
+            //{
+            //    childStyle.SignatureFilter.SignatureIDs.Contains(propertyVM.SignatureIdentity.ID);
+            //}
 
             // apply parent style
             if (parentStyle != null && !parentStyle.ChildrenStyle.IsNullOrEmpty())
@@ -175,9 +186,18 @@ namespace PageTree.Client.Shared.Views.Pages
             else if (!hasDefinedChildrenArtifacts)
             {
                 //if (propertyVM.SignatureIdentity != null)
-                    //vmModel.Artifacts.Add(propertyVM.ToSignatureArtifactVM());
+                //vmModel.Artifacts.Add(propertyVM.ToSignatureArtifactVM());
 
-                vmModel.Artifacts.Add(propertyVM.ToNameArtifactVM());
+                if (parentStyle?.VisualInfoOfChildren != null)
+                {
+                    var visualInfoVM = new Property.VisualInfoVM()
+                            .OverrideBy(parentStyle.VisualInfoOfChildren);
+                    vmModel.Artifacts.Add(propertyVM.ToNameArtifactVM(visualInfoVM));
+                }
+                else
+                {
+                    vmModel.Artifacts.Add(propertyVM.ToNameArtifactVM());
+                }
             }
 
             // apply child style visual info
@@ -236,7 +256,7 @@ namespace PageTree.Client.Shared.Views.Pages
             builder.AddAttribute(sequence++, "OnClick", OnClick);
             Task OnClick() => OnPropertyClick?.InvokeIfOk(node);
 
-            builder.AddCssAttribute(ref sequence, "BorderRadius", 10);
+            //builder.AddCssAttribute(ref sequence, "BorderRadius", 10);
 
             if (styleData.Parent != null)
                 Apply(styleData.Parent.VisualInfoOfChildren, ref sequence);
@@ -301,7 +321,7 @@ namespace PageTree.Client.Shared.Views.Pages
 
         private TreeLayout.TreeNode GetTreeNode()
         {
-            Layout layout = null;
+            App.Entities.Styles.Layout layout = null;
             if (Model != null && Model.StyleOfPage != null && Model?.StyleOfPage?.RootProperty != null)
                 layout = Model.StyleOfPage.RootProperty.Layout;
 

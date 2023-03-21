@@ -45,10 +45,9 @@
                 FontSize=@artifact.VisualInfo.Font.FontSize />
         }
 
-        @if (IsEditMode)
+        @if (IsEditMode || Model.ParentLayoutType == LayoutType.Vertical)
         {
             <div class="property-info-bar">
-
                 @if (Model.PropertyType == PropertyType.Link)
                 {
                     <img class="property-info-bar-image" src="_content/PageTree.Client.Shared/images/icons/link-variant.png" />
@@ -58,13 +57,16 @@
                     <div class="property-info-bar-image" />
                 }
 
-                @if (!Model.Signature.Name.IsNullOrEmpty())
+                @if (Model.ParentLayoutType == LayoutType.Vertical)
                 {
-                    <span class="signature">@Model.Signature.Name</span>
-                }
-                else
-                {
-                    <p class="signature">---</p>
+                    @if (!Model.Signature.Name.IsNullOrEmpty())
+                    {
+                        <span class="signature">@Model.Signature.Name</span>
+                    }
+                    else
+                    {
+                        <p class="signature">---</p>
+                    }
                 }
             </div>
         }
@@ -217,6 +219,7 @@
 
         public PropertyType PropertyType { get; set; }
 
+        public LayoutType ParentLayoutType { get; set; }
         public Layout Layout { get; set; }
         public List<ArtifactVM> Artifacts { get; set; } = new();
     }
@@ -270,7 +273,8 @@
     public enum LayoutType
     {
         Vertical,
-        Horizontal
+        Horizontal,
+        Grid
     }
 
     public enum ArtifactType

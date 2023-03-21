@@ -33,7 +33,7 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
             result = signature.Name switch
             {
                 "Author" => DefaultStyle,
-                "Radical" => RadicalsGroupStyle,
+                "Radical" => RadicalStyle,
                 _ => null
             };
 

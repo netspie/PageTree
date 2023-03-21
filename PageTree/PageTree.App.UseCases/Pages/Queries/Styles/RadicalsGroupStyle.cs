@@ -29,6 +29,10 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                     {
                         All = 20
                     },
+                    Font = new()
+                    {
+                        FontSize = 30
+                    }
                 },
             }
         };
