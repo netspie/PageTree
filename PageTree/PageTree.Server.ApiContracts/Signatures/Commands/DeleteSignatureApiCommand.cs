@@ -7,11 +7,5 @@ namespace PageTree.Server.ApiContracts
     {
         [FromRoute, AuthorizeResource(typeof(Signature))]
         public string SignatureID { get; set; }
-
-        public DeleteSignatureApiCommand() {}
-        public DeleteSignatureApiCommand(string signatureID)
-        {
-            SignatureID = signatureID;
-        }
     }
 }

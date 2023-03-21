@@ -1,11 +1,11 @@
 ﻿using Corelibs.Basic.Net;
-using PageTree.App.Entities.Signatures;
+using PageTree.Domain.Practice;
 
 namespace PageTree.Server.ApiContracts
 {
-    public class CreateSignatureApiCommand
+    public class CreatePracticeCategoryApiCommand
     {
-        [AuthorizeResource(typeof(Signature))]
+        [AuthorizeResource(typeof(PracticeCategory))]
         public string ParentID { get; set; }
         public int Index { get; set; }
     }

@@ -47,6 +47,12 @@ namespace PageTree.Client.Shared.Services
             AddDelete<DeleteSignatureCommand, DeleteSignatureApiCommand>("signatures/{signatureID}");
             AddPatch<ChangeNameOfSignatureCommand, ChangeNameOfSignatureApiCommand>("signatures/{signatureID}/changeName");
             AddPatch<ChangeIndexOfSignatureCommand, ChangeIndexOfSignatureApiCommand>("signatures/{signatureID}/changeIndex");
+
+            // Practice Categories
+            AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("practiceCategories");
+            AddDelete<DeleteSignatureCommand, DeleteSignatureApiCommand>("practiceCategories/{practiceCategoryID}");
+            AddPatch<ChangeNameOfSignatureCommand, ChangeNameOfSignatureApiCommand>("practiceCategories/{practiceCategoryID}/changeName");
+            AddPatch<ChangeIndexOfSignatureCommand, ChangeIndexOfSignatureApiCommand>("practiceCategories/{practiceCategoryID}/changeIndex");
         }
     }
 }
