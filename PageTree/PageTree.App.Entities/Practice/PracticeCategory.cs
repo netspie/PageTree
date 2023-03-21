@@ -9,5 +9,6 @@ namespace PageTree.Domain.Practice
 
         public string Name { get; init; } = new("");
         public List<string> Items { get; init; } = new();
+        public List<string> ChildrenIDs { get; set; }
     }
 }

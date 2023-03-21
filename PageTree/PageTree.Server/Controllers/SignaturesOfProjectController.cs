@@ -1,13 +1,9 @@
 using AutoMapper;
-using Corelibs.AspNetApi.Authorization;
-using Corelibs.AspNetApi.Controllers.ActionConstraints;
 using Corelibs.AspNetApi.Controllers.Extensions;
 using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PageTree.App.Entities.Signatures;
-using PageTree.App.Projects.Commands;
 using PageTree.App.UseCases.Signatures.Queries;
 using PageTree.Server.ApiContracts;
 
