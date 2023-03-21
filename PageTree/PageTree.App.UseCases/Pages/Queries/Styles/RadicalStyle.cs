@@ -35,39 +35,33 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                 {
                     new()
                     {
+                        ShowOnlyIfHasNoChildrenVisible = true,
+                        Type = StyleArtifactType.Signature,
+                        VisualInfo = new()
+                        {
+                            Font = new()
+                            {
+                                FontSize = 12,
+                                FontWeight = FontWeight.Bold,
+                            },
+                        }
+                    },
+                    new()
+                    {
+                        ApplyStyleOnlyIfHasNoChildrenVisible = true,
                         Type = StyleArtifactType.Name,
+                        VisualInfo = new()
+                        {
+                            Font = new()
+                            {
+                                FontSize = 14,
+                                FontWeight = FontWeight.Light,
+                            },
+                        }
                     }
                 },
                 Children = new()
                 {
-                    new()
-                    {
-                        //StyleType = ApplyStyleBy.s,
-                        //ChildIndex = 0,
-                        //VisualInfo = new()
-                        //{
-
-                        //},
-                        //Artifacts = new()
-                        //{
-                        //    new()
-                        //    {
-                        //        Type = StyleArtifactType.Name
-                        //    }
-                        //},
-                        //VisualInfoOfChildren = new()
-                        //{
-                        //    Padding = new()
-                        //    {
-                        //        All = 20
-                        //    }
-                        //},
-                        //LayoutOfChildren = new()
-                        //{
-                        //    Type = LayoutType.Grid,
-                        //    Gap = 20
-                        //},
-                    },
                 }
             }
         };

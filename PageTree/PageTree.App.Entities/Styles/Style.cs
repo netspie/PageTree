@@ -254,6 +254,16 @@ namespace PageTree.App.Entities.Styles
     public class StyleOfArtifact
     {
         /// <summary>
+        /// Describes if this style should be applied only if there is no children displayed.
+        /// </summary>
+        public bool? ApplyStyleOnlyIfHasNoChildrenVisible { get; set; }
+
+        /// <summary>
+        /// Describes if this artifact should be shown only if there is no children displayed.
+        /// </summary>
+        public bool? ShowOnlyIfHasNoChildrenVisible { get; set; }
+
+        /// <summary>
         /// Defines a type of the artifact.
         /// </summary>
         public StyleArtifactType Type { get; set; }

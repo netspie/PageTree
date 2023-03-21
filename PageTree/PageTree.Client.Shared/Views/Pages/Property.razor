@@ -45,7 +45,7 @@
                 FontSize=@artifact.VisualInfo.Font.FontSize />
         }
 
-        @if (IsEditMode || Model.ParentLayoutType == LayoutType.Vertical)
+        @if (IsEditMode && Model.ParentLayoutType == LayoutType.Vertical)
         {
             <div class="property-info-bar">
                 @if (Model.PropertyType == PropertyType.Link)

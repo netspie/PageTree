@@ -1,5 +1,6 @@
 ﻿using Common.Basic.Collections;
 using Common.Basic.Functional;
+using Corelibs.Basic.Collections;
 using Corelibs.Basic.Colors;
 using Corelibs.BlazorShared.UI;
 using Corelibs.BlazorViews.Components;
@@ -171,13 +172,30 @@ namespace PageTree.Client.Shared.Views.Pages
             //}
 
             // apply parent style
+            bool? hasSignature = propertyVM.SignatureIdentity?.ID.IsID();
+            bool hasVisibleChildren = propertyVM.Properties.Length > 0;
+            
+            var name = propertyVM.Identity.Name;
+            if (name == "Variants")
+            {
+                Console.WriteLine("Boba");
+            }
+
             if (parentStyle != null && !parentStyle.ChildrenStyle.IsNullOrEmpty())
             {
                 parentStyle.ChildrenStyle.ForEach(artifact =>
                 {
-                    var visualInfoVM = new Property.VisualInfoVM()
-                        .OverrideBy(parentStyle.VisualInfoOfChildren)
-                        .OverrideBy(artifact.VisualInfo);
+                    if (artifact.ShowOnlyIfHasNoChildrenVisible.HasValue &&
+                        artifact.ShowOnlyIfHasNoChildrenVisible.Value && 
+                        hasVisibleChildren)
+                        return;
+
+                    var visualInfoVM = new VisualInfoVM()
+                        .OverrideBy(parentStyle.VisualInfoOfChildren);
+
+                    if (!artifact.ApplyStyleOnlyIfHasNoChildrenVisible.HasValue ||
+                        (artifact.ApplyStyleOnlyIfHasNoChildrenVisible.Value && !hasVisibleChildren))
+                        visualInfoVM = visualInfoVM.OverrideBy(artifact.VisualInfo);
 
                     var newArtifactVM = propertyVM.ToArtifactVM(artifact.Type, visualInfoVM);
                     vmModel.Artifacts.Add(newArtifactVM);
@@ -190,8 +208,9 @@ namespace PageTree.Client.Shared.Views.Pages
 
                 if (parentStyle?.VisualInfoOfChildren != null)
                 {
-                    var visualInfoVM = new Property.VisualInfoVM()
+                    var visualInfoVM = new VisualInfoVM()
                             .OverrideBy(parentStyle.VisualInfoOfChildren);
+
                     vmModel.Artifacts.Add(propertyVM.ToNameArtifactVM(visualInfoVM));
                 }
                 else
