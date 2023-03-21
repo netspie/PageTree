@@ -11,5 +11,6 @@
         public const string Page = Pages + "/{pageID}";
         public const string Signatures = Project + "/signatures";
         public const string Templates = Project + "/templates/{pageTemplateID}";
+        public const string PracticeCategories = Project + "/practiceCategories/{practiceCategoryID}";
     }
 }

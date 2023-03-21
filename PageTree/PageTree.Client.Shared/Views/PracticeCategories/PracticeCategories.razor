@@ -1,0 +1,77 @@
+﻿@using Corelibs.BlazorViews.Layouts
+@using PageTree.App.UseCases.PracticeCategories.Queries;
+
+@implements IView<PracticeCategoriesListVM>
+
+<div class="top-panel">
+    <h3 class="practice-categories-text">Practice Categories</h3>
+    <div class="top-right-buttons">
+        <button class="button" @onclick=OnAddOnTop>+&lt;</button>
+        <button class="button" @onclick=OnAddOnBottom>+&gt;</button>
+    </div>
+</div>
+
+<div class="practice-categories">
+    <VerticalLayout class="practice-categories-list">
+        @for (int i = 0; i < Model.Values.Length; i++)
+        {
+            var practiceCategory = Model.Values[i];
+            bool isFirst = i == 0;
+            bool isLast = i == Model.Values.Length - 1;
+
+            <PracticeCategory 
+                Model=practiceCategory
+                OnAddButtonClick=OnAddSignatureInternal
+                OnRemoveButtonClick=OnRemove
+                OnNameChanged=OnNameChanged
+                OnMoveDownButtonClick=OnMoveDownButtonClickInternal
+                OnMoveUpButtonClick=OnMoveUpButtonClickInternal
+                IsFirst=isFirst
+                IsLast=isLast/>
+        }
+    </VerticalLayout>
+</div>
+
+@code {
+    [Parameter] public PracticeCategoriesListVM Model { get; set; } = new();
+
+    [Parameter] public Func<string, int, Task> OnMove { get; set; }
+    [Parameter] public Func<Task> OnAddOnTop { get; set; }
+    [Parameter] public Func<Task> OnAddOnBottom { get; set; }
+    [Parameter] public Func<int, Task> OnAdd { get; set; }
+    [Parameter] public Func<string, Task> OnRemove { get; set; }
+    [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
+
+    private Task OnAddSignatureInternal(string id) =>
+        CallHandlerAtIndex(id, i => i + 1, (id, i) => OnAdd(i));
+
+    private Task OnMoveUpButtonClickInternal(string id) =>
+        CallHandlerAtIndex(id, i => i - 1, (id, i) => OnMove(id, i));
+
+    private Task OnMoveDownButtonClickInternal(string id) => 
+        CallHandlerAtIndex(id, i => i + 1, (id, i) => OnMove(id, i));
+
+    private Task CallHandlerAtIndex(string id, Func<int, int> getIndex, Func<string, int, Task> handler)
+    {
+        if (handler == null)
+            return Task.CompletedTask;
+
+        var info = Model.Values
+            .Select((v, i) => (v, i))
+            .FirstOrDefault(o => o.v.Identity.ID == id);
+
+        int index = getIndex(info.i);
+        return handler?.Invoke(id, index);
+    }
+
+    public async Task RefreshView()
+    {
+        await RefreshViewModel();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public Task RefreshViewModel()
+    {
+        return Task.CompletedTask;
+    }
+}

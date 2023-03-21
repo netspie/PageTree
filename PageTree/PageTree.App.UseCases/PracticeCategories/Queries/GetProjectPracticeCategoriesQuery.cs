@@ -1,4 +1,5 @@
 ﻿using Common.Basic.Blocks;
+using Common.Basic.Collections;
 using Common.Basic.Repository;
 using Mediator;
 using PageTree.App.UseCases.Common;
@@ -27,11 +28,17 @@ public class GetProjectPracticeCategoriesQueryHandler : IQueryHandler<GetProject
         var project = await _projectRepository.Get(query.ProjectID, result);
         var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, result);
 
+        var @out = new GetProjectPracticeCategoriesQueryOut(
+           new PracticeCategoriesListVM() { PracticeCategoriesRootID = practiceCategoryRoot.ID });
+
         var practiceCategoriesIDs = practiceCategoryRoot.ChildrenIDs;
+        if (practiceCategoriesIDs.IsNullOrEmpty())
+            return result.With(@out);
+
         var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoriesIDs, result);
         practiceCategories = practiceCategories.OrderBy(s => practiceCategoriesIDs.IndexOf(s.ID)).ToArray();
 
-        var @out = new GetProjectPracticeCategoriesQueryOut(
+        @out = new GetProjectPracticeCategoriesQueryOut(
             new PracticeCategoriesListVM() 
             {
                 PracticeCategoriesRootID = practiceCategoryRoot.ID,

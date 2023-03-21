@@ -1,0 +1,67 @@
+﻿@using Corelibs.BlazorShared.UI;
+@using Corelibs.BlazorViews.Layouts;
+@using Microsoft.JSInterop;
+@using PageTree.App.UseCases.PracticeCategories.Queries;
+
+@attribute [Route(Uris.PracticeCategories)]
+@inherits BasePage<GetProjectPracticeCategoriesQuery, GetProjectPracticeCategoriesQueryOut, PracticeCategoriesListVM, 
+    PageTree.Client.Shared.Views.PracticeCategories.PracticeCategories>
+
+<BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
+    <div class="signatures-container">
+        <PageTree.Client.Shared.Views.PracticeCategories.PracticeCategories 
+            @ref=_view
+            OnAdd=OnAdd
+            OnAddOnTop=OnAddOnTop 
+            OnAddOnBottom=OnAddOnBottom
+            OnRemove=OnSignature
+            OnNameChanged=OnNameChanged
+            OnMove=OnMove />
+    </div>
+</BackgroundAndContent>
+
+@code {
+    [Parameter] public string PracticeCategoryID { get; set; }
+    [Parameter] public string ProjectID { get; set; }
+
+    private async Task OnAdd(int index)
+    {
+        await ExecuteCreateCommand(index);
+        await RefreshView();
+    }
+
+    private async Task OnAddOnTop()
+    {
+        await ExecuteCreateCommand(0);
+        await RefreshView();
+    }
+
+    private async Task OnAddOnBottom()
+    {
+        await ExecuteCreateCommand(int.MaxValue);
+        await RefreshView();
+    }
+
+    private async Task OnMove(string id, int index)
+    {
+        //await _commands.Execute(new ChangeIndexOfSignatureCommand(id, index));
+        await RefreshView();
+    }
+
+    private async Task OnSignature(string id)
+    {
+        //await _commands.Execute(new DeleteSignatureCommand(id));
+        await RefreshView();
+    }
+
+    private async Task OnNameChanged(string id, string name)
+    {
+        //await _commands.Execute(new ChangeNameOfSignatureCommand(id, name));
+        await RefreshView();
+    }
+
+    private Task ExecuteCreateCommand(int index) => Task.CompletedTask;
+    //_commands.Execute(new CreateSignatureCommand(_vm.SignatureRootID, index));
+
+    protected override string QueryParameter => ProjectID;
+}
