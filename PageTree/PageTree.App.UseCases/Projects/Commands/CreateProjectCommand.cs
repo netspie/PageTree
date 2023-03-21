@@ -44,7 +44,7 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
             return result.Fail();
 
         var rootPage = new Page(NewID, "Root Page", projectList.OwnerID);
-        var rootPracticeCategory = new PracticeCategory(NewID);
+        var rootPracticeCategory = new PracticeCategory(NewID, PracticeCategory.GetRandomName(), projectList.OwnerID);
         var rootPracticeTactic = new PracticeTactic(NewID);
         var rootSignature = new Signature(NewID, "Root Signature", projectList.OwnerID);
 
@@ -54,6 +54,7 @@ public class CreateProjectCommandHandler : BaseCommandHandler, ICommandHandler<C
 
         rootPage.ProjectID = project.ID;
         rootSignature.ProjectID = project.ID;
+        rootPracticeCategory.ProjectID = project.ID;
 
         await _pageRepository.Save(rootPage, result);
         await _projectRepository.Save(project, result);

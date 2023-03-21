@@ -7,8 +7,8 @@ namespace PageTree.Domain.Practice
 {
     public class PracticeCategory : Entity, IOwnedEntity
     {
-        public string Name { get; init; } = new("");
-        public List<string> Items { get; init; } = new();
+        public string Name { get; set; } = new("");
+        public List<string> Items { get; set; } = new();
         public List<string> ChildrenIDs { get; set; }
 
         public string OwnerID { get; set; } = new("");

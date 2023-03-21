@@ -3,6 +3,7 @@ using Corelibs.BlazorShared;
 using PageTree.App.Pages.Commands;
 using PageTree.App.PageTemplates.Commands;
 using PageTree.App.Projects.Commands;
+using PageTree.App.UseCases.PracticeCategories.Commands;
 using PageTree.App.UseCases.Signatures.Commands;
 using PageTree.App.UseCases.Users.Commands;
 using PageTree.Server.ApiContracts;
@@ -49,10 +50,10 @@ namespace PageTree.Client.Shared.Services
             AddPatch<ChangeIndexOfSignatureCommand, ChangeIndexOfSignatureApiCommand>("signatures/{signatureID}/changeIndex");
 
             // Practice Categories
-            AddPost<CreateSignatureCommand, CreateSignatureApiCommand>("practiceCategories");
-            AddDelete<DeleteSignatureCommand, DeleteSignatureApiCommand>("practiceCategories/{practiceCategoryID}");
-            AddPatch<ChangeNameOfSignatureCommand, ChangeNameOfSignatureApiCommand>("practiceCategories/{practiceCategoryID}/changeName");
-            AddPatch<ChangeIndexOfSignatureCommand, ChangeIndexOfSignatureApiCommand>("practiceCategories/{practiceCategoryID}/changeIndex");
+            AddPost<CreatePracticeCategoryCommand, CreatePracticeCategoryApiCommand>("practiceCategories");
+            AddDelete<DeletePracticeCategoryCommand, DeletePracticeCategoryApiCommand>("practiceCategories/{practiceCategoryID}");
+            AddPatch<ChangeNameOfPracticeCategoryCommand, ChangeNameOfPracticeCategoryApiCommand>("practiceCategories/{practiceCategoryID}/changeName");
+            AddPatch<ChangeIndexOfPracticeCategoryCommand, ChangeIndexOfPracticeCategoryApiCommand>("practiceCategories/{practiceCategoryID}/changeIndex");
         }
     }
 }
