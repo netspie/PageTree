@@ -17,9 +17,6 @@ Once again in bulletpoints:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Browsing, learning from the same notes either written down on a paper or a computer every day becomes so boring after a time.. It brings routine. It slowly makes you start to procrastinate again.
 
-I still want to learn and master japanese language and you may say: "Well... just research the web, find courses, find a teacher, checkout YT and go on!"
-True. But not 100%.
-
 ### Technical Documentation (not up-to-date)
 https://github.com/Dariusz-L/PageTree-Design-Documentation 
 
