@@ -37,6 +37,9 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                 _ => null
             };
 
+            if (result == null)
+                result = DefaultStyle;
+
             return result;
         }
     }

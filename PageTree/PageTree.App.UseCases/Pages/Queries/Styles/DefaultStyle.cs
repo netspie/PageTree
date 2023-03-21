@@ -10,7 +10,7 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
             TreeExpandInfo = new()
             {
                 IsExpanded = true,
-                AreChildrenExpanded = true
+                AreChildrenExpanded = false
             },
 
             RootProperty = new()
@@ -23,7 +23,7 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                 {
                     BackgroundColor = new()
                     {
-                        Default = Color.FromArgb(255, 200, 200, 200).ToArgb()
+                        Default = Color.FromArgb(255, 252, 252, 252).ToArgb()
                     },
                     Padding = new()
                     {
@@ -45,46 +45,6 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                         }
                     }
                 },
-                Children = new()
-                {
-                    //new()
-                    //{
-                    //    StyleType = ApplyStyleBy.Index,
-                    //    ChildIndex = 0,
-                    //    VisualInfo = new()
-                    //    {
-                    //        Font = new()
-                    //        {
-                    //            FontSize = 30
-                    //        }
-                    //    },
-                    //    Artifacts = new()
-                    //    {
-                    //        new()
-                    //        {
-                    //            Type = StyleArtifactType.Signature,
-                    //            VisualInfo = new()
-                    //            {
-                    //                Font = new()
-                    //                {
-                    //                    FontSize = 8
-                    //                }
-                    //            }
-                    //        }
-                    //    },
-                    //    VisualInfoOfChildren = new()
-                    //    {
-                    //        BackgroundColor = new()
-                    //        {
-                    //            Default = Color.FromArgb(255, 222, 222, 222).ToArgb()
-                    //        },
-                    //        Padding = new()
-                    //        {
-                    //            All = 20
-                    //        }
-                    //    },
-                    //}
-                }
             }
         };
     }
