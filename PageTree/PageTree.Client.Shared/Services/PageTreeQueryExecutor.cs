@@ -6,6 +6,7 @@ using PageTree.App.PageTemplates.Queries;
 using PageTree.App.Projects.Queries;
 using PageTree.App.ProjectUserLists.Queries;
 using PageTree.App.UseCases.PracticeCategories.Queries;
+using PageTree.App.UseCases.PracticeTactics.Queries;
 using PageTree.App.UseCases.Signatures.Queries;
 using PageTree.App.UseCases.Users.Queries;
 using PageTree.Server.ApiContracts;

@@ -5,7 +5,7 @@ using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PageTree.App.UseCases.PracticeCategories.Commands;
+using PageTree.App.UseCases.PracticeTactics.Commands;
 using PageTree.Server.ApiContracts;
 
 namespace PageTree.Server.Controllers

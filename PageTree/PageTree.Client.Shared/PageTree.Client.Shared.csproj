@@ -26,4 +26,13 @@
     <ProjectReference Include="..\PageTree.Server.ApiContracts\PageTree.Server.ApiContracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\PracticeTactics\PracticeTactics.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Views\PracticeTactics\PracticeTactic.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
 </Project>

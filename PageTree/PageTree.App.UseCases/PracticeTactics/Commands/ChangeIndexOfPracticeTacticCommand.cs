@@ -4,7 +4,7 @@ using Mediator;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain.Practice;
 
-namespace PageTree.App.UseCases.PracticeCategories.Commands;
+namespace PageTree.App.UseCases.PracticeTactics.Commands;
 
 public class ChangeIndexOfPracticeTacticCommandHandler : BaseCommandHandler, ICommandHandler<ChangeIndexOfPracticeTacticCommand, Result>
 {

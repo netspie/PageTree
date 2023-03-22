@@ -4,7 +4,7 @@ using Corelibs.AspNetApi.ModelBinders;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PageTree.App.UseCases.PracticeCategories.Queries;
+using PageTree.App.UseCases.PracticeTactics.Queries;
 using PageTree.Server.ApiContracts;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;

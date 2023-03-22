@@ -4,6 +4,7 @@ using PageTree.App.Pages.Commands;
 using PageTree.App.PageTemplates.Commands;
 using PageTree.App.Projects.Commands;
 using PageTree.App.UseCases.PracticeCategories.Commands;
+using PageTree.App.UseCases.PracticeTactics.Commands;
 using PageTree.App.UseCases.Signatures.Commands;
 using PageTree.App.UseCases.Users.Commands;
 using PageTree.Server.ApiContracts;

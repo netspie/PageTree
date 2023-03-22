@@ -1,5 +1,5 @@
-﻿using PageTree.App.UseCases.PracticeCategories.Commands;
-using PageTree.App.UseCases.PracticeCategories.Queries;
+﻿using PageTree.App.UseCases.PracticeTactics.Commands;
+using PageTree.App.UseCases.PracticeTactics.Queries;
 
 namespace PageTree.Server.ApiContracts
 {

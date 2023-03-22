@@ -1,0 +1,82 @@
+﻿@using Corelibs.BlazorViews.Components;
+@using PageTree.App.UseCases.PracticeTactics.Queries;
+
+<div class="practice-tactic" @onclick=OnClickInternal>
+    <div class="top-panel">
+        <div class="top-panel-row">
+            <EditableText Text=@Model.Identity.Name @ref=_nameText OnSubmit=OnNameInputSubmit />
+            <div class="top-right-buttons">
+                @if (!IsFirst)
+                {
+                    <button class="button" @onclick=OnMoveUpButtonClickInternal>&lt;</button>
+                }
+                @if (!IsLast)
+                {
+                    <button class="button" @onclick=OnMoveDownButtonClickInternal>&gt;</button>
+                }
+                <button class="button" @onclick=OnAddButtonClickInternal>+</button>
+                <button class="button" @onclick=OnRemoveButtonClickInternal>-</button>
+                <button class="button" @onclick=OnEditButtonClick>E</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public PracticeTacticVM Model { get; set; }
+    [Parameter] public Func<PracticeTacticVM, Task> OnClick { get; set; }
+    [Parameter] public Func<string, Task> OnMoveUpButtonClick { get; set; }
+    [Parameter] public Func<string, Task> OnMoveDownButtonClick { get; set; }
+    [Parameter] public Func<string, Task> OnAddButtonClick { get; set; }
+    [Parameter] public Func<string, Task> OnRemoveButtonClick { get; set; }
+    [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
+
+    [Parameter] public bool IsFirst { get; set; }
+    [Parameter] public bool IsLast { get; set; }
+
+    private EditableText _nameText;
+
+    private async Task OnMoveUpButtonClickInternal()
+    {
+        if (OnMoveUpButtonClick != null)
+            await OnMoveUpButtonClick?.Invoke(Model.Identity.ID);
+    }
+
+    private async Task OnMoveDownButtonClickInternal()
+    {
+        if (OnMoveDownButtonClick != null)
+            await OnMoveDownButtonClick?.Invoke(Model.Identity.ID);
+    }
+
+    private async Task OnAddButtonClickInternal()
+    {
+        if (OnAddButtonClick != null)
+            await OnAddButtonClick?.Invoke(Model.Identity.ID);
+    }
+
+    private async Task OnRemoveButtonClickInternal()
+    {
+        if (OnRemoveButtonClick != null)
+            await OnRemoveButtonClick?.Invoke(Model.Identity.ID);
+    }
+
+    private async Task OnEditButtonClick()
+    {
+        await _nameText.SetIsEdit(true);
+    }
+
+    private async Task<bool> OnNameInputSubmit(string name)
+    {
+        if (OnNameChanged == null)
+            return false;
+
+        await OnNameChanged?.Invoke(Model.Identity.ID, name);
+        return true;
+    }
+
+    private void OnClickInternal()
+    {
+        if (OnClick != null)
+            OnClick.Invoke(Model);
+    }
+}

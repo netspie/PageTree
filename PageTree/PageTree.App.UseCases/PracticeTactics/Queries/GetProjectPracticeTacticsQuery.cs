@@ -6,7 +6,7 @@ using PageTree.App.UseCases.Common;
 using PageTree.Domain.Practice;
 using PageTree.Domain.Projects;
 
-namespace PageTree.App.UseCases.PracticeCategories.Queries;
+namespace PageTree.App.UseCases.PracticeTactics.Queries;
 
 public class GetProjectPracticeTacticsQueryHandler : IQueryHandler<GetProjectPracticeTacticsQuery, Result<GetProjectPracticeTacticsQueryOut>>
 {
