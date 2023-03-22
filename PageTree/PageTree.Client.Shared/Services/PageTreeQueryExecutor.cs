@@ -32,6 +32,7 @@ namespace PageTree.Client.Shared.Services
             Add<GetPageApiQuery, GetPageQuery, GetPageQueryOut>("pages");
             Add<GetProjectSignaturesApiQuery, GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(q => $"projects/{q.ProjectID}/signatures");
             Add<GetProjectPracticeCategoriesApiQuery, GetProjectPracticeCategoriesQuery, GetProjectPracticeCategoriesQueryOut>(q => $"projects/{q.ProjectID}/practiceCategories");
+            Add<GetProjectPracticeTacticsApiQuery, GetProjectPracticeTacticsQuery, GetProjectPracticeTacticsQueryOut>(q => $"projects/{q.ProjectID}/practiceTactics");
 
             // Search
             Add<GetPagesSearchResultsApiQuery, GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(q => "pages/search");

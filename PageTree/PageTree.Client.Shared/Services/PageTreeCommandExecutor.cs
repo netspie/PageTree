@@ -54,6 +54,12 @@ namespace PageTree.Client.Shared.Services
             AddDelete<DeletePracticeCategoryCommand, DeletePracticeCategoryApiCommand>("practiceCategories/{practiceCategoryID}");
             AddPatch<ChangeNameOfPracticeCategoryCommand, ChangeNameOfPracticeCategoryApiCommand>("practiceCategories/{practiceCategoryID}/changeName");
             AddPatch<ChangeIndexOfPracticeCategoryCommand, ChangeIndexOfPracticeCategoryApiCommand>("practiceCategories/{practiceCategoryID}/changeIndex");
+
+            // Practice Tactics
+            AddPost<CreatePracticeTacticCommand, CreatePracticeTacticApiCommand>("practiceTactics");
+            AddDelete<DeletePracticeTacticCommand, DeletePracticeTacticApiCommand>("practiceTactics/{practiceTacticID}");
+            AddPatch<ChangeNameOfPracticeTacticCommand, ChangeNameOfPracticeTacticApiCommand>("practiceTactics/{practiceTacticID}/changeName");
+            AddPatch<ChangeIndexOfPracticeTacticCommand, ChangeIndexOfPracticeTacticApiCommand>("practiceTactics/{practiceTacticID}/changeIndex");
         }
     }
 }
