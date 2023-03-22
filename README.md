@@ -74,6 +74,22 @@ https://github.com/Dariusz-L/PageTree-Design-Documentation
 #### Practice
 - Generate Practice List
 
+## Major Quality Attributes
+
+--- 
+
+## Software Structure Diagrams
+
+---
+
+## Architure Patterns
+
+---
+
+## Glossary
+
+---
+
 ### Other repositories used and required to work:
 - https://github.com/Dariusz-L/Corelibs.Basic
 - https://github.com/Dariusz-L/Corelibs.BlazorShared
