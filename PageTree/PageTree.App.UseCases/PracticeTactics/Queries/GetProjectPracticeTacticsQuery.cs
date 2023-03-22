@@ -11,14 +11,14 @@ namespace PageTree.App.UseCases.PracticeCategories.Queries;
 public class GetProjectPracticeTacticsQueryHandler : IQueryHandler<GetProjectPracticeTacticsQuery, Result<GetProjectPracticeTacticsQueryOut>>
 {
     private readonly IRepository<Project> _projectRepository;
-    private readonly IRepository<PracticeCategory> _practiceCategoryRepository;
+    private readonly IRepository<PracticeTactic> _entityRepository;
 
     public GetProjectPracticeTacticsQueryHandler(
         IRepository<Project> projectRepository,
-        IRepository<PracticeCategory> practiceCategoryRepository)
+        IRepository<PracticeTactic> entityRepository)
     {
         _projectRepository = projectRepository;
-        _practiceCategoryRepository = practiceCategoryRepository;
+        _entityRepository = entityRepository;
     }
 
     public async ValueTask<Result<GetProjectPracticeTacticsQueryOut>> Handle(GetProjectPracticeTacticsQuery query, CancellationToken ct)
@@ -26,23 +26,23 @@ public class GetProjectPracticeTacticsQueryHandler : IQueryHandler<GetProjectPra
         var result = Result<GetProjectPracticeTacticsQueryOut>.Success();
 
         var project = await _projectRepository.Get(query.ProjectID, result);
-        var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, result);
+        var entitiesRoot = await _entityRepository.Get(project.PracticeCategoryRootID, result);
 
         var @out = new GetProjectPracticeTacticsQueryOut(
-           new PracticeTacticsListVM() { PracticeCategoriesRootID = practiceCategoryRoot.ID });
+           new PracticeTacticsListVM() { RootID = entitiesRoot.ID });
 
-        var practiceCategoriesIDs = practiceCategoryRoot.ChildrenIDs;
-        if (practiceCategoriesIDs.IsNullOrEmpty())
+        var childrenIDs = entitiesRoot.ChildrenIDs;
+        if (childrenIDs.IsNullOrEmpty())
             return result.With(@out);
 
-        var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoriesIDs, result);
-        practiceCategories = practiceCategories.OrderBy(s => practiceCategoriesIDs.IndexOf(s.ID)).ToArray();
+        var entities = await _entityRepository.Get(childrenIDs, result);
+        entities = entities.OrderBy(s => childrenIDs.IndexOf(s.ID)).ToArray();
 
         @out = new GetProjectPracticeTacticsQueryOut(
             new PracticeTacticsListVM() 
             {
-                PracticeCategoriesRootID = practiceCategoryRoot.ID,
-                Values = practiceCategories.Select(s => new PracticeTacticVM()
+                RootID = entitiesRoot.ID,
+                Values = entities.Select(s => new PracticeTacticVM()
                 {
                     Identity = (s.ID, s.Name),
                 })
@@ -58,7 +58,7 @@ public sealed record GetProjectPracticeTacticsQueryOut(PracticeTacticsListVM Sig
 
 public class PracticeTacticsListVM
 {
-    public string PracticeCategoriesRootID { get; set; } = "";
+    public string RootID { get; set; } = "";
     public PracticeTacticVM[] Values { get; set; } = Array.Empty<PracticeTacticVM>();
 }
 

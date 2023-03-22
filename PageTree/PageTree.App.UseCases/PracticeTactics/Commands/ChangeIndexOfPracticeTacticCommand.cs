@@ -8,10 +8,10 @@ namespace PageTree.App.UseCases.PracticeCategories.Commands;
 
 public class ChangeIndexOfPracticeTacticCommandHandler : BaseCommandHandler, ICommandHandler<ChangeIndexOfPracticeTacticCommand, Result>
 {
-    private readonly IRepository<PracticeCategory> _repository;
+    private readonly IRepository<PracticeTactic> _repository;
 
     public ChangeIndexOfPracticeTacticCommandHandler(
-         IRepository<PracticeCategory> repository)
+         IRepository<PracticeTactic> repository)
     {
         _repository = repository;
     }
@@ -20,7 +20,7 @@ public class ChangeIndexOfPracticeTacticCommandHandler : BaseCommandHandler, ICo
     {
         var result = Result.Success();
 
-        var item = await _repository.Get(command.PracticeCategoryID, result);
+        var item = await _repository.Get(command.PracticeTacticID, result);
         if (!result.ValidateSuccessAndValues())
             return result.Fail();
 
@@ -28,7 +28,7 @@ public class ChangeIndexOfPracticeTacticCommandHandler : BaseCommandHandler, ICo
         if (!result.ValidateSuccessAndValues())
             return result.Fail();
 
-        if (!parent.MovePracticeCategory(command.PracticeCategoryID, command.Index))
+        if (!parent.MovePracticeTactic(command.PracticeTacticID, command.Index))
             return result.Fail();
 
         await _repository.Save(parent, result);
@@ -37,4 +37,4 @@ public class ChangeIndexOfPracticeTacticCommandHandler : BaseCommandHandler, ICo
     }
 }
 
-public sealed record ChangeIndexOfPracticeTacticCommand(string PracticeCategoryID, int Index) : ICommand<Result>;
+public sealed record ChangeIndexOfPracticeTacticCommand(string PracticeTacticID, int Index) : ICommand<Result>;

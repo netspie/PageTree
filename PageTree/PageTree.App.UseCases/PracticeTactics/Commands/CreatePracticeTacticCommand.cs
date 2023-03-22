@@ -1,4 +1,5 @@
 ﻿using Common.Basic.Blocks;
+using Common.Basic.DDD;
 using Common.Basic.Repository;
 using Mediator;
 using PageTree.App.UseCases.Common;
@@ -8,10 +9,10 @@ namespace PageTree.App.UseCases.PracticeCategories.Commands;
 
 public class CreatePracticeTacticCommandHandler : BaseCommandHandler, ICommandHandler<CreatePracticeTacticCommand, Result>
 {
-    private readonly IRepository<PracticeCategory> _repository;
+    private readonly IRepository<PracticeTactic> _repository;
 
     public CreatePracticeTacticCommandHandler(
-         IRepository<PracticeCategory> repository)
+         IRepository<PracticeTactic> repository)
     {
         _repository = repository;
     }
@@ -24,8 +25,8 @@ public class CreatePracticeTacticCommandHandler : BaseCommandHandler, ICommandHa
         if (!result.ValidateSuccessAndValues())
             return result.Fail();
 
-        var entity = new PracticeCategory(NewID, $"Practice Category - {new string(NewID.Take(8).ToArray())}", parent.OwnerID, parent.ProjectID, command.ParentID);
-        if (!parent.CreatePracticeCategory(entity.ID, command.Index))
+        var entity = new PracticeTactic(NewID, Entity.GetRandomName(), parent.OwnerID, parent.ProjectID, command.ParentID);
+        if (!parent.CreatePracticeTactic(entity.ID, command.Index))
             return result.Fail();
 
         await _repository.Save(entity, result);

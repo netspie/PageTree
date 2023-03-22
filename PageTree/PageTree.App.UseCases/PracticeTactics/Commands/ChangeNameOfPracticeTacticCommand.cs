@@ -8,10 +8,10 @@ namespace PageTree.App.UseCases.PracticeCategories.Commands;
 
 public class ChangeNameOfPracticeTacticCommandHandler : BaseCommandHandler, ICommandHandler<ChangeNameOfPracticeTacticCommand, Result>
 {
-    private readonly IRepository<PracticeCategory> _repository;
+    private readonly IRepository<PracticeTactic> _repository;
 
     public ChangeNameOfPracticeTacticCommandHandler(
-         IRepository<PracticeCategory> repository)
+         IRepository<PracticeTactic> repository)
     {
         _repository = repository;
     }
@@ -20,7 +20,7 @@ public class ChangeNameOfPracticeTacticCommandHandler : BaseCommandHandler, ICom
     {
         var result = Result.Success();
 
-        var item = await _repository.Get(command.PracticeCategoryID, result);
+        var item = await _repository.Get(command.PracticeTacticID, result);
         if (!result.ValidateSuccessAndValues())
             return result.Fail();
 
@@ -44,4 +44,4 @@ public class ChangeNameOfPracticeTacticCommandHandler : BaseCommandHandler, ICom
     }
 }
 
-public sealed record ChangeNameOfPracticeTacticCommand(string PracticeCategoryID, string Name) : ICommand<Result>;
+public sealed record ChangeNameOfPracticeTacticCommand(string PracticeTacticID, string Name) : ICommand<Result>;

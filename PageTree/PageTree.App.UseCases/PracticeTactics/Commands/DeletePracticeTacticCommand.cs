@@ -8,10 +8,10 @@ namespace PageTree.App.UseCases.PracticeCategories.Commands;
 
 public class DeletePracticeTacticCommandHandler : BaseCommandHandler, ICommandHandler<DeletePracticeTacticCommand, Result>
 {
-    private readonly IRepository<PracticeCategory> _repository;
+    private readonly IRepository<PracticeTactic> _repository;
 
     public DeletePracticeTacticCommandHandler(
-         IRepository<PracticeCategory> repository)
+         IRepository<PracticeTactic> repository)
     {
         _repository = repository;
     }
@@ -20,12 +20,12 @@ public class DeletePracticeTacticCommandHandler : BaseCommandHandler, ICommandHa
     {
         var result = Result.Success();
 
-        var item = await _repository.Get(command.PracticeCategoryID, result);
+        var item = await _repository.Get(command.PracticeTacticID, result);
         if (!result.ValidateSuccessAndValues())
             return result.Fail();
 
         var parent = await _repository.Get(item.ParentID, result);
-        if (!parent.RemovePracticeCategory(item.ID))
+        if (!parent.RemovePracticeTactic(item.ID))
             return result.Fail();
 
         await _repository.Delete(item.ID);
@@ -35,4 +35,4 @@ public class DeletePracticeTacticCommandHandler : BaseCommandHandler, ICommandHa
     }
 }
 
-public sealed record DeletePracticeTacticCommand(string PracticeCategoryID) : ICommand<Result>;
+public sealed record DeletePracticeTacticCommand(string PracticeTacticID) : ICommand<Result>;
