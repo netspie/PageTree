@@ -16,18 +16,21 @@ namespace PageTree.Server.DataUpdates
         private readonly IRepository<ProjectUserList> _projectUserListRepository;
         private readonly IRepository<Project> _projectRepository;
         private readonly IRepository<PracticeCategory> _practiceCategoryRepository;
+        private readonly IRepository<PracticeTactic> _practiceTacticRepository;
 
         public _7_AddMissingDataToPracticeCategories_1_Update(
             IRepository<DataUpdate> dataUpdateRepository,
             IRepository<User> userRepository,
             IRepository<ProjectUserList> projectUserListRepository,
             IRepository<Project> projectRepository,
-            IRepository<PracticeCategory> practiceCategoryRepository) : base(dataUpdateRepository)
+            IRepository<PracticeCategory> practiceCategoryRepository,
+            IRepository<PracticeTactic> practiceTacticRepository) : base(dataUpdateRepository)
         {
             _userRepository = userRepository;
             _projectUserListRepository = projectUserListRepository;
             _projectRepository = projectRepository;
             _practiceCategoryRepository = practiceCategoryRepository;
+            _practiceTacticRepository = practiceTacticRepository;
         }
 
         protected override async Task<Result> PerformDataUpdate()
@@ -69,6 +72,25 @@ namespace PageTree.Server.DataUpdates
                         entity = new(NewID, PracticeCategory.GetRandomName(), project.OwnerID, projectID);
                         project.PracticeCategoryRootID = entity.ID;
                         await _practiceCategoryRepository.Save(entity, res);
+                        await _projectRepository.Save(project, res);
+                    }
+
+                    PracticeTactic tactic = null;
+                    if (!project.PracticeTacticRootID.IsNullOrEmpty())
+                    {
+                        tactic = await _practiceTacticRepository.Get(project.PracticeTacticRootID, res);
+                        if (tactic.Name.IsNullOrEmpty())
+                            tactic.Name = PracticeTactic.GetRandomName();
+
+                        tactic.OwnerID = project.OwnerID;
+                        tactic.ProjectID = project.ID;
+                        await _practiceTacticRepository.Save(tactic, res);
+                    }
+                    else
+                    {
+                        tactic = new(NewID, PracticeTactic.GetRandomName(), project.OwnerID, projectID);
+                        project.PracticeTacticRootID = tactic.ID;
+                        await _practiceTacticRepository.Save(tactic, res);
                         await _projectRepository.Save(project, res);
                     }
                 }

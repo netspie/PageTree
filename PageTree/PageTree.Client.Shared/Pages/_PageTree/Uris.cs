@@ -12,5 +12,6 @@
         public const string Signatures = Project + "/signatures";
         public const string Templates = Project + "/templates/{pageTemplateID}";
         public const string PracticeCategories = Project + "/practiceCategories/{practiceCategoryID}";
+        public const string PracticeTactics = Project + "/practiceTactics/{practiceTacticID}";
     }
 }

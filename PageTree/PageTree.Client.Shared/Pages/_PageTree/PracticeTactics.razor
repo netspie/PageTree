@@ -1,0 +1,68 @@
+﻿@using Corelibs.BlazorShared.UI;
+@using Corelibs.BlazorViews.Layouts;
+@using Microsoft.JSInterop;
+@using PageTree.App.UseCases.PracticeTactics.Queries;
+@using PageTree.App.UseCases.PracticeTactics.Commands;
+
+@attribute [Route(Uris.PracticeTactics)]
+@inherits BasePage<GetProjectPracticeTacticsQuery, GetProjectPracticeTacticsQueryOut, PracticeTacticsListVM,
+    PageTree.Client.Shared.Views.PracticeTactics.PracticeTactics>
+
+<BackgroundAndContent @ref=@_backgroundOwner Opacity=0.1f>
+    <div class="signatures-container">
+        <PageTree.Client.Shared.Views.PracticeTactics.PracticeTactics
+            @ref=_view
+            OnAdd=OnAdd
+            OnAddOnTop=OnAddOnTop 
+            OnAddOnBottom=OnAddOnBottom
+            OnRemove=OnSignature
+            OnNameChanged=OnNameChanged
+            OnMove=OnMove />
+    </div>
+</BackgroundAndContent>
+
+@code {
+    [Parameter] public string PracticeTacticID { get; set; }
+    [Parameter] public string ProjectID { get; set; }
+
+    private async Task OnAdd(int index)
+    {
+        await ExecuteCreateCommand(index);
+        await RefreshView();
+    }
+
+    private async Task OnAddOnTop()
+    {
+        await ExecuteCreateCommand(0);
+        await RefreshView();
+    }
+
+    private async Task OnAddOnBottom()
+    {
+        await ExecuteCreateCommand(int.MaxValue);
+        await RefreshView();
+    }
+
+    private async Task OnMove(string id, int index)
+    {
+        await _commands.Execute(new ChangeIndexOfPracticeTacticCommand(id, index));
+        await RefreshView();
+    }
+
+    private async Task OnSignature(string id)
+    {
+        await _commands.Execute(new DeletePracticeTacticCommand(id));
+        await RefreshView();
+    }
+
+    private async Task OnNameChanged(string id, string name)
+    {
+        await _commands.Execute(new ChangeNameOfPracticeTacticCommand(id, name));
+        await RefreshView();
+    }
+
+    private Task ExecuteCreateCommand(int index) =>
+        _commands.Execute(new CreatePracticeTacticCommand(_vm.RootID, index));
+
+    protected override string QueryParameter => ProjectID;
+}

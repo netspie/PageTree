@@ -26,7 +26,7 @@ public class GetProjectPracticeTacticsQueryHandler : IQueryHandler<GetProjectPra
         var result = Result<GetProjectPracticeTacticsQueryOut>.Success();
 
         var project = await _projectRepository.Get(query.ProjectID, result);
-        var entitiesRoot = await _entityRepository.Get(project.PracticeCategoryRootID, result);
+        var entitiesRoot = await _entityRepository.Get(project.PracticeTacticRootID, result);
 
         var @out = new GetProjectPracticeTacticsQueryOut(
            new PracticeTacticsListVM() { RootID = entitiesRoot.ID });
