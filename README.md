@@ -18,7 +18,61 @@ Once again in bulletpoints:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Browsing, learning from the same notes either written down on a paper or a computer every day becomes so boring after a time.. It brings routine. It slowly makes you start to procrastinate again.
 
 ### Technical Documentation (not up-to-date)
-https://github.com/Dariusz-L/PageTree-Design-Documentation 
+https://github.com/Dariusz-L/PageTree-Design-Documentation
+
+## Features
+
+### Knowledge Structurization
+
+#### Projects
+- Create Project
+- Update Project (name, description, etc.)
+- Archive Project
+
+#### Signatures
+- Create Signature
+- Rename Signature
+- Change Index of Signature
+- Delete Signature
+
+#### Pages and Properties Manipulation
+- Navigate To / Show Page
+- Create Subpage
+- Create Subpage From Template
+- Create Link
+- Rename Page
+- Remove Property
+- Change Signature of Page
+- Change Index of Property
+- Change Parent of Property
+
+#### Page Templates
+- Navigate To / Show Page
+- Create Template Subpage
+- Rename Template
+- Rename Template Page
+- Remove Template Page
+- Change Signature of Template Page
+- Change Index of Template Page
+- Change Parent of Template Page
+
+### Memorization & Repetition
+
+#### Practice Categories
+- Create Practice Category
+- Rename Practice Category
+- Change Index of Practice Category
+- Delete Practice Category
+
+#### Practice Tactics
+- Create Practice Tactic
+- Rename Practice Tactic
+- Update Practice Tactic
+- Change Index of Practice Tactic
+- Delete Practice Tactic
+
+#### Practice
+- Generate Practice List
 
 ### Other repositories used and required to work:
 - https://github.com/Dariusz-L/Corelibs.Basic
