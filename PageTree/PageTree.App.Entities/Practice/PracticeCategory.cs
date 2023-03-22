@@ -27,8 +27,13 @@ namespace PageTree.Domain.Practice
         public PracticeCategory(string id, string name, string ownerID, string projectID) : this(id, name, ownerID) => ProjectID = projectID;
         public PracticeCategory(string id, string name, string ownerID, string projectID, string parentID) : this(id, name, ownerID, projectID) => ParentID = parentID;
 
-        public bool CreatePracticeCategory(string id, int index) =>
-            EditableItemOwnerFunctions_NoName.Create(ChildrenIDs, id, index);
+        public bool CreatePracticeCategory(string id, int index)
+        {
+            if (ChildrenIDs ==  null) 
+                ChildrenIDs = new();
+
+            return EditableItemOwnerFunctions_NoName.Create(ChildrenIDs, id, index);
+        }
 
         public bool RemovePracticeCategory(string id) =>
             EditableItemOwnerFunctions.Remove(id, ChildrenIDs);
