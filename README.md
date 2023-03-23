@@ -1,8 +1,45 @@
 # PageTree
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for knowledge organization as a form of pages structured in tree-like method with highly interconnected and internavigatable elements for automatic, manually configured or based on spaced-repetition algorithm flashcards generation.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for knowledge organization in a form of pages structured in tree-like layout with highly interconnected and internavigatable elements for automatic, manually configured or based on spaced-repetition algorithm flashcards generation.
 
-In the future could also contain features like paths, courses, lessons (a'ka Pluralsight), but of course with the previously mentioned tooling for material rehearsal it would make a great combo.
+Meant to provide a way for organizing notes or any knowledge database in a nice way, and be able to generate list of flashcards for any specific kind of data in there.
+Each piece of data is a page itself.
+
+My initial idea is to create a helpful tool for learning japanese language specifically, but I believe it can be applied for any domain out there. The real challenge is to structure data in well-thought manner, so to make the exploration/navigation pleasant.
+
+Available sources of learning:
+- dictionaries - just words, dumb descriptions, little to no context
+- mobile apps
+- paid courses / platforms
+
+Japanese Language Learning Materials Structure:
+- Material Origins / Authors / Material Creators
+    - Author 1
+    
+- Scripts
+    -
+
+Not just learning tool
+
+Would be cool for a learning content creator to provide a ready material
+
+Japanese Learning Materials Challenges:
+- provide 
+- mobile apps
+- paid courses / platforms
+
+Here is the .. that emerged from the mentioned problems:
+"Page" is the most fundamental concept here and has following properties:
+- it can be any piece of data, preferably very small, easily memorizable
+- every page can have descendants (children, or so called "properties") you can navigate to
+- children can be of various types
+    - subpages - 
+    - links - related data to
+    - queries
+    - metadata
+- every page is really just a list
+- every page can be highly customizable, both in layout and styling
+- every page list allows for manipulation - sort, filter, custom order
 
 Once again in bulletpoints:
 - structurized knowledge base of any domain - initially created for japanese language learning with potential to expand for other subjects
@@ -16,6 +53,19 @@ Once again in bulletpoints:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preparing notes requires time and effort, which could be spend on just learning itself. Of course it does not have to be absolutely excluded from a learning process, since it's a way to learn by itself too. Although, why to waste time just to convert a knowledge from one type of media to the other, when it's just can be ready to consume.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Browsing, learning from the same notes either written down on a paper or a computer every day becomes so boring after a time.. It brings routine. It slowly makes you start to procrastinate again.
+
+## Tech
+
+C# 10, .NET 6-7, EF Core/MS SQL/.json, Blazor WASM, .NET MAUI, Lucene.NET, Mediator, AutoMapper, WebApi
+
+### Architecture
+- Client-Server
+- Clean Architecture
+- CQRS
+
+## Deliverables
+The app prototype is available on https://japanesearcana.com
+It is hosted on sharkasp.com
 
 ### Technical Documentation (not up-to-date)
 https://github.com/Dariusz-L/PageTree-Design-Documentation
