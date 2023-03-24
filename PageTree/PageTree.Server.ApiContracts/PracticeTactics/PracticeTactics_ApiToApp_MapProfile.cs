@@ -12,6 +12,7 @@ namespace PageTree.Server.ApiContracts
             CreateMapCirc<DeletePracticeTacticApiCommand, DeletePracticeTacticCommand>();
             CreateMapCirc<ChangeNameOfPracticeTacticApiCommand, ChangeNameOfPracticeTacticCommand>();
             CreateMapCirc<ChangeIndexOfPracticeTacticApiCommand, ChangeIndexOfPracticeTacticCommand>();
+            CreateMapCirc<UpdateDataOfPracticeTacticApiCommand, UpdateDataOfPracticeTacticCommand>();
         }
     }
 }

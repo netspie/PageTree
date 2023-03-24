@@ -22,7 +22,7 @@ namespace PageTree.Client.Shared.Services
             // Projects
             AddPost<CreateProjectCommand, CreateProjectApiCommand>("projects");
             AddDelete<ArchiveProjectCommand, ArchiveProjectApiCommand>("projects/{id}");
-            AddPut<EditProjectCommand, EditProjectApiCommand>("projects");
+            AddPut<EditProjectCommand, EditProjectApiCommand>("projects/{id}");
 
             // Pages
             AddPost<CreateSubPageCommand, CreateSubPageApiCommand>("pages/{pageID}/subpages");
@@ -58,6 +58,7 @@ namespace PageTree.Client.Shared.Services
 
             // Practice Tactics
             AddPost<CreatePracticeTacticCommand, CreatePracticeTacticApiCommand>("practiceTactics");
+            AddPut<UpdateDataOfPracticeTacticCommand, UpdateDataOfPracticeTacticApiCommand>("practiceTactics/{practiceTacticID}");
             AddDelete<DeletePracticeTacticCommand, DeletePracticeTacticApiCommand>("practiceTactics/{practiceTacticID}");
             AddPatch<ChangeNameOfPracticeTacticCommand, ChangeNameOfPracticeTacticApiCommand>("practiceTactics/{practiceTacticID}/changeName");
             AddPatch<ChangeIndexOfPracticeTacticCommand, ChangeIndexOfPracticeTacticApiCommand>("practiceTactics/{practiceTacticID}/changeIndex");

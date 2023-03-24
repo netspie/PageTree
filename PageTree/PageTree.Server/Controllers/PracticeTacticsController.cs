@@ -30,6 +30,10 @@ namespace PageTree.Server.Controllers
             public Task<IActionResult> Create([FromRouteAndBody] CreatePracticeTacticApiCommand command = null) =>
                 _mediator.MapSendAndGetPostResponse<CreatePracticeTacticCommand>(command, _mapper);
 
+            [HttpPut, Route("{practiceTacticID}"), Authorize_Edit]
+            public Task<IActionResult> Update([FromRouteAndBody] UpdateDataOfPracticeTacticApiCommand command) =>
+                _mediator.MapSendAndGetPatchResponse<UpdateDataOfPracticeTacticCommand>(command, _mapper);
+
             [HttpDelete, Route("{practiceTacticID}"), Authorize_Edit]
             public Task<IActionResult> Delete([FromRouteAndBody] DeletePracticeTacticApiCommand command) =>
                 _mediator.MapSendAndGetDeleteResponse<DeletePracticeTacticCommand>(command, _mapper);
