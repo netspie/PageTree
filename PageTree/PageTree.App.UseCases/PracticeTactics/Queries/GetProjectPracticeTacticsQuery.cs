@@ -11,6 +11,7 @@ using PageTree.Domain.Practice;
 using PageTree.Domain.Projects;
 using PageTree.App.Common;
 using PageTree.App.UseCases.Signatures.Queries;
+using Corelibs.Basic.Reflection;
 
 namespace PageTree.App.UseCases.PracticeTactics.Queries;
 
@@ -52,44 +53,92 @@ public class GetProjectPracticeTacticsQueryHandler : IQueryHandler<GetProjectPra
 
         var signaturesRoot = await _signatureRepository.Get(project.SignatureRootID, result);
         var signatures = await _signatureRepository.Get(signaturesRoot.ChildrenIDs, result);
+        signatures = signatures.OrderBy(s => signaturesRoot.ChildrenIDs.IndexOf(s.ID)).ToArray();
 
         @out = new GetProjectPracticeTacticsQueryOut(
             new PracticeTacticsListVM()
             {
+                ProjectID = query.ProjectID,
                 RootID = entitiesRoot.ID,
-
                 Signatures = signatures.Select(s => new IdentityVM(s.ID, s.Name)).ToArray(),
-
-                Values = await entities.Select(async tactic => new PracticeTacticVM()
-                {
-                    Identity = (tactic.ID, tactic.Name),
-                    PageItems = await tactic.PageItems.SelectOrDefault(async pageItem =>
-                        new PageItemVM()
-                        {
-                            PageSignatures = await pageItem.PageSignaturesIDs.ToIdentityVM(_signatureRepository, p => p.Name, result),
-
-                            QuestionsSignatures = await pageItem.QuestionsSignatureIDs.ToIdentityVM(_signatureRepository, p => p.Name, result),
-
-                            AnswersSignatures = await pageItem.AnswersSignatureIDs.ToIdentityVM(_signatureRepository, p => p.Name, result),
-                        }
-                    ).Values(),
-
-                    PagesToSkipIfContainsID = await tactic.SkipItemIfContainsOfIDs.ToIdentityVM(_pageRepository, p => p.Name, result),
-                    
-                    PagesToSkipIfNotContainsID = await tactic.SkipItemIfNotContainsOfIDs.ToIdentityVM(_pageRepository, p => p.Name, result)
-                })
-                .Values()
             });
+
+        var values = new List<PracticeTacticVM>();
+        foreach (var tactic in entities)
+        {
+            var tacticVM = new PracticeTacticVM();
+            tacticVM.Identity = (tactic.ID, tactic.Name);
+
+            var pageItems = new List<PageItemVM>();
+            if (!tactic.PageItems.IsNullOrEmpty())
+                foreach (var pageItem in tactic.PageItems)
+                {
+                    var pageItemVM = new PageItemVM();
+
+                    var pageSignatures = new List<IdentityVM>();
+                    if (!pageItem.PageSignaturesIDs.IsNullOrEmpty())
+                        foreach (var signatureID in pageItem.PageSignaturesIDs)
+                        {
+                            var sig = await _signatureRepository.Get(signatureID, result);
+                            pageSignatures.Add(new(signatureID, sig?.Name ?? "---"));
+                        }
+                    pageItemVM.PageSignatures = pageSignatures.ToArray();
+
+                    var questionSignatures = new List<IdentityVM>();
+                    if (!pageItem.QuestionsSignatureIDs.IsNullOrEmpty())
+                        foreach (var signatureID in pageItem.QuestionsSignatureIDs)
+                        {
+                            var sig = await _signatureRepository.Get(signatureID, result);
+                            questionSignatures.Add(new(signatureID, sig?.Name ?? "---"));
+                        }
+                    pageItemVM.QuestionsSignatures = questionSignatures.ToArray();
+
+                    var answerSignatures = new List<IdentityVM>();
+                    if (!pageItem.AnswersSignatureIDs.IsNullOrEmpty())
+                        foreach (var signatureID in pageItem.AnswersSignatureIDs)
+                        {
+                            var sig = await _signatureRepository.Get(signatureID, result);
+                            answerSignatures.Add(new(signatureID, sig?.Name ?? "---"));
+                        }
+                    pageItemVM.AnswersSignatures = answerSignatures.ToArray();
+
+                    pageItems.Add(pageItemVM);
+                }
+            tacticVM.PageItems = pageItems.ToArray();
+
+            var skipItems = new List<IdentityVM>();
+            if (!tactic.SkipItemIfContainsOfIDs.IsNullOrEmpty())
+                foreach (var itemID in tactic.SkipItemIfContainsOfIDs)
+                {
+                    var page = await _pageRepository.Get(itemID, result);
+                    skipItems.Add(new(itemID, page?.Name ?? "---"));
+                }
+            tacticVM.PagesToSkipIfContainsID = skipItems.ToArray();
+
+            var skipNotItems = new List<IdentityVM>();
+            if (!tactic.SkipItemIfNotContainsOfIDs.IsNullOrEmpty())
+                foreach (var itemID in tactic.SkipItemIfNotContainsOfIDs)
+                {
+                    var page = await _pageRepository.Get(itemID, result);
+                    skipNotItems.Add(new(itemID, page?.Name ?? "---"));
+                }
+            tacticVM.PagesToSkipIfNotContainsID = skipNotItems.ToArray();
+
+            values.Add(tacticVM);
+        }
+
+        @out.VM.Values = values.ToArray();
 
         return result.With(@out);
     }
 }
 
 public sealed record GetProjectPracticeTacticsQuery(string ProjectID) : IQuery<Result<GetProjectPracticeTacticsQueryOut>>;
-public sealed record GetProjectPracticeTacticsQueryOut(PracticeTacticsListVM SignatureList);
+public sealed record GetProjectPracticeTacticsQueryOut(PracticeTacticsListVM VM);
 
 public class PracticeTacticsListVM
 {
+    public string ProjectID { get; set; } = "";
     public string RootID { get; set; } = "";
     public PracticeTacticVM[] Values { get; set; } = Array.Empty<PracticeTacticVM>();
     public IdentityVM[] Signatures { get; init; } = Array.Empty<IdentityVM>();
