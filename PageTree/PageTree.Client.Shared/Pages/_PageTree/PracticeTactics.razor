@@ -19,7 +19,7 @@
             OnAddOnBottom=OnAddOnBottom
             OnRemove=OnSignature
             OnNameChanged=OnNameChanged
-            OnMove=OnMove 
+            OnMove=OnMove
             
             OnPageItemAdd=OnPageItemAdd
             OnPageItemRemove=OnPageItemRemove
@@ -32,6 +32,12 @@
 
             OnAnswerSignatureAdd=OnAnswerSignatureAdd
             OnAnswerSignatureRemove=OnAnswerSignatureRemove
+
+            OnSkipAdd=OnSkipItemAdd
+            OnSkipRemove=OnSkipItemRemove
+
+            OnSkipNotAdd=OnSkipNotItemAdd
+            OnSkipNotRemove=OnSkipNotItemRemove
 
             />
     </div>
@@ -138,6 +144,34 @@
     {
         await _commands.Execute(new UpdateDataOfPracticeTacticCommand(vm.Identity.ID, vm.ToCommandVM()));
         await RefreshView();
+    }
+
+    #endregion
+
+    #region Skip Items
+
+    private Task OnSkipItemAdd(PracticeTacticVM vm)
+    {
+        vm.PagesToSkipIfContainsID = vm.PagesToSkipIfContainsID.Append(new()).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnSkipItemRemove(PracticeTacticVM vm, int index)
+    {
+        vm.PagesToSkipIfContainsID = vm.PagesToSkipIfContainsID.Where((item, i) => i != index).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnSkipNotItemAdd(PracticeTacticVM vm)
+    {
+        vm.PagesToSkipIfNotContainsID = vm.PagesToSkipIfNotContainsID.Append(new()).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnSkipNotItemRemove(PracticeTacticVM vm, int index)
+    {
+        vm.PagesToSkipIfNotContainsID = vm.PagesToSkipIfNotContainsID.Where((item, i) => i != index).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
     }
 
     #endregion

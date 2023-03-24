@@ -45,6 +45,12 @@
                 OnAnswerSignatureAddButtonClick=OnAnswerSignatureAdd
                 OnAnswerSignatureRemoveButtonClick=OnAnswerSignatureRemove
 
+                OnSkipAddButtonClick=OnSkipAdd
+                OnSkipRemoveButtonClick=OnSkipRemove
+
+                OnSkipNotAddButtonClick=OnSkipNotAdd
+                OnSkipNotRemoveButtonClick=OnSkipNotRemove
+
                 />
         }
     </VerticalLayout>
@@ -81,6 +87,13 @@
 
     [Parameter] public PracticeTactic.OnAddPageItemElementDelegate OnAnswerSignatureAdd { get; set; }
     [Parameter] public PracticeTactic.OnRemovePageItemElementDelegate OnAnswerSignatureRemove { get; set; }
+
+    // Skip Items
+    [Parameter] public PracticeTactic.OnAddSkipItemElementDelegate OnSkipAdd { get; set; }
+    [Parameter] public PracticeTactic.OnRemoveSkipItemElementDelegate OnSkipRemove { get; set; }
+
+    [Parameter] public PracticeTactic.OnAddSkipItemElementDelegate OnSkipNotAdd { get; set; }
+    [Parameter] public PracticeTactic.OnRemoveSkipItemElementDelegate OnSkipNotRemove { get; set; }
 
     private SelectLinkWindow _selectPageWindow;
     private ChooseFromListWindow _selectSignatureWindow;

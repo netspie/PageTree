@@ -30,6 +30,7 @@
     height: 22px;
     width: 22px;
     color: black;
+    cursor: pointer;
 }
 
 .practice-tactic-data {
@@ -75,6 +76,7 @@
     height: 22px;
     color: black;
     font-size: 12px;
+    cursor: pointer;
 }
 
 .data-item-row {
