@@ -33,14 +33,16 @@
             <div class="page-item-list">
                 <h3 class="page-item-list-item-title">Page Items</h3>
 
-                @for (int i = 0; i < Model.PageItems.Length; i++)
+                @for (int _i = 0; _i < Model.PageItems.Length; _i++)
                 {
+                    var i = _i;
                     var pageItem = Model.PageItems[i];
                     <div class="page-item">
                         <h4 class="page-item-content-title">Page Signatures</h4>
                         <div class="page-item-content">
-                            @for (int j = 0; j < pageItem.PageSignatures.Length; j++)
+                            @for (int _j = 0; _j < pageItem.PageSignatures.Length; _j++)
                             {
+                                var j = _j;
                                 var pageSignature = pageItem.PageSignatures[j];
                                 <div class="data-item-row">
                                     <button class="data-item" @onclick="(() => OnPageSignatureButtonClick?.Invoke(Model, i, j))">@pageSignature.Name</button>
@@ -52,8 +54,9 @@
 
                         <h4 class="page-item-content-title">Questions Signatures</h4>
                         <div class="page-item-content">
-                            @for (int j = 0; j < pageItem.QuestionsSignatures.Length; j++)
+                            @for (int _j = 0; _j < pageItem.QuestionsSignatures.Length; _j++)
                             {
+                                var j = _j;
                                 var questionSignature = pageItem.QuestionsSignatures[j];
                                 <div class="data-item-row">
                                     <button class="data-item" @onclick="(() => OnQuestionSignatureButtonClick?.Invoke(Model, i, j))">@questionSignature.Name</button>
@@ -65,8 +68,9 @@
 
                         <h4 class="page-item-content-title">AnswersSignatures </h4>
                         <div class="page-item-content">
-                            @for (int j = 0; j < pageItem.AnswersSignatures.Length; j++)
+                            @for (int _j = 0; _j < pageItem.AnswersSignatures.Length; _j++)
                             {
+                                var j = _j;
                                 var answerSignature = pageItem.AnswersSignatures[j];
                                 <div class="data-item-row">
                                     <button class="data-item" @onclick="(() => OnAnswerSignatureButtonClick?.Invoke(Model, i, j))">@answerSignature.Name</button>
@@ -85,8 +89,9 @@
 
             <div class="page-item">
                 <h4 class="page-item-list-item-title">Pages To Skip If Contains</h4>
-                @for (int i = 0; i < Model.PagesToSkipIfContainsID.Length; i++)
+                @for (int _i = 0; _i < Model.PagesToSkipIfContainsID.Length; _i++)
                 {
+                    var i = _i;
                     var page = Model.PagesToSkipIfContainsID[i];
                     <div class="data-item-row">
                         <button class="data-item" @onclick="(() => OnSkipButtonClick?.Invoke(Model, i))">@(page.Name)</button>
@@ -98,8 +103,9 @@
 
             <div class="page-item">
                 <h4 class="page-item-list-item-title">Pages To Skip If Not Contains</h4>
-                @for (int i = 0; i < Model.PagesToSkipIfNotContainsID.Length; i++)
+                @for (int _i = 0; _i < Model.PagesToSkipIfNotContainsID.Length; _i++)
                 {
+                    var i = _i;
                     var page = Model.PagesToSkipIfNotContainsID[i];
                     <div class="data-item-row">
                         <button class="data-item" @onclick="(() => OnSkipNotButtonClick?.Invoke(Model, i))">@(page.Name)</button>

@@ -1,6 +1,7 @@
 ﻿@using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
+@using PageTree.App.UseCases.PracticeTactics.Common;
 @using PageTree.App.UseCases.PracticeTactics.Queries;
 @using PageTree.App.UseCases.PracticeTactics.Commands;
 
@@ -17,13 +18,19 @@
             OnAddOnBottom=OnAddOnBottom
             OnRemove=OnSignature
             OnNameChanged=OnNameChanged
-            OnMove=OnMove />
+            OnMove=OnMove 
+            
+            OnPageItemAdd=OnPageItemAdd
+            OnPageItemRemove=OnPageItemRemove
+            />
     </div>
 </BackgroundAndContent>
 
 @code {
     [Parameter] public string PracticeTacticID { get; set; }
     [Parameter] public string ProjectID { get; set; }
+
+    #region Practice Tactic
 
     private async Task OnAdd(int index)
     {
@@ -63,6 +70,30 @@
 
     private Task ExecuteCreateCommand(int index) =>
         _commands.Execute(new CreatePracticeTacticCommand(_vm.RootID, index));
+
+    #endregion
+
+    #region Page Items
+
+    private Task OnPageItemAdd(PracticeTacticVM vm)
+    {
+        vm.PageItems = vm.PageItems.Append(new()).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnPageItemRemove(PracticeTacticVM vm, int index)
+    {
+        vm.PageItems = vm.PageItems.Where((item, i) => i != index).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private async Task SendUpdateCommandAndRefresh(PracticeTacticVM vm)
+    {
+        await _commands.Execute(new UpdateDataOfPracticeTacticCommand(vm.Identity.ID, vm.ToCommandVM()));
+        await RefreshView();
+    }
+
+    #endregion
 
     protected override string QueryParameter => ProjectID;
 }

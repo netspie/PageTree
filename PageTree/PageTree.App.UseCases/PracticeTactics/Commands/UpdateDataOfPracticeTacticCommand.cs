@@ -1,4 +1,5 @@
 ﻿using Common.Basic.Blocks;
+using Common.Basic.Collections;
 using Common.Basic.Repository;
 using Mediator;
 using PageTree.App.UseCases.Common;
@@ -25,15 +26,15 @@ public class UpdateDataOfPracticeTacticCommandHandler : BaseCommandHandler, ICom
             return result.Fail();
 
         var data = command.Data;
-        item.PageItems = data.PageItems.Select(i => new PracticeTacticItem()
+        item.PageItems = data.PageItems.SelectOrDefault(i => new PracticeTacticItem()
         {
-            PageSignaturesIDs = i.PageSignatures.Select(id => id).ToList(),
-            QuestionsSignatureIDs = i.QuestionsSignatures.Select(id => id).ToList(),
-            AnswersSignatureIDs = i.AnswersSignatures.Select(id => id).ToList(),
+            PageSignaturesIDs = i.PageSignatures.SelectOrDefault(id => id).ToList(),
+            QuestionsSignatureIDs = i.QuestionsSignatures.SelectOrDefault(id => id).ToList(),
+            AnswersSignatureIDs = i.AnswersSignatures.SelectOrDefault(id => id).ToList(),
         }).ToList();
 
-        item.SkipItemIfContainsOfIDs = data.PagesToSkipIfContainsID.Select(id => id).ToList();
-        item.SkipItemIfNotContainsOfIDs = data.PagesToSkipIfNotContainsID.Select(id => id).ToList();
+        item.SkipItemIfContainsOfIDs = data.PagesToSkipIfContainsID.SelectOrDefault(id => id).ToList();
+        item.SkipItemIfNotContainsOfIDs = data.PagesToSkipIfNotContainsID.SelectOrDefault(id => id).ToList();
 
         await _repository.Save(item, result);
 
