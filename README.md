@@ -7,28 +7,7 @@ Each piece of data is a page itself.
 
 My initial idea is to create a helpful tool for learning japanese language specifically, but I believe it can be applied for any domain out there. The real challenge is to structure data in well-thought manner, so to make the exploration/navigation pleasant.
 
-Available sources of learning:
-- dictionaries - just words, dumb descriptions, little to no context
-- mobile apps
-- paid courses / platforms
-
-Japanese Language Learning Materials Structure:
-- Material Origins / Authors / Material Creators
-    - Author 1
-    
-- Scripts
-    -
-
-Not just learning tool
-
-Would be cool for a learning content creator to provide a ready material
-
-Japanese Learning Materials Challenges:
-- provide 
-- mobile apps
-- paid courses / platforms
-
-Here is the .. that emerged from the mentioned problems:
+Here is the concepts that emerged from the mentioned problems:
 "Page" is the most fundamental concept here and has following properties:
 - it can be any piece of data, preferably very small, easily memorizable
 - every page can have descendants (children, or so called "properties") you can navigate to
