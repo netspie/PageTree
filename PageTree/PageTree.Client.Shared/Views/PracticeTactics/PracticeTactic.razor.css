@@ -31,3 +31,68 @@
     width: 22px;
     color: black;
 }
+
+.practice-tactic-data {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.page-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.page-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.page-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.page-item-list-item-title {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.page-item-content-title {
+    font-size: 12px;
+}
+
+.data-item {
+    box-sizing: border-box;
+    background: rgb(0, 0, 0, 0.3);
+    border: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 0;
+    height: 22px;
+    color: black;
+    font-size: 12px;
+}
+
+.data-item-row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.top-delimiter {
+    width: 100%;
+    height: 1px;
+    background: black;
+    opacity: 0.4;
+}
+
+.page-item-delimiter {
+    width: 100%;
+    height: 1px;
+    background: black;
+    opacity: 0.2;
+}

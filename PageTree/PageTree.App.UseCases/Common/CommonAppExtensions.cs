@@ -2,12 +2,24 @@
 using Common.Basic.Collections;
 using Common.Basic.Repository;
 using Common.Basic.Threading;
+using PageTree.App.UseCases.Common;
 using PageTree.Domain;
 
 namespace PageTree.App.Common;
 
 public static class CommonExtensions
 {
+    public static Task<IdentityVM[]> ToIdentityVM<T>(
+        this IEnumerable<string> ids, IRepository<T> repository, Func<T, string> getName, Result result)
+    {
+        return ids.SelectOrDefault(async id =>
+        {
+            var entity = await repository.Get(id, result);
+            var name = getName(entity);
+            return new IdentityVM(id, name);
+        }).Values();
+    }
+
     public static async Task<Result> GetParents<T>(
         this IRepository<T> pageRepository, T page, Func<T, string> getParentID, List<T> parents)
     {

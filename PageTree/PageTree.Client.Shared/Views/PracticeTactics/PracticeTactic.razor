@@ -1,5 +1,7 @@
 ﻿@using Corelibs.BlazorViews.Components;
+@using PageTree.App.UseCases.Common;
 @using PageTree.App.UseCases.PracticeTactics.Queries;
+@using PageTree.Client.Shared.Views.Pages
 
 <div class="practice-tactic" @onclick=OnClickInternal>
     <div class="top-panel">
@@ -17,12 +19,101 @@
                 <button class="button" @onclick=OnAddButtonClickInternal>+</button>
                 <button class="button" @onclick=OnRemoveButtonClickInternal>-</button>
                 <button class="button" @onclick=OnEditButtonClick>E</button>
+                <button class="button" @onclick=OnDataButtonClick>?</button>
             </div>
         </div>
+        @if (!_isDataCollapsed)
+        {
+            <div class="top-delimiter" />
+        }
     </div>
+    @if (!_isDataCollapsed)
+    {
+        <div class="practice-tactic-data">
+            <div class="page-item-list">
+                <h3 class="page-item-list-item-title">Page Items</h3>
+
+                @for (int i = 0; i < Model.PageItems.Length; i++)
+                {
+                    var pageItem = Model.PageItems[i];
+                    <div class="page-item">
+                        <h4 class="page-item-content-title">Page Signatures</h4>
+                        <div class="page-item-content">
+                            @for (int j = 0; j < pageItem.PageSignatures.Length; j++)
+                            {
+                                var pageSignature = pageItem.PageSignatures[j];
+                                <div class="data-item-row">
+                                    <button class="data-item" @onclick="(() => OnPageSignatureButtonClick?.Invoke(Model, i, j))">@pageSignature.Name</button>
+                                    <button class="button" @onclick="(() => OnPageSignatureRemoveButtonClick?.Invoke(Model, i, j))">-</button>
+                                </div>
+                            }
+                            <button class="button" @onclick="(() => OnPageSignatureAddButtonClick?.Invoke(Model, i))">+</button>
+                        </div>
+
+                        <h4 class="page-item-content-title">Questions Signatures</h4>
+                        <div class="page-item-content">
+                            @for (int j = 0; j < pageItem.QuestionsSignatures.Length; j++)
+                            {
+                                var questionSignature = pageItem.QuestionsSignatures[j];
+                                <div class="data-item-row">
+                                    <button class="data-item" @onclick="(() => OnQuestionSignatureButtonClick?.Invoke(Model, i, j))">@questionSignature.Name</button>
+                                    <button class="button" @onclick="(() => OnQuestionSignatureRemoveButtonClick?.Invoke(Model, i, j))">-</button>
+                                </div>
+                            }
+                            <button class="button" @onclick="(() => OnQuestionSignatureAddButtonClick?.Invoke(Model, i))">+</button>
+                        </div>
+
+                        <h4 class="page-item-content-title">AnswersSignatures </h4>
+                        <div class="page-item-content">
+                            @for (int j = 0; j < pageItem.AnswersSignatures.Length; j++)
+                            {
+                                var answerSignature = pageItem.AnswersSignatures[j];
+                                <div class="data-item-row">
+                                    <button class="data-item" @onclick="(() => OnAnswerSignatureButtonClick?.Invoke(Model, i, j))">@answerSignature.Name</button>
+                                    <button class="button" @onclick="(() => OnAnswerSignatureRemoveButtonClick?.Invoke(Model, i, j))">-</button>
+                                </div>
+                            }
+                            <button class="button" @onclick="(() => OnAnswerSignatureAddButtonClick?.Invoke(Model, i))">+</button>
+                        </div>
+
+                        <button class="button" @onclick="(() => OnPageItemRemoveButtonClick?.Invoke(Model, i))">-</button>
+                        <div class="page-item-delimiter" />
+                    </div>
+                }
+                <button class="button" @onclick="(() => OnPageItemAddButtonClick?.Invoke(Model))">+</button>
+            </div>
+
+            <div class="page-item">
+                <h4 class="page-item-list-item-title">Pages To Skip If Contains</h4>
+                @for (int i = 0; i < Model.PagesToSkipIfContainsID.Length; i++)
+                {
+                    var page = Model.PagesToSkipIfContainsID[i];
+                    <div class="data-item-row">
+                        <button class="data-item" @onclick="(() => OnSkipButtonClick?.Invoke(Model, i))">@(page.Name)</button>
+                        <button class="button" @onclick="(() => OnSkipRemoveButtonClick?.Invoke(Model, i))">-</button>
+                    </div>
+                }
+                <button class="button" @onclick="(() => OnSkipAddButtonClick?.Invoke(Model))">+</button>
+            </div>
+
+            <div class="page-item">
+                <h4 class="page-item-list-item-title">Pages To Skip If Not Contains</h4>
+                @for (int i = 0; i < Model.PagesToSkipIfNotContainsID.Length; i++)
+                {
+                    var page = Model.PagesToSkipIfNotContainsID[i];
+                    <div class="data-item-row">
+                        <button class="data-item" @onclick="(() => OnSkipNotButtonClick?.Invoke(Model, i))">@(page.Name)</button>
+                        <button class="button" @onclick="(() => OnSkipNotRemoveButtonClick?.Invoke(Model, i))">-</button>
+                    </div>
+                }
+                <button class="button" @onclick="(() => OnSkipNotAddButtonClick?.Invoke(Model))">+</button>
+            </div>
+        </div>
+    }
 </div>
 
 @code {
+    // Practice Tactic
     [Parameter] public PracticeTacticVM Model { get; set; }
     [Parameter] public Func<PracticeTacticVM, Task> OnClick { get; set; }
     [Parameter] public Func<string, Task> OnMoveUpButtonClick { get; set; }
@@ -31,10 +122,52 @@
     [Parameter] public Func<string, Task> OnRemoveButtonClick { get; set; }
     [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
 
+    // Page Items
+    public delegate Task OnAddPageItemElementDelegate(PracticeTacticVM vm, int pageItemIndex);
+    public delegate Task OnRemovePageItemElementDelegate(PracticeTacticVM vm, int pageItemIndex, int elementIndex);
+    public delegate Task OnSelectPageItemElementDelegate(PracticeTacticVM vm, int pageItemIndex, int elementIndex);
+
+    [Parameter] public Func<PracticeTacticVM, Task> OnPageItemAddButtonClick { get; set; }
+    [Parameter] public Func<PracticeTacticVM, int, Task> OnPageItemRemoveButtonClick { get; set; }
+
+    [Parameter] public OnAddPageItemElementDelegate OnPageSignatureAddButtonClick { get; set; }
+    [Parameter] public OnRemovePageItemElementDelegate OnPageSignatureRemoveButtonClick { get; set; }
+    [Parameter] public OnSelectPageItemElementDelegate OnPageSignatureButtonClick { get; set; }
+
+    [Parameter] public OnAddPageItemElementDelegate OnQuestionSignatureAddButtonClick { get; set; }
+    [Parameter] public OnRemovePageItemElementDelegate OnQuestionSignatureRemoveButtonClick { get; set; }
+    [Parameter] public OnSelectPageItemElementDelegate OnQuestionSignatureButtonClick { get; set; }
+
+    [Parameter] public OnAddPageItemElementDelegate OnAnswerSignatureAddButtonClick { get; set; }
+    [Parameter] public OnRemovePageItemElementDelegate OnAnswerSignatureRemoveButtonClick { get; set; }
+    [Parameter] public OnSelectPageItemElementDelegate OnAnswerSignatureButtonClick { get; set; }
+
+    // Skip Items
+    public delegate Task OnAddSkipItemElementDelegate(PracticeTacticVM vm);
+    public delegate Task OnRemoveSkipItemElementDelegate(PracticeTacticVM vm, int index);
+    public delegate Task OnSelectSkipItemElementDelegate(PracticeTacticVM vm, int index);
+
+    [Parameter] public OnAddSkipItemElementDelegate OnSkipAddButtonClick { get; set; }
+    [Parameter] public OnRemoveSkipItemElementDelegate OnSkipRemoveButtonClick { get; set; }
+    [Parameter] public OnSelectSkipItemElementDelegate OnSkipButtonClick { get; set; }
+
+    [Parameter] public OnAddSkipItemElementDelegate OnSkipNotAddButtonClick { get; set; }
+    [Parameter] public OnRemoveSkipItemElementDelegate OnSkipNotRemoveButtonClick { get; set; }
+    [Parameter] public OnSelectSkipItemElementDelegate OnSkipNotButtonClick { get; set; }
+
+    // Other
     [Parameter] public bool IsFirst { get; set; }
     [Parameter] public bool IsLast { get; set; }
 
     private EditableText _nameText;
+
+    private bool _isDataCollapsed = true;
+
+    private async Task OnDataButtonClick()
+    {
+        _isDataCollapsed = !_isDataCollapsed;
+        await InvokeAsync(StateHasChanged);
+    }
 
     private async Task OnMoveUpButtonClickInternal()
     {
