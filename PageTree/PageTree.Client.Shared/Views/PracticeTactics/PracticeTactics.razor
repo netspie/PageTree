@@ -38,18 +38,23 @@
 
                 OnPageSignatureAddButtonClick=OnPageSignatureAdd
                 OnPageSignatureRemoveButtonClick=OnPageSignatureRemove
+                OnPageSignatureButtonClick=OnPageSignatureInternal
 
                 OnQuestionSignatureAddButtonClick=OnQuestionSignatureAdd
                 OnQuestionSignatureRemoveButtonClick=OnQuestionSignatureRemove
+                OnQuestionSignatureButtonClick=OnQuestionSignatureInternal
 
                 OnAnswerSignatureAddButtonClick=OnAnswerSignatureAdd
                 OnAnswerSignatureRemoveButtonClick=OnAnswerSignatureRemove
+                OnAnswerSignatureButtonClick=OnAnswerSignatureInternal
 
                 OnSkipAddButtonClick=OnSkipAdd
                 OnSkipRemoveButtonClick=OnSkipRemove
+                OnSkipButtonClick=OnSkipItemInternal
 
                 OnSkipNotAddButtonClick=OnSkipNotAdd
                 OnSkipNotRemoveButtonClick=OnSkipNotRemove
+                OnSkipNotButtonClick=OnSkipNotItemInternal
 
                 />
         }
@@ -58,10 +63,10 @@
 
 @{
     var signaturesOptions = Model.Signatures.ToUIIdentityVM();
-    <ChooseFromListWindow Options=signaturesOptions @ref=_selectSignatureWindow />
+    <ChooseFromListWindow Options=signaturesOptions @ref=_selectSignatureWindow OnSelected=OnSignatureSelected />
 }
 
-<SelectLinkWindow @ref=_selectPageWindow />
+<SelectLinkWindow @ref=_selectPageWindow OnSelected=OnSelectedPage OnInputChanged=OnSelectLinkInputChanged />
 
 @code {
     [Parameter] public PracticeTacticsListVM Model { get; set; } = new();
@@ -75,70 +80,101 @@
     [Parameter] public Func<string, Task> OnRemove { get; set; }
     [Parameter] public Func<string, string, Task> OnNameChanged { get; set; }
 
+    [Parameter] public SelectLinkWindow.OnInputChangedDelegate? OnSelectLinkInputChanged { get; set; }
+
     // Page Items
+    public delegate Task OnSelectPageItemElementDelegate(PracticeTacticVM vm, int pageItemIndex, int elementIndex, string selectedSignatureID);
+
     [Parameter] public Func<PracticeTacticVM, Task> OnPageItemAdd { get; set; }
     [Parameter] public Func<PracticeTacticVM, int, Task> OnPageItemRemove { get; set; }
 
     [Parameter] public PracticeTactic.OnAddPageItemElementDelegate OnPageSignatureAdd { get; set; }
     [Parameter] public PracticeTactic.OnRemovePageItemElementDelegate OnPageSignatureRemove { get; set; }
+    [Parameter] public OnSelectPageItemElementDelegate OnPageSignatureChange { get; set; }
 
     [Parameter] public PracticeTactic.OnAddPageItemElementDelegate OnQuestionSignatureAdd { get; set; }
     [Parameter] public PracticeTactic.OnRemovePageItemElementDelegate OnQuestionSignatureRemove { get; set; }
+    [Parameter] public OnSelectPageItemElementDelegate OnQuestionSignatureChange { get; set; }
 
     [Parameter] public PracticeTactic.OnAddPageItemElementDelegate OnAnswerSignatureAdd { get; set; }
     [Parameter] public PracticeTactic.OnRemovePageItemElementDelegate OnAnswerSignatureRemove { get; set; }
+    [Parameter] public OnSelectPageItemElementDelegate OnAnswerSignatureChange { get; set; }
 
     // Skip Items
+    public delegate Task OnSelectSkipItemElementDelegate(PracticeTacticVM vm, int index, string selectedPageID);
+
     [Parameter] public PracticeTactic.OnAddSkipItemElementDelegate OnSkipAdd { get; set; }
     [Parameter] public PracticeTactic.OnRemoveSkipItemElementDelegate OnSkipRemove { get; set; }
+    [Parameter] public OnSelectSkipItemElementDelegate OnSkipChange { get; set; }
 
     [Parameter] public PracticeTactic.OnAddSkipItemElementDelegate OnSkipNotAdd { get; set; }
     [Parameter] public PracticeTactic.OnRemoveSkipItemElementDelegate OnSkipNotRemove { get; set; }
+    [Parameter] public OnSelectSkipItemElementDelegate OnSkipNotChange { get; set; }
 
     private SelectLinkWindow _selectPageWindow;
     private ChooseFromListWindow _selectSignatureWindow;
 
-    private void OnPublicRootPageButtonClick()
+    private PracticeTacticVM _selectedVM;
+    private int _index1;
+    private int _index2;
+    private SelectOperationType _opType;
+
+    private async Task OnPageSignatureInternal(PracticeTacticVM vm, int pageItemIndex, int elementIndex) =>
+        OnSignatureItem(vm, pageItemIndex, elementIndex, SelectOperationType.PageSignature);
+
+    private async Task OnQuestionSignatureInternal(PracticeTacticVM vm, int pageItemIndex, int elementIndex) =>
+        OnSignatureItem(vm, pageItemIndex, elementIndex, SelectOperationType.QuestionSignature);
+
+    private async Task OnAnswerSignatureInternal(PracticeTacticVM vm, int pageItemIndex, int elementIndex) =>
+        OnSignatureItem(vm, pageItemIndex, elementIndex, SelectOperationType.AnswerSignature);
+
+    private async Task OnSkipItemInternal(PracticeTacticVM vm, int index) =>
+        OnSkipItem(vm, index, SelectOperationType.SkipPage);
+
+    private async Task OnSkipNotItemInternal(PracticeTacticVM vm, int index) =>
+        OnSkipItem(vm, index, SelectOperationType.SkipNotPage);
+
+    private void OnSignatureItem(PracticeTacticVM vm, int pageItemIndex, int elementIndex, SelectOperationType opType)
     {
-        //_selectLinkWindow.Show(ProjectID, "", 0);
+        _selectedVM = vm;
+        _index1 = pageItemIndex;
+        _index2 = elementIndex;
+        _selectSignatureWindow.OuterClick.Enabled = true;
+        _opType = opType;
     }
 
-    //private Task OnSignatureSelected(object data, string signatureID)
-    //{
-    //    _selectSignatureWindow.OuterClick.Enabled = false;
+    private void OnSkipItem(PracticeTacticVM vm, int index, SelectOperationType opType)
+    {
+        _selectedVM = vm;
+        _index1 = index;
+        _selectPageWindow.Show(Model.ProjectID, "", int.MinValue);
+        _opType = opType;
+    }
 
-    //    var propertyID = data as string;
-    //    return OnPropertyResignature?.Invoke(propertyID, signatureID);
-    //}
+    private async Task OnSignatureSelected(object data, string signatureID)
+    {
+        _selectSignatureWindow.OuterClick.Enabled = false;
 
-    //private async Task OnSelectPublicRootPageInputChanged(string projectID, string input)
-    //{
-    //    var searchResultOut = await _queries.Execute<GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(
-    //       new GetPagesSearchResultsQuery(projectID, input));
+        if (_opType == SelectOperationType.PageSignature)
+            await OnPageSignatureChange?.Invoke(_selectedVM, _index1, _index2, signatureID);
+        if (_opType == SelectOperationType.QuestionSignature)
+            await OnQuestionSignatureChange?.Invoke(_selectedVM, _index1, _index2, signatureID);
+        if (_opType == SelectOperationType.AnswerSignature)
+            await OnAnswerSignatureChange?.Invoke(_selectedVM, _index1, _index2, signatureID);
+    }
 
-    //    if (searchResultOut?.PageVM != null)
-    //        await _selectLinkWindow.Update(new() { Values = searchResultOut?.PageVM?.Values });
-    //}
+    private async Task OnSelectedPage(string _1, int _2, string selectedPageID)
+    {
+        if (_opType == SelectOperationType.SkipPage)
+            await OnSkipChange?.Invoke(_selectedVM, _index1, selectedPageID);
+        if (_opType == SelectOperationType.SkipNotPage)
+            await OnSkipNotChange?.Invoke(_selectedVM, _index1, selectedPageID);
+    }
 
-    //private string _publicRootPageID;
-    //private async Task OnSelectedPublicRootPage(string pageID, int index, string publicRootPageID)
-    //{
-    //    _publicRootPageID = publicRootPageID;
-    //    UpdateEditIfAny();
-
-    //    await InvokeAsync(StateHasChanged);
-    //}
-
-    //public Task UpdateSelectLinkWindow(SearchedPagesResultsVM vm)
-    //{
-    //    var values = vm.Values
-    //        .Where(v =>
-    //            Model.Properties.FirstOrDefault(p => p.Identity.ID == v.Identity.ID) == null &&
-    //            v.Identity.ID != Model.Identity.ID)
-    //        .ToArray();
-
-    //    return _selectLinkWindow.Update(new() { Values = values });
-    //}
+    public async Task UpdateSelectLinkWindow(SearchedPagesResultsVM vm)
+    {
+        await _selectPageWindow.Update(new() { Values = vm?.Values });
+    }
 
     private Task OnAddSignatureInternal(string id) =>
         CallHandlerAtIndex(id, i => i + 1, (id, i) => OnAdd(i));
@@ -171,5 +207,15 @@
     public Task RefreshViewModel()
     {
         return Task.CompletedTask;
+    }
+
+    private enum SelectOperationType
+    {
+        PageSignature,
+        QuestionSignature,
+        AnswerSignature,
+
+        SkipPage,
+        SkipNotPage,
     }
 }

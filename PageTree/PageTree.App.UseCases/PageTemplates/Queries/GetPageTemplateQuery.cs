@@ -42,6 +42,7 @@ public class GetPageTemplatesQueryHandler : IQueryHandler<GetPageTemplatesQuery,
 
         var values = await GetProperties(pageTemplate);
         var signatures = await _signatureRepository.Get(signaturesRoot.ChildrenIDs, res);
+        signatures = signatures.OrderBy(s => signaturesRoot.ChildrenIDs.IndexOf(s.ID)).ToArray();
 
         return res.With(new GetPageTemplatesQueryOut(
             new PageTemplatesVM()

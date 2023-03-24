@@ -107,6 +107,7 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
 
         var properties = await GetProperties(page, mainStyle?.TreeExpandInfo);
         var signatures = await _signatureRepository.Get(signaturesRoot.ChildrenIDs, res);
+        signatures = signatures.OrderBy(s => signaturesRoot.ChildrenIDs.IndexOf(s.ID)).ToArray();
 
         return res.With(new GetPageQueryOut(
             new PageVM()

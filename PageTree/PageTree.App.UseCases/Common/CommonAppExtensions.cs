@@ -9,10 +9,10 @@ namespace PageTree.App.Common;
 
 public static class CommonExtensions
 {
-    public static Task<IdentityVM[]> ToIdentityVM<T>(
+    public async static Task<IdentityVM[]> ToIdentityVM<T>(
         this IEnumerable<string> ids, IRepository<T> repository, Func<T, string> getName, Result result)
     {
-        return ids.SelectOrDefault(async id =>
+        return await ids.SelectOrDefault(async id =>
         {
             var entity = await repository.Get(id, result);
             var name = entity is not null ? getName(entity) : "---";

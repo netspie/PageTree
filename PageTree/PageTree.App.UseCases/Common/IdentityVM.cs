@@ -6,11 +6,8 @@ public class IdentityVM
     public string Name { get; set; } = string.Empty;
 
     public IdentityVM() { }
-    public IdentityVM(string id, string name)
-    {
-        ID = id;
-        Name = name;
-    }
+    public IdentityVM(string id) => ID = id;
+    public IdentityVM(string id, string name) : this(id) => Name = name ?? string.Empty;
 
     public static implicit operator IdentityVM((string id, string name) args) => new IdentityVM(args.id, args.name);
 }

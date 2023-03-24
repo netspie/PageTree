@@ -1,6 +1,8 @@
 ﻿@using Corelibs.BlazorShared.UI;
 @using Corelibs.BlazorViews.Layouts;
 @using Microsoft.JSInterop;
+@using PageTree.App.Pages.Queries;
+@using PageTree.App.UseCases.Common;
 @using PageTree.App.UseCases.PracticeTactics.Common;
 @using PageTree.App.UseCases.PracticeTactics.Queries;
 @using PageTree.App.UseCases.PracticeTactics.Commands;
@@ -21,23 +23,30 @@
             OnNameChanged=OnNameChanged
             OnMove=OnMove
             
+            OnSelectLinkInputChanged=OnSelectLinkInputChanged
+
             OnPageItemAdd=OnPageItemAdd
             OnPageItemRemove=OnPageItemRemove
 
             OnPageSignatureAdd=OnPageSignatureAdd
             OnPageSignatureRemove=OnPageSignatureRemove
+            OnPageSignatureChange=OnPageSignatureChange
 
             OnQuestionSignatureAdd=OnQuestionSignatureAdd
             OnQuestionSignatureRemove=OnQuestionSignatureRemove
+            OnQuestionSignatureChange=OnQuestionSignatureChange
 
             OnAnswerSignatureAdd=OnAnswerSignatureAdd
             OnAnswerSignatureRemove=OnAnswerSignatureRemove
+            OnAnswerSignatureChange=OnAnswerSignatureChange
 
             OnSkipAdd=OnSkipItemAdd
             OnSkipRemove=OnSkipItemRemove
+            OnSkipChange=OnSkipItemChange
 
             OnSkipNotAdd=OnSkipNotItemAdd
             OnSkipNotRemove=OnSkipNotItemRemove
+            OnSkipNotChange=OnSkipNotItemChange
 
             />
     </div>
@@ -116,6 +125,12 @@
         return SendUpdateCommandAndRefresh(vm);
     }
 
+    private Task OnPageSignatureChange(PracticeTacticVM vm, int pageItemIndex, int elementIndex, string signatureID)
+    {
+        vm.PageItems[pageItemIndex].PageSignatures[elementIndex] = new(signatureID);
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
     private Task OnQuestionSignatureAdd(PracticeTacticVM vm, int pageItemIndex)
     {
         vm.PageItems[pageItemIndex].QuestionsSignatures = vm.PageItems[pageItemIndex].QuestionsSignatures.Append(new()).ToArray();
@@ -128,6 +143,12 @@
         return SendUpdateCommandAndRefresh(vm);
     }
 
+    private Task OnQuestionSignatureChange(PracticeTacticVM vm, int pageItemIndex, int elementIndex, string signatureID)
+    {
+        vm.PageItems[pageItemIndex].QuestionsSignatures[elementIndex] = new(signatureID);
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
     private Task OnAnswerSignatureAdd(PracticeTacticVM vm, int pageItemIndex)
     {
         vm.PageItems[pageItemIndex].AnswersSignatures = vm.PageItems[pageItemIndex].AnswersSignatures.Append(new()).ToArray();
@@ -137,6 +158,12 @@
     private Task OnAnswerSignatureRemove(PracticeTacticVM vm, int pageItemIndex, int elementIndex)
     {
         vm.PageItems[pageItemIndex].AnswersSignatures = vm.PageItems[pageItemIndex].AnswersSignatures.Where((s, i) => i != elementIndex).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnAnswerSignatureChange(PracticeTacticVM vm, int pageItemIndex, int elementIndex, string signatureID)
+    {
+        vm.PageItems[pageItemIndex].AnswersSignatures[elementIndex] = new(signatureID);
         return SendUpdateCommandAndRefresh(vm);
     }
 
@@ -162,6 +189,12 @@
         return SendUpdateCommandAndRefresh(vm);
     }
 
+    private Task OnSkipItemChange(PracticeTacticVM vm, int index, string selectedPageID)
+    {
+        vm.PagesToSkipIfContainsID[index] = new(selectedPageID);
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
     private Task OnSkipNotItemAdd(PracticeTacticVM vm)
     {
         vm.PagesToSkipIfNotContainsID = vm.PagesToSkipIfNotContainsID.Append(new()).ToArray();
@@ -174,7 +207,22 @@
         return SendUpdateCommandAndRefresh(vm);
     }
 
+    private Task OnSkipNotItemChange(PracticeTacticVM vm, int index, string selectedPageID)
+    {
+        vm.PagesToSkipIfNotContainsID[index] = new(selectedPageID);
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
     #endregion
+
+    private async Task OnSelectLinkInputChanged(string projectID, string input)
+    {
+        var searchResultOut = await _queries.Execute<GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(
+            new GetPagesSearchResultsQuery(projectID, input));
+
+        if (searchResultOut?.PageVM != null)
+            await _view.UpdateSelectLinkWindow(searchResultOut.PageVM);
+    }
 
     protected override string QueryParameter => ProjectID;
 }
