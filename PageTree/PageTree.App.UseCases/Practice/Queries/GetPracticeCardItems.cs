@@ -1,27 +1,38 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Collections;
 using Common.Basic.Repository;
+using Mediator;
 using PageTree.App.Common;
 using PageTree.App.Entities.Signatures;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 
-namespace PageTree.App.Practice.Queries;
+namespace PageTree.App.UseCases.Practice.Queries;
 
-public class GetPracticeCardItemsQueryHandler
+public class GetPracticeCardItemsQueryHandler : IQueryHandler<GetPracticeCardItemsQuery, Result<GetPracticeCardItemsQueryOut>>
 {
-    public IRepository<Page> _pageRepository { private get; init; }
-    public IRepository<Signature> _signatureRepository { private get; init; }
-    public IRepository<PracticeTactic> _practiceTacticRepository { private get; init; }
+    public readonly IRepository<Page> _pageRepository;
+    public readonly IRepository<Signature> _signatureRepository;
+    public readonly IRepository<PracticeTactic> _practiceTacticRepository;
 
-    public async Task<GetPracticeCardItemsQueryDTO> Handle(GetPracticeCardItemsQuery query)
+    public GetPracticeCardItemsQueryHandler(
+        IRepository<Page> pageRepository, 
+        IRepository<Signature> signatureRepository,
+        IRepository<PracticeTactic> practiceTacticRepository)
     {
-        var res = Result<GetPracticeCardItemsQueryDTO>.Success();
+        _pageRepository = pageRepository;
+        _signatureRepository = signatureRepository;
+        _practiceTacticRepository = practiceTacticRepository;
+    }   
+
+    public async ValueTask<Result<GetPracticeCardItemsQueryOut>> Handle(GetPracticeCardItemsQuery query, CancellationToken ct)
+    {
+        var res = Result<GetPracticeCardItemsQueryOut>.Success();
 
         var page = await _pageRepository.Get(query.PageID, res);
         var tactic = await _practiceTacticRepository.Get(query.PracticeTacticID, res);
 
-        var cards = new List<PracticeCardDTO>();
+        var cards = new List<PracticeCardVM>();
         foreach (var tacticItem in tactic.PageItems)
         {
             var resultPages = new List<Page>();
@@ -43,7 +54,7 @@ public class GetPracticeCardItemsQueryHandler
                 if (!p.ContainsAll(_pageRepository, tactic.SkipItemIfNotContainsOfIDs))
                     continue;
 
-                var dto = new PracticeCardDTO(p.ID);
+                var dto = new PracticeCardVM(p.ID);
                 var thisPage = await GetPage(dto.ID);
                 if (!thisPage)
                     continue;
@@ -85,7 +96,7 @@ public class GetPracticeCardItemsQueryHandler
             }
         }
 
-        return new GetPracticeCardItemsQueryDTO(cards.ToArray());
+        return res.With(new GetPracticeCardItemsQueryOut(cards.ToArray()));
     }
 
     private async Task<Page> GetPage(string id)
@@ -152,14 +163,13 @@ public class GetPracticeCardItemsQueryHandler
     }
 }
 
-public sealed record GetPracticeCardItemsQuery(string PageID, string PracticeTacticID);
-public sealed record GetPracticeCardItemsQueryDTO(PracticeCardDTO[] Cards);
-public sealed record PracticeCardDTO(string ID)
+public sealed record GetPracticeCardItemsQuery(string PageID, string PracticeTacticID) : IQuery<Result<GetPracticeCardItemsQueryOut>>;
+public sealed record GetPracticeCardItemsQueryOut(PracticeCardVM[] Cards);
+public sealed record PracticeCardVM(string ID)
 {
-    public IList<string> Questions { get; } = new List<string>();
-    public IList<string> Answers { get; } = new List<string>();
+    public List<string> Questions { get; } = new();
+    public List<string> Answers { get; } = new();
 }
-
 
 public static class PageExtensions
 {

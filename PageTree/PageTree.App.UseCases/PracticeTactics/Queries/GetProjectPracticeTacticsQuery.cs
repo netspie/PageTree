@@ -1,17 +1,12 @@
 ﻿using Common.Basic.Blocks;
 using Common.Basic.Collections;
 using Common.Basic.Repository;
-using Common.Basic.Threading;
 using Mediator;
-using Newtonsoft.Json.Linq;
 using PageTree.App.Entities.Signatures;
 using PageTree.App.UseCases.Common;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 using PageTree.Domain.Projects;
-using PageTree.App.Common;
-using PageTree.App.UseCases.Signatures.Queries;
-using Corelibs.Basic.Reflection;
 
 namespace PageTree.App.UseCases.PracticeTactics.Queries;
 
