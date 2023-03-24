@@ -13,6 +13,7 @@
     <div class="signatures-container">
         <PageTree.Client.Shared.Views.PracticeTactics.PracticeTactics
             @ref=_view
+
             OnAdd=OnAdd
             OnAddOnTop=OnAddOnTop 
             OnAddOnBottom=OnAddOnBottom
@@ -22,6 +23,16 @@
             
             OnPageItemAdd=OnPageItemAdd
             OnPageItemRemove=OnPageItemRemove
+
+            OnPageSignatureAdd=OnPageSignatureAdd
+            OnPageSignatureRemove=OnPageSignatureRemove
+
+            OnQuestionSignatureAdd=OnQuestionSignatureAdd
+            OnQuestionSignatureRemove=OnQuestionSignatureRemove
+
+            OnAnswerSignatureAdd=OnAnswerSignatureAdd
+            OnAnswerSignatureRemove=OnAnswerSignatureRemove
+
             />
     </div>
 </BackgroundAndContent>
@@ -84,6 +95,42 @@
     private Task OnPageItemRemove(PracticeTacticVM vm, int index)
     {
         vm.PageItems = vm.PageItems.Where((item, i) => i != index).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnPageSignatureAdd(PracticeTacticVM vm, int pageItemIndex)
+    {
+        vm.PageItems[pageItemIndex].PageSignatures = vm.PageItems[pageItemIndex].PageSignatures.Append(new()).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnPageSignatureRemove(PracticeTacticVM vm, int pageItemIndex, int elementIndex)
+    {
+        vm.PageItems[pageItemIndex].PageSignatures = vm.PageItems[pageItemIndex].PageSignatures.Where((s, i) => i != elementIndex).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnQuestionSignatureAdd(PracticeTacticVM vm, int pageItemIndex)
+    {
+        vm.PageItems[pageItemIndex].QuestionsSignatures = vm.PageItems[pageItemIndex].QuestionsSignatures.Append(new()).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnQuestionSignatureRemove(PracticeTacticVM vm, int pageItemIndex, int elementIndex)
+    {
+        vm.PageItems[pageItemIndex].QuestionsSignatures = vm.PageItems[pageItemIndex].QuestionsSignatures.Where((s, i) => i != elementIndex).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnAnswerSignatureAdd(PracticeTacticVM vm, int pageItemIndex)
+    {
+        vm.PageItems[pageItemIndex].AnswersSignatures = vm.PageItems[pageItemIndex].AnswersSignatures.Append(new()).ToArray();
+        return SendUpdateCommandAndRefresh(vm);
+    }
+
+    private Task OnAnswerSignatureRemove(PracticeTacticVM vm, int pageItemIndex, int elementIndex)
+    {
+        vm.PageItems[pageItemIndex].AnswersSignatures = vm.PageItems[pageItemIndex].AnswersSignatures.Where((s, i) => i != elementIndex).ToArray();
         return SendUpdateCommandAndRefresh(vm);
     }
 

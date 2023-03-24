@@ -15,7 +15,7 @@ public static class CommonExtensions
         return ids.SelectOrDefault(async id =>
         {
             var entity = await repository.Get(id, result);
-            var name = getName(entity);
+            var name = entity is not null ? getName(entity) : "---";
             return new IdentityVM(id, name);
         }).Values();
     }

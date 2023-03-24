@@ -36,6 +36,15 @@
                 OnPageItemAddButtonClick=OnPageItemAdd
                 OnPageItemRemoveButtonClick=OnPageItemRemove
 
+                OnPageSignatureAddButtonClick=OnPageSignatureAdd
+                OnPageSignatureRemoveButtonClick=OnPageSignatureRemove
+
+                OnQuestionSignatureAddButtonClick=OnQuestionSignatureAdd
+                OnQuestionSignatureRemoveButtonClick=OnQuestionSignatureRemove
+
+                OnAnswerSignatureAddButtonClick=OnAnswerSignatureAdd
+                OnAnswerSignatureRemoveButtonClick=OnAnswerSignatureRemove
+
                 />
         }
     </VerticalLayout>
@@ -63,6 +72,15 @@
     // Page Items
     [Parameter] public Func<PracticeTacticVM, Task> OnPageItemAdd { get; set; }
     [Parameter] public Func<PracticeTacticVM, int, Task> OnPageItemRemove { get; set; }
+
+    [Parameter] public PracticeTactic.OnAddPageItemElementDelegate OnPageSignatureAdd { get; set; }
+    [Parameter] public PracticeTactic.OnRemovePageItemElementDelegate OnPageSignatureRemove { get; set; }
+
+    [Parameter] public PracticeTactic.OnAddPageItemElementDelegate OnQuestionSignatureAdd { get; set; }
+    [Parameter] public PracticeTactic.OnRemovePageItemElementDelegate OnQuestionSignatureRemove { get; set; }
+
+    [Parameter] public PracticeTactic.OnAddPageItemElementDelegate OnAnswerSignatureAdd { get; set; }
+    [Parameter] public PracticeTactic.OnRemovePageItemElementDelegate OnAnswerSignatureRemove { get; set; }
 
     private SelectLinkWindow _selectPageWindow;
     private ChooseFromListWindow _selectSignatureWindow;
