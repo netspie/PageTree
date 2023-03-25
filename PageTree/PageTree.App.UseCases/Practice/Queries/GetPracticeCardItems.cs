@@ -4,6 +4,7 @@ using Common.Basic.Repository;
 using Mediator;
 using PageTree.App.Common;
 using PageTree.App.Entities.Signatures;
+using PageTree.App.UseCases.Common;
 using PageTree.Domain;
 using PageTree.Domain.Practice;
 
@@ -96,7 +97,7 @@ public class GetPracticeCardItemsQueryHandler : IQueryHandler<GetPracticeCardIte
             }
         }
 
-        return res.With(new GetPracticeCardItemsQueryOut(cards.ToArray()));
+        return res.With(new GetPracticeCardItemsQueryOut(new(tactic.ID, tactic.Name), cards.ToArray()));
     }
 
     private async Task<Page> GetPage(string id)
@@ -167,7 +168,7 @@ public class GetPracticeCardItemsQueryHandler : IQueryHandler<GetPracticeCardIte
 }
 
 public sealed record GetPracticeCardItemsQuery(string PageID, string PracticeTacticID) : IQuery<Result<GetPracticeCardItemsQueryOut>>;
-public sealed record GetPracticeCardItemsQueryOut(PracticeCardVM[] Cards);
+public sealed record GetPracticeCardItemsQueryOut(IdentityVM Tactic, PracticeCardVM[] Cards);
 public sealed record PracticeCardVM(string ID)
 {
     public List<string> Questions { get; set; } = new();

@@ -59,7 +59,12 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var practiceTacticRoot = await _practiceTacticRepository.Get(project.PracticeTacticRootID, res);
 
         var practiceCategories = practiceCategoryRoot.ChildrenIDs.IsNullOrEmpty() ? Array.Empty<PracticeCategory>() : await _practiceCategoryRepository.Get(practiceCategoryRoot.ChildrenIDs, res);
+        if (!practiceCategoryRoot.ChildrenIDs.IsNullOrEmpty())
+            practiceCategories = practiceCategories.OrderBy(s => practiceCategoryRoot.ChildrenIDs.IndexOf(s.ID)).ToArray();
+
         var practiceTactics = practiceTacticRoot.ChildrenIDs.IsNullOrEmpty() ? Array.Empty<PracticeTactic>() : await _practiceTacticRepository.Get(practiceTacticRoot.ChildrenIDs, res);
+        if (!practiceTacticRoot.ChildrenIDs.IsNullOrEmpty())
+            practiceTactics = practiceTactics.OrderBy(s => practiceTacticRoot.ChildrenIDs.IndexOf(s.ID)).ToArray();
 
         var parentPages = new List<Page>();
         res += await _pageRepository.GetParents(page, p => p.ParentID, parentPages);

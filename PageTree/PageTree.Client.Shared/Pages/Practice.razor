@@ -13,11 +13,23 @@
     </div>*@
         <div class="practice-panel-card">
             <div class="practice-counter">@(_currentCardIndex + 1) / @_practiceCards.Length</div>
+            <h3 class="practice-title">@_tactic.Name</h3>
 
             <div class="practice-questions">
-                @foreach (var question in _practiceCards[_currentCardIndex].Questions)
-                {
-                    <div class="practice-question">@question</div>
+                @{
+                    int i = 0;
+                    foreach (var question in _practiceCards[_currentCardIndex].Questions)
+                    {
+                        if (i == 0)
+                        {
+                            <div class="practice-question-1">@question</div>
+                        }
+                        else
+                        {
+                            <div class="practice-question-2">@question</div>
+                        }
+                        i++;
+                    }
                 }
             </div>
 
@@ -55,10 +67,10 @@ else
 @code{
     [Inject] IQueryExecutor _queries { get; set; }
 
-    [Parameter] public IdentityVM[] PracticeTactics { get; set; } = Array.Empty<IdentityVM>();
     [Parameter] public string PageID { get; set; }
     [Parameter] public string TacticID { get; set; }
 
+    private IdentityVM _tactic = new();
     private PracticeCardVM[] _practiceCards = Array.Empty<PracticeCardVM>();
     private int _currentCardIndex;
     private bool _answerVisible;
@@ -73,6 +85,7 @@ else
         var queryOut = await _queries.Execute<GetPracticeCardItemsQuery, GetPracticeCardItemsQueryOut>(
             new GetPracticeCardItemsQuery(PageID, tacticID));
 
+        _tactic = queryOut.Tactic;
         _practiceCards = queryOut.Cards.Shuffle().ToArray();
         _currentCardIndex = 0;
 

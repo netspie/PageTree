@@ -146,9 +146,15 @@ custom-page::-webkit-scrollbar-track {
     top: 200px;
 }
 
-.practice-question {
+.practice-question-1 {
     font-size: 20px;
     font-weight: bold;
+    text-align: center;
+}
+
+.practice-question-2 {
+    font-size: 18px;
+    text-align: center;
 }
 
 .practice-answers {
@@ -167,6 +173,12 @@ custom-page::-webkit-scrollbar-track {
     right: 3rem;
     top: 1rem;
     text-align: end;
+}
+
+.practice-title {
+    position: absolute;
+    top: 1rem;
+    text-align: center;
 }
 
 .practice-menu {
