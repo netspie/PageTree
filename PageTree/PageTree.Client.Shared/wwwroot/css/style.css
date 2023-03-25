@@ -122,63 +122,58 @@ custom-page::-webkit-scrollbar-track {
 }
 
 .practice-panel {
-    z-index: 9999;
-    background: rgb(206, 180, 225);
-    position: absolute;
-    height: 50vh;
-    width: 75vh;
+    position: fixed;
+    height: 100%;
+    width: 100%;
     left: 0;
     right: 0;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .practice-panel-card {
-    z-index: 9999;
-    position: absolute;
-    /*background: #AC7B7D;*/
 
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: 90%;
-    width: 90%;
+    height: 100%;
+    width: 100%;
+
+    position: absolute;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
 }
 
 .practice-questions {
-    /*background: #eee;*/
+    position: absolute;
+    top: 200px;
 }
 
 .practice-question {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .practice-answers {
     /*background: #aaa;*/
+    position: absolute;
+    top: 400px;
 }
 
 .practice-answer {
+    font-size: 20px;
+
 }
 
 .practice-counter {
     position: absolute;
-    left: 1rem;
+    right: 3rem;
     top: 1rem;
+    text-align: end;
 }
 
 .practice-menu {
     position: absolute;
     height: 2rem;
     width: 100%;
-    bottom: 0rem;
+    bottom: 1rem;
 
     display: flex;
     flex-direction: row;

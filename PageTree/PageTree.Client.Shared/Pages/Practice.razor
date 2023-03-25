@@ -5,7 +5,6 @@
 @using PageTree.App.UseCases.Common;
 @using PageTree.App.UseCases.Practice.Queries;
 
-
 @if (!_practiceCards.IsNullOrEmpty())
 {
     <div class="practice-panel">
@@ -34,9 +33,9 @@
             </div>
 
             <div class="practice-menu">
-                <button class="practice-menu-button" @onclick=@(() => NextCard(-1))><b>PREVIOUS</b></button>
-                <button class="practice-menu-button" @onclick=SwitchAnswerVisibility><b>ANSWER</b></button>
-                <button class="practice-menu-button" @onclick=@(() => NextCard(1))><b>NEXT</b></button>
+                <button class="practice-menu-button" @onclick=@(() => NextCard(-1))><b>Prev</b></button>
+                <button class="practice-menu-button" @onclick=SwitchAnswerVisibility><b>Answer</b></button>
+                <button class="practice-menu-button" @onclick=@(() => NextCard(1))><b>Next</b></button>
             </div>
             @*<button class="practice-quit-button"><b>X</b></button>*@
         </div>
@@ -50,22 +49,7 @@
     [Parameter] public string PageID { get; set; }
     [Parameter] public string TacticID { get; set; }
 
-    //private PracticeCardVM[] _practiceCards = Array.Empty<PracticeCardVM>();
-    private PracticeCardVM[] _practiceCards = new PracticeCardVM[]
-    {
-        new("Wiksa")
-        {
-            Questions = new()
-            {
-                "Boba"
-            },
-            Answers = new()
-            {
-                "Plupsa"
-            }
-        }
-    };
-
+    private PracticeCardVM[] _practiceCards = Array.Empty<PracticeCardVM>();
     private int _currentCardIndex;
     private bool _answerVisible;
 

@@ -21,7 +21,8 @@ namespace PageTree.Client.Shared.Pages
 
         protected override void OnInitialized()
         {
-            RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
+            if (RefreshInvoker != null)
+                RefreshInvoker.Action = () => InvokeAsync(StateHasChanged);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
