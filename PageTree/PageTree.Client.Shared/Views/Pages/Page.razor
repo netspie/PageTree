@@ -1,5 +1,9 @@
-﻿@using Corelibs.BlazorViews.Components
+﻿@using Common.Basic.Collections;
+@using Common.Basic.Maths;
+@using Corelibs.BlazorViews.Components
 @using Corelibs.BlazorViews.Layouts;
+@using PageTree.App.Pages.Queries;
+@using PageTree.App.UseCases.Practice.Queries;
 @using PageTree.Client.Shared.Extensions;
 
 <div class="page" style=@_mainStyle>
@@ -40,4 +44,31 @@
     {
         <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
     }
+
+
+    <div class="practice-choose-panel-parent">
+        <button id="practice-button">PRACTICE</button>
+        <div class="practice-choose-panel">
+            @foreach (var practiceTactic in Model.PracticeTactics)
+            {
+                <button class="practice-choose-panel-item" @onclick="@((args) => LoadPracticeCard(practiceTactic.ID))">@practiceTactic.Name</button>
+            }
+
+            @*<div class="practice-choose-panel-group">
+            <b>Listening</b>
+            <button class="practice-choose-panel-item">Radicals</button>
+            <button class="practice-choose-panel-item">Words</button>
+            </div>*@
+        </div>
+    </div>
+
 </div>
+
+@code{
+    [Inject] public NavigationManager _navigation { get; set; }
+
+    private async Task LoadPracticeCard(string tacticID)
+    {
+        _navigation.NavigateTo($"/practice/{Model.Identity.ID}/{tacticID}");
+    }
+}

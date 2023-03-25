@@ -1,0 +1,105 @@
+﻿@page "/practice/{pageID}/{tacticID}"
+
+@using Common.Basic.Collections;
+@using Common.Basic.Maths;
+@using PageTree.App.UseCases.Common;
+@using PageTree.App.UseCases.Practice.Queries;
+
+
+@if (!_practiceCards.IsNullOrEmpty())
+{
+    <div class="practice-panel">
+        @*<div class="loader-panel">
+    <div class="loader"></div>
+    </div>*@
+        <div class="practice-panel-card">
+            <div class="practice-counter">@(_currentCardIndex + 1) / @_practiceCards.Length</div>
+
+            <div class="practice-questions">
+                @foreach (var question in _practiceCards[_currentCardIndex].Questions)
+                {
+                    <div class="practice-question">@question</div>
+                }
+            </div>
+
+            <div class="practice-answers">
+                @if (_answerVisible)
+                {
+                    @foreach (var answers in _practiceCards[_currentCardIndex].Answers)
+                    {
+                        <div class="practice-answer">@answers</div>
+                    }
+                }
+
+            </div>
+
+            <div class="practice-menu">
+                <button class="practice-menu-button" @onclick=@(() => NextCard(-1))><b>PREVIOUS</b></button>
+                <button class="practice-menu-button" @onclick=SwitchAnswerVisibility><b>ANSWER</b></button>
+                <button class="practice-menu-button" @onclick=@(() => NextCard(1))><b>NEXT</b></button>
+            </div>
+            @*<button class="practice-quit-button"><b>X</b></button>*@
+        </div>
+    </div>
+}
+
+@code{
+    [Inject] IQueryExecutor _queries { get; set; }
+
+    [Parameter] public IdentityVM[] PracticeTactics { get; set; } = Array.Empty<IdentityVM>();
+    [Parameter] public string PageID { get; set; }
+    [Parameter] public string TacticID { get; set; }
+
+    //private PracticeCardVM[] _practiceCards = Array.Empty<PracticeCardVM>();
+    private PracticeCardVM[] _practiceCards = new PracticeCardVM[]
+    {
+        new("Wiksa")
+        {
+            Questions = new()
+            {
+                "Boba"
+            },
+            Answers = new()
+            {
+                "Plupsa"
+            }
+        }
+    };
+
+    private int _currentCardIndex;
+    private bool _answerVisible;
+
+    protected override Task OnInitializedAsync()
+    {
+        return LoadPracticeCard(TacticID);
+    }
+
+    private async Task LoadPracticeCard(string tacticID)
+    {
+        var queryOut = await _queries.Execute<GetPracticeCardItemsQuery, GetPracticeCardItemsQueryOut>(
+            new GetPracticeCardItemsQuery(PageID, tacticID));
+
+        _practiceCards = queryOut.Cards;
+        _currentCardIndex = 0;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void NextCard(int step)
+    {
+        if (step == 0)
+            return;
+
+        _answerVisible = false;
+        _currentCardIndex.IncreaseBy(step, 0, _practiceCards.Length - 1, loop: false);
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void SwitchAnswerVisibility()
+    {
+        _answerVisible = !_answerVisible;
+
+        InvokeAsync(StateHasChanged);
+    }
+}

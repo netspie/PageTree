@@ -122,6 +122,7 @@ custom-page::-webkit-scrollbar-track {
 }
 
 .practice-panel {
+    z-index: 9999;
     background: rgb(206, 180, 225);
     position: absolute;
     height: 50vh;
@@ -130,10 +131,10 @@ custom-page::-webkit-scrollbar-track {
     right: 0;
     margin-left: auto;
     margin-right: auto;
-    z-index: 2;
 }
 
 .practice-panel-card {
+    z-index: 9999;
     position: absolute;
     /*background: #AC7B7D;*/
 
@@ -141,12 +142,10 @@ custom-page::-webkit-scrollbar-track {
     right: 0;
     margin-left: auto;
     margin-right: auto;
-
     top: 0;
     bottom: 0;
     margin-top: auto;
     margin-bottom: auto;
-
     height: 90%;
     width: 90%;
     display: flex;

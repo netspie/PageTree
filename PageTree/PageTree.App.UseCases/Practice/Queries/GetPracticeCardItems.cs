@@ -48,10 +48,10 @@ public class GetPracticeCardItemsQueryHandler : IQueryHandler<GetPracticeCardIte
 
             foreach (var p in resultPages)
             {
-                if (p.ContainsAnyNestedChildOfID(_pageRepository, tactic.SkipItemIfContainsOfIDs))
+                if (await p.ContainsAnyNestedChildOfID(_pageRepository, tactic.SkipItemIfContainsOfIDs))
                     continue;
 
-                if (!p.ContainsAll(_pageRepository, tactic.SkipItemIfNotContainsOfIDs))
+                if (!await p.ContainsAll(_pageRepository, tactic.SkipItemIfNotContainsOfIDs))
                     continue;
 
                 var dto = new PracticeCardVM(p.ID);
@@ -110,7 +110,8 @@ public class GetPracticeCardItemsQueryHandler : IQueryHandler<GetPracticeCardIte
         if (page.SignatureID == templateSignatureID)
             return page;
 
-        var children = await page.GetChildren(_pageRepository);
+        var res = Result.Success();
+        var children = await _pageRepository.Get(page.ChildrenIDs, res);
         foreach (var child in children)
         {
             if (child.SignatureID == templateSignatureID)
@@ -129,14 +130,16 @@ public class GetPracticeCardItemsQueryHandler : IQueryHandler<GetPracticeCardIte
 
     private async Task AddToResult(Page currentPage, string parentSignatureID, string signatureID, List<Page> result, bool wasLinkBefore)
     {
-        var children = await currentPage.GetChildren(_pageRepository);
+        var res = Result.Success();
+
+        var children = await _pageRepository.Get(currentPage.ChildrenIDs, res);
         foreach (var child in children)
         {
             if (child.SignatureID != null &&
                 parentSignatureID != null &&
                 child.SignatureID == parentSignatureID)
             {
-                var childChildren = await child.GetChildren(_pageRepository);
+                var childChildren = await _pageRepository.Get(child.ChildrenIDs, res);
                 foreach (var childrenChild in childChildren)
                 {
                     if (childrenChild.SignatureID == signatureID)
@@ -167,15 +170,6 @@ public sealed record GetPracticeCardItemsQuery(string PageID, string PracticeTac
 public sealed record GetPracticeCardItemsQueryOut(PracticeCardVM[] Cards);
 public sealed record PracticeCardVM(string ID)
 {
-    public List<string> Questions { get; } = new();
-    public List<string> Answers { get; } = new();
-}
-
-public static class PageExtensions
-{
-    public static async Task<Page[]> GetChildren(this Page page, IRepository<Page> pageRepository)
-    {
-        var results = await Task.WhenAll(page.ChildrenIDs.Select(id => pageRepository.GetBy(id)));
-        return results.Select(r => r.Get()).ToArray();
-    }
+    public List<string> Questions { get; set; } = new();
+    public List<string> Answers { get; set; } = new();
 }

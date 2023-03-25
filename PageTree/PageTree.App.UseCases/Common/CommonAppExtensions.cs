@@ -81,21 +81,22 @@ public static class CommonExtensions
         return null;
     }
 
-    public static Page GetNestedChildOfID(this Page page, IRepository<Page> repo, string searchedID)
+    public static async Task<Page> GetNestedChildOfID(this Page page, IRepository<Page> repo, string searchedID)
     {
         if (!page || page.ChildrenIDs == null)
             return null;
 
         foreach (var id in page.ChildrenIDs)
         {
-            var childPage = repo.GetBy(id).Value();
+            var result = Result.Success();
+            var childPage = await repo.Get(id, result);
             if (id == searchedID)
                 return childPage;
 
             if (!page.IsSubPage(childPage.ID))
                 continue;
 
-            var res = GetNestedChildOfID(childPage, repo, searchedID);
+            var res = await GetNestedChildOfID(childPage, repo, searchedID);
             if (res)
                 return res;
         }
@@ -103,22 +104,22 @@ public static class CommonExtensions
         return null;
     }
 
-    public static bool ContainsNestedChildOfID(this Page page, IRepository<Page> repo, string searchedID) =>
-        page.GetNestedChildOfID(repo, searchedID) != null;
+    public static async Task<bool> ContainsNestedChildOfID(this Page page, IRepository<Page> repo, string searchedID) =>
+        (await page.GetNestedChildOfID(repo, searchedID)) != null;
 
-    public static bool ContainsAnyNestedChildOfID(this Page page, IRepository<Page> repo, IEnumerable<string> searchedIDs)
+    public static async Task<bool> ContainsAnyNestedChildOfID(this Page page, IRepository<Page> repo, IEnumerable<string> searchedIDs)
     {
         foreach (var id in searchedIDs)
-            if (page.ContainsNestedChildOfID(repo, id))
+            if (await page.ContainsNestedChildOfID(repo, id))
                 return true;
 
         return false;
     }
 
-    public static bool ContainsAll(this Page page, IRepository<Page> repo, IEnumerable<string> searchedIDs)
+    public static async Task<bool> ContainsAll(this Page page, IRepository<Page> repo, IEnumerable<string> searchedIDs)
     {
         foreach (var id in searchedIDs)
-            if (!page.ContainsNestedChildOfID(repo, id))
+            if (!await page.ContainsNestedChildOfID(repo, id))
                 return false;
 
         return true;

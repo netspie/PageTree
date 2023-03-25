@@ -58,8 +58,8 @@ public class GetPageQueryHandler : IQueryHandler<GetPageQuery, Result<GetPageQue
         var practiceCategoryRoot = await _practiceCategoryRepository.Get(project.PracticeCategoryRootID, res);
         var practiceTacticRoot = await _practiceTacticRepository.Get(project.PracticeTacticRootID, res);
 
-        var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoryRoot.Items, res);
-        var practiceTactics = await _practiceTacticRepository.Get(practiceTacticRoot.Items, res);
+        var practiceCategories = await _practiceCategoryRepository.Get(practiceCategoryRoot.ChildrenIDs, res);
+        var practiceTactics = await _practiceTacticRepository.Get(practiceTacticRoot.ChildrenIDs, res);
 
         var parentPages = new List<Page>();
         res += await _pageRepository.GetParents(page, p => p.ParentID, parentPages);
@@ -190,7 +190,7 @@ public class PageVM
     public IdentityVM[] Path { get; init; } = Array.Empty<IdentityVM>();
     public IdentityVM Identity { get; init; } = new IdentityVM();
     public IdentityVM SignatureIdentity { get; init; } = new IdentityVM();
-    public PropertyVM[] Properties { get; init; } = Array.Empty<PropertyVM>();
+    public PropertyVM[] Properties { get; set; } = Array.Empty<PropertyVM>();
     public IdentityVM[] Signatures { get; init; } = Array.Empty<IdentityVM>();
     public IdentityVM[] Templates { get; init; } = Array.Empty<IdentityVM>();
     public IdentityVM[] PracticeTactics { get; init; } = Array.Empty<IdentityVM>();

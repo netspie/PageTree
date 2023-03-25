@@ -5,6 +5,7 @@ using PageTree.App.Pages.Queries;
 using PageTree.App.PageTemplates.Queries;
 using PageTree.App.Projects.Queries;
 using PageTree.App.ProjectUserLists.Queries;
+using PageTree.App.UseCases.Practice.Queries;
 using PageTree.App.UseCases.PracticeCategories.Queries;
 using PageTree.App.UseCases.PracticeTactics.Queries;
 using PageTree.App.UseCases.Signatures.Queries;
@@ -34,6 +35,7 @@ namespace PageTree.Client.Shared.Services
             Add<GetProjectSignaturesApiQuery, GetProjectSignaturesQuery, GetProjectSignaturesQueryOut>(q => $"projects/{q.ProjectID}/signatures");
             Add<GetProjectPracticeCategoriesApiQuery, GetProjectPracticeCategoriesQuery, GetProjectPracticeCategoriesQueryOut>(q => $"projects/{q.ProjectID}/practiceCategories");
             Add<GetProjectPracticeTacticsApiQuery, GetProjectPracticeTacticsQuery, GetProjectPracticeTacticsQueryOut>(q => $"projects/{q.ProjectID}/practiceTactics");
+            Add<GetPracticeCardItemsApiQuery, GetPracticeCardItemsQuery, GetPracticeCardItemsQueryOut>(q => "practice/generate");
 
             // Search
             Add<GetPagesSearchResultsApiQuery, GetPagesSearchResultsQuery, GetPagesSearchResultsQueryOut>(q => "pages/search");
