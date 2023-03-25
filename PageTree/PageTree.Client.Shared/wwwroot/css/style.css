@@ -159,7 +159,7 @@ custom-page::-webkit-scrollbar-track {
 
 .practice-answer {
     font-size: 20px;
-
+    text-align: center;
 }
 
 .practice-counter {

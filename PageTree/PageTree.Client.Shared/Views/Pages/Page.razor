@@ -6,63 +6,74 @@
 @using PageTree.App.UseCases.Practice.Queries;
 @using PageTree.Client.Shared.Extensions;
 
-<div class="page" style=@_mainStyle>
-    
-    @{
-        bool hasParent = Model.Path.Any();
+@if (_treeNode != null && _treeNode.Children.Count > 0)
+{
+    <div class="page" style=@_mainStyle>
 
-        <PageEditMenu
-            NavigateUpAllowed=NavigateUpAllowed
-            HasParent=hasParent
-            IsEditMode=IsEditMode
-            OnNavigateUp=OnNavigateUp
-            OnAddSubPageOnTop=OnAddSubPageOnTop 
-            OnAddSubPageOnBottom=OnAddSubPageOnBottom 
-            OnAddLinkOnTop=OnCreateLinkOnTopInternal
-            OnAddLinkOnBottom=OnCreateLinkOnBottomInternal />
-    }
+        @{
+            bool hasParent = Model.Path.Any();
 
-    <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
+            <PageEditMenu NavigateUpAllowed=NavigateUpAllowed
+                      HasParent=hasParent
+                      IsEditMode=IsEditMode
+                      OnNavigateUp=OnNavigateUp
+                      OnAddSubPageOnTop=OnAddSubPageOnTop
+                      OnAddSubPageOnBottom=OnAddSubPageOnBottom
+                      OnAddLinkOnTop=OnCreateLinkOnTopInternal
+                      OnAddLinkOnBottom=OnCreateLinkOnBottomInternal />
+        }
 
-    @if (IsEditMode)
-    {
-        var signaturesOptions = Model.Signatures.ToUIIdentityVM();
-        <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureSignatureSelected />
+        <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
 
-        <ChooseFromListWindow @ref=_movePropertyDownWindow OnSelected=OnMoveLevelDownOptionSelected />
+        @if (IsEditMode)
+        {
+            var signaturesOptions = Model.Signatures.ToUIIdentityVM();
+            <ChooseFromListWindow Options=signaturesOptions @ref=_signatureChangeWindow OnSelected=OnResignatureSignatureSelected />
 
-        var templatesOptions = Model.Templates.ToUIIdentityVM();
-        <ChooseFromListWindow Options=templatesOptions @ref=_chooseTemplateWindow OnSelected=OnChooseTemplateOptionSelected />
+            <ChooseFromListWindow @ref=_movePropertyDownWindow OnSelected=OnMoveLevelDownOptionSelected />
 
-        <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectLinkInputChanged OnSelected=OnSelectLinkSelected />
-    }
-    <PageHeader Model=@GetPageHeader() OnPathElementClick=OnPathElementClick IsEditMode=IsEditMode OnNameChanged=@(name => OnPageNameChanged?.Invoke(Model.Identity.ID, name)) />
-    <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
-    <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick IsEditMode=IsEditMode/>
+            var templatesOptions = Model.Templates.ToUIIdentityVM();
+            <ChooseFromListWindow Options=templatesOptions @ref=_chooseTemplateWindow OnSelected=OnChooseTemplateOptionSelected />
 
-    @if (IsEditMode)
-    {
-        <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
-    }
+            <SelectLinkWindow @ref=_selectLinkWindow OnInputChanged=OnSelectLinkInputChanged OnSelected=OnSelectLinkSelected />
+        }
+        <PageHeader Model=@GetPageHeader() OnPathElementClick=OnPathElementClick IsEditMode=IsEditMode OnNameChanged=@(name => OnPageNameChanged?.Invoke(Model.Identity.ID, name)) />
+        <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
+        <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick IsEditMode=IsEditMode />
 
+        @if (IsEditMode)
+        {
+            <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
+        }
 
-    <div class="practice-choose-panel-parent">
-        <button id="practice-button">PRACTICE</button>
-        <div class="practice-choose-panel">
-            @foreach (var practiceTactic in Model.PracticeTactics)
-            {
-                <button class="practice-choose-panel-item" @onclick="@((args) => LoadPracticeCard(practiceTactic.ID))">@practiceTactic.Name</button>
-            }
+        <div class="practice-choose-panel-parent">
+            <button id="practice-button">PRACTICE</button>
+            <div class="practice-choose-panel">
+                @foreach (var practiceTactic in Model.PracticeTactics)
+                {
+                    <button class="practice-choose-panel-item" @onclick="@((args) => LoadPracticeCard(practiceTactic.ID))">@practiceTactic.Name</button>
+                }
 
-            @*<div class="practice-choose-panel-group">
+                @*<div class="practice-choose-panel-group">
             <b>Listening</b>
             <button class="practice-choose-panel-item">Radicals</button>
             <button class="practice-choose-panel-item">Words</button>
             </div>*@
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
+}
+else
+{
+    @* Loading Animation *@
+    <div class="sk-fold sk-center pos-abs">
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+    </div>
+}
 
 @code{
     [Inject] public NavigationManager _navigation { get; set; }

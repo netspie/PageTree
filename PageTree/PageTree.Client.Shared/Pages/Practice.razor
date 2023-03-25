@@ -41,6 +41,16 @@
         </div>
     </div>
 }
+else
+{
+    @* Loading Animation *@
+    <div class="sk-fold sk-center pos-abs">
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+        <div class="sk-fold-cube"></div>
+    </div>
+}
 
 @code{
     [Inject] IQueryExecutor _queries { get; set; }
@@ -63,7 +73,7 @@
         var queryOut = await _queries.Execute<GetPracticeCardItemsQuery, GetPracticeCardItemsQueryOut>(
             new GetPracticeCardItemsQuery(PageID, tacticID));
 
-        _practiceCards = queryOut.Cards;
+        _practiceCards = queryOut.Cards.Shuffle().ToArray();
         _currentCardIndex = 0;
 
         await InvokeAsync(StateHasChanged);
