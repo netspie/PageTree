@@ -6,9 +6,17 @@
 @using PageTree.App.UseCases.Practice.Queries;
 @using PageTree.Client.Shared.Extensions;
 
-@if (_treeNode != null && _treeNode.Children.Count > 0)
+@if (_treeNode != null)
 {
     <div class="page" style=@_mainStyle>
+
+        @if (IsEditMode)
+        {
+            <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
+            <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick IsEditMode=IsEditMode />
+
+            <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
+        }
 
         @{
             bool hasParent = Model.Path.Any();
@@ -22,8 +30,6 @@
                       OnAddLinkOnTop=OnCreateLinkOnTopInternal
                       OnAddLinkOnBottom=OnCreateLinkOnBottomInternal />
         }
-
-        <PageMenu OnArrangmentsButton=@OnArrangmentsButton IsEditMode=IsEditMode />
 
         @if (IsEditMode)
         {
@@ -39,12 +45,6 @@
         }
         <PageHeader Model=@GetPageHeader() OnPathElementClick=OnPathElementClick IsEditMode=IsEditMode OnNameChanged=@(name => OnPageNameChanged?.Invoke(Model.Identity.ID, name)) />
         <TreeLayout @ref=_treeLayout Tree=_treeNode BeforeExpand=BeforeExpand AfterExpand=AfterExpand ModifyNode=ModifyNode />
-        <Arrangements @ref=@_arrangements OnAddNewClick=@OnAddNewArrangmentClick IsEditMode=IsEditMode />
-
-        @if (IsEditMode)
-        {
-            <Arrangements_AddNew @ref=@_arrangements_AddNew Properties=_properties />
-        }
 
         <div class="practice-choose-panel-parent">
             <button id="practice-button">PRACTICE</button>
@@ -81,5 +81,14 @@ else
     private async Task LoadPracticeCard(string tacticID)
     {
         _navigation.NavigateTo($"/practice/{Model.Identity.ID}/{tacticID}");
+    }
+
+    public static bool IsDebug()
+    {
+#if DEBUG
+      return true;
+#else
+        return false;
+#endif
     }
 }
