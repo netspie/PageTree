@@ -7,6 +7,7 @@ using Corelibs.BlazorViews.Components;
 using Corelibs.BlazorViews.Layouts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PageTree.App.Entities.Styles;
 using PageTree.App.Pages.Queries;
 using PageTree.Client.Shared.Extensions;
@@ -113,7 +114,7 @@ namespace PageTree.Client.Shared.Views.Pages
 
                 return RenderFragmentExtensions.CreateComponent<Property>(builder =>
                 {
-                    var vmModel = GetPropertyViewModel(propertyVM, parentIDs, hasSiblings, parentStyle, childStyle, propertyIndex, propertyVM.PropertyType);
+                    var vmModel = GetPropertyViewModel(propertyVM, parentIDs, hasSiblings, parentStyle, childStyle, propertyIndex, false, propertyVM.PropertyType);
                     // override main by signature or page style
 
                     builder.AddAttribute(seqLocal++, "Model", vmModel);
@@ -144,6 +145,7 @@ namespace PageTree.Client.Shared.Views.Pages
             StyleOfRootProperty parentStyle,
             StyleOfChildProperty childStyle,
             int propertyIndex,
+            bool isEditMode,
             PropertyType propertyType)
         {
             var vmModel = new Property.ViewModel();
@@ -175,12 +177,6 @@ namespace PageTree.Client.Shared.Views.Pages
             bool? hasSignature = propertyVM.SignatureIdentity?.ID.IsID();
             bool hasVisibleChildren = propertyVM.Properties.Length > 0;
             
-            var name = propertyVM.Identity.Name;
-            if (name == "Variants")
-            {
-                Console.WriteLine("Boba");
-            }
-
             if (parentStyle != null && !parentStyle.ChildrenStyle.IsNullOrEmpty())
             {
                 parentStyle.ChildrenStyle.ForEach(artifact =>
@@ -382,6 +378,13 @@ namespace PageTree.Client.Shared.Views.Pages
 
                 var parentIDsOfChild = parentIDs.Append(propertyVM.Identity.ID).ToArray();
 
+                var children = new List<TreeLayout.TreeNode>();
+                if (parentStyle?.VisualInfoOfChildren.Visibility == Visibility.Never ||
+                   (parentStyle?.VisualInfoOfChildren.Visibility == Visibility.IfHasChildren && propertyVM.Properties.Length == 0 && !IsEditMode))
+                    return;
+                else
+                    children = GetTreeNodes(propertyVM.Properties, parentIDsOfChild, childStyle, signatureOrPageStyles);
+
                 list.Add(new()
                 {
                     Identity = new() { ID = propertyVM.Identity.ID, Name = propertyVM.Identity.Name },
@@ -394,7 +397,7 @@ namespace PageTree.Client.Shared.Views.Pages
                         Gap = layoutGap
                     },
 
-                    Children = GetTreeNodes(propertyVM.Properties, parentIDsOfChild, childStyle, signatureOrPageStyles),
+                    Children = children,
                     GetContent = GetProperty(
                         propertyVM,
                         parentIDs,

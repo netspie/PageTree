@@ -23,6 +23,8 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
                 "Master" => RadicalsGroupStyle,
                 "Supreme" => RadicalsGroupStyle,
 
+                "Phrases" => PhrasesStyle,
+
                 _ => null
             };
 
@@ -34,6 +36,7 @@ namespace PageTree.App.UseCases.Pages.Queries.Styles
             {
                 "Author" => DefaultStyle,
                 "Radical" => RadicalStyle,
+                "Phrase" => PhraseStyle,
                 _ => null
             };
 
