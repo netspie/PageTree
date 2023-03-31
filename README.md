@@ -1,11 +1,33 @@
 # PageTree
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for knowledge organization in a form of pages structured in tree-like layout with highly interconnected and internavigatable elements for automatic, manually configured or based on spaced-repetition algorithm flashcards generation.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for knowledge or notes organization in a form of pages as a tree-like structure with interconnected and internavigatable elements for automatic, manually configured or based on spaced-repetition algorithm flashcards generation.
 
-Meant to provide a way for organizing notes or any knowledge database in a nice way, and be able to generate list of flashcards for any specific kind of data in there.
-Each piece of data is a page itself.
+### Example
 
-My initial idea is to create a helpful tool for learning japanese language specifically, but I believe it can be applied for any domain out there. The real challenge is to structure data in well-thought manner, so to make the exploration/navigation pleasant.
+Given a page which contain a set of phrases in japanese language, you can generate a list of flashcards containing those or their parts depending on what options has been configured.
+We could do it in any way we desire. The options are endless. For instance, from phrases we could generate list that could contain:
+- phrases
+- phrases + other similar phrases
+- words,
+- words + synonyms,
+- words + similar sounding words,
+- kanji characters,
+- kanji characters & radical characters,
+- only phrases with a specific level of politeness,
+- only phrases in a specific slang or dialect,
+- only spoken or non-spoken language phrases,
+- many more...
+
+Every page is marked with a signature - a tag. The list generation works in this way:
+- For each nested child of the current page look for every single occurence of pages with desired signature, ex. phrase, word, word conjugated form, etc.
+- For each found page, take this or a nested child of signatures marked to be the flashcards questions
+- For each found page, take this or a nested child of signatures marked to be the flashcards answers
+
+So the question of 
+
+This method allows for configuring it in such a way so we can mark a given
+
+The 
 
 Here is the concepts that emerged from the mentioned problems:
 "Page" is the most fundamental concept here and has following properties:
