@@ -9,12 +9,14 @@ namespace PageTree.Domain.Projects
         public Project(
             string id, 
             string rootPageID,
+            string rootPageTemplateID,
             string signatureRootID,
             string ownerID,
             string practiceCategoryRootID,
             string practiceTacticRootID) : base(id)
         {
             RootPageID = rootPageID;
+            TemplatePageRootID = rootPageTemplateID;
             SignatureRootID = signatureRootID;
             OwnerID = ownerID;
             PracticeCategoryRootID = practiceCategoryRootID;

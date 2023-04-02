@@ -11,7 +11,6 @@ namespace PageTree.Server.ApiContracts
         public string Name { get; set; }
         public string Description { get; set; }
 
-        [AuthorizeResource(typeof(Page))]
         public string PublicRootPageID { get; set; }
 
         public EditProjectApiCommand(string id, string name, string description)
