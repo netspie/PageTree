@@ -6,8 +6,7 @@
   <img src="docs/screens.gif" alt="Screens">
 </p>
 
-Here is the concepts that emerged from the mentioned problems:
-"Page" is the most fundamental concept here and has following properties:
+A "page" is the most fundamental concept here and has following properties:
 - it can be any piece of data, preferably very small, easily memorizable
 - every page can have descendants (children, or so called "properties") you can navigate to
 - children can be of various types
