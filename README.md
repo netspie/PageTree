@@ -1,33 +1,6 @@
 # PageTree
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for knowledge or notes organization in a form of pages as a tree-like structure with interconnected and internavigatable elements for automatic, manually configured or based on spaced-repetition algorithm flashcards generation.
-
-### Example
-
-Given a page which contain a set of phrases in japanese language, you can generate a list of flashcards containing those or their parts depending on what options has been configured.
-We could do it in any way we desire. The options are endless. For instance, from phrases we could generate list that could contain:
-- phrases
-- phrases + other similar phrases
-- words,
-- words + synonyms,
-- words + similar sounding words,
-- kanji characters,
-- kanji characters & radical characters,
-- only phrases with a specific level of politeness,
-- only phrases in a specific slang or dialect,
-- only spoken or non-spoken language phrases,
-- many more...
-
-Every page is marked with a signature - a tag. The list generation works in this way:
-- For each nested child of the current page look for every single occurence of pages with desired signature, ex. phrase, word, word conjugated form, etc.
-- For each found page, take this or a nested child of signatures marked to be the flashcards questions
-- For each found page, take this or a nested child of signatures marked to be the flashcards answers
-
-So the question of 
-
-This method allows for configuring it in such a way so we can mark a given
-
-The 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for notes organization in a form of pages as a tree structure with interconnected and internavigatable elements with automatic flashcards generation based on predefined rules.
 
 Here is the concepts that emerged from the mentioned problems:
 "Page" is the most fundamental concept here and has following properties:
