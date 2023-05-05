@@ -11,20 +11,8 @@ Here is the concepts that emerged from the mentioned problems:
 - it can be any piece of data, preferably very small, easily memorizable
 - every page can have descendants (children, or so called "properties") you can navigate to
 - children can be of various types
-    - subpages - 
-    - links - related data to
-    - queries
-    - metadata
-- every page is really just a list
-- every page can be highly customizable, both in layout and styling
-- every page list allows for manipulation - sort, filter, custom order
-
-Once again in bulletpoints:
-- structurized knowledge base of any domain - initially created for japanese language learning with potential to expand for other subjects
-- automatically generated flashcards - depending on what level of the pages / knowledge tree you will navigate to and want the flashcard start to be generated from
-- spaced repetition algorithm, proposing already searched or learned materials - all configurable
-- target plaforms - web and mobile
-- working online and offline
+    - subpages
+    - links
 
 ## Problem Description
 
@@ -102,10 +90,6 @@ https://github.com/Dariusz-L/PageTree-Design-Documentation
 #### Practice
 - Generate Practice List
 
-## Major Quality Attributes
-
---- 
-
 ## API
 
 #### Users
@@ -156,18 +140,6 @@ https://github.com/Dariusz-L/PageTree-Design-Documentation
 | HTTP Method | Endpoint | Description |
 | :---: | --- | --- |
 | `GET` | `api/v1/pages/{id}/getPracticeList` | Get flashcard practice list from a page and below |
-
-## Software Structure Diagrams
-
----
-
-## Architure Patterns
-
----
-
-## Glossary
-
----
 
 ### Other repositories used and required to work:
 - https://github.com/Dariusz-L/Corelibs.Basic
