@@ -2,6 +2,10 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for notes organization in a form of pages as a tree structure with interconnected and internavigatable elements with automatic flashcards generation based on predefined rules.
 
+<p align="center">
+  <img src="docs/screens.gif" alt="Screens">
+</p>
+
 Here is the concepts that emerged from the mentioned problems:
 "Page" is the most fundamental concept here and has following properties:
 - it can be any piece of data, preferably very small, easily memorizable
