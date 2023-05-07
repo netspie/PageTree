@@ -17,7 +17,7 @@
 - AutoMapper
 - WebApi
 
-### Architecture
+## Architecture
 - Client-Server
 - Clean Architecture
 - CQRS
