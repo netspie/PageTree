@@ -6,22 +6,16 @@
   <img src="docs/screens.gif" alt="Screens">
 </p>
 
-A "page" is the most fundamental concept here and has following properties:
-- it can be any piece of data, preferably very small, easily memorizable
-- every page can have descendants (children, or so called "properties") you can navigate to
-- children can be of various types
-    - subpages
-    - links
+## Technologies
 
-## Problem Description
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Preparing notes requires time and effort, which could be spend on just learning itself. Of course it does not have to be absolutely excluded from a learning process, since it's a way to learn by itself too. Although, why to waste time just to convert a knowledge from one type of media to the other, when it's just can be ready to consume.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Browsing, learning from the same notes either written down on a paper or a computer every day becomes so boring after a time.. It brings routine. It slowly makes you start to procrastinate again.
-
-## Tech
-
-C# 10, .NET 6-7, EF Core/MS SQL/.json, Blazor WASM, .NET MAUI, Lucene.NET, Mediator, AutoMapper, WebApi
+- C# 10 
+- .NET 6-7 
+- EF Core/MS SQL/.json
+- Blazor WASM
+- Lucene.NET
+- Mediator
+- AutoMapper
+- WebApi
 
 ### Architecture
 - Client-Server
@@ -29,11 +23,7 @@ C# 10, .NET 6-7, EF Core/MS SQL/.json, Blazor WASM, .NET MAUI, Lucene.NET, Media
 - CQRS
 
 ## Deliverables
-The app prototype is available on https://japanesearcana.com
-It is hosted on sharkasp.com
-
-### Technical Documentation (not up-to-date)
-https://github.com/Dariusz-L/PageTree-Design-Documentation
+The app prototype is available on https://japanesearcana.com hosted on sharkasp.com
 
 ## Features
 
