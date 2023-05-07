@@ -1,15 +1,24 @@
 # PageTree
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A tool for notes organization in a form of pages as a tree structure with interconnected and internavigatable elements with automatic flashcards generation based on predefined rules.
+&nbsp;&nbsp;&nbsp;&nbsp; A tool for notes organization in a form of pages as a tree structure with interconnected and internavigatable elements with automatic flashcards generation based on predefined rules.
 
 <p align="center">
   <img src="docs/screens.gif" alt="Screens">
 </p>
 
+## Current State vs Future
+
+&nbsp;&nbsp;&nbsp;&nbsp; Initial idea was to create a tool for organization of a japanese language notes which could fit for later flashcard generation.
+It is possible to create a project, fill it with data right now and generate flashcards from it. However it still lacks many features and qualities.
+
+### Missing Features / To Dos
+- group data manipulation - move property
+- proper UI and UX design along with the styling feature for dynamic page appearance manipulation
+- performance - flashcard generation takes time - probably requires caching lists for different combinations
+
 ## Technologies
 
-- C# 10 
-- .NET 6-7 
+- C# 10 / .NET 6-7 
 - EF Core/MS SQL/.json
 - Blazor WASM
 - Lucene.NET
